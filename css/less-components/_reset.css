@@ -3,6 +3,19 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.lineBottom {
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 15px;
+  bottom: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
 [v-cloak] {
   display: none;
 }
@@ -12,7 +25,11 @@ ul {
   list-style: none;
 }
 .mui-bar {
-  background-color: #009cff;
+  background-color: #cb0303;
+  background-image: url('../img/navbarbg.jpg');
+  background-size: auto 100%;
+  background-position: right;
+  background-repeat: no-repeat;
 }
 .mui-bar h1 {
   color: #fff;
@@ -44,12 +61,6 @@ ul {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.mui-table-view .mui-media-object {
-  height: 80px;
-  line-height: 80px;
-  width: 120px;
-  max-width: 120px;
-}
 .mui-bar-nav {
   box-shadow: none;
   -webkit-box-shadow: none;
@@ -65,7 +76,10 @@ ul {
   line-height: 50px;
 }
 .mui-segmented-control .mui-control-item.mui-active {
-  color: #009cff;
+  color: #e14937;
+  background-color: #fff;
+}
+.swiper-pagination-bullet-active {
   background-color: #fff;
 }
 dl {
@@ -73,4 +87,45 @@ dl {
 }
 dl dd {
   margin: 0;
+}
+.full-iframe {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 44px;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.popup {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  background-color: #fff;
+}
+.no-scroll {
+  overflow: hidden;
+}
+.clearfix {
+  zoom: 1;
+  overflow: auto;
+}
+.clearfix:before,
+.clearfix:after {
+  content: "\0020";
+  overflow: hidden;
+  display: block;
+  height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.have-header {
+  margin-top: 44px;
+}
+.have-footer {
+  padding-bottom: 50px;
 }

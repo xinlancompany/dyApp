@@ -1,19 +1,143 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title></title>
-    <script type="text/javascript">
-    	
-   		document.addEventListener('plusready', function(){
-   			//console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
-   			
-   		});
-   		
-    </script>
-</head>
-<body>
-	
-</body>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/vue.min.js"></script>
+		<script src="lib/mui.min.js"></script>
+		<link href="lib/mui.min.css" rel="stylesheet" />
+		<link href="lib/swiper.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="lib/iconfont.css" />
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">舟山共产党员</h1>
+		</header>
+
+		<footer class="footer-tab">
+			<a class="active go-index">
+				<i class="iconfont icon-danghui-copy"></i> 首页
+			</a>
+			<a class="go-activity">
+				<i class="iconfont icon-0045"></i> 活动
+			</a>
+			<a class="go-study">
+				<i class="iconfont icon-xuexi"></i> 学习平台
+			</a>
+			<a class="go-ucenter">
+				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
+			</a>
+		</footer>
+
+		<div id="index" class="have-footer have-header main" style="display:block">
+
+			<div class="swiper-container index-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}">
+					</div>
+				</div>
+				<div class="swiper-pagination"></div>
+				<div class="mui-slider-text">
+					<p v-text="activeSlideText"></p>
+				</div>
+			</div>
+
+			<div class="news-list">
+				<ul class="mui-table-view">
+					<li v-for="i in headNews">
+						<a @click="gotoDetail(i)">
+							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+							<div class="mui-media-body">
+								<p v-text="i.title"></p>
+								<span v-text="i.date"></span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="manager-entry">
+				<span><i class="iconfont icon-partyflag"></i>组织信息管理</span>
+				<span><i class="iconfont icon-dangyuan"></i>党员信息管理</span>
+			</div>
+			
+			<div class="activity">
+				<header><h1 class="title">活动专题</h1><span class="more">更多</span></header>
+				<ul>
+					<li v-for="a in activity">
+						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
+						<p v-text="a.title"></p>
+					</li>
+				</ul>
+			</div>
+
+			
+		</div>
+<!--
+		<div id="news" class="have-footer main">
+			
+		</div>
+
+		<div id="ucenter" class="have-footer have-header main ucenter">
+			<!--<div class="user" @click="goLogin">
+				<div class="user-img iconfont">
+					<img :src="userInfo.img" v-show="isLogin" v-if="userInfo != null"/>
+				</div>
+				<p v-text="isLogin ? userInfo.name : '登录/注册'"></p>
+			</div>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" @click="goZan">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-zan"></i>收到的赞
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="goCmt">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-icon-test"></i>收到的消息
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="goMyInteract">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-hudong"></i>我的互动
+					</a>
+				</li>
+			</ul>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" @click="goSuggest">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-yijianfankui"></i>意见反馈
+					</a>
+				</li>
+				<li class="mui-table-view-cell" v-show="isLogin" @click="logout">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-fill108"></i>退出登录
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="clearCache" v-if="androidUpdate">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-Clear"></i>清除缓存
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="checkNewVersion" v-if="androidUpdate">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-shengji"></i>检查新版本
+					</a>
+					<span class="mui-badge mui-badge-danger" v-show="isNew">NEW</span>
+				</li>
+			</ul>-->
+		</div>
+	</body>
+
 </html>
+<script src="lib/utils.js"></script>
+<script src="lib/swiper.min.js"></script>
+<script src="lib/a_ref.js"></script>
+<script src="js/index.js"></script>
