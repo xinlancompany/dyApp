@@ -1,0 +1,85 @@
+@import "_var.less";
+@import "_mixin.less";
+
+[v-cloak] {
+    display: none;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.mui-bar {
+    background-color: @base;
+    h1 {
+        color: #fff;
+        font-weight: 700;
+    }
+    a.mui-icon {
+        color: #fff;
+    }
+    button.mui-btn {
+        color: #fff;
+    }
+}
+
+.mui-slider-text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40px;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 2;
+    padding-left: 10px;
+    box-sizing: border-box;
+    p {
+        color: #fff;
+        line-height: 40px;
+        font-size: 14px;
+        width: 70%;
+        .ell;
+    }
+}
+
+.mui-table-view {
+    .mui-media-object {
+        height: 80px;
+        line-height: 80px;;
+        width: 120px;
+        max-width: 120px;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: 50%;
+    }
+}
+
+.mui-bar-nav {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.mui-segmented-control {
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    .mui-control-item {
+        border: none;
+        line-height: 50px;
+        &.mui-active {
+            color: @base;
+            background-color: #fff;
+        }
+    }
+}
+
+dl {
+    margin: 0;
+    dd {
+        margin: 0;
+    }
+}
