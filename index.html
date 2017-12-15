@@ -21,16 +21,16 @@
 		</header>
 
 		<footer class="footer-tab">
-			<a class="active go-index">
+			<a class="active go-index" data-page="index">
 				<i class="iconfont icon-danghui-copy"></i> 首页
 			</a>
-			<a class="go-activity">
+			<a class="go-activity" data-page="activity">
 				<i class="iconfont icon-0045"></i> 活动
 			</a>
-			<a class="go-study">
+			<a class="go-study" data-page="study">
 				<i class="iconfont icon-xuexi"></i> 学习平台
 			</a>
-			<a class="go-ucenter">
+			<a class="go-ucenter" data-page="ucenter">
 				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
 			</a>
 		</footer>
@@ -42,7 +42,7 @@
 					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}">
 					</div>
 				</div>
-				<div class="swiper-pagination"></div>
+				<div class="swiper-pagination index-pagination"></div>
 				<div class="mui-slider-text">
 					<p v-text="activeSlideText"></p>
 				</div>
@@ -50,12 +50,12 @@
 
 			<div class="news-list">
 				<ul class="mui-table-view">
-					<li v-for="i in headNews">
-						<a @click="gotoDetail(i)">
+					<li v-for="i in headNews" @click="gotoDetail(i)">
+						<a>
 							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 							<div class="mui-media-body">
-								<p v-text="i.title"></p>
-								<span v-text="i.date"></span>
+								<p class="title" v-text="i.title"></p>
+								<span class="date" v-text="i.date"></span>
 							</div>
 						</a>
 					</li>
@@ -68,52 +68,111 @@
 			</div>
 			
 			<div class="activity">
-				<header><h1 class="title">活动专题</h1><span class="more">更多</span></header>
+				<header @click="goActivityTab" class="global-header"><h1 class="title">活动专题</h1><span class="more">更多</span></header>
 				<ul>
-					<li v-for="a in activity">
+					<li v-for="a in activity" @click="goActivity">
 						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
 						<p v-text="a.title"></p>
 					</li>
 				</ul>
 			</div>
+		</div>
+		
+		<div id="activity" class="have-footer have-header main activity">
+			<ul>
+				<li v-for="a in activity" @click="goActivity">
+					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
+					<p v-text="a.title"></p>
+				</li>
+			</ul>
+			<footer @click="getAcitivity" class="more-button">更多活动</footer>
+		</div>
+		
+		<div id="study" class="have-footer have-header main">
+			<div class="swiper-container study-swiper">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+				</div>
+			</div>
 
+			<div class="news-list">
+				<header @click="goEduDynamic" class="global-header"><h1 class="title">教育动态</h1><span class="more">更多</span></header>
+				<ul class="mui-table-view">
+					<li v-for="i in headNews" @click="gotoDetail(i)">
+						<a>
+							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+							<div class="mui-media-body">
+								<p class="title" v-text="i.title"></p>
+								<span class="date" v-text="i.date"></span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="live-list">
+				<header @click="goLiveList" class="global-header"><h1 class="title">直播课堂</h1><span class="more">更多</span></header>
+				<ul>
+					<li v-for="l in lives" @click="goLiveDetail">
+						<p v-text="l.title"></p>
+						<div class="img" :style="{backgroundImage: 'url('+ l.img +')'}"></div>
+						<footer v-cloak>
+							<span><i class="iconfont icon-men"></i> {{l.statistics}}人参加</span>
+							<span :class="{'active':l.state}"><i class="iconfont icon-bofang"></i> {{l.state ? '正在直播':'直播回顾'}}</span>
+						</footer>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="news-list internet-list">
+				<header @click="goInternetList" class="global-header"><h1 class="title">网络课堂</h1><span class="more">更多</span></header>
+				<ul class="mui-table-view">
+					<li v-for="i in internets" @click="goInternetDetail">
+						<a>
+							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+							<div class="mui-media-body">
+								<p class="title" v-text="i.title"></p>
+								<p class="desc" v-text='i.desc'></p>
+								<span class="btn">进入学习</span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
 			
 		</div>
-<!--
-		<div id="news" class="have-footer main">
-			
-		</div>
+
 
 		<div id="ucenter" class="have-footer have-header main ucenter">
-			<!--<div class="user" @click="goLogin">
+			<div class="user" @click="goLogin">
 				<div class="user-img iconfont">
 					<img :src="userInfo.img" v-show="isLogin" v-if="userInfo != null"/>
 				</div>
-				<p v-text="isLogin ? userInfo.name : '登录/注册'"></p>
+				<p v-text="isLogin ? userInfo.name : '立即登录'"></p>
 			</div>
 
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" @click="goZan">
+				<li class="mui-table-view-cell" @click="goPost">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-zan"></i>收到的赞
+						<i class="iconfont icon-zan"></i>消息
 					</a>
 				</li>
-				<li class="mui-table-view-cell" @click="goCmt">
+				<li class="mui-table-view-cell" @click="goMyStudy">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-icon-test"></i>收到的消息
+						<i class="iconfont icon-icon-test"></i>我的学习
 					</a>
 				</li>
-				<li class="mui-table-view-cell" @click="goMyInteract">
+				<li class="mui-table-view-cell" @click="goMyActivity">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-hudong"></i>我的互动
+						<i class="iconfont icon-hudong"></i>我的活动
 					</a>
 				</li>
 			</ul>
 
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell" @click="goSuggest">
+				<li class="mui-table-view-cell" @click="goRecommend">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-yijianfankui"></i>意见反馈
+						<i class="iconfont icon-yijianfankui"></i>推荐
 					</a>
 				</li>
 				<li class="mui-table-view-cell" v-show="isLogin" @click="logout">
@@ -132,7 +191,7 @@
 					</a>
 					<span class="mui-badge mui-badge-danger" v-show="isNew">NEW</span>
 				</li>
-			</ul>-->
+			</ul>
 		</div>
 	</body>
 

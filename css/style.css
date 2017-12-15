@@ -111,6 +111,17 @@ dl dd {
 .have-footer {
   padding-bottom: 50px;
 }
+.more-button {
+  background-color: #e14937;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: 10px;
+  color: #fff;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 14px;
+}
 .ell {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -139,17 +150,17 @@ body {
 .main {
   display: none;
 }
-.index-swiper {
+.swiper-container {
   height: 160px;
   position: relative;
 }
-.index-swiper .swiper-pagination {
+.swiper-container .swiper-pagination {
   position: absolute;
   right: 0;
   bottom: 10px;
   text-align: right;
 }
-.index-swiper .swiper-slide {
+.swiper-container .swiper-slide {
   -webkit-background-size: cover;
   background-size: cover;
   background-repeat: no-repeat;
@@ -157,23 +168,6 @@ body {
 }
 .news-list {
   margin-bottom: 8px;
-}
-.news-list header {
-  background-color: #fff;
-  font-size: 16px;
-  padding: 10px 25px;
-  position: relative;
-  font-weight: 700;
-}
-.news-list header:after {
-  content: '';
-  position: absolute;
-  left: 15px;
-  top: 12px;
-  bottom: 12px;
-  display: block;
-  width: 2px;
-  background-color: #e14937;
 }
 .news-list li {
   padding: 15px;
@@ -193,7 +187,13 @@ body {
   background-repeat: no-repeat;
   background-position: 50%;
 }
-.news-list li .mui-media-body p {
+.news-list li .mui-media-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80px;
+}
+.news-list li .mui-media-body .title {
   font-size: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -202,7 +202,7 @@ body {
   white-space: normal;
   color: #333;
 }
-.news-list li .mui-media-body span {
+.news-list li .mui-media-body .date {
   color: #999;
   font-size: 14px;
 }
@@ -304,20 +304,20 @@ body {
   background-color: #b82419;
   margin-left: 20px;
 }
-.activity header {
+.global-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
 }
-.activity header .title {
+.global-header .title {
   font-size: 16px;
   position: relative;
   padding: 5px 0 5px 15px;
   font-weight: normal;
   margin: 0;
 }
-.activity header .title:before {
+.global-header .title:before {
   content: '';
   position: absolute;
   top: 0;
@@ -329,7 +329,7 @@ body {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-.activity header .more {
+.global-header .more {
   font-size: 14px;
   color: #999;
 }
@@ -375,4 +375,93 @@ body {
 }
 .activity ul li:active {
   background-color: #f1f1f1;
+}
+.live-list ul {
+  background-color: #fff;
+}
+.live-list ul li {
+  padding: 15px;
+  position: relative;
+}
+.live-list ul li .img {
+  width: 100%;
+  height: 160px;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+.live-list ul li p {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #333;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.live-list ul li footer {
+  margin-top: 15px;
+  text-align: right;
+}
+.live-list ul li footer span {
+  color: #666;
+  margin-right: 15px;
+  font-size: 14px;
+}
+.live-list ul li footer span.active {
+  color: #e14937;
+}
+.live-list ul li footer span:last-child {
+  margin: 0;
+}
+.live-list ul li footer span i {
+  margin-right: 5px;
+  font-size: 20px;
+}
+.live-list ul li:last-child:after {
+  height: 0;
+}
+.live-list ul li:after {
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 15px;
+  bottom: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+.live-list ul li:active {
+  background-color: #f1f1f1;
+}
+.internet-list li .mui-media-body .title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  margin-bottom: 5px;
+}
+.internet-list li .mui-media-body .desc {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.internet-list li .mui-media-body .btn {
+  background-color: #fe9e0c;
+  color: #fff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 5px;
+  font-size: 14px;
+  width: 90px;
+  text-align: center;
 }

@@ -129,3 +129,14 @@ dl dd {
 .have-footer {
   padding-bottom: 50px;
 }
+.more-button {
+  background-color: #e14937;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: 10px;
+  color: #fff;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 14px;
+}
