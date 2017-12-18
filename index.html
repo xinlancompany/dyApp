@@ -83,7 +83,7 @@
 			<ul>
 				<li v-for="a in activity" @click="goActivity">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-					<p v-text="a.name"><span class="activitySort">进入专题></span></p>
+					<p>{{a.name}}<span class="activitySort">进入专题 ></span></p>
 					
 				</li>
 			</ul>
@@ -102,14 +102,14 @@
 			</div>
 
 			<div class="news-list">
-				<header @click="goEduDynamic" class="global-header"><h1 class="title">教育动态</h1><span class="more">更多</span></header>
+				<header @click="goEduDynamic" class="global-header"><h1 class="title">教育动态</h1><span class="more" @click="goNewsList">更多</span></header>
 				<ul class="mui-table-view">
 					<li v-for="i in headNews" @click="gotoDetail(i)">
 						<a>
 							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 							<div class="mui-media-body">
 								<p class="title" v-text="i.title"></p>
-								<span class="date" v-text="i.date"></span>
+								<span class="date" v-text="i.newsdate"></span>
 							</div>
 						</a>
 					</li>

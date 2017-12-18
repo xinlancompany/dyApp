@@ -166,6 +166,9 @@ body {
   background-repeat: no-repeat;
   background-position: 50%;
 }
+.have-header {
+  margin-top: 44px;
+}
 .news-list {
   margin-bottom: 8px;
 }
@@ -356,6 +359,11 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.activity ul li p .activitySort {
+  float: right;
+  color: red;
+  font-size: 14px;
 }
 .activity ul li:last-child:after {
   height: 0;

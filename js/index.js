@@ -10,14 +10,7 @@ var changeTab = function(el, self) {
 	self.addClass('active').siblings().removeClass('active');
 }
 
-$('.footer-tab a').on('click', function() {
-	var page = $(this).data('page');
-	changeTab(page, $(this));
-	
-//	if(page == 'study') {
-//		var swiper = new Swiper('.study-swiper');
-//	}
-})
+var swiperStudy = null;
 
 function plusReady() {
 	pullToRefresh();
@@ -126,7 +119,10 @@ var activity = new Vue({
 				vals: _dump([linkerId.activitySort, f])
 			},function(d){
 				if(d.success && d.data){
-					self.activity = d.data
+					d.data.forEach(function(r) {
+						self.activity.push(r);
+					
+					});
 				}else {
 					self.bHaveMore = false;
 					if(f != 10e5){
@@ -182,6 +178,10 @@ var study = new Vue({
 		goInternetDetail: function() {
 			
 		},
+		//新闻列表
+		goNewsList: function(){
+			location.href = "views/newsList.html";
+		},
 		//获取动态新闻
 		getNews: function(){
 			var self = this;
@@ -198,16 +198,6 @@ var study = new Vue({
 						self.scrollNews = d.data;
 					}
 					
-					self.activeSlideText = self.scrollNews[0].title;
-					setTimeout(function(){
-						var swiper = new Swiper('.study-swiper', {
-							pagination: '.study-pagination',
-							onSlideChangeEnd: function(swiper){
-								console.log("111");
-						      	self.activeSlideText = self.scrollNews[swiper.activeIndex].title
-							}
-						});
-					}, 500)
 				}
 			})
 		},
@@ -274,6 +264,24 @@ var ucenter = new Vue({
 		clearCache:function(){
 			
 		},
+		
+	}
+})
+
+$('.footer-tab a').on('click', function() {
+	var page = $(this).data('page');
+	changeTab(page, $(this));
+	
+	if(page == 'study') {		
+		if(swiperStudy == null){
+			study.activeSlideText = study.scrollNews[0].title;
+			swiperStudy = new Swiper('.study-swiper', {
+				pagination: '.study-pagination',
+				onSlideChangeEnd: function(swiper) {
+					study.activeSlideText = study.scrollNews[swiper.activeIndex].title
+				}
+			});
+		}
 		
 	}
 })
