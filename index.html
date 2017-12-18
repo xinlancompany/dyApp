@@ -72,7 +72,7 @@
 				<ul>
 					<li v-for="a in activity" @click="goActivity">
 						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-						<p v-text="a.name"></p>
+						<p>{{a.name}}<span class="activitySort" @click="goActivityList(a.id)">进入专题 ></span></p>
 						
 					</li>
 				</ul>
@@ -83,7 +83,7 @@
 			<ul>
 				<li v-for="a in activity" @click="goActivity">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-					<p>{{a.name}}<span class="activitySort">进入专题 ></span></p>
+					<p>{{a.name}}<span class="activitySort" @click="goActivityList(a.id)">进入专题 ></span></p>
 					
 				</li>
 			</ul>

@@ -18,8 +18,8 @@ function plusReady() {
 
 mui.init({
 	preloadPages: [{
-		url: '',
-		id: ''
+		url: 'views/activityList.html',
+		id: 'activityList'
 	},]
 })
 
@@ -41,6 +41,13 @@ var index = new Vue({
 		},
 		goActivityTab: function() {
 			$('.go-activity').click();
+		},
+		//跳转到某个专题的活动列表页
+		goActivityList:function(id){
+			_set('activitySortId', id);
+			mui.fire(plus.webview.getWebviewById("activityList"), 'activitySortId', {});
+			
+			openWindow('views/activityList.html', 'activityList');
 		},
 		//获取动态新闻
 		getNews: function(){
@@ -76,7 +83,7 @@ var index = new Vue({
 			
 			_callAjax({
 				cmd: "fetch",
-				sql: "select name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = " + linkerId.activitySort + " order by id desc limit 2"
+				sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = " + linkerId.activitySort + " order by id desc limit 2"
 			},function(d){
 				if(d.success && d.data){
 					self.activity = d.data
@@ -104,6 +111,14 @@ var activity = new Vue({
 		goActivity: function(i) {
 				
 		},
+		//跳转到某个专题的活动列表页
+		goActivityList:function(id){
+			console.log(id);
+			_set('activitySortId', id);
+			mui.fire(plus.webview.getWebviewById("activityList"), 'activitySortId', {});
+			
+			openWindow('views/activityList.html', 'activityList');
+		},
 		//获取活动专题
 		getActivitySort: function(){
 			var self = this;
@@ -115,7 +130,7 @@ var activity = new Vue({
 			
 			_callAjax({
 				cmd: "fetch",
-				sql: "select name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and id<? order by id desc limit 5",
+				sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and id<? order by id desc limit 5",
 				vals: _dump([linkerId.activitySort, f])
 			},function(d){
 				if(d.success && d.data){
