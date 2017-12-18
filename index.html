@@ -73,6 +73,7 @@
 					<li v-for="a in activity" @click="goActivity">
 						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
 						<p v-text="a.name"></p>
+						
 					</li>
 				</ul>
 			</div>
@@ -82,16 +83,21 @@
 			<ul>
 				<li v-for="a in activity" @click="goActivity">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-					<p v-text="a.title"></p>
+					<p v-text="a.name"><span class="activitySort">进入专题></span></p>
+					
 				</li>
 			</ul>
-			<footer @click="getAcitivity" class="more-button">更多活动</footer>
+			<footer @click="getActivitySort" class="more-button" v-show="bHaveMore">更多活动专题</footer>
 		</div>
 		
 		<div id="study" class="have-footer have-header main">
 			<div class="swiper-container study-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+				</div>
+				<div class="swiper-pagination study-pagination"></div>
+				<div class="mui-slider-text">
+					<p v-text="activeSlideText"></p>
 				</div>
 			</div>
 
@@ -132,7 +138,7 @@
 							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 							<div class="mui-media-body">
 								<p class="title" v-text="i.title"></p>
-								<p class="desc" v-text='i.desc'></p>
+								<p class="desc" v-text='i.brief'></p>
 								<span class="btn">进入学习</span>
 							</div>
 						</a>

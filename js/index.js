@@ -14,9 +14,9 @@ $('.footer-tab a').on('click', function() {
 	var page = $(this).data('page');
 	changeTab(page, $(this));
 	
-	if(page == 'study') {
-		var swiper = new Swiper('.study-swiper');
-	}
+//	if(page == 'study') {
+//		var swiper = new Swiper('.study-swiper');
+//	}
 })
 
 function plusReady() {
@@ -29,6 +29,7 @@ mui.init({
 		id: ''
 	},]
 })
+
 	
 var index = new Vue({
 	el: '#index',
@@ -56,7 +57,6 @@ var index = new Vue({
 				cmd:"fetch",
 				sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by id desc limit 10"
 			},function(d){
-				_tell(d.data);
 				if(d.success && d.data) {
 					if(d.data.length>5){
 						self.scrollNews = d.data.slice(0,5);
@@ -104,42 +104,52 @@ var index = new Vue({
 var activity = new Vue({
 	el: '#activity',
 	data: {
-		activity: [{
-			img: 'https://unsplash.it/750/250',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-		},{
-			img: 'https://unsplash.it/750/250',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-		}],
+		activity: [],
+		bHaveMore: true
 	},
 	methods: {
 		goActivity: function(i) {
 				
 		},
-		getAcitivity: function() {
+		//获取活动专题
+		getActivitySort: function(){
+			var self = this;
 			
+			var f = 10e5;
+			if(self.activity.length) {
+				f = _at(self.activity, -1).id;
+			}
+			
+			_callAjax({
+				cmd: "fetch",
+				sql: "select name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and id<? order by id desc limit 5",
+				vals: _dump([linkerId.activitySort, f])
+			},function(d){
+				if(d.success && d.data){
+					self.activity = d.data
+				}else {
+					self.bHaveMore = false;
+					if(f != 10e5){
+						mui.toast("没有更多专题了")
+					}
+				}
+			})
 		}
 	},
+	mounted: function() {
+		var self = this;
 
+		//获取活动专题
+		self.getActivitySort();
+	}
 })
 
 var study = new Vue({
 	el: '#study',
 	data: {
-		scrollNews: [{
-			img: 'https://unsplash.it/750/200',
-		},{
-			img: 'https://unsplash.it/750/200',
-		}],
-		headNews: [{
-			img: 'https://unsplash.it/120/60',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-			date: '2017-09-17'
-		},{
-			img: 'https://unsplash.it/120/60',
-			title: '市委组织部一行赴浦东国际人才城学习交流',
-			date: '2017-09-17'
-		}],
+		scrollNews: [],
+		headNews: [],
+		activeSlideText: '',
 		lives: [{
 			img: 'https://unsplash.it/750/250',
 			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
@@ -151,15 +161,7 @@ var study = new Vue({
 			statistics: '1133',
 			state: false,
 		}],
-		internets: [{
-			img: 'https://unsplash.it/120/60',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-			desc: '简介：长歌浩荡——五水共治这三年'
-		},{
-			img: 'https://unsplash.it/120/60',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-			desc: '简介：长歌浩荡——五水共治这三年'
-		}],
+		internets: [],//网络课堂
 	},
 	methods: {
 		gotoDetail: function(i) {
@@ -179,10 +181,58 @@ var study = new Vue({
 		},
 		goInternetDetail: function() {
 			
+		},
+		//获取动态新闻
+		getNews: function(){
+			var self = this;
+			
+			_callAjax({
+				cmd:"fetch",
+				sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by id desc limit 10"
+			},function(d){
+				if(d.success && d.data) {
+					if(d.data.length>5){
+						self.scrollNews = d.data.slice(0,5);
+						self.headNews = d.data.slice(5,8);
+					}else {
+						self.scrollNews = d.data;
+					}
+					
+					self.activeSlideText = self.scrollNews[0].title;
+					setTimeout(function(){
+						var swiper = new Swiper('.study-swiper', {
+							pagination: '.study-pagination',
+							onSlideChangeEnd: function(swiper){
+								console.log("111");
+						      	self.activeSlideText = self.scrollNews[swiper.activeIndex].title
+							}
+						});
+					}, 500)
+				}
+			})
+		},
+		//获取网络课件
+		getNetClass: function(){
+			var self = this;
+			
+			_callAjax({
+				cmd:"fetch",
+				sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from articles where ifValid =1 and linkerId = " + linkerId.netClass +" order by id desc limit 2"
+			},function(d){
+				if(d.success && d.data){
+					self.internets = d.data;
+				}
+			})
 		}
 	},
 	mounted: function() {
 		var self = this;
+		
+		//获取动态新闻
+		self.getNews();
+		//获取网络课件
+		self.getNetClass();
+		
 	}
 })
 
