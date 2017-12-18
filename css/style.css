@@ -169,6 +169,9 @@ body {
 .have-header {
   margin-top: 44px;
 }
+.have-footer {
+  padding-bottom: 50px;
+}
 .news-list {
   margin-bottom: 8px;
 }
@@ -227,6 +230,115 @@ body {
 }
 .news-list li:active {
   background-color: #f1f1f1;
+}
+.news-detail {
+  background-color: #fff;
+}
+.news-detail header {
+  font-size: 18px;
+  padding: 15px;
+  position: relative;
+}
+.news-detail header p {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 0;
+  margin-top: 6px;
+  width: 100%;
+}
+.news-detail header .desc {
+  font-size: 14px;
+  color: #999;
+  position: relative;
+  margin: 10px;
+  border: 1px solid #C8C7CC;
+  padding: 10px;
+}
+.news-detail header .desc:before {
+  content: '摘 要：';
+}
+.news-detail article {
+  padding: 15px;
+}
+.news-detail article img {
+  display: block;
+  width: 100%;
+}
+.news-detail article p {
+  font-size: 16px;
+  line-height: 24px;
+  margin: 10px 0;
+  color: #333;
+}
+.news-detail article video {
+  width: 100%;
+}
+.news-detail .like {
+  transition: all 0.2s ease-in;
+  padding: 8px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #ea413c;
+  color: #ea413c;
+  text-align: center;
+  margin: 0 auto;
+  width: 40%;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.news-detail .like.active {
+  color: #fff;
+  background-color: #ea413c;
+}
+.news-detail .like.active i {
+  color: #fff;
+}
+.news-detail .like i {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 5px;
+}
+.news-detail .share {
+  width: 45%;
+  margin: 40px auto 0;
+  padding-bottom: 40px;
+}
+.news-detail .share .line {
+  position: relative;
+}
+.news-detail .share .line:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: #C8C7CC;
+  height: 1px;
+  transform: translateY(0.5);
+}
+.news-detail .share .line:after {
+  content: '分享到';
+  display: block;
+  padding: 0 10px;
+  background-color: #fff;
+  color: #999;
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  font-size: 14px;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+}
+.news-detail .share .share-item {
+  padding-top: 40px;
+  text-align: center;
+}
+.news-detail .share .share-item i {
+  display: inline-block;
+  margin: 0 10px;
+  font-size: 50px;
+  color: #4dd13f;
 }
 .footer-tab {
   position: fixed;

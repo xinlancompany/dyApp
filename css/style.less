@@ -82,7 +82,115 @@ body {
         }
     }
 }
-
+.news-detail {
+    background-color: #fff;
+    header {
+        font-size: 18px;
+        padding: 15px;
+        position: relative;
+        p {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 0;
+            margin-top: 6px;
+            width: 100%;
+        }
+        .desc {
+            font-size: 14px;
+            color: #999;
+            position: relative;
+            margin: 10px;
+            border: 1px solid #C8C7CC;
+            padding: 10px;
+            &:before {
+                content:'摘 要：'
+            }
+        }
+    }
+    article {
+        padding: 15px;
+        img {
+            display: block;
+            width: 100%;
+        }
+        p {
+            font-size: 16px;
+            line-height: 24px;
+            margin: 10px 0;
+            color: #333;
+        }
+        video {
+            width: 100%;
+        }
+    }
+    .like {
+        transition: all .2s ease-in;
+        padding: 8px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 1px solid rgb(234, 65, 60);
+        color: rgb(234, 65, 60);
+        text-align: center;
+        margin: 0 auto;
+        width: 40%;
+        font-size: 14px;
+        box-sizing: border-box;
+        &.active {
+            color: #fff;
+            background-color: rgb(234, 65, 60);
+            i {
+                color: #fff;
+            }
+        }
+        i {
+            display: inline-block;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+    }
+    .share {
+        width: 45%;
+        margin: 40px auto 0;
+        padding-bottom: 40px;
+        .line {
+            position: relative;
+            &:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                background-color: #C8C7CC;
+                height: 1px;
+                transform: translateY(.5);
+            }
+            &:after {
+                content: '分享到';
+                display: block;
+                padding: 0 10px;
+                background-color: #fff;
+                color: #999;
+                position: absolute;
+                left: 50%;
+                top: -10px;
+                font-size: 14px;
+                transform: translateX(-50%);
+                -webkit-transform: translateX(-50%);
+            }
+        }
+        .share-item {
+            padding-top: 40px;
+            text-align: center;
+            i {
+                display: inline-block;
+                margin: 0 10px;
+                font-size: 50px;
+                color: rgb(77, 209, 63);
+            }
+        }
+    }
+}
 .footer-tab {
     position: fixed;
     z-index: 10;

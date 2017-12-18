@@ -20,6 +20,9 @@ mui.init({
 	preloadPages: [{
 		url: 'views/activityList.html',
 		id: 'activityList'
+	},{
+		url: 'views/newsDetail.html',
+		id: 'newsDetail'
 	},]
 })
 
@@ -33,8 +36,13 @@ var index = new Vue({
 		activeSlideText: ''
 	},
 	methods: {
+		//跳转到新闻详情
 		gotoDetail: function(i) {
-				
+			_set("newsId", i.id);
+			//触发详情页面的newsId事件
+			mui.fire(plus.webview.getWebviewById("newsDetail"), 'newsId', {});
+		
+			openWindow("views/newsDetail.html", "newsDetail");
 		},
 		goActivity: function(i) {
 				
@@ -175,8 +183,13 @@ var study = new Vue({
 		internets: [],//网络课堂
 	},
 	methods: {
+		//跳转到新闻详情
 		gotoDetail: function(i) {
-				
+			_set("newsId", i.id);
+			//触发详情页面的newsId事件
+			mui.fire(plus.webview.getWebviewById("newsDetail"), 'newsId', {});
+		
+			openWindow("views/newsDetail.html", "newsDetail");
 		},
 		goEduDynamic: function(i) {
 				
