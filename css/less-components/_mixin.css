@@ -16,3 +16,29 @@
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
 }
+.lineTop {
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+.lineRight {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleX(0.5);
+  transform: scaleX(0.5);
+}

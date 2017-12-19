@@ -151,26 +151,32 @@
 
 		<div id="ucenter" class="have-footer have-header main ucenter">
 			<div class="user" @click="goLogin">
-				<div class="user-img iconfont">
+				<div class="user-img">
 					<img :src="userInfo.img" v-show="isLogin" v-if="userInfo != null"/>
+					<i class="iconfont icon-gerenzhongxinxia" v-show="!isLogin"></i>
 				</div>
 				<p v-text="isLogin ? userInfo.name : '立即登录'"></p>
+			</div>
+			
+			<div class="ucenter-flex">
+				<span><i class="iconfont icon-icon1"></i>党员先锋指数</span>	
+				<span><i class="iconfont icon-jifen"></i>学习积分</span>	
 			</div>
 
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" @click="goPost">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-zan"></i>消息
+						<i class="iconfont icon-xiaoxi"></i>消息
 					</a>
 				</li>
 				<li class="mui-table-view-cell" @click="goMyStudy">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-icon-test"></i>我的学习
+						<i class="iconfont icon-wodesk"></i>我的学习
 					</a>
 				</li>
 				<li class="mui-table-view-cell" @click="goMyActivity">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-hudong"></i>我的活动
+						<i class="iconfont icon-huodong"></i>我的活动
 					</a>
 				</li>
 			</ul>
@@ -178,7 +184,7 @@
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" @click="goRecommend">
 					<a class="mui-navigate-right">
-						<i class="iconfont icon-yijianfankui"></i>推荐
+						<i class="iconfont icon-tuijian"></i>推荐
 					</a>
 				</li>
 				<li class="mui-table-view-cell" v-show="isLogin" @click="logout">

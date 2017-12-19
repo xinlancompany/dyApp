@@ -259,6 +259,7 @@ var ucenter = new Vue({
 	data: {
 		isLogin: false,
 		androidUpdate: false,
+		isNew: false,
 		userInfo: {
 			
 		}
@@ -290,9 +291,31 @@ var ucenter = new Vue({
 		},
 		//清除缓存
 		clearCache:function(){
-			
+			plus.cache.clear(function() {
+				mui.toast('已清理');
+			})
 		},
-		
+		// 检查新版本
+		checkNewVersion: function(){
+			var self = this;
+			
+			var dicVersion = _load(_get('version'));
+			var curVersion = plus.runtime.version;
+
+			if(curVersion < dicVersion.version){
+				mui.confirm('发现新版本v' + dicVersion.version + '，是否更新?', '', ['更新', '取消'], function(e) {
+					if(e.index == 0) {
+						mui.toast('请使用浏览器打开');
+						
+						plus.runtime.openURL('http://a.app.qq.com/o/simple.jsp?pkgname=com.xinlan.PTtele', function(){
+							mui.toast('浏览器调用失败，请前往应用中心更新');
+						});
+					}
+				})
+			}else{
+				mui.toast("已是最新版本");
+			}
+		}
 	}
 })
 
@@ -300,16 +323,13 @@ $('.footer-tab a').on('click', function() {
 	var page = $(this).data('page');
 	changeTab(page, $(this));
 	
-	if(page == 'study') {		
-		if(swiperStudy == null){
-			study.activeSlideText = study.scrollNews[0].title;
-			swiperStudy = new Swiper('.study-swiper', {
-				pagination: '.study-pagination',
-				onSlideChangeEnd: function(swiper) {
-					study.activeSlideText = study.scrollNews[swiper.activeIndex].title
-				}
-			});
-		}
-		
+	if(page == 'study' && swiperStudy == null) {		
+		study.activeSlideText = study.scrollNews[0].title;
+		swiperStudy = new Swiper('.study-swiper', {
+			pagination: '.study-pagination',
+			onSlideChangeEnd: function(swiper) {
+				study.activeSlideText = study.scrollNews[swiper.activeIndex].title
+			}
+		});
 	}
 })
