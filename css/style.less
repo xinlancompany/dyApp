@@ -309,12 +309,20 @@ body {
             padding: 15px;
             position: relative;
             .img {
+                position: relative;
                 width: 100%;
                 height: 160px;
                 -webkit-background-size: cover;
                 background-size: cover;
                 background-position: 50%;
                 background-repeat: no-repeat;
+                span {
+                    position: absolute; 
+                    right: 2px; 
+                    bottom: 2px;
+                    color: white;
+                    font-size: 14px;
+                }
             }
             p {
                 margin-top: 15px;
@@ -326,7 +334,18 @@ body {
                     float: right;
                     color: red;
                     font-size: 14px;
+                }  
+                             
+                .status{
+                    float: right;
+                    color: red;
+                    font-size: 14px;
                 }
+            }
+            #dec {
+                margin-top: 5px;
+                color: grey;
+                font-size: 14px;
             }
             &:last-child:after {
                 height: 0;

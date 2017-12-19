@@ -456,12 +456,20 @@ body {
   position: relative;
 }
 .activity ul li .img {
+  position: relative;
   width: 100%;
   height: 160px;
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 50%;
   background-repeat: no-repeat;
+}
+.activity ul li .img span {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  color: white;
+  font-size: 14px;
 }
 .activity ul li p {
   margin-top: 15px;
@@ -475,6 +483,16 @@ body {
 .activity ul li p .activitySort {
   float: right;
   color: red;
+  font-size: 14px;
+}
+.activity ul li p .status {
+  float: right;
+  color: red;
+  font-size: 14px;
+}
+.activity ul li #dec {
+  margin-top: 5px;
+  color: grey;
   font-size: 14px;
 }
 .activity ul li:last-child:after {
