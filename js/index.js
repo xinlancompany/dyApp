@@ -113,7 +113,7 @@ var activity = new Vue({
 	el: '#activity',
 	data: {
 		activity: [],
-		bHaveMore: true
+		bHaveMore: false
 	},
 	methods: {
 		goActivity: function(i) {
@@ -142,6 +142,7 @@ var activity = new Vue({
 				vals: _dump([linkerId.activitySort, f])
 			},function(d){
 				if(d.success && d.data){
+					self.bHaveMore = true;
 					d.data.forEach(function(r) {
 						self.activity.push(r);
 					

@@ -12,7 +12,7 @@ function plusReady() {
 		el: '#newsList',
 		data: {
 			newsList: [],
-			bHaveMore: true,
+			bHaveMore: false,
 		},
 		methods: {
 			//跳转到新闻详情
@@ -38,6 +38,7 @@ function plusReady() {
 					vals: _dump([linkerId.News, f])
 				}, function(d) {
 					if(d.success && d.data) {
+						self.bHaveMore = true;
 						d.data.forEach(function(r) {
 							if(r.img == '') {
 								r.img = "../img/default.jpg";

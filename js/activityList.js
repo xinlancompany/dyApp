@@ -22,7 +22,7 @@ var activityList = new Vue({
 	el: '#activityList',
 	data: {
 		activityList:[],
-		bHaveMore: true,
+		bHaveMore: false,
 	},
 	methods: {
 		//跳转到活动详情页
@@ -44,6 +44,7 @@ var activityList = new Vue({
 				vals:_dump([activitySortId, f])
 			},function(d){
 				if(d.success && d.data) {
+					self.bHaveMore = true;
 					d.data.forEach(function(r) {
 //						if(r.img == ''){
 //							r.img = "../img/default.jpg";
@@ -67,7 +68,7 @@ var activityList = new Vue({
 			console.log("111=" + activitySortId);
 			self.activityList = [];
 			self.getActivityList();
-			self.bHaveMore = true;
+			self.bHaveMore = false;
 		}
 		
 	},
