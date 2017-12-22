@@ -23,6 +23,9 @@ mui.init({
 	},{
 		url: 'views/newsDetail.html',
 		id: 'newsDetail'
+	},{
+		url: 'views/login.html',
+		id: 'login'
 	},]
 })
 
@@ -268,7 +271,7 @@ var ucenter = new Vue({
 	methods: {
 		//登录
 		goLogin: function() {
-			
+			openWindow("views/login.html","login");
 		},
 		//我的消息
 		goPost: function(){

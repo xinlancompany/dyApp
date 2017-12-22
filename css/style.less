@@ -70,6 +70,11 @@ body {
                color: #999;
                font-size: 14px;
             }
+            .desc {
+               color: #999;
+               font-size: 14px;
+               .line-clamp(1);
+            }
         }
         &:last-child:after {
             height: 0;
@@ -541,4 +546,27 @@ body {
             color: #333;
         }
     }
+    .slider{
+        width: 100%;
+        
+        .block-style {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .control-item-inline {
+            width: 50%;
+            display: inline-block;
+            float: left;
+            font-size: 18px;
+            .mui-control-item.mui-active {
+                color: #e14937;
+                border-bottom: 2px solid #e14937;
+                background: 0 0;
+            }
+            
+        }
+    }
+    
 }

@@ -41,7 +41,7 @@ function plusReady() {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
 							if(r.img == '') {
-								r.img = "../img/default.jpg";
+								r.img = "../img/default.png";
 							}
 							self.newsList.push(r);
 	

@@ -238,6 +238,15 @@ body {
   color: #999;
   font-size: 14px;
 }
+.news-list li .mui-media-body .desc {
+  color: #999;
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+}
 .news-list li:last-child:after {
   height: 0;
 }
@@ -742,4 +751,23 @@ body {
   flex: 1;
   padding-left: 0;
   color: #333;
+}
+.login .slider {
+  width: 100%;
+}
+.login .slider .block-style {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.login .slider .control-item-inline {
+  width: 50%;
+  display: inline-block;
+  float: left;
+  font-size: 18px;
+}
+.login .slider .control-item-inline .mui-control-item.mui-active {
+  color: #e14937;
+  border-bottom: 2px solid #e14937;
+  background: 0 0;
 }
