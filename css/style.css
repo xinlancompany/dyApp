@@ -826,17 +826,6 @@ body {
   -webkit-border-radius: 50%;
   position: relative;
 }
-.ucenter .user .user-img:after {
-  content: "\e63d";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  color: #fff;
-  font-size: 35px;
-  z-index: 1;
-}
 .ucenter .user .user-img img {
   width: 100%;
   height: 100%;
@@ -845,6 +834,15 @@ body {
   -webkit-border-radius: 50%;
   position: relative;
   z-index: 2;
+}
+.ucenter .user .user-img i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 32px;
 }
 .ucenter .user p {
   color: #fff;
