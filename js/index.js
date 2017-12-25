@@ -23,9 +23,6 @@ mui.init({
 	},{
 		url: 'views/newsDetail.html',
 		id: 'newsDetail'
-	},{
-		url: 'views/login.html',
-		id: 'login'
 	},]
 })
 

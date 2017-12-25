@@ -611,6 +611,33 @@ body {
 .live-list ul li:active {
   background-color: #f1f1f1;
 }
+.internet-list li .mui-media-body .title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  margin-bottom: 5px;
+}
+.internet-list li .mui-media-body .desc {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.internet-list li .mui-media-body .btn {
+  background-color: #fe9e0c;
+  color: #fff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 5px;
+  font-size: 14px;
+  width: 90px;
+  text-align: center;
+}
 .ucenter .user {
   padding: 50px 0;
   background-image: url('../img/ucenterbg.jpg');
@@ -751,23 +778,4 @@ body {
   flex: 1;
   padding-left: 0;
   color: #333;
-}
-.login .slider {
-  width: 100%;
-}
-.login .slider .block-style {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.login .slider .control-item-inline {
-  width: 50%;
-  display: inline-block;
-  float: left;
-  font-size: 18px;
-}
-.login .slider .control-item-inline .mui-control-item.mui-active {
-  color: #e14937;
-  border-bottom: 2px solid #e14937;
-  background: 0 0;
 }

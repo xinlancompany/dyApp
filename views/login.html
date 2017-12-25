@@ -20,33 +20,15 @@
 		</header>
 		
 		<div id="login" class="have-header login">
-			<!--<img src="../img/default.png" alt="" />-->
-			<div id="slider" class="mui-slider slider">
-				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
-					<div class="block-style">
-						<div class="control-item-inline">
-							<a class="mui-control-item mui-active">党员</a>
-						</div>
-						<div class="control-item-inline">
-							<a class="mui-control-item">党组织</a>
-						</div>
-					</div>
-				</div>
+			<img src="../img/default.png" alt="" />
 			
-				<!-- 进度条 -->
-				<div class="block-style">
-					<div id="sliderProgressBar" class="block-style mui-slider-progress-bar mui-col-xs-6">
-					</div>
-				</div>
-			</div>
-
 			<div class="input-frame">
-				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="11" placeholder="请输入您的账号"/>
+				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="11" placeholder="请输入您的账号" v-model="username"/>
 			</div>
 			<div class="input-frame">
 				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入您的密码"/>
 			</div>
-			<span>登录</span>
+			<span @click="login">登录</span>
 		</div>
 	</body>
 </html>
