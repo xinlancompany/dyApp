@@ -481,6 +481,69 @@ body {
     }
 }
 
+#liveDetail {
+    .live-video {
+        position: relative;
+        video {
+            display: block;
+            width: 100%;
+            height: 300px;
+            background-color: #000;
+        }
+        span {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: rgba(255,255,255,.3);
+            padding: 5px 10px 5px 25px;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #fff;
+            &:before {
+                content: '';
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                width: 5px;
+                height: 5px;
+                background-color: #eee;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+                border-radius: 50%;
+                transform: translateY(-50%);
+                -webkit-transform: translateY(-50%);
+            }
+            &.active:before {
+                background-color: @base;
+            } 
+        }
+    }
+    h1 {
+        font-size: 16px;
+        line-height: 24px;
+        color: #333;
+        font-weight: normal;
+        margin: 20px;
+    }
+    .brief {
+        padding: 10px;
+        margin: 20px;
+        color: #999;
+        font-size: 14px;
+        border: 1px solid #C8C7CC;
+    }
+    .count {
+        margin-left: 20px;
+        color: #999;
+        font-size: 14px;
+        i {
+            margin-right: 10px;
+        }
+    }
+}
+
 .internet-list {
     li {
         .mui-media-body {
@@ -507,6 +570,53 @@ body {
             }
         }
     }        
+}
+
+.internet-courseware {
+    video {
+        width: 100%;
+        display: block;
+        background-color: #000;
+    }
+    .brief {
+        margin: 15px;
+        border: 1px solid #c8c7cc;
+        padding: 10px;
+    }
+}
+
+.other-courseware {
+    ul {
+        background-color: #fff;
+        padding: 20px 20px 0;
+        li {
+            width: 45%;
+            float: left;
+            margin-bottom: 20px;
+            &:nth-child(2n) {
+                margin-left: 10%;
+            }
+            .thumb {
+                width: 100%;
+                height: 100px;
+                -webkit-background-size: cover;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: 50%;
+            }
+            h1 {
+                font-size: 16px;
+                margin: 7px 0;
+                .ell;
+                color: #333;
+            }
+            p {
+                .line-clamp(2);
+                font-size: 14px;
+                color: #999;
+            }
+        }
+    }
 }
        
 .ucenter {
