@@ -133,7 +133,7 @@
 			<div class="news-list internet-list">
 				<header @click="goInternetList" class="global-header"><h1 class="title">网络课堂</h1><span class="more">更多</span></header>
 				<ul class="mui-table-view">
-					<li v-for="i in internets" @click="goInternetDetail">
+					<li v-for="i in internets" @click="gotoDetail(i)">
 						<a>
 							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 							<div class="mui-media-body">
