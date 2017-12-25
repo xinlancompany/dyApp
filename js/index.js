@@ -14,6 +14,19 @@ var swiperStudy = null;
 
 function plusReady() {
 	pullToRefresh();
+	
+	//添加登录返回refresh自定义事件监听
+	window.addEventListener('loginBack', function(event) {
+		var userInfo = _load(_get('userInfo'));
+	
+		_tell(userInfo);
+		if(userInfo.id != null) {
+			ucenter.isLogin = true;
+			ucenter.userInfo = userInfo;
+		} else {
+			ucenter.isLogin = false;
+		}
+	})
 }
 
 mui.init({
@@ -23,6 +36,9 @@ mui.init({
 	},{
 		url: 'views/newsDetail.html',
 		id: 'newsDetail'
+	},{
+		url: 'views/login.html',
+		id: 'login'
 	},]
 })
 
@@ -317,8 +333,34 @@ var ucenter = new Vue({
 				mui.toast("已是最新版本");
 			}
 		}
+	},
+	mounted: function(){
+		var self = this;
+		self.userInfo = _load(_get('userInfo'));
+		
+		//获取个人信息
+		if(self.userInfo != null) {
+			_callAjax({
+				cmd: "fetch",
+				sql: "select * from User where name = ? and pswd = ?",
+				vals: _dump([self.userInfo.name, self.userInfo.pswd])
+			}, function(d) {
+		
+				if(d.success && d.data) {
+					self.isLogin = true;
+					self.userInfo = d.data[0];
+					_set('userInfo', _dump(self.userInfo));
+				} else {
+					self.isLogin = false;
+					self.userInfo = {};
+					plus.storage.removeItem('userInfo');
+				}
+			});
+		}
 	}
 })
+
+
 
 $('.footer-tab a').on('click', function() {
 	var page = $(this).data('page');

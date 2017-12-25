@@ -27,12 +27,20 @@ function plusReady() {
 	
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and id = ?",
+					sql: "select id, title, img, brief, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and id = ?",
 					vals: _dump([newsId])
 				}, function(d) {
 					_tell(d.data);
 					if(d.success && d.data) {
+						
 						self.newsData = d.data[0];
+						
+						//如果是视频新闻，加poster
+						if(self.newsData.linkerId == linkerId.netClass){
+							var content = d.data[0].content;
+							content = content.replace(/controls=""/,  'controls poster="' + d.data[0].img + '"');
+							self.newsData.content = content;
+						}
 					} 
 				})
 			},
