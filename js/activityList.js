@@ -1,8 +1,8 @@
 //预加载页面
 mui.init({
 	preloadPages: [{
-		url: '',
-		id: '',
+		url: 'activityDetail.html',
+		id: 'activityDetail',
 	}],
 });
 
@@ -27,7 +27,11 @@ var activityList = new Vue({
 	methods: {
 		//跳转到活动详情页
 		goActivityDetail: function(i) {
-				
+			
+			mui.fire(plus.webview.getWebviewById("activityDetail"), 'activityId', {
+				id: i.id,
+			});
+			openWindow('activityDetail.html', 'activityDetail');	
 		},
 		
 		//获取动态新闻
