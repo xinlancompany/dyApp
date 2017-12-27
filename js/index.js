@@ -39,7 +39,10 @@ mui.init({
 	},{
 		url: 'views/login.html',
 		id: 'login'
-	},]
+	},{
+		url: 'views/internetCourseware.html',
+		id: 'internetCourseware'
+	}]
 })
 
 	
@@ -67,7 +70,7 @@ var index = new Vue({
 			$('.go-activity').click();
 		},
 		//跳转到某个专题的活动列表页
-		goActivityList:function(id){
+		goActivityList:function(id){			
 			_set('activitySortId', id);
 			mui.fire(plus.webview.getWebviewById("activityList"), 'activitySortId', {});
 			
@@ -208,6 +211,13 @@ var study = new Vue({
 		
 			openWindow("views/newsDetail.html", "newsDetail");
 		},
+		//跳转到网络课堂详情
+		gotoNetCourseDetail: function(i){
+			_set("netcourseId", i.id);
+			mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
+		
+			openWindow("views/internetCourseware.html", "internetCourseware");
+		},
 		goEduDynamic: function(i) {
 				
 		},
@@ -252,7 +262,7 @@ var study = new Vue({
 			
 			_callAjax({
 				cmd:"fetch",
-				sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from articles where ifValid =1 and linkerId = " + linkerId.netClass +" order by id desc limit 2"
+				sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from articles where ifValid =1 and linkerId = " + linkerId.netCourse +" order by id desc limit 2"
 			},function(d){
 				if(d.success && d.data){
 					self.internets = d.data;

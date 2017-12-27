@@ -15,17 +15,17 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title"></h1>
+			<h1 class="mui-title">网络课堂</h1>
 		</header>
 		
 		<div id="internetCourseware" class="internet-courseware have-header have-footer">
-			<video :src="video.src" controls :poster="video.poster"></video>
-			<p class="brief" v-cloak>简介：{{video.brief}}</p>
+			<video :src="courseData.url" controls :poster="courseData.img"></video>
+			<p class="brief" v-cloak>简介：{{courseData.brief}}</p>
 			
 			<div class="other-courseware">
 				<header class="global-header"><h1 class="title">其他课件</h1></header>
 				<ul class="clearfix">
-					<li v-for="c in otherCoursewares" @click="changeCoursewares">
+					<li v-for="c in otherCoursewares" @click="changeCoursewares(c)">
 						<div class="thumb" :style="{backgroundImage: 'url('+c.img+')'}"></div>
 						<h1 v-text="c.title"></h1>
 						<p v-text="c.brief"></p>

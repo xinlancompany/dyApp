@@ -35,12 +35,12 @@ function plusReady() {
 						
 						self.newsData = d.data[0];
 						
-						//如果是视频新闻，加poster
-						if(self.newsData.linkerId == linkerId.netClass){
-							var content = d.data[0].content;
-							content = content.replace(/controls=""/,  'controls poster="' + d.data[0].img + '"');
-							self.newsData.content = content;
-						}
+//						//如果是视频新闻，加poster
+//						if(self.newsData.linkerId == linkerId.netClass){
+//							var content = d.data[0].content;
+//							content = content.replace(/controls=""/,  'controls poster="' + d.data[0].img + '"');
+//							self.newsData.content = content;
+//						}
 					} 
 				})
 			},

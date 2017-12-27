@@ -70,9 +70,9 @@
 			<div class="activity">
 				<header @click="goActivityTab" class="global-header"><h1 class="title">活动专题</h1><span class="more">更多</span></header>
 				<ul>
-					<li v-for="a in activity" @click="goActivity">
+					<li v-for="a in activity" @click="goActivityList(a.id)">
 						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-						<p>{{a.name}}<span class="activitySort" @click="goActivityList(a.id)">进入专题 ></span></p>
+						<p>{{a.name}}<span class="activitySort">进入专题 ></span></p>
 						
 					</li>
 				</ul>
@@ -81,9 +81,9 @@
 		
 		<div id="activity" class="have-footer have-header main activity">
 			<ul>
-				<li v-for="a in activity" @click="goActivity">
+				<li v-for="a in activity" @click="goActivityList(a.id)">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-					<p>{{a.name}}<span class="activitySort" @click="goActivityList(a.id)">进入专题 ></span></p>
+					<p>{{a.name}}<span class="activitySort" >进入专题 ></span></p>
 					
 				</li>
 			</ul>
@@ -133,7 +133,7 @@
 			<div class="news-list internet-list">
 				<header @click="goInternetList" class="global-header"><h1 class="title">网络课堂</h1><span class="more">更多</span></header>
 				<ul class="mui-table-view">
-					<li v-for="i in internets" @click="gotoDetail(i)">
+					<li v-for="i in internets" @click="gotoNetCourseDetail(i)">
 						<a>
 							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 							<div class="mui-media-body">
