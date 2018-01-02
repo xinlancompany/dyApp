@@ -27,12 +27,12 @@ var activityList = new Vue({
 	methods: {
 		//跳转到活动详情页
 		goActivityDetail: function(i) {
-			console.log("跳转到活动详情页"+i.id)
-			_set('activityId',i.id);
+			console.log("跳转到活动详情页" + i.id)
+			_set('activityId', i.id);
 			
-			mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {
-			});
-			openWindow('activeDetail.html', 'activeDetail');	
+			mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
+			openWindow('activeDetail.html', 'activeDetail');
+			
 		},
 		
 		//获取动态新闻
@@ -88,5 +88,20 @@ var activityList = new Vue({
 window.addEventListener('activitySortId', function(event) {
 	//获得事件参数
 	activityList.init();
+})
+window.addEventListener('refresh', function(event) {
+	
+	var id = event.detail.id;
+	var count = event.detail.count;
+	console.log(id);
+	console.log(count);
+	
+	//报名人数刷新
+	activityList.activityList.forEach(function(a){
+		if(a.id == id){
+			a.applicant = count;
+			console.log(count);
+		}
+	})
 })
 	

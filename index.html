@@ -119,12 +119,12 @@
 			<div class="live-list">
 				<header @click="goLiveList" class="global-header"><h1 class="title">直播课堂</h1><span class="more">更多</span></header>
 				<ul>
-					<li v-for="l in lives" @click="goLiveDetail">
+					<li v-for="l in lives" @click="goLiveDetail(l)">
 						<p v-text="l.title"></p>
 						<div class="img" :style="{backgroundImage: 'url('+ l.img +')'}"></div>
 						<footer v-cloak>
-							<span><i class="iconfont icon-men"></i> {{l.statistics}}人参加</span>
-							<span :class="{'active':l.state}"><i class="iconfont icon-bofang"></i> {{l.state ? '正在直播':'直播回顾'}}</span>
+							<span><i class="iconfont icon-men"></i> {{l.audience}}人参加</span>
+							<span :class="{'active':l.status=='正在直播'}"><i class="iconfont icon-bofang"></i> {{l.status}}</span>
 						</footer>
 					</li>
 				</ul>

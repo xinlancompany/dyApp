@@ -100,6 +100,7 @@ var internetCourseware = new Vue({
 			var self = this;
 
 			netcourseId = _get('netcourseId');
+			console.log("netcourseId= "+ netcourseId);
 			self.getNetCourseDetail();
 			self.getOtherCourse();
 		}
@@ -107,13 +108,12 @@ var internetCourseware = new Vue({
 	mounted: function() {
 		var self = this;
 		
-//		self.init();
 	}
 })
 
 //添加newId自定义事件监听
 window.addEventListener('netcourseId', function(event) {
 	//获得事件参数
-	
+	//初始化
 	internetCourseware.init();
 })

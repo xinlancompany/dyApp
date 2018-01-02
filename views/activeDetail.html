@@ -19,7 +19,7 @@
 		</header>
 		
 		<div id="activeDetail" class="activity-detail have-header have-footer">
-			<div class="banner" :style="{backgroundImage: 'url('+banner+')'}"></div>
+			<div class="banner" :style="{backgroundImage: 'url('+detailData.img+')'}"></div>
 			
 			<ul class="mui-table-view" v-cloak>
 				<li class="mui-table-view-cell">
@@ -41,7 +41,7 @@
 				<p v-html="detailData.content"></p>
 			</article>
 			
-			<footer class="block-button">我要报名</footer>
+			<footer class="block-button" @click="enroll">我要报名</footer>
 		</div>
 	</body>
 </html>

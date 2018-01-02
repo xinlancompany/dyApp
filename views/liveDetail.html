@@ -15,17 +15,17 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title"></h1>
+			<h1 class="mui-title">直播课堂</h1>
 		</header>
 		
 		<div id="liveDetail" class="have-header have-footer">
 			<div class="live-video">
-				<video :src="src" controls preload autoplay></video>
-				<span class="live-state" v-text="state ? '正在直播中' : '直播回顾'" :class="{'active': state}"></span>
+				<video :src="liveData.url" controls preload autoplay :poster="liveData.img"></video>
+				<span class="live-state" v-text="liveData.status" :class="{'active': liveData.status}"></span>
 			</div>
-			<h1 v-text="title"></h1>
-			<p class="count"><i class="iconfont icon-men"></i> {{count}}人参与</p>
-			<p class="brief" v-cloak>简介：{{brief}}</p>
+			<h1 v-text="liveData.title"></h1>
+			<p class="count"><i class="iconfont icon-men"></i> {{liveData.audience}}人参与</p>
+			<p class="brief" v-cloak>简介：{{liveData.brief}}</p>
 		</div>
 	</body>
 </html>

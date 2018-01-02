@@ -42,6 +42,9 @@ mui.init({
 	},{
 		url: 'views/internetCourseware.html',
 		id: 'internetCourseware'
+	},{
+		url: 'views/liveDetail.html',
+		id: 'liveDetail'
 	}]
 })
 
@@ -140,11 +143,19 @@ var activity = new Vue({
 		},
 		//跳转到某个专题的活动列表页
 		goActivityList:function(id){
-			console.log(id);
-			_set('activitySortId', id);
-			mui.fire(plus.webview.getWebviewById("activityList"), 'activitySortId', {});
 			
-			openWindow('views/activityList.html', 'activityList');
+			var userInfo = _load(_get('userInfo'));
+			console.log(userInfo);
+			
+			if(userInfo) {
+				_set('activitySortId', id);
+				mui.fire(plus.webview.getWebviewById("activityList"), 'activitySortId', {});
+				
+				openWindow('views/activityList.html', 'activityList');
+			} else {
+				openWindow("login.html", "login");
+			}
+			
 		},
 		//获取活动专题
 		getActivitySort: function(){
@@ -189,17 +200,7 @@ var study = new Vue({
 		scrollNews: [],
 		headNews: [],
 		activeSlideText: '',
-		lives: [{
-			img: 'https://unsplash.it/750/250',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-			statistics: '1133',
-			state: true,
-		},{
-			img: 'https://unsplash.it/750/250',
-			title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-			statistics: '1133',
-			state: false,
-		}],
+		lives: [], //直播课堂
 		internets: [],//网络课堂
 	},
 	methods: {
@@ -224,8 +225,12 @@ var study = new Vue({
 		goLiveList: function() {
 			
 		},
-		goLiveDetail: function() {
-			
+		//跳转到直播课堂详情
+		goLiveDetail: function(i) {
+			_set("livecourseId", i.id);
+			mui.fire(plus.webview.getWebviewById("liveDetail"), 'livecourseId', {});
+		
+			openWindow("views/liveDetail.html", "liveDetail");
 		},
 		goInternetList: function() {
 			
@@ -243,7 +248,7 @@ var study = new Vue({
 			
 			_callAjax({
 				cmd:"fetch",
-				sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by id desc limit 10"
+				sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by newsdate desc limit 10"
 			},function(d){
 				if(d.success && d.data) {
 					if(d.data.length>5){
@@ -268,6 +273,19 @@ var study = new Vue({
 					self.internets = d.data;
 				}
 			})
+		},
+		//获取直播课件
+		getliveClass: function(){
+			var self = this;
+			
+			_callAjax({
+				cmd: "fetch",
+				sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where ifValid =1 group by a.id order by a.starttime desc limit 2"
+			}, function(d) {
+				if(d.success && d.data) {
+					self.lives = d.data;
+				}
+			})
 		}
 	},
 	mounted: function() {
@@ -277,6 +295,8 @@ var study = new Vue({
 		self.getNews();
 		//获取网络课件
 		self.getNetClass();
+		//获取直播课件
+		self.getliveClass();
 		
 	}
 })
@@ -314,7 +334,11 @@ var ucenter = new Vue({
 		},
 		//退出登录
 		logout: function(){
-			
+			var self = this;
+			self.isLogin = false;
+			self.userInfo = {};
+			plus.storage.removeItem('userInfo');
+			mui.toast('退出成功');
 		},
 		//清除缓存
 		clearCache:function(){

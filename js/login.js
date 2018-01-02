@@ -32,7 +32,7 @@ var login = new Vue({
 						var userInfo = d.data[0];
 						_set('userInfo',_dump(userInfo));
 						
-						mui.fire(plus.webview.getWebviewById('index'), 'loginBack');
+						mui.fire(plus.webview.getLaunchWebview(), 'loginBack');
 						
 						setTimeout(function() {
 							mui.back();
