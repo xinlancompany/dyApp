@@ -1,10 +1,96 @@
-//预加载页面
 mui.init({
 });
-
-
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
+	var activityId = 0;
+	
+	var activityDetail = new Vue({
+		el: '#activeDetail',
+		data: {
+			detailData: {},  //活动详情数据
+		},
+		methods: {
+			//获取活动详情
+			getActivityDetail: function(){
+				var self = this;
+				
+				_callAjax({
+					cmd:"fetch",
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where a.id = ?",
+					vals:_dump([activityId])
+				},function(d){
+					if(d.success && d.data) {
+						self.detailData = d.data[0];
+					}
+				})
+			},
+			//报名
+			enroll: function(){
+				var self = this;
+				
+				var userInfo = _load(_get('userInfo'));
+				_tell(userInfo);
+				
+				if(userInfo){
+					//已登录
+					//查重
+					_callAjax({
+						cmd: "fetch",
+						sql: "select * from activityEnroll where userId = ? and activityId = ?",
+						vals: _dump([userInfo.id, activityId])
+					}, function(d) {
+						if(d.success) {
+							if(d.data) {				
+								mui.toast('您已报过名了，请勿重复报名');
+							} else {
+								//报名
+								_callAjax({
+									cmd: "exec",
+									sql: "insert into activityEnroll(userId, activityId) values(?,?)",
+									vals: _dump([userInfo.id, activityId])
+								}, function(d) {
+									if(d.success) {
+										mui.toast('报名成功');
+										self.getActivityDetail();
+										
+										setTimeout(function(){
+											mui.fire(plus.webview.getWebviewById("activityList"), 'refresh', {
+												id: activityId,
+												count: self.detailData.applicant
+											});
+										},500)
+										
+									} else {
+										mui.toast('报名失败');
+									}
+								})
+							}
+						}
+					})
+				}else {
+					//未登录，跳转到登录页面
+					openWindow("login.html","login");
+				}
+				
+			},
+		},
+		mounted: function() {
+			var self = this;
+			
+			activityId = _get('activityId');
+			self.getActivityDetail();
+		}
+	})
+	
+	//添加newId自定义事件监听
+	window.addEventListener('activityId', function(event) {
+		//获得事件参数
+		activityId = _get('activityId');
+		
+		console.log("activityId= "+activityId);
+		activityDetail.getActivityDetail();
+	})
+
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {
@@ -12,106 +98,3 @@ if(window.plus) {
 } else {
 	document.addEventListener('plusready', plusReady, false);
 }
-
-var activityId = 0;
-
-var activityDetail = new Vue({
-	el: '#activeDetail',
-	data: {
-//		banner: 'http://lorempixel.com/750/300',
-//		count: '12',
-//		startTime: '2017-01-01',
-//		endTime: '2017-02-01',
-//		place: '党校',
-//		breif: '为着力解决基层党组织 “三会一课”等掌的组织 生活不经常、不严肃 、不认真的问题。全面贯彻落实从严治党要求，以实现“三会一课”等党的组织 生活正常化、规范化、制度化为上拍， 积极探索推行人员固定活动日制度，确定每月第一个工作日作为“党员固定活动日”，每月开展一次，每次不少于半天。要求基层党支部要创新活动形式，改变“一人讲，大家听”的固有模式，注重',
-		detailData: {},  //活动详情数据
-	},
-	methods: {
-		//获取活动详情
-		getActivityDetail: function(){
-			var self = this;
-			
-			_callAjax({
-				cmd:"fetch",
-				sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where a.id = ?",
-				vals:_dump([activityId])
-			},function(d){
-				if(d.success && d.data) {
-					self.detailData = d.data[0];
-					
-				}
-			})
-		},
-		
-		//报名
-		enroll: function(){
-			var self = this;
-			
-			var userInfo = _load(_get('userInfo'));
-			_tell(userInfo);
-			
-			if(userInfo){
-				//已登录
-				//查重
-				_callAjax({
-					cmd: "fetch",
-					sql: "select * from activityEnroll where userId = ? and activityId = ?",
-					vals: _dump([userInfo.id, activityId])
-				}, function(d) {
-					if(d.success) {
-						if(d.data) {				
-							mui.toast('您已报过名了，请勿重复报名');
-						} else {
-							//报名
-							_callAjax({
-								cmd: "exec",
-								sql: "insert into activityEnroll(userId, activityId) values(?,?)",
-								vals: _dump([userInfo.id, activityId])
-							}, function(d) {
-								if(d.success) {
-									mui.toast('报名成功');
-									self.getActivityDetail();
-									
-									setTimeout(function(){
-										mui.fire(plus.webview.getWebviewById("activityList"), 'refresh', {
-											id: activityId,
-											count: self.detailData.applicant
-										});
-									},500)
-									
-								} else {
-									mui.toast('报名失败');
-							
-								}
-							})
-				
-						}
-				
-					}
-				
-				})
-				
-			}else {
-				//未登录，跳转到登录页面
-				openWindow("login.html","login");
-			}
-			
-		},
-	},
-	mounted: function() {
-		var self = this;
-		
-		activityId = _get('activityId');
-		self.getActivityDetail();
-		
-	}
-})
-
-//添加newId自定义事件监听
-window.addEventListener('activityId', function(event) {
-	//获得事件参数
-	activityId = _get('activityId');
-	
-	console.log("activityId= "+activityId);
-	activityDetail.getActivityDetail();
-})

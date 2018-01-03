@@ -1,4 +1,4 @@
-﻿{
+{
     "@platforms": ["android", "iPhone", "iPad"],
     "id": "com.xinlan.zsdy",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "舟山共产党员",/*应用名称，程序桌面图标名称*/
@@ -199,5 +199,74 @@
                 }
             }
         }
-    }
+    },
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [],
+				"refer": [
+					"views/newsDetail.html",
+					"views/internetCourseware.html",
+					"views/internetCourseList.html",
+					"views/liveDetail.html",
+					"views/liveList.html",
+					"views/login.html",
+					"views/activityList.html"
+				],
+				"priority": 0
+			},
+			"views/activityList.html": {
+				"resources": [],
+				"refer": [
+					"views/activeDetail.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"lib/swiper.min.css",
+				"img/ucenterbg.jpg",
+				"views/myStudy.html",
+				"js/newsDetail.js",
+				"js/liveList.js",
+				"js/myStudy.js",
+				"lib/iconfont.css",
+				"js/activeDetail.js",
+				"views/newsList.html",
+				"img/navbarbg.jpg",
+				"fonts/iconfont.woff",
+				"lib/mui.picker.min.js",
+				"js/liveDetail.js",
+				"lib/utils.js",
+				"lib/mui.min.js",
+				"css/less-components/_mixin.css",
+				"fonts/iconfont.svg",
+				"js/newsList.js",
+				"fonts/iconfont.ttf",
+				"lib/a_ref.js",
+				"img/default.jpg",
+				"lib/swiper.min.js",
+				"js/activityList.js",
+				"fonts/mui.ttf",
+				"js/login.js",
+				"css/less-components/_reset.less",
+				"css/style.css",
+				"css/less-components/_var.less",
+				"js/internetCourseList.js",
+				"css/less-components/_mixin.less",
+				"lib/jquery.min.js",
+				"css/style.less",
+				"js/internetCourseware.js",
+				"lib/mui.min.css",
+				"fonts/iconfont.eot",
+				"lib/vue.min.js",
+				"img/default.png",
+				"css/less-components/_reset.css",
+				"lib/iconfont.js",
+				"js/index.js",
+				"lib/mui.picker.min.css"
+			]
+		}
+	}
 }
