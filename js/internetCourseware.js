@@ -1,5 +1,8 @@
 //预加载页面
 mui.init({
+	beforeback: function() {
+		window.clearInterval(timer);
+	}
 });
 
 
@@ -14,13 +17,14 @@ if(window.plus) {
 }
 
 var netcourseId = 0;
+var timer = null;
 
 var internetCourseware = new Vue({
 	el: '#internetCourseware',
 	data: {
 		courseData: {},  //课件内容
 		otherCoursewares: [], //其他课件
-		
+		studyTime: 0, //学习时间
 //		otherCoursewares: [{
 //			img: 'http://lorempixel.com/450/300',
 //			title: '红船缘',
@@ -42,7 +46,7 @@ var internetCourseware = new Vue({
 			
 			_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, brief, content, url, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and id = ?",
+					sql: "select id, title, img, brief, content, url, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and id = ?",
 					vals: _dump([netcourseId])
 				}, function(d) {
 					_tell(d.data);
@@ -54,9 +58,10 @@ var internetCourseware = new Vue({
 						var content = d.data[0].content;
 						var url = d.data[0].url;
 						console.log("url="+url);
-						if(url.length<=0)
+						if(url == '#' || url.length<=0)
 						{
-							var src = $(content).find('src').text();
+							
+							var src = $(content).find('video').attr('src');
 							console.log("src="+src);
 							self.courseData.url = src;
 						}
@@ -71,7 +76,7 @@ var internetCourseware = new Vue({
 
 			_callAjax({
 				cmd: "fetch",
-				sql: "select id, title, img, brief, content, url, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and id < ? and linkerId = ? order by id desc limit 3",
+				sql: "select id, title, img, brief, content, url, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and id < ? and linkerId = ? order by id desc limit 3",
 				vals: _dump([netcourseId, linkerId.netCourse])
 			}, function(d) {
 
@@ -95,6 +100,37 @@ var internetCourseware = new Vue({
 				self.init();
 			}
 		},
+		//插入学习记录
+		recordStudy: function(){
+			var self = this;
+			
+			var userInfo = _load(_get('userInfo'));
+
+			//先删除再插入
+			_callAjax({
+					cmd: "exec",
+					sql: "delete from courseEnroll where userId = ? and courseId = ?",
+					vals: _dump([userInfo.id, netcourseId])
+				},
+				function(d) {
+					if(d.success) {
+						_callAjax({
+							cmd: "exec",
+							sql: "insert into courseEnroll(userId, courseId) values(?,?)",
+							vals: _dump([userInfo.id, netcourseId])
+						}, function(d) {
+							if(d.success) {
+								console.log(self.courseData.credit);
+								mui.alert('恭喜您获得' + self.courseData.credit + '学分');
+							}
+						})
+					}
+				})
+			
+			
+			
+		},
+		
 		//初始化
 		init: function (){
 			var self = this;
@@ -103,13 +139,60 @@ var internetCourseware = new Vue({
 			console.log("netcourseId= "+ netcourseId);
 			self.getNetCourseDetail();
 			self.getOtherCourse();
+			
+			//查重
+			var userInfo = _load(_get('userInfo'));
+			if(userInfo) {
+				_callAjax({
+					cmd: "fetch",
+					sql: "select * from courseEnroll where userId = ? and courseId = ?",
+					vals: _dump([userInfo.id, netcourseId])
+				}, function(d) {
+					if(d.success) {
+						if(d.data) {
+							mui.confirm('您已学过该课程，确定重新学习?', '', ['确定', '取消'], function(e) {
+								if(e.index == 0) {
+			
+								}
+							})
+						}
+					}
+				})
+			
+			}
+		}
+	},
+	watch:{
+		studyTime:function() {
+			var self = this;
+			console.log(self.studyTime);
+			if(self.studyTime == 15*1){
+				console.log('已学习15s钟');
+				self.recordStudy();
+			}
 		}
 	},
 	mounted: function() {
 		var self = this;
 		
+		
 	}
 })
+
+function startTimeOut() {
+	console.log('开始学习');
+	timer = setInterval(function() {
+		internetCourseware.studyTime++;
+		
+	}, 1000);
+}
+
+function clearTimeOut(){
+	console.log('暂停学习');
+	console.log(internetCourseware.studyTime);
+	clearInterval(timer);
+	
+}
 
 //添加newId自定义事件监听
 window.addEventListener('netcourseId', function(event) {

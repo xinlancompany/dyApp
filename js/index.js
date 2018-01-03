@@ -45,6 +45,12 @@ mui.init({
 	},{
 		url: 'views/liveDetail.html',
 		id: 'liveDetail'
+	},{
+		url: 'views/internetCourseList.html',
+		id: 'internetList'
+	},{
+		url: 'views/liveList.html',
+		id: 'liveList'
 	}]
 })
 
@@ -214,26 +220,42 @@ var study = new Vue({
 		},
 		//跳转到网络课堂详情
 		gotoNetCourseDetail: function(i){
-			_set("netcourseId", i.id);
-			mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
-		
-			openWindow("views/internetCourseware.html", "internetCourseware");
+			var userInfo = _load(_get('userInfo'));
+			
+			if(userInfo) {
+				_set("netcourseId", i.id);
+				mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
+				
+				openWindow("views/internetCourseware.html", "internetCourseware");
+			} else {
+				openWindow("login.html", "login");
+			}
+			
 		},
 		goEduDynamic: function(i) {
 				
 		},
+		//跳转到直播列表
 		goLiveList: function() {
-			
+			openWindow('views/liveList.html','liveList');
 		},
 		//跳转到直播课堂详情
-		goLiveDetail: function(i) {
-			_set("livecourseId", i.id);
-			mui.fire(plus.webview.getWebviewById("liveDetail"), 'livecourseId', {});
-		
-			openWindow("views/liveDetail.html", "liveDetail");
-		},
-		goInternetList: function() {
+		goLiveDetail: function(i) {			
+			var userInfo = _load(_get('userInfo'));
 			
+			if(userInfo) {
+				_set("livecourseId", i.id);
+				mui.fire(plus.webview.getWebviewById("liveDetail"), 'livecourseId', {});
+				
+				openWindow("views/liveDetail.html", "liveDetail");
+			} else {
+				openWindow("login.html", "login");
+			}
+			
+		},
+		//跳转到网络课堂列表
+		goInternetList: function() {
+			openWindow('views/internetCourseList.html','internetList');
 		},
 		goInternetDetail: function() {
 			
