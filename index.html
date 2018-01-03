@@ -34,20 +34,19 @@
 				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
 			</a>
 		</footer>
-
-		<div id="index" class="have-footer have-header main" style="display:block">
-
-			<div class="swiper-container index-swiper">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}">
-					</div>
-				</div>
-				<div class="swiper-pagination index-pagination"></div>
-				<div class="mui-slider-text">
-					<p v-text="activeSlideText"></p>
+		
+		<div class="swiper-container index-swiper have-header" v-show="show">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}">
 				</div>
 			</div>
+			<div class="swiper-pagination index-pagination"></div>
+			<div class="mui-slider-text">
+				<p v-text="activeSlideText"></p>
+			</div>
+		</div>
 
+		<div id="index" class="have-footer main" style="display:block">
 			<div class="news-list">
 				<ul class="mui-table-view">
 					<li v-for="i in headNews" @click="gotoDetail(i)">
@@ -90,8 +89,8 @@
 			<footer @click="getActivitySort" class="block-button" v-show="bHaveMore">更多活动专题</footer>
 		</div>
 		
-		<div id="study" class="have-footer have-header main">
-			<div class="swiper-container study-swiper">
+		<div id="study" class="have-footer main">
+			<!--<div class="swiper-container study-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 				</div>
@@ -99,7 +98,7 @@
 				<div class="mui-slider-text">
 					<p v-text="activeSlideText"></p>
 				</div>
-			</div>
+			</div>-->
 
 			<div class="news-list">
 				<header @click="goEduDynamic" class="global-header"><h1 class="title">教育动态</h1><span class="more" @click="goNewsList">更多</span></header>
@@ -145,9 +144,7 @@
 					</li>
 				</ul>
 			</div>
-			
 		</div>
-
 
 		<div id="ucenter" class="have-footer have-header main ucenter">
 			<div class="user" @click="goLogin">
@@ -159,8 +156,8 @@
 			</div>
 			
 			<div class="ucenter-flex">
-				<span><i class="iconfont icon-icon1"></i>党员先锋指数</span>	
-				<span><i class="iconfont icon-jifen"></i>学习积分</span>	
+				<span @click="checkPoints"><i class="iconfont icon-icon1"></i>党员先锋指数</span>	
+				<span @click="checkCredit"><i class="iconfont icon-jifen"></i>学习积分</span>	
 			</div>
 
 			<ul class="mui-table-view">

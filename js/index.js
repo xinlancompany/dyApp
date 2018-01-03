@@ -54,14 +54,26 @@ mui.init({
 	}]
 })
 
+var indexSwiper = new Vue({
+	el: '.index-swiper',
+	data: {
+		scrollNews: [],
+		activeSlideText: '',
+		show: true
+	},
+	methods: {
+		//跳转到新闻详情
+		gotoDetail: function(i) {
+			index.gotoDetail(i);
+		},
+	}
+})
 	
 var index = new Vue({
 	el: '#index',
 	data: {
-		scrollNews: [],
 		headNews: [],
 		activity: [], //活动专题
-		activeSlideText: ''
 	},
 	methods: {
 		//跳转到新闻详情
@@ -95,18 +107,18 @@ var index = new Vue({
 			},function(d){
 				if(d.success && d.data) {
 					if(d.data.length>5){
-						self.scrollNews = d.data.slice(0,5);
+						indexSwiper.scrollNews = d.data.slice(0,5);
 						self.headNews = d.data.slice(5,8);
 					}else {
-						self.scrollNews = d.data;
+						indexSwiper.scrollNews = d.data;
 					}
 					
-					self.activeSlideText = self.scrollNews[0].title;
+					indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
 					setTimeout(function(){
 						var swiper = new Swiper('.index-swiper', {
 							pagination: '.swiper-pagination',
 							onSlideChangeEnd: function(swiper){
-						      	self.activeSlideText = self.scrollNews[swiper.activeIndex].title
+						      	indexSwiper.activeSlideText = indexSwiper.scrollNews[swiper.activeIndex].title
 							}
 						});
 					}, 500)
@@ -203,7 +215,7 @@ var activity = new Vue({
 var study = new Vue({
 	el: '#study',
 	data: {
-		scrollNews: [],
+//		scrollNews: [],
 		headNews: [],
 		activeSlideText: '',
 		lives: [], //直播课堂
@@ -274,7 +286,7 @@ var study = new Vue({
 			},function(d){
 				if(d.success && d.data) {
 					if(d.data.length>5){
-						self.scrollNews = d.data.slice(0,5);
+//						self.scrollNews = d.data.slice(0,5);
 						self.headNews = d.data.slice(5,8);
 					}else {
 						self.scrollNews = d.data;
@@ -336,7 +348,21 @@ var ucenter = new Vue({
 	methods: {
 		//登录
 		goLogin: function() {
-			openWindow("views/login.html","login");
+			if(!this.isLogin) return openWindow("views/login.html","login"); 
+		},
+		//查看党员先锋指数
+		checkPoints: function(){
+			var self = this;
+			
+			_callAjax({
+				
+			},function(d){
+				
+			})
+		},
+		//查看学习积分
+		checkCredit: function(){
+			
 		},
 		//我的消息
 		goPost: function(){
@@ -422,13 +448,19 @@ $('.footer-tab a').on('click', function() {
 	var page = $(this).data('page');
 	changeTab(page, $(this));
 	
-	if(page == 'study' && swiperStudy == null) {		
-		study.activeSlideText = study.scrollNews[0].title;
-		swiperStudy = new Swiper('.study-swiper', {
-			pagination: '.study-pagination',
-			onSlideChangeEnd: function(swiper) {
-				study.activeSlideText = study.scrollNews[swiper.activeIndex].title
-			}
-		});
+	if(page == 'activity'|| page == 'ucenter') {
+		indexSwiper.show = false;
+	} else {
+		indexSwiper.show = true;
 	}
+//	
+//	if(page == 'study' && swiperStudy == null) {		
+//		study.activeSlideText = study.scrollNews[0].title;
+//		swiperStudy = new Swiper('.study-swiper', {
+//			pagination: '.study-pagination',
+//			onSlideChangeEnd: function(swiper) {
+//				study.activeSlideText = study.scrollNews[swiper.activeIndex].title
+//			}
+//		});
+//	}
 })

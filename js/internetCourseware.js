@@ -2,6 +2,14 @@
 mui.init({
 	beforeback: function() {
 		window.clearInterval(timer);
+		// 页面返回前关闭所有视频播放
+		$('video').each(function() {
+			$(this)[0].pause();
+		})
+		$('body').animate({scrollTop:0});
+		internetCourseware.courseData = {};
+		internetCourseware.otherCoursewares = [];
+		internetCourseware.studyTime = 0;
 	}
 });
 
@@ -25,19 +33,6 @@ var internetCourseware = new Vue({
 		courseData: {},  //课件内容
 		otherCoursewares: [], //其他课件
 		studyTime: 0, //学习时间
-//		otherCoursewares: [{
-//			img: 'http://lorempixel.com/450/300',
-//			title: '红船缘',
-//			brief:  '展现习近平总书记心系南湖红船、始终“不忘初心，牢记使命”的领袖形象，展望习近平带领共产党人，领航中…'
-//		},{
-//			img: 'http://lorempixel.com/450/300',
-//			title: '红船缘',
-//			brief:  '展现习近平总书记心系南湖红船、始终“不忘初心，牢记使命”的领袖形象，展望习近平带领共产党人，领航中…'
-//		},{
-//			img: 'http://lorempixel.com/450/300',
-//			title: '红船缘',
-//			brief:  '展现习近平总书记心系南湖红船、始终“不忘初心，牢记使命”的领袖形象，展望习近平带领共产党人，领航中…'
-//		}]
 	},
 	methods: {
 		//获取课件详情
