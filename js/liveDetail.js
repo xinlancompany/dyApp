@@ -1,20 +1,21 @@
-//预加载页面
-mui.init({
-});
-
-
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
+	//预加载页面
+	mui.init({
+		beforeback: function() {
+			// 页面返回前关闭所有视频播放
+			$('video').each(function() {
+				$(this)[0].pause();
+			})
+			$('body').animate({scrollTop:0})
+			liveDetail.liveData = []
+		}
+	});
 	var livecourseId = 0;
 	
 	var liveDetail = new Vue({
 		el: '#liveDetail',
 		data: {
-	//		src: '',
-	//		title: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-	//		brief: '市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作市委组织部一行赴普陀调研沈家门渔港特色小镇建设工作',
-	//		state: false,
-	//		count: 123,
 			liveData: {},  //直播数据
 		},
 		methods: {
