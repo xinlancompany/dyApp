@@ -27,7 +27,7 @@
 					<span>{{newsData.newsdate}} &nbsp;&nbsp;&nbsp;&nbsp; </span>
 					<span>阅读量：{{newsData.readcnt}}</span>
 				</p>
-				<div class="desc" v-text="newsData.brief" v-show="newsData.brief!=''"></div>
+				<div class="desc" v-text="newsData.brief" v-show="newsData.brief!=''" v-cloak></div>
 			</header>
 			<article>
 				<p id="content" v-html="newsData.content"></p>

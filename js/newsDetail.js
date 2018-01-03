@@ -1,30 +1,32 @@
-//预加载页面
-mui.init({
-	preloadPages: [{
-		url: '',
-		id: '',
-	}],
-	beforeback: function() {
-		
-		$('body').animate({scrollTop:0})
-	}
-});
-
-var newsId = 0;
-
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
+	//预加载页面
+	mui.init({
+		preloadPages: [{
+			url: '',
+			id: '',
+		}],
+		beforeback: function() {
+			// 页面返回前关闭所有视频播放
+			$('video').each(function() {
+				$(this)[0].pause();
+			})
+			$('body').animate({scrollTop:0})
+			newsDetail.newsData = []
+		}
+	});
+	
+	var newsId = 0;	
 	var newsDetail = new Vue({
 		el: '#newsDetail',
 		data: {
 			newsData: [],  //新闻内容
 		},
 		methods: {
-	
 			//获取新闻内容
 			getNewsData: function() {
 				var self = this;
-	
+				
 				_callAjax({
 					cmd: "fetch",
 					sql: "select id, title, img, brief, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and id = ?",
@@ -32,7 +34,6 @@ function plusReady() {
 				}, function(d) {
 					_tell(d.data);
 					if(d.success && d.data) {
-						
 						self.newsData = d.data[0];
 						
 //						//如果是视频新闻，加poster
@@ -51,10 +52,8 @@ function plusReady() {
 	
 			newsId = _get('newsId');
 			console.log("newsId111="+newsId);
-
 			//获取动态新闻
 			self.getNewsData();
-	
 		}
 	})
 	
@@ -62,7 +61,6 @@ function plusReady() {
 	window.addEventListener('newsId', function(event) {
 		//获得事件参数
 		newsId = _get('newsId');
-		console.log("newsId222="+newsId);
 		newsDetail.getNewsData();
 	})
 }
