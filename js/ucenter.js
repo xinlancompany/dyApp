@@ -7,19 +7,33 @@ function plusReady() {
 		data: {
 			userInfo: {
 				img: '',
-				name: ''
+				name: '',
+				idNo:'',
+				orgName:'',
 			}
 		},
 		methods: {
-			getActivityList: function(){
+			getInfo: function(){
+				var self = this;
 				
+				var userInfo = _load(_get('userInfo'));
+				console.log(userInfo.id);
+				_callAjax({
+					cmd:"fetch",
+					sql:"select u.id, u.name, u.idNo, u.img, o.title as orgName from User u left outer join organization o on u.orgId = o.id where u.ifValid = 1 and u.id = ?",
+					vals:_dump([userInfo.id])
+				},function(d){
+					if(d.success && d.data){
+						self.userInfo = d.data[0];
+					}
+				})
 			},
-			goActivityDetail: function() {
-				
-			},
+			
 		},
 		mounted: function() {
 			var self = this;
+			
+			self.getInfo();
 		}
 	})
 
