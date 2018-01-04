@@ -43,27 +43,32 @@ function plusReady() {
 							if(d.data) {				
 								mui.toast('您已报过名了，请勿重复报名');
 							} else {
-								//报名
-								_callAjax({
-									cmd: "exec",
-									sql: "insert into activityEnroll(userId, activityId) values(?,?)",
-									vals: _dump([userInfo.id, activityId])
-								}, function(d) {
-									if(d.success) {
-										mui.toast('报名成功');
-										self.getActivityDetail();
+								//确认框
+								mui.confirm('确认报名参加此活动?', '', ['取消', '确定'], function(e) {
+									if(e.index == 1) {
+										//报名
+										_callAjax({
+											cmd: "exec",
+											sql: "insert into activityEnroll(userId, activityId) values(?,?)",
+											vals: _dump([userInfo.id, activityId])
+										}, function(d) {
+											if(d.success) {
+												mui.toast('报名成功');
+												self.getActivityDetail();
 										
-										setTimeout(function(){
-											mui.fire(plus.webview.getWebviewById("activityList"), 'refresh', {
-												id: activityId,
-												count: self.detailData.applicant
-											});
-										},500)
+												setTimeout(function() {
+													mui.fire(plus.webview.getWebviewById("activityList"), 'refresh', {
+														id: activityId,
+														count: self.detailData.applicant
+													});
+												}, 500)
 										
-									} else {
-										mui.toast('报名失败');
+											} else {
+												mui.toast('报名失败');
+											}
+										})
 									}
-								})
+								})								
 							}
 						}
 					})
