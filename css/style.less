@@ -15,6 +15,51 @@ body {
     display: none;
 }
 
+.sub-bar {
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 44px;
+    z-index: 3;
+    ul {
+        display: flex;
+        li {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            a {
+                display: block;
+                font-size: 16px;
+                color: #333;
+                &:active {
+                    background-color: #eee;
+                }
+            }
+            &.active {
+                font-weight: 700;
+                a {
+                    color: @base;
+                }
+                &:after {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 2px;
+                    background-color: @base;
+                }
+            }
+
+        }
+    }
+}
+
 .swiper-container {
     height: 160px;
     position: relative;

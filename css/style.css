@@ -176,6 +176,49 @@ body {
 .main {
   display: none;
 }
+.sub-bar {
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 44px;
+  z-index: 3;
+}
+.sub-bar ul {
+  display: flex;
+}
+.sub-bar ul li {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+.sub-bar ul li a {
+  display: block;
+  font-size: 16px;
+  color: #333;
+}
+.sub-bar ul li a:active {
+  background-color: #eee;
+}
+.sub-bar ul li.active {
+  font-weight: 700;
+}
+.sub-bar ul li.active a {
+  color: #e14937;
+}
+.sub-bar ul li.active:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-color: #e14937;
+}
 .swiper-container {
   height: 160px;
   position: relative;
