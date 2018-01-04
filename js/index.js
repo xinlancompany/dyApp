@@ -6,26 +6,14 @@ if(window.plus) {
 
 mui.init({
 	preloadPages: [{
-		url: 'views/activityList.html',
-		id: 'activityList'
-	},{
 		url: 'views/newsDetail.html',
 		id: 'newsDetail'
-	},{
-		url: 'views/login.html',
-		id: 'login'
 	},{
 		url: 'views/internetCourseware.html',
 		id: 'internetCourseware'
 	},{
 		url: 'views/liveDetail.html',
 		id: 'liveDetail'
-	},{
-		url: 'views/internetCourseList.html',
-		id: 'internetList'
-	},{
-		url: 'views/liveList.html',
-		id: 'liveList'
 	}]
 })	
 
@@ -347,7 +335,12 @@ function plusReady() {
 		methods: {
 			//登录
 			goLogin: function() {
-				if(!this.isLogin) return openWindow("views/login.html","login"); 
+
+				if(this.isLogin){
+					openWindow('views/ucenter.html','ucenter');
+				}else{
+					openWindow("views/login.html","login");
+				} 
 			},
 			//查看党员先锋指数
 			checkPoints: function(){

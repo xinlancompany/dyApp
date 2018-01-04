@@ -15,7 +15,7 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">党员信息管理</h1>
+			<h1 class="mui-title">个人信息</h1>
 		</header>
 		
 		<div id="ucenter" class="have-header have-footer ucenter">
@@ -27,9 +27,9 @@
 			</div>
 			
 			<ul class="mui-table-view">
-			    <li class="mui-table-view-cell" v-cloak>身份证号：{{userInfo.}}</li>
-			    <li class="mui-table-view-cell" v-cloak>人员类别：{{userInfo.}}</li>
-			    <li class="mui-table-view-cell" v-cloak>所在党支部：{{userInfo.}}</li>
+			    <li class="mui-table-view-cell" v-cloak>身份证号：{{userInfo.idNo}}</li>
+			    <li class="mui-table-view-cell" v-cloak>人员类别：党员</li>
+			    <li class="mui-table-view-cell" v-cloak>所在党支部：{{userInfo.orgName}}</li>
 			</ul>
 		</div>
 	</body>
