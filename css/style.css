@@ -1001,3 +1001,34 @@ body {
   padding-left: 0;
   color: #333;
 }
+.score .content {
+  background-color: #ff9e0d;
+  background-image: url(../img/trophy.png);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  -webkit-background-size: 130px auto;
+  background-size: 130px auto;
+  padding: 220px 0 20px;
+  position: relative;
+}
+.score .content span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  text-align: center;
+  color: #fff;
+  font-size: 50px;
+}
+.score .content span:before {
+  content: '总分';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -45px;
+  font-size: 18px;
+  color: #f1f1f1;
+}
+.score h4 {
+  line-height: 24px;
+}

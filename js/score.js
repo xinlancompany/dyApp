@@ -5,8 +5,9 @@ function plusReady() {
 	var score = new Vue({
 		el: '#score',
 		data: {
-			activeTab: 0
-			bHaveMore: false
+			activeTab: 0,
+			bHaveMore: false,
+			score: 123
 		},
 		methods: {
 			changeTab: function(i){
@@ -15,6 +16,9 @@ function plusReady() {
 			gotoNetCourseDetail: function() {
 				
 			},
+			getMoreScore: function() {
+				
+			}
 		},
 		mounted: function() {
 			var self = this;

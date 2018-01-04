@@ -344,17 +344,11 @@ function plusReady() {
 			},
 			//查看党员先锋指数
 			checkPoints: function(){
-				var self = this;
-				
-				_callAjax({
-					
-				},function(d){
-					
-				})
+				openWindow("views/score.html","score");
 			},
 			//查看学习积分
 			checkCredit: function(){
-				
+				openWindow("views/score.html","score");
 			},
 			//我的消息
 			goPost: function(){
