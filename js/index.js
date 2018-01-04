@@ -431,10 +431,46 @@ function plusReady() {
 					}
 				});
 			}
+			
+			//获取版本号
+			_callAjax({
+				cmd: "fetch",
+				sql: "select * from system"
+			}, function(d) {
+				if(d.success && d.data) {
+					var dicVersion = d.data[0];
+			
+					_set('version', _dump(dicVersion));
+			
+					var curVersion = plus.runtime.version;
+			
+					if(curVersion < dicVersion.version) {
+						self.isNew = true;
+					} else {
+						self.isNew = false;
+					}
+				}
+			});
 		}
 	})
 	
-	
+	if('Android' == plus.os.name) {
+		ucenter.androidUpdate = true;
+		var first = null;
+		mui.back = function() {
+			if(!first) {
+				first = new Date().getTime();
+				mui.toast('再按一次退出应用');
+				setTimeout(function() {
+					first = null;
+				}, 1000);
+			} else {
+				if(new Date().getTime() - first < 1000) {
+					plus.runtime.quit();
+				}
+			}
+		}
+	}
 	
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
@@ -445,15 +481,6 @@ function plusReady() {
 		} else {
 			indexSwiper.show = true;
 		}
-	//	
-	//	if(page == 'study' && swiperStudy == null) {		
-	//		study.activeSlideText = study.scrollNews[0].title;
-	//		swiperStudy = new Swiper('.study-swiper', {
-	//			pagination: '.study-pagination',
-	//			onSlideChangeEnd: function(swiper) {
-	//				study.activeSlideText = study.scrollNews[swiper.activeIndex].title
-	//			}
-	//		});
-	//	}
+
 	})
 }

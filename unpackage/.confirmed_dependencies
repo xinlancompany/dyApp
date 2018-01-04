@@ -1,18 +1,18 @@
 {
-	"index.html": {
-		"refer": [
-			"views/newsDetail.html",
-			"views/internetCourseware.html",
-			"views/internetCourseList.html",
-			"views/liveDetail.html",
-			"views/liveList.html",
-			"views/login.html",
-			"views/activityList.html"
-		]
-	},
-	"views/activityList.html": {
-		"refer": [
-			"views/activeDetail.html"
-		]
-	}
+  "index.html": {
+    "refer": [
+      "views/newsDetail.html",
+      "views/internetCourseware.html",
+      "views/internetCourseList.html",
+      "views/liveDetail.html",
+      "views/liveList.html",
+      "views/login.html",
+      "views/activityList.html"
+    ]
+  },
+  "views/activityList.html": {
+    "refer": [
+      "views/activeDetail.html"
+    ]
+  }
 }
