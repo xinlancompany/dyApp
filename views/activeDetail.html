@@ -41,7 +41,7 @@
 				<p v-html="detailData.content"></p>
 			</article>
 			
-			<footer class="block-button" @click="enroll">我要报名</footer>
+			<footer :class="{'active': !bClick}" class="block-button" @click="enroll">我要报名</footer>
 		</div>
 	</body>
 </html>

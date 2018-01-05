@@ -16,10 +16,10 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">我的学习</h1>
+			<h1 class="mui-title">我的活动</h1>
 		</header>
 		
-		<div id="myActivity" class="have-header myactivity">
+		<div id="myActivity" class="activity have-header have-footer myactivity">
 			<ul>
 				<li v-for="a in activityList" @click="goActivityDetail(a)">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"><span>{{a.applicant}}人已报名</span></div>
