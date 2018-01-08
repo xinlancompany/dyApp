@@ -8,6 +8,8 @@ function plusReady() {
 		el: '#activeDetail',
 		data: {
 			detailData: {},  //活动详情数据
+			userInfo: null,
+			bClick: false,  //报名按钮是否可点击
 		},
 		methods: {
 			//获取活动详情
@@ -27,49 +29,35 @@ function plusReady() {
 			//报名
 			enroll: function(){
 				var self = this;
+				//当前用户已报名
+				if(!self.bClick) return;
 				
-				var userInfo = _load(_get('userInfo'));
-				_tell(userInfo);
-				
-				if(userInfo){
+				if(self.userInfo){
 					//已登录
-					//查重
-					_callAjax({
-						cmd: "fetch",
-						sql: "select * from activityEnroll where userId = ? and activityId = ?",
-						vals: _dump([userInfo.id, activityId])
-					}, function(d) {
-						if(d.success) {
-							if(d.data) {				
-								mui.toast('您已报过名了，请勿重复报名');
-							} else {
-								//确认框
-								mui.confirm('确认报名参加此活动?', '', ['取消', '确定'], function(e) {
-									if(e.index == 1) {
-										//报名
-										_callAjax({
-											cmd: "exec",
-											sql: "insert into activityEnroll(userId, activityId) values(?,?)",
-											vals: _dump([userInfo.id, activityId])
-										}, function(d) {
-											if(d.success) {
-												mui.toast('报名成功');
-												self.getActivityDetail();
-										
-												setTimeout(function() {
-													mui.fire(plus.webview.getWebviewById("activityList"), 'refresh', {
-														id: activityId,
-														count: self.detailData.applicant
-													});
-												}, 500)
-										
-											} else {
-												mui.toast('报名失败');
-											}
-										})
-									}
-								})								
-							}
+					//确认框
+					mui.confirm('确认报名参加此活动?', '', ['取消', '确定'], function(e) {
+						if(e.index == 1) {
+							//报名
+							_callAjax({
+								cmd: "exec",
+								sql: "insert into activityEnroll(userId, activityId) values(?,?)",
+								vals: _dump([self.userInfo.id, activityId])
+							}, function(d) {
+								if(d.success) {
+									mui.toast('报名成功');
+									self.getActivityDetail();
+					
+									setTimeout(function() {
+										mui.fire(plus.webview.getWebviewById("activityList"), 'refresh', {
+											id: activityId,
+											count: self.detailData.applicant
+										});
+									}, 500)
+					
+								} else {
+									mui.toast('报名失败');
+								}
+							})
 						}
 					})
 				}else {
@@ -78,22 +66,47 @@ function plusReady() {
 				}
 				
 			},
+			//当前登录用户是否已报名
+			checkEnroll: function(){
+				var self = this;
+				
+				_callAjax({
+					cmd: "fetch",
+					sql: "select * from activityEnroll where userId = ? and activityId = ?",
+					vals: _dump([self.userInfo.id, activityId])
+				}, function(d) {
+					if(d.success) {
+						if(d.data) {
+							self.bClick = false;
+						} else {
+							self.bClick = true;
+						}
+					}
+				})
+			},
+			//初始化
+			init: function(){
+				var self = this;
+				
+				self.userInfo = _load(_get('userInfo'));
+				
+				activityId = _get('activityId');
+				self.getActivityDetail();
+				self.checkEnroll();
+			}
+			
 		},
 		mounted: function() {
 			var self = this;
 			
-			activityId = _get('activityId');
-			self.getActivityDetail();
+			self.init();
 		}
 	})
 	
 	//添加newId自定义事件监听
 	window.addEventListener('activityId', function(event) {
 		//获得事件参数
-		activityId = _get('activityId');
-		
-		console.log("activityId= "+activityId);
-		activityDetail.getActivityDetail();
+		activityDetail.init();
 	})
 
 }

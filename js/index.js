@@ -14,6 +14,9 @@ mui.init({
 	},{
 		url: 'views/liveDetail.html',
 		id: 'liveDetail'
+	},{
+		url: 'views/score.html',
+		id: 'score'
 	}]
 })	
 
@@ -344,11 +347,26 @@ function plusReady() {
 			},
 			//查看党员先锋指数
 			checkPoints: function(){
-				openWindow("views/score.html","score");
+				if(this.isLogin){
+					_set('checkPoints','0');
+					mui.fire(plus.webview.getWebviewById("score"), 'checkPoints', {});
+
+					openWindow("views/score.html","score");
+				}else{
+					openWindow("views/login.html","login");
+				}
+				
 			},
 			//查看学习积分
 			checkCredit: function(){
-				openWindow("views/score.html","score");
+				if(this.isLogin){
+					_set('checkPoints', '1');
+					mui.fire(plus.webview.getWebviewById("score"), 'checkPoints', {});
+					
+					openWindow("views/score.html","score");
+				}else{
+					openWindow("views/login.html","login");
+				}
 			},
 			//我的消息
 			goPost: function(){
@@ -356,14 +374,19 @@ function plusReady() {
 			},
 			//我的学习
 			goMyStudy: function(){
-				
+				if(this.isLogin){
+					openWindow("views/myStudy.html","mystudy");
+				}else{
+					openWindow("views/login.html","login");
+				}
 			},
 			//我的活动
 			goMyActivity: function(){
-				
-			},
-			//推荐
-			goRecommend:function(){
+				if(this.isLogin) {
+					openWindow("views/myActivity.html","myactivity");
+				} else {
+					openWindow("views/login.html","login");
+				}
 				
 			},
 			//退出登录

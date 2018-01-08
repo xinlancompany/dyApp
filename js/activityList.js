@@ -19,7 +19,6 @@ function plusReady() {
 		methods: {
 			//跳转到活动详情页
 			goActivityDetail: function(i) {
-				console.log("跳转到活动详情页" + i.id)
 				_set('activityId', i.id);
 				
 				mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
@@ -43,9 +42,6 @@ function plusReady() {
 					if(d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
-	//						if(r.img == ''){
-	//							r.img = "../img/default.jpg";
-	//						}
 							self.activityList.push(r);
 						
 						});

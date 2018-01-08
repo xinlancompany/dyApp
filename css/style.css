@@ -653,6 +653,12 @@ body {
   font-size: 16px;
   line-height: 24px;
 }
+.activity-detail footer {
+  background-color: #e14937;
+}
+.activity-detail footer.active {
+  background-color: #d47974;
+}
 .live-list ul {
   background-color: #fff;
 }

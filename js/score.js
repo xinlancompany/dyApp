@@ -1,4 +1,11 @@
 mui.init({
+	preloadPages: [{
+		url: 'activeDetail.html',
+		id: 'activeDetail',
+	},{
+		url: 'views/internetCourseware.html',
+		id: 'internetCourseware'
+	}],
 });
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
@@ -6,25 +13,188 @@ function plusReady() {
 		el: '#score',
 		data: {
 			activeTab: 0,
-			bHaveMore: false,
-			score: 123
+			bHaveMore_activity: false,
+			bHaveMore_course: false,
+			totalScore: 0,
+			activityList: [], //党员先锋指数数据
+			courseList: [],  //学习数据
+			contentList:[], //当前选中tab数据
+			userInfo: null,
+			activityScore: 0, //活动总分
+			courseScore: 0, //学习总分
 		},
 		methods: {
 			changeTab: function(i){
-				this.activeTab = i
+				var self = this;
+				self.activeTab = i
+				if(self.activeTab == 0){
+					self.contentList = self.activityList;
+					self.totalScore = self.activityScore;
+				}else{
+					self.contentList = self.courseList;
+					self.totalScore = self.courseScore;
+				}
 			},
-			gotoNetCourseDetail: function() {
+			//跳转详情页
+			gotoDetail: function(i){
+				var self = this;
+				if(self.activeTab == 0){
+					_set('activityId', i.id);
+					
+					mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
+					openWindow('activeDetail.html', 'activeDetail');
+				}else {
+					_set("netcourseId", i.id);
+					mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
+					
+					openWindow("views/internetCourseware.html", "internetCourseware");
+				}
 				
 			},
-			getMoreScore: function() {
+			//更多
+			getMoreList: function() {
+				var self = this;
 				
+				if(self.activeTab == 0){
+					self.getActivityList();
+				}else {
+					self.getCourseList();
+				}
+			},
+			//获取活动列表
+			getActivityList: function(){
+				var self = this;
+				
+				if(self.userInfo) {
+					var f = 10e5;
+				
+					if(self.activityList.length) {
+						f = _at(self.activityList, -1).id;
+					}
+				
+					_callAjax({
+						cmd: "fetch",
+						sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+						vals: _dump([self.userInfo.id, f])
+					}, function(d) {
+						if(d.success && d.data) {
+							d.data.forEach(function(r) {
+								self.activityList.push(r);
+				
+							});
+				
+							if(self.activityList.length < 10) {
+								self.bHaveMore_activity = false;
+							} else {
+								self.bHaveMore_activity = true;
+							}
+
+							if(self.activeTab == 0){
+								self.contentList = self.activityList;
+							}
+						} else {
+							self.bHaveMore_activity = false;
+							if(f != 10e5) {
+								mui.toast("没有更多活动了")
+							}
+						}
+					})
+				}
+			},
+			//获取学习列表
+			getCourseList: function(){
+				var self = this;
+				
+				if(self.userInfo) {
+					var f = 10e5;
+
+					if(self.courseList.length) {
+						f = _at(self.courseList, -1).id;
+					}
+				
+					_callAjax({
+						cmd: "fetch",
+						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', a.newsdate)as time, a.credit as points from articles a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
+						vals: _dump([self.userInfo.id, f, linkerId.netCourse])
+					}, function(d) {
+						if(d.success && d.data) {
+							d.data.forEach(function(r) {
+								self.courseList.push(r);				
+							});
+				
+							if(self.courseList.length < 10) {
+								self.bHaveMore_course = false;
+							} else {
+								self.bHaveMore_course = true;
+							}
+
+							if(self.activeTab == 1){
+								self.contentList = self.courseList;
+							}
+						} else {
+							self.bHaveMore_course = false;
+							if(f != 10e5) {
+								mui.toast("没有更多课件了")
+							}
+						}
+					})
+				}
+			},
+			//获取总分
+			getTotalScore: function(){
+				var self = this;
+				
+				_callAjax({
+					cmd: "fetch",
+					sql: "select sum(a.points) as totalScore from activitys a left outer join activityEnroll e on e.activityId = a.id where a.ifValid =1 and e.userId = ?",
+					vals: _dump([self.userInfo.id])
+				}, function(d) {
+					if(d.success && d.data) {
+						self.activityScore = d.data[0].totalScore;
+					}
+					if(self.activeTab == 0) {
+						self.totalScore = self.activityScore;
+					}
+				})
+				
+				_callAjax({
+					cmd: "fetch",
+					sql: "select sum(a.credit) as totalScore from articles a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.linkerId = 105",
+					vals: _dump([self.userInfo.id])
+				}, function(d) {
+					if(d.success && d.data) {
+						self.courseScore = d.data[0].totalScore;
+					}
+					if(self.activeTab == 1) {
+						self.totalScore = self.courseScore;
+					}
+				
+				})
+			},
+			//初始化
+			init: function(){
+				var self = this;
+				self.userInfo = _load(_get('userInfo'));
+				self.activeTab = _get('checkPoints');
+				self.activityList = [];
+				self.courseList = [];
+				self.getActivityList();
+				self.getCourseList();
+				
+				//获取总分
+				self.getTotalScore();
 			}
+			
 		},
 		mounted: function() {
 			var self = this;
 		}
 	})
 
+	window.addEventListener('checkPoints', function(event) {
+		score.init();
+			
+	})
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {
