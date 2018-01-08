@@ -190,7 +190,8 @@
 					"views/score.html",
 					"views/newsDetail.html",
 					"views/internetCourseware.html",
-					"views/liveDetail.html"
+					"views/liveDetail.html",
+					"views/ucenter.html"
 				],
 				"priority": 0
 			}
@@ -211,7 +212,6 @@
 				"lib/a_ref.js",
 				"views/liveList.html",
 				"views/activeDetail.html",
-				"views/ucenter.html",
 				"fonts/mui.ttf",
 				"css/less-components/_reset.less",
 				"views/myActivity.html",

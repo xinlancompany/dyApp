@@ -8,7 +8,8 @@
 			"views/liveList.html",
 			"views/login.html",
 			"views/activityList.html",
-			"views/score.html"
+			"views/score.html",
+			"views/ucenter.html"
 		]
 	},
 	"views/activityList.html": {
