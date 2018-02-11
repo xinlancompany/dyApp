@@ -9,12 +9,6 @@ mui.init({
 		url: 'views/newsDetail.html',
 		id: 'newsDetail'
 	},{
-		url: 'views/internetCourseware.html',
-		id: 'internetCourseware'
-	},{
-		url: 'views/liveDetail.html',
-		id: 'liveDetail'
-	},{
 		url: 'views/score.html',
 		id: 'score'
 	}]
@@ -33,15 +27,10 @@ function plusReady() {
 	
 	//添加登录返回refresh自定义事件监听
 	window.addEventListener('loginBack', function(event) {
-		var userInfo = _load(_get('userInfo'));
-	
-		_tell(userInfo);
-		if(userInfo.id != null) {
-			ucenter.isLogin = true;
-			ucenter.userInfo = userInfo;
-		} else {
-			ucenter.isLogin = false;
-		}
+		console.log('loginback回调');
+
+		var webview = plus.webview.currentWebview();
+		webview.reload();
 	})
 	
 	var indexSwiper = new Vue({
@@ -119,15 +108,49 @@ function plusReady() {
 			getActivitySort: function(){
 				var self = this;
 				
+				var orgId = _getOrgId();
+				
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = " + linkerId.activitySort + " order by id desc limit 2"
+					sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and orgId = ? order by id desc limit 2",
+					vals: _dump([linkerId.activitySort, orgId])
 				},function(d){
 					if(d.success && d.data){
 						self.activity = d.data
 					}
 				})
-			}
+			},
+			//党员信息管理
+			gotoUcenter: function(){
+				var userInfo = _load(_get('userInfo'));
+				_tell(userInfo);
+				if(userInfo){
+					if(userInfo.userType == 0) {
+						ucenter.goLogin();
+					} else {
+						mui.toast('请切换党员账号登录');
+						openWindow('views/login.html', 'login');
+					}
+				}else {
+					openWindow('views/login.html', 'login');
+				}
+				
+			},
+			//组织信息管理
+			gotoOrganization: function(){
+				var userInfo = _load(_get('userInfo'));
+				if(userInfo){
+					if(userInfo.userType == 1) {
+						ucenter.goLogin();
+					} else {
+						mui.toast('请切换组织账号登录');
+						openWindow('views/login.html', 'login');
+					}
+				}else {
+					openWindow('views/login.html', 'login');
+				}
+				
+			},
 		},
 		mounted: function() {
 			var self = this;
@@ -161,7 +184,7 @@ function plusReady() {
 					
 					openWindow('views/activityList.html', 'activityList');
 				} else {
-					openWindow("login.html", "login");
+					openWindow("views/login.html", "login");
 				}
 				
 			},
@@ -174,16 +197,17 @@ function plusReady() {
 					f = _at(self.activity, -1).id;
 				}
 				
+				var orgId = _getOrgId();
+				console.log("orgId = "+orgId);
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and id<? order by id desc limit 5",
-					vals: _dump([linkerId.activitySort, f])
+					sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and orgId = ? and id<? order by id desc limit 5",
+					vals: _dump([linkerId.activitySort, orgId, f])
 				},function(d){
 					if(d.success && d.data){
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
-							self.activity.push(r);
-						
+							self.activity.push(r);						
 						});
 					}else {
 						self.bHaveMore = false;
@@ -220,23 +244,7 @@ function plusReady() {
 			
 				openWindow("views/newsDetail.html", "newsDetail");
 			},
-			//跳转到网络课堂详情
-			gotoNetCourseDetail: function(i){
-				var userInfo = _load(_get('userInfo'));
-				
-				if(userInfo) {
-					_set("netcourseId", i.id);
-					mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
-					
-					openWindow("views/internetCourseware.html", "internetCourseware");
-				} else {
-					openWindow("login.html", "login");
-				}
-				
-			},
-			goEduDynamic: function(i) {
-					
-			},
+			
 			//跳转到直播列表
 			goLiveList: function() {
 				openWindow('views/liveList.html','liveList');
@@ -247,11 +255,13 @@ function plusReady() {
 				
 				if(userInfo) {
 					_set("livecourseId", i.id);
-					mui.fire(plus.webview.getWebviewById("liveDetail"), 'livecourseId', {});
+					mui.fire(plus.webview.getWebviewById("liveDetail"), 'livecourseId', {
+						
+					});
 					
 					openWindow("views/liveDetail.html", "liveDetail");
 				} else {
-					openWindow("login.html", "login");
+					openWindow("views/login.html", "login");
 				}
 				
 			},
@@ -259,7 +269,18 @@ function plusReady() {
 			goInternetList: function() {
 				openWindow('views/internetCourseList.html','internetList');
 			},
-			goInternetDetail: function() {
+			//跳转到网络课堂详情
+			gotoNetCourseDetail: function(i){
+				var userInfo = _load(_get('userInfo'));
+				
+				if(userInfo) {
+					_set("netcourseId", i.id);
+					mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
+					
+					openWindow("views/internetCourseware.html", "internetCourseware");
+				} else {
+					openWindow("views/login.html", "login");
+				}
 				
 			},
 			//新闻列表
@@ -280,8 +301,7 @@ function plusReady() {
 							self.headNews = d.data.slice(5,8);
 						}else {
 							self.scrollNews = d.data;
-						}
-						
+						}						
 					}
 				})
 			},
@@ -289,22 +309,29 @@ function plusReady() {
 			getNetClass: function(){
 				var self = this;
 				
+				var orgId = _getOrgId();
+				console.log("获取网络课件");
+				console.log(orgId);
+				console.log(linkerId.netCourse);
 				_callAjax({
-					cmd:"fetch",
-					sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from articles where ifValid =1 and linkerId = " + linkerId.netCourse +" order by id desc limit 2"
+					cmd: "fetch",
+					sql: "select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and orgId = "+ orgId + " order by id desc limit 2"
 				},function(d){
+					_tell(d);
 					if(d.success && d.data){
 						self.internets = d.data;
+						_tell(self.internets);
 					}
 				})
 			},
 			//获取直播课件
 			getliveClass: function(){
 				var self = this;
-				
+				var orgId = _getOrgId();
 				_callAjax({
 					cmd: "fetch",
-					sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where ifValid =1 group by a.id order by a.starttime desc limit 2"
+					sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where ifValid =1 and a.orgId = ? group by a.id order by a.starttime desc limit 2",
+					vals: _dump([orgId])
 				}, function(d) {
 					if(d.success && d.data) {
 						self.lives = d.data;
@@ -331,16 +358,22 @@ function plusReady() {
 			isLogin: false,
 			androidUpdate: false,
 			isNew: false,
+			userType: null,
 			userInfo: {
-				
 			}
 		},
 		methods: {
 			//登录
 			goLogin: function() {
-
 				if(this.isLogin){
-					openWindow('views/ucenter.html','ucenter');
+					console.log('登录');
+					var userInfo = _load(_get('userInfo'));
+					_tell(userInfo);
+					if(userInfo.userType == 1){
+						openWindow('views/organization.html', 'organization');
+					}else {
+						openWindow('views/ucenter.html','ucenter');	
+					}
 				}else{
 					openWindow("views/login.html","login");
 				} 
@@ -389,13 +422,23 @@ function plusReady() {
 				}
 				
 			},
+			//跳转到组织学习tab
+			goOrgStudy: function() {
+				$('.go-study').click();
+			},
+			//跳转到组织活动tab
+			goOrgActivity: function() {
+				$('.go-activity').click();
+			},
 			//退出登录
 			logout: function(){
 				var self = this;
-				self.isLogin = false;
-				self.userInfo = {};
+//				self.isLogin = false;
+//				self.userInfo = {};
+//				self.userType = null;
 				plus.storage.removeItem('userInfo');
 				mui.toast('退出成功');
+				plus.webview.currentWebview().reload();
 			},
 			//清除缓存
 			clearCache:function(){
@@ -427,26 +470,42 @@ function plusReady() {
 		},
 		mounted: function(){
 			var self = this;
-			self.userInfo = _load(_get('userInfo'));
 			
-			//获取个人信息
+			self.userInfo = _load(_get('userInfo'));
+
+			//获取用户信息
 			if(self.userInfo != null) {
+				var userType = self.userInfo.userType;
+				console.log("首页登录usertype=" + userType);
+				var sql = '';
+				if(userType == 1){
+					//组织登录
+					sql = "select * from organization where name = ? and pswd = ?";
+				}else {
+					//党员登录
+					sql = "select * from User where name = ? and pswd = ?";					
+				}
+				
 				_callAjax({
 					cmd: "fetch",
-					sql: "select * from User where name = ? and pswd = ?",
+					sql: sql,
 					vals: _dump([self.userInfo.name, self.userInfo.pswd])
 				}, function(d) {
-			
+				
 					if(d.success && d.data) {
 						self.isLogin = true;
 						self.userInfo = d.data[0];
+						self.userInfo.userType = userType;
 						_set('userInfo', _dump(self.userInfo));
+						self.userType = userType;
 					} else {
 						self.isLogin = false;
 						self.userInfo = {};
 						plus.storage.removeItem('userInfo');
+						self.userType = null;
 					}
 				});
+				
 			}
 			
 			//获取版本号

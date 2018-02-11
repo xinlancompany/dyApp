@@ -1,7 +1,8 @@
 //预加载页面
 mui.init({
 	preloadPages: [{
-
+		url: 'internetCourseware.html',
+		id: 'internetCourseware'
 	}],
 });
 
@@ -22,7 +23,7 @@ function plusReady() {
 					_set("netcourseId", i.id);
 					mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
 				
-					openWindow("views/internetCourseware.html", "internetCourseware");
+					openWindow("internetCourseware.html", "internetCourseware");
 				} else {
 					openWindow("login.html", "login");
 				}
@@ -36,11 +37,14 @@ function plusReady() {
 					f = _at(self.internets, -1).id;
 				}
 				
+				var orgId = _getOrgId();
+
 				_callAjax({
 					cmd:"fetch",
-					sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from articles where ifValid =1 and id< ? and linkerId = ? order by id desc limit 10",
+					sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and id< ? and linkerId = ? and orgId = "+ orgId + " order by id desc limit 10",
 					vals:_dump([f, linkerId.netCourse])
 				},function(d){
+					_tell(d);
 					if(d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
@@ -66,9 +70,11 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
-			self.init();
+			
 		}
 	})
+	
+	internetList.init();
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

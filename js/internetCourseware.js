@@ -1,3 +1,18 @@
+var internetCourseware;
+var timer = null;
+	
+function startTimeOut() {
+	console.log('startTimeOut');
+	timer = setInterval(function() {
+		internetCourseware.studyTime++;
+	}, 1000);
+}
+
+function clearTimeOut() {
+	console.log('clearTimeOut');
+	clearInterval(timer);
+}
+
 //预加载页面
 mui.init({
 	beforeback: function() {
@@ -13,13 +28,12 @@ mui.init({
 	}
 });
 
-var timer = null;
 
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
 	var netcourseId = 0;
 	
-	var internetCourseware = new Vue({
+	internetCourseware = new Vue({
 		el: '#internetCourseware',
 		data: {
 			courseData: {},  //课件内容
@@ -31,11 +45,13 @@ function plusReady() {
 			getNetCourseDetail: function(){
 				var self = this;
 				
+				console.log("获取课件详情 courseId = " + netcourseId);
 				_callAjax({
 						cmd: "fetch",
-						sql: "select id, title, img, brief, content, url, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and id = ?",
+						sql: "select id, title, img, brief, content, url, linkerId, reporter, readcnt, newsdate, subtitle, credit from courses where ifValid =1 and id = ?",
 						vals: _dump([netcourseId])
 					}, function(d) {
+						
 						_tell(d.data);
 						if(d.success && d.data) {
 							self.courseData = d.data[0];
@@ -57,10 +73,10 @@ function plusReady() {
 				var self = this;
 				
 				self.otherCoursewares = [];
-	
+				var orgId = _getOrgId();
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, brief, content, url, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and id < ? and linkerId = ? order by id desc limit 3",
+					sql: "select id, title, img, brief, content, url, reporter, readcnt, newsdate, subtitle, credit from courses where ifValid =1 and id < ? and linkerId = ? and orgId = " + orgId + " order by id desc limit 3",
 					vals: _dump([netcourseId, linkerId.netCourse])
 				}, function(d) {
 	
@@ -116,25 +132,24 @@ function plusReady() {
 				self.getOtherCourse();
 				
 				//查重
-				var userInfo = _load(_get('userInfo'));
-				if(userInfo) {
-					_callAjax({
-						cmd: "fetch",
-						sql: "select * from courseEnroll where userId = ? and courseId = ?",
-						vals: _dump([userInfo.id, netcourseId])
-					}, function(d) {
-						if(d.success) {
-							if(d.data) {
-								mui.confirm('您已学过该课程，确定重新学习?', '', ['确定', '取消'], function(e) {
-									if(e.index == 0) {
-				
-									}
-								})
-							}
-						}
-					})
-				
-				}
+//				var userInfo = _load(_get('userInfo'));
+//				if(userInfo) {
+//					_callAjax({
+//						cmd: "fetch",
+//						sql: "select * from courseEnroll where userId = ? and courseId = ?",
+//						vals: _dump([userInfo.id, netcourseId])
+//					}, function(d) {
+//						if(d.success) {
+//							if(d.data) {
+//								mui.confirm('您已学过该课程，确定重新学习?', '', ['确定', '取消'], function(e) {
+//									if(e.index == 0) {
+//				
+//									}
+//								})
+//							}
+//						}
+//					})				
+//				}
 			}
 		},
 		watch:{
@@ -148,26 +163,17 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
+			self.init();
 		}
 	})
 	
-	function startTimeOut() {
-		timer = setInterval(function() {
-			internetCourseware.studyTime++;
-		}, 1000);
-	}
-	
-	function clearTimeOut(){
-		clearInterval(timer);
-	}
-	
 	//添加newId自定义事件监听
 	window.addEventListener('netcourseId', function(event) {
-		//获得事件参数
 		//初始化
 		internetCourseware.init();
 	})
 }
+
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {
 	plusReady();

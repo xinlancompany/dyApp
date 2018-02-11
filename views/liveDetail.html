@@ -20,7 +20,7 @@
 		
 		<div id="liveDetail" class="have-header have-footer">
 			<div class="live-video">
-				<video :src="liveData.url" controls preload autoplay :poster="liveData.img"></video>
+				<video :src="liveData.url" controls :poster="liveData.img" onplaying="startTimeOut()" onpause="clearTimeOut()" webkit-playsinline playsinline></video>
 				<span class="live-state" v-text="liveData.status" :class="{'active': liveData.status}"></span>
 			</div>
 			<h1 v-text="liveData.title"></h1>

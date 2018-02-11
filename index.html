@@ -62,11 +62,11 @@
 			</div>
 			
 			<div class="manager-entry">
-				<span><i class="iconfont icon-partyflag"></i>组织信息管理</span>
-				<span><i class="iconfont icon-dangyuan"></i>党员信息管理</span>
+				<span @click="gotoOrganization"><i class="iconfont icon-partyflag"></i>组织信息管理</span>
+				<span @click="gotoUcenter"><i class="iconfont icon-dangyuan"></i>党员信息管理</span>
 			</div>
 			
-			<div class="activity">
+			<div class="activity" v-show="activity.length>0">
 				<header @click="goActivityTab" class="global-header"><h1 class="title">活动专题</h1><span class="more">更多</span></header>
 				<ul>
 					<li v-for="a in activity" @click="goActivityList(a.id)">
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		
-		<div id="activity" class="have-footer have-header main activity">
+		<div id="activity" class="have-footer have-header main activity" v-show="activity.length>0">
 			<ul>
 				<li v-for="a in activity" @click="goActivityList(a.id)">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
@@ -90,18 +90,8 @@
 		</div>
 		
 		<div id="study" class="have-footer main">
-			<!--<div class="swiper-container study-swiper">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide" v-for="i in scrollNews" @click="gotoDetail(i)" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-				</div>
-				<div class="swiper-pagination study-pagination"></div>
-				<div class="mui-slider-text">
-					<p v-text="activeSlideText"></p>
-				</div>
-			</div>-->
-
 			<div class="news-list">
-				<header @click="goEduDynamic" class="global-header"><h1 class="title">教育动态</h1><span class="more" @click="goNewsList">更多</span></header>
+				<header class="global-header" @click="goNewsList"><h1 class="title">教育动态</h1><span class="more" >更多</span></header>
 				<ul class="mui-table-view">
 					<li v-for="i in headNews" @click="gotoDetail(i)">
 						<a>
@@ -115,7 +105,7 @@
 				</ul>
 			</div>
 			
-			<div class="live-list">
+			<div class="live-list" v-show="lives.length>0">
 				<header @click="goLiveList" class="global-header"><h1 class="title">直播课堂</h1><span class="more">更多</span></header>
 				<ul>
 					<li v-for="l in lives" @click="goLiveDetail(l)">
@@ -129,7 +119,7 @@
 				</ul>
 			</div>
 			
-			<div class="news-list internet-list">
+			<div class="news-list internet-list" v-show="internets.length>0">
 				<header @click="goInternetList" class="global-header"><h1 class="title">网络课堂</h1><span class="more">更多</span></header>
 				<ul class="mui-table-view">
 					<li v-for="i in internets" @click="gotoNetCourseDetail(i)">
@@ -149,18 +139,18 @@
 		<div id="ucenter" class="have-footer have-header main ucenter">
 			<div class="user" @click="goLogin">
 				<div class="user-img">
-					<img :src="userInfo.img" v-show="isLogin" v-if="userInfo != null"/>
+					<img :src="userInfo.img?userInfo.img:'img/organization.jpg'" v-show="isLogin" v-if="userInfo != null"/>
 					<i class="iconfont icon-gerenzhongxinxia" v-show="!isLogin"></i>
 				</div>
 				<p v-text="isLogin ? userInfo.name : '立即登录'"></p>
 			</div>
 			
 			<div class="ucenter-flex">
-				<span @click="checkPoints"><i class="iconfont icon-icon1"></i>党员先锋指数</span>	
+				<span @click="checkPoints"><i class="iconfont icon-icon1"></i>先锋指数</span>	
 				<span @click="checkCredit"><i class="iconfont icon-jifen"></i>学习积分</span>	
 			</div>
-
-			<ul class="mui-table-view">
+			<!--党员登录-->
+			<ul class="mui-table-view" v-show="userType != 1">
 				<li class="mui-table-view-cell" @click="goPost">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-xiaoxi"></i>消息
@@ -177,8 +167,20 @@
 					</a>
 				</li>
 			</ul>
-
-			<ul class="mui-table-view">
+			<!--组织登录-->
+			<ul class="mui-table-view" v-show="userType == 1">
+				<li class="mui-table-view-cell" @click="goOrgStudy">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-wodesk"></i>组织学习
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="goOrgActivity">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-huodong"></i>组织活动
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" v-show="isLogin || androidUpdate">
 				<!--<li class="mui-table-view-cell" @click="goRecommend">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-tuijian"></i>推荐

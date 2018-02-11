@@ -2,24 +2,33 @@ mui.init({
 });
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
-	var ucenter = new Vue({
-		el: '#ucenter',
+	var organization = new Vue({
+		el: '#organization',
 		data: {
-			userInfo:{},
+			orgInfo: {
+				img: '',
+				name: '',
+				no:'',
+				secretary:'',
+				type:'',
+			}
 		},
 		methods: {
 			getInfo: function(){
 				var self = this;
 				
 				var userInfo = _load(_get('userInfo'));
-				_tell(userInfo);
+				console.log(userInfo.id);
 				_callAjax({
 					cmd:"fetch",
-					sql:"select u.id, u.name, u.idNo, u.img, o.name as orgName from User u left outer join organization o on u.orgId = o.id where u.ifValid = 1 and u.id = ?",
+					sql:"select o.id, o.name, o.img, o.no, o.secretary, o.type, count(u.id) as memCount from organization o left outer join User u on u.orgId = o.id where o.ifValid = 1 and u.ifValid = 1 and o.id = ?",
 					vals:_dump([userInfo.id])
 				},function(d){
 					if(d.success && d.data){
-						self.userInfo = d.data[0];
+						self.orgInfo = d.data[0];
+						if(self.orgInfo.img == ''){
+							self.orgInfo.img = "../img/organization.jpg";
+						}
 					}
 				})
 			},
@@ -28,10 +37,10 @@ function plusReady() {
 		mounted: function() {
 			var self = this;
 			
+			self.getInfo();
 		}
 	})
 
-	ucenter.getInfo();
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

@@ -1,6 +1,6 @@
 mui.init({
 	preloadPages: [{
-		url: 'views/internetCourseware.html',
+		url: 'internetCourseware.html',
 		id: 'internetCourseware'
 	}]
 });
@@ -22,11 +22,11 @@ function plusReady() {
 					if(self.internets.length) {
 						f = _at(self.internets, -1).id;
 					}
-					
+					var orgId = _getOrgId();
 					_callAjax({
 						cmd: "fetch",
-						sql: "select a.id, a.title, a.img, a.content, a.brief from articles a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
-						vals: _dump([self.userInfo.id, f, linkerId.netCourse])
+						sql: "select a.id, a.title, a.img, a.content, a.brief from courses a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and a.orgId = ? and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
+						vals: _dump([orgId, self.userInfo.id, f, linkerId.netCourse])
 					}, function(d) {
 						if(d.success && d.data) {
 							d.data.forEach(function(r) {
@@ -53,7 +53,7 @@ function plusReady() {
 				_set("netcourseId", i.id);
 				mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
 				
-				openWindow("views/internetCourseware.html", "internetCourseware");
+				openWindow("internetCourseware.html", "internetCourseware");
 			},
 		},
 		mounted: function() {

@@ -33,18 +33,17 @@ function plusReady() {
 				if(self.activityList.length) {
 					f = _at(self.activityList, -1).id;
 				}
-				
+				var orgId = _getOrgId();
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where ifValid =1 and linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-					vals:_dump([activitySortId, f])
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where a.ifValid =1 and a.orgId = ? and a.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+					vals:_dump([orgId, activitySortId, f])
 				},function(d){
 					if(d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
 							self.activityList.push(r);
-						
-						});
+						})
 					}else {
 						self.bHaveMore = false;
 						if(f != 10e5){
@@ -62,8 +61,7 @@ function plusReady() {
 				self.activityList = [];
 				self.getActivityList();
 				self.bHaveMore = false;
-			}
-			
+			}			
 		},
 		mounted: function() {
 			var self = this;

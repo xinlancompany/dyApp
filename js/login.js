@@ -19,15 +19,15 @@ function plusReady() {
 				if(self.username == "邓念"){
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, name, pswd, img from User where name = ?",
+						sql: "select id, name, pswd, img, orgId from User where name = ?",
 						vals: _dump([self.username.trim()])
 					}, function(d) {
 						if(d.success && d.data) {
 							if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
 							mui.toast("登录成功");
-						
-						
+							
 							var userInfo = d.data[0];
+							userInfo.userType = 0;
 							_set('userInfo',_dump(userInfo));
 						
 							mui.fire(plus.webview.getLaunchWebview(), 'loginBack');
@@ -36,12 +36,34 @@ function plusReady() {
 								mui.back();
 							}, 1500);
 						} else {
-							mui.toast("账号不存在");
-						
+							mui.toast("账号不存在");						
 						}
 					})
 				}else {
 					//如果是组织
+					_callAjax({
+						cmd: "fetch",
+						sql: "select id, name, pswd, img, no, secretary, type from organization where name = ?",
+						vals: _dump([self.username.trim()])
+					}, function(d) {
+						if(d.success && d.data) {
+							if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
+							mui.toast("登录成功");
+					
+							var userInfo = d.data[0];
+							userInfo.userType = 1;
+							_set('userInfo', _dump(userInfo));
+					
+							mui.fire(plus.webview.getLaunchWebview(), 'loginBack');
+					
+							setTimeout(function() {
+								mui.back();
+							}, 1500);
+						} else {
+							mui.toast("账号不存在");
+					
+						}
+					})
 				}
 
 			}

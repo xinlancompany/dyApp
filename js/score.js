@@ -3,7 +3,7 @@ mui.init({
 		url: 'activeDetail.html',
 		id: 'activeDetail',
 	},{
-		url: 'views/internetCourseware.html',
+		url: 'internetCourseware.html',
 		id: 'internetCourseware'
 	}],
 });
@@ -47,7 +47,7 @@ function plusReady() {
 					_set("netcourseId", i.id);
 					mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
 					
-					openWindow("views/internetCourseware.html", "internetCourseware");
+					openWindow("internetCourseware.html", "internetCourseware");
 				}
 				
 			},
@@ -72,6 +72,7 @@ function plusReady() {
 						f = _at(self.activityList, -1).id;
 					}
 				
+					console.log("f="+f);
 					_callAjax({
 						cmd: "fetch",
 						sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
@@ -114,7 +115,7 @@ function plusReady() {
 				
 					_callAjax({
 						cmd: "fetch",
-						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', a.newsdate)as time, a.credit as points from articles a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
+						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', a.newsdate)as time, a.credit as points from courses a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
 						vals: _dump([self.userInfo.id, f, linkerId.netCourse])
 					}, function(d) {
 						if(d.success && d.data) {
@@ -159,8 +160,8 @@ function plusReady() {
 				
 				_callAjax({
 					cmd: "fetch",
-					sql: "select sum(a.credit) as totalScore from articles a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.linkerId = 105",
-					vals: _dump([self.userInfo.id])
+					sql: "select sum(a.credit) as totalScore from courses a left outer join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.linkerId = ?",
+					vals: _dump([self.userInfo.id, linkerId.netCourse])
 				}, function(d) {
 					if(d.success && d.data) {
 						self.courseScore = d.data[0].totalScore;

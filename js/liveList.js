@@ -1,7 +1,8 @@
 //预加载页面
 mui.init({
 	preloadPages: [{
-
+		url: 'views/liveDetail.html',
+		id: 'liveDetail'
 	}],
 });
 
@@ -37,10 +38,11 @@ function plusReady() {
 					f = _at(self.lives, -1).id;
 				}
 				
+				var orgId = _getOrgId();
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where ifValid =1 and a.id < ? group by a.id order by a.starttime desc limit 10",
-					vals:_dump([f])
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where ifValid =1 and a.orgId = ? and a.id < ? group by a.id order by a.starttime desc limit 10",
+					vals:_dump([orgId, f])
 				},function(d){
 					if(d.success && d.data) {
 						self.bHaveMore = true;
