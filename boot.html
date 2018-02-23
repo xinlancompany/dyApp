@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="./lib/jquery.min.js"></script>
+		<script src="./lib/vue.min.js"></script>
+		<script src="./lib/mui.min.js"></script>
+		<link href="./lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="./lib/iconfont.css" />
+		<link rel="stylesheet" href="./css/style.css" />
+	</head>
+	<body>
+		<div class="boot" :style="{backgroundImage:'url('+link+')'}">
+			<span @click="openIndex">{{time}} 秒后关闭</span>
+		</div>
+	</body>
+</html>
+<script src="./lib/utils.js"></script>
+<script src="./lib/a_ref.js"></script>
+<script src="./js/boot.js"></script>

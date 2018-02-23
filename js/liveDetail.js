@@ -52,6 +52,8 @@ function plusReady() {
 				}, function(d) {
 
 					if(d.success && d.data) {
+						var arrImg = d.data[0].img.split('/upload');
+						d.data[0].img = serverAddr + '/upload' + arrImg[1];
 						self.liveData = d.data[0];
 			
 						//视频新闻，取src
@@ -61,6 +63,8 @@ function plusReady() {
 						if(url == '#' || url.length <= 0) {
 							var src = $(content).find('video').attr('src');
 							console.log("live src=" + src);
+							var arrSrc = src.split('/upload');
+							src = serverAddr + '/upload' + arrSrc[1];
 							self.liveData.url = src;
 						}
 						console.log("img="+self.liveData.img);

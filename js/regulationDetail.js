@@ -12,14 +12,14 @@ function plusReady() {
 				$(this)[0].pause();
 			})
 			$('body').animate({scrollTop:0})
-			newsDetail.newsData = []
+			regulationDetail.newsData = []
 		}
 	});
 	
 	var newsId = 0;	
 	
-	var newsDetail = new Vue({
-		el: '#newsDetail',
+	var regulationDetail = new Vue({
+		el: '#regulationDetail',
 		data: {
 			newsData: [],  //新闻内容
 		},
@@ -27,19 +27,18 @@ function plusReady() {
 			//获取新闻内容
 			getNewsData: function() {
 				var self = this;
-
+				
+				
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, brief, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and id = ?",
+					sql: "select id, title, img, content, newsdate from regulations where ifValid =1 and id = ?",
 					vals: _dump([newsId])
 				}, function(d) {
 					_tell(d.data);
 					if(d.success && d.data) {
 						self.newsData = d.data[0];
-				
 					}
 				})
-				
 				
 			},
 	
@@ -47,7 +46,7 @@ function plusReady() {
 		mounted: function() {
 			var self = this;
 	
-			newsId = _get('newsId');
+			newsId = _get('regulationId');
 			console.log("newsId111="+newsId);
 			//获取动态新闻
 			self.getNewsData();
@@ -55,10 +54,11 @@ function plusReady() {
 	})
 	
 	//添加newId自定义事件监听
-	window.addEventListener('newsId', function(event) {
+	window.addEventListener('regulationId', function(event) {
 		//获得事件参数
-		newsId = _get('newsId');
-		newsDetail.getNewsData();
+		newsId = _get('regulationId');
+		console.log("newsId = "+newsId);
+		regulationDetail.getNewsData();
 	})
 }
 // 判断扩展API是否准备，否则监听'plusready'事件

@@ -19,18 +19,19 @@ function plusReady() {
 				if(self.username == "邓念"){
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, name, pswd, img, orgId from User where name = ?",
+						sql: "select id,name,orgName,orgNo,pswd from User where name = ?",
 						vals: _dump([self.username.trim()])
 					}, function(d) {
 						if(d.success && d.data) {
 							if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
-							mui.toast("登录成功");
+							console.log(d.data[0].orgName);
+							mui.toast(d.data[0].name + "\n欢迎您!");
 							
 							var userInfo = d.data[0];
 							userInfo.userType = 0;
 							_set('userInfo',_dump(userInfo));
 						
-							mui.fire(plus.webview.getLaunchWebview(), 'loginBack');
+							mui.fire(plus.webview.getWebviewById('index'), 'loginBack');
 						
 							setTimeout(function() {
 								mui.back();
@@ -40,6 +41,7 @@ function plusReady() {
 						}
 					})
 				}else {
+					console.log('222222');
 					//如果是组织
 					_callAjax({
 						cmd: "fetch",
@@ -54,7 +56,7 @@ function plusReady() {
 							userInfo.userType = 1;
 							_set('userInfo', _dump(userInfo));
 					
-							mui.fire(plus.webview.getLaunchWebview(), 'loginBack');
+							mui.fire(plus.webview.getWebviewById('index'), 'loginBack');
 					
 							setTimeout(function() {
 								mui.back();

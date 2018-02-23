@@ -9,6 +9,9 @@ mui.init({
 		url: 'views/newsDetail.html',
 		id: 'newsDetail'
 	},{
+		url: 'views/regulationDetail.html',
+		id: 'regulationDetail'
+	},{
 		url: 'views/score.html',
 		id: 'score'
 	}]
@@ -32,6 +35,12 @@ function plusReady() {
 		var webview = plus.webview.currentWebview();
 		webview.reload();
 	})
+	var header = new Vue({
+		el: '.pageTitle',
+		data: {
+			showOrgTitle: false,
+		}
+	});
 	
 	var indexSwiper = new Vue({
 		el: '.index-swiper',
@@ -107,7 +116,7 @@ function plusReady() {
 			//获取活动专题
 			getActivitySort: function(){
 				var self = this;
-				
+				self.activity = [];
 				var orgId = _getOrgId();
 				
 				_callAjax({
@@ -116,7 +125,11 @@ function plusReady() {
 					vals: _dump([linkerId.activitySort, orgId])
 				},function(d){
 					if(d.success && d.data){
-						self.activity = d.data
+						d.data.forEach(function(r){
+							var arrImg = r.img.split('/upload');
+							r.img = serverAddr + '/upload' + arrImg[1];
+							self.activity.push(r);
+						})
 					}
 				})
 			},
@@ -166,11 +179,22 @@ function plusReady() {
 		el: '#activity',
 		data: {
 			activity: [],
-			bHaveMore: false
+			bHaveMore: false,
+			regulations: [{id:'1', img: 'http://www.zjsdxf.cn/image.action?url=/image/dangjian/20171212/bmmd_320d.jpg', title: '通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容', newsdate: '2018-01-09'}]
 		},
 		methods: {
-			goActivity: function(i) {
-					
+			//跳转到规章制度详情
+			gotoDetail:function(i){
+				var self = this;
+				
+				console.log("regulationId = "+ i.id);
+				_set("regulationId", i.id);
+				
+				//触发详情页面的newsId事件
+				mui.fire(plus.webview.getWebviewById("regulationDetail"), 'regulationId', {
+				});
+			
+				openWindow("views/regulationDetail.html", "regulationDetail");
 			},
 			//跳转到某个专题的活动列表页
 			goActivityList:function(id){
@@ -206,9 +230,11 @@ function plusReady() {
 				},function(d){
 					if(d.success && d.data){
 						self.bHaveMore = true;
-						d.data.forEach(function(r) {
-							self.activity.push(r);						
-						});
+						d.data.forEach(function(r){
+							var arrImg = r.img.split('/upload');
+							r.img = serverAddr + '/upload' + arrImg[1];
+							self.activity.push(r);
+						})
 					}else {
 						self.bHaveMore = false;
 						if(f != 10e5){
@@ -328,13 +354,18 @@ function plusReady() {
 			getliveClass: function(){
 				var self = this;
 				var orgId = _getOrgId();
+				self.lives = [];
 				_callAjax({
 					cmd: "fetch",
 					sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where ifValid =1 and a.orgId = ? group by a.id order by a.starttime desc limit 2",
 					vals: _dump([orgId])
 				}, function(d) {
 					if(d.success && d.data) {
-						self.lives = d.data;
+						d.data.forEach(function(r){
+							var arrImg = r.img.split('/upload');
+							r.img = serverAddr + '/upload' + arrImg[1];
+							self.lives.push(r);
+						});
 					}
 				})
 			}
@@ -472,7 +503,9 @@ function plusReady() {
 			var self = this;
 			
 			self.userInfo = _load(_get('userInfo'));
-
+			console.log('获取用户信息');
+			_tell(self.userInfo);
+			
 			//获取用户信息
 			if(self.userInfo != null) {
 				var userType = self.userInfo.userType;
@@ -483,7 +516,7 @@ function plusReady() {
 					sql = "select * from organization where name = ? and pswd = ?";
 				}else {
 					//党员登录
-					sql = "select * from User where name = ? and pswd = ?";					
+					sql = "select id,name,orgName,orgNo,pswd from User where name = ? and pswd = ?";					
 				}
 				
 				_callAjax({
@@ -498,6 +531,8 @@ function plusReady() {
 						self.userInfo.userType = userType;
 						_set('userInfo', _dump(self.userInfo));
 						self.userType = userType;
+						
+						
 					} else {
 						self.isLogin = false;
 						self.userInfo = {};
@@ -551,12 +586,25 @@ function plusReady() {
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
 		changeTab(page, $(this));
+		console.log(page);
 		
-		if(page == 'activity'|| page == 'ucenter') {
+		$(".mui-title").text("舟山共产党员");
+		header.showOrgTitle = false;
+		
+		if(page == 'ucenter') {
 			indexSwiper.show = false;
-		} else {
+			
+		}else if(page == 'activity'){
+			indexSwiper.show = true;
+			
+			var userInfo = _load(_get('userInfo'));
+			if(userInfo != null){
+				var name = userInfo.userType == 1 ? userInfo.name : userInfo.orgName;
+				$(".mui-title").text(name);
+				header.showOrgTitle = true;
+			}
+		}else {
 			indexSwiper.show = true;
 		}
-
 	})
 }

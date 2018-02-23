@@ -3,7 +3,7 @@ mui.init({
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
 	var activityId = 0;
-	
+		
 	var activityDetail = new Vue({
 		el: '#activeDetail',
 		data: {
@@ -22,7 +22,9 @@ function plusReady() {
 					vals:_dump([activityId])
 				},function(d){
 					if(d.success && d.data) {
-						self.detailData = d.data[0];
+						var arrImg = d.data[0].img.split('/upload');
+						d.data[0].img = serverAddr + '/upload' + arrImg[1];
+						self.detailData = d.data[0];						
 					}
 				})
 			},
@@ -83,6 +85,37 @@ function plusReady() {
 						}
 					}
 				})
+			},
+			//修改开始时间
+			changeStartTime: function(){
+				var self = this;
+				console.log('修改开始时间');
+				
+				
+				//修改完后需要保存
+			},
+			//修改结束时间
+			changeEndTime: function(){
+				var self = this;
+				
+				//修改完后需要保存
+			},
+			//修改活动地址
+			changeAddress: function(){
+				var self = this;
+				
+				mui.prompt('修改活动地址', '', '', ['确认', '取消'], function(e) {
+					console.log(((e.index == 0) ? "确认: " : "取消") + e.value);
+					if(e.index == 0) {
+						if(e.value){
+							self.detailData.address = e.value;
+						}else {
+							
+						}
+					}
+				}, 'div');
+				
+				//修改完后需要保存
 			},
 			//初始化
 			init: function(){

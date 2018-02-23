@@ -11,6 +11,17 @@ body {
     background-color: #f7f7f7;
 }
 
+.mui-bar {
+    .mui-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .icon-more {
+            font-size: 24px;
+        }
+    }
+}
+
 .main {
     display: none;
 }
@@ -59,7 +70,28 @@ body {
         }
     }
 }
-
+.boot {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    span {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background-color: rgba(0,0,0,.6);
+        color: #fff;
+        padding: 5px 10px;
+        z-index: 2;
+        font-size: 12px;
+    }
+}
 .swiper-container {
     height: 160px;
     position: relative;
@@ -353,7 +385,7 @@ body {
 }
 
 .activity {
-    ul {
+    ul.activity-list {
         background-color: #fff;
         li {
             padding: 15px;
@@ -464,11 +496,12 @@ body {
                 }
             }
         }
-        p {
+        textarea {
             color: #333;
             font-size: 16px;
-            
             line-height: 24px;
+            min-height: 300px;
+            border: none;
         }
     }
     footer {
@@ -812,7 +845,6 @@ body {
     }
 }
 
-
 .score {
     .content {
         background-color: rgb(255, 158, 13);
@@ -844,5 +876,61 @@ body {
     }
     h4 {
         line-height: 24px;
+    }
+}
+
+//2018-02-11 修改组织生活
+.notice {
+    display: block;
+    position: relative;
+    padding: 0 20px 0 60px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #333;
+    .ell;
+    font-size: 16px;
+    &:before {
+        content: '通知:';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        color: @base;
+    }
+}
+
+.thumb-upload {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #eee;
+    float: left;
+    margin: 10px 0;
+    position: relative;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    &:before {
+        content: '选择图片';
+        position: absolute;
+        font-size: 14px;
+        color: #999;
+        left: 0;
+        top: 0;
+        width: 120px;
+        height: 120px;
+        text-align: center;
+        line-height: 120px;
+    }
+    input {
+        position: absolute;
+        opacity: 0;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
     }
 }

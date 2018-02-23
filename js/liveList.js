@@ -46,9 +46,10 @@ function plusReady() {
 				},function(d){
 					if(d.success && d.data) {
 						self.bHaveMore = true;
-						d.data.forEach(function(r) {
+						d.data.forEach(function(r){
+							var arrImg = r.img.split('/upload');
+							r.img = serverAddr + '/upload' + arrImg[1];
 							self.lives.push(r);
-						
 						});
 						
 						_tell(self.lives);

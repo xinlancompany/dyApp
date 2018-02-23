@@ -25,20 +25,20 @@
 				<li class="mui-table-view-cell">
 					<i class="iconfont icon-men"></i>报名人数：{{detailData.applicant}}人
 				</li>
-				<li class="mui-table-view-cell">
-					<i class="iconfont icon-shijian"></i>开始时间: {{detailData.starttime}}
+				<li class="mui-table-view-cell" @click="changeStartTime()">
+					<i class="iconfont icon-shijian"></i>开始时间: <input id="start" type="datetime-local" value="detailData.starttime"/>
 				</li>
-				<li class="mui-table-view-cell">
-					<i class="iconfont icon-shijian"></i>结束时间: {{detailData.endtime}}
+				<li class="mui-table-view-cell" @click="changeEndTime()">
+					<i class="iconfont icon-shijian"></i>结束时间: <input id="end" type="datetime-local" value="detailData.endtime"/>
 				</li>
-				<li class="mui-table-view-cell">
+				<li class="mui-table-view-cell" @click="changeAddress()">
 					<i class="iconfont icon-position-copy"></i>活动地点: {{detailData.address}}
 				</li>
 			</ul>
 			
 			<article>
 				<header><i class="iconfont icon-jianjie"></i>活动简介：</header>
-				<p v-html="detailData.content"></p>
+				<textarea v-text="detailData.content"></textarea>
 			</article>
 			
 			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'"></footer>
@@ -48,3 +48,4 @@
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
 <script src="../js/activeDetail.js"></script>
+

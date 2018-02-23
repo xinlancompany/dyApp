@@ -16,8 +16,8 @@
 
 	<body>
 		<!-- 导航栏 -->
-		<header class="mui-bar mui-bar-nav">
-			<h1 class="mui-title">舟山共产党员</h1>
+		<header class="mui-bar mui-bar-nav pageTitle">
+			<h1 class="mui-title">舟山共产党员<i class="iconfont icon-more" v-show="showOrgTitle"></i></h1>
 		</header>
 
 		<footer class="footer-tab">
@@ -25,7 +25,7 @@
 				<i class="iconfont icon-danghui-copy"></i> 首页
 			</a>
 			<a class="go-activity" data-page="activity">
-				<i class="iconfont icon-0045"></i> 活动
+				<i class="iconfont icon-0045"></i> 组织生活
 			</a>
 			<a class="go-study" data-page="study">
 				<i class="iconfont icon-xuexi"></i> 学习平台
@@ -68,22 +68,43 @@
 			
 			<div class="activity" v-show="activity.length>0">
 				<header @click="goActivityTab" class="global-header"><h1 class="title">活动专题</h1><span class="more">更多</span></header>
-				<ul>
+				<ul class="activity-list">
 					<li v-for="a in activity" @click="goActivityList(a.id)">
 						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
 						<p>{{a.name}}<span class="activitySort">进入专题 ></span></p>
-						
 					</li>
 				</ul>
 			</div>
-		</div>
+		</div> 
 		
 		<div id="activity" class="have-footer have-header main activity" v-show="activity.length>0">
-			<ul>
+			<a class="notice">通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容</a>
+			
+			<div class="manager-entry">
+				<span><i class="iconfont icon-jifen"></i>组织积分</span>
+				<span><i class="iconfont icon-dangyuan"></i>党员信息</span>
+			</div>
+			
+			<div class="news-list">
+				<header class="global-header"><h1 class="title">规章制度</h1><span class="more" >更多</span></header>
+				<ul class="mui-table-view">
+					<li v-for="i in regulations" @click="gotoDetail(i)">
+						<a>
+							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+							<div class="mui-media-body">
+								<p class="title" v-text="i.title"></p>
+								<span class="date" v-text="i.newsdate"></span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<header class="global-header"><h1 class="title">组织活动</h1></header>
+			<ul class="activity-list">
 				<li v-for="a in activity" @click="goActivityList(a.id)">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
 					<p>{{a.name}}<span class="activitySort" >进入专题 ></span></p>
-					
 				</li>
 			</ul>
 			<footer @click="getActivitySort" class="block-button" v-show="bHaveMore">更多活动专题</footer>
