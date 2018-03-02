@@ -15,22 +15,30 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">添加文章</h1>
+			<h1 class="mui-title">添加活动</h1>
 		</header>
 		
-		<div id="articleUpload" class="article-upload have-header have-footer">
+		<div id="activityUpload" class="article-upload have-header have-footer">
 			<form class="mui-input-group">
 			    <div class="mui-input-row">
 			        <label>标题</label>
 			    	<input type="text" class="mui-input-clear" placeholder="标题" v-model="title">
 			    </div>
 			    <div class="mui-input-row">
-			        <label>来源</label>
-			        <input type="text" class="mui-input-clear" placeholder="来源" v-model="reporter">
+			        <label>组织者</label>
+			        <input type="text" class="mui-input-clear" placeholder="来源" v-model="organizer">
 			    </div>
 			    <div class="mui-input-row">
-			        <label>日期</label>
-			        <input type="date" placeholder="日期" id="ruleDate">
+			        <label>地点</label>
+			        <input type="text" class="mui-input-clear" placeholder="来源" v-model="location">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>开始日期</label>
+			        <input type="text" placeholder="日期" @click="chooseStarttime($event)" v-model="starttime">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>结束日期</label>
+			        <input type="text" placeholder="日期" @click="chooseEndtime($event)" v-model="endtime">
 			    </div>
 			    <div class="mui-input-row mui-input-image">
 			        <label>封面图</label>
@@ -44,7 +52,7 @@
 			        <textarea rows="15" placeholder="内容" v-model="content"></textarea>
 			    </div>
 			    <div class="mui-button-row">
-			        <button type="button" class="mui-btn mui-btn-primary" @click="newArticle">添加</button>
+			        <button type="button" class="mui-btn mui-btn-primary" @click="newActivity">添加</button>
 			    </div>
 			</form>			
 		</div>
@@ -52,4 +60,4 @@
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
-<script src="../js/articleUpload.js"></script>
+<script src="../js/activityUpload.js"></script>

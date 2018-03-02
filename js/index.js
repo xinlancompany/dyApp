@@ -14,7 +14,10 @@ mui.init({
 	},{
 		url: 'views/score.html',
 		id: 'score'
-	}]
+	},{
+        url: 'views/newsList.html',
+        id: 'newsList'
+    }]
 })	
 
 var changeTab = function(el, self) {
@@ -34,7 +37,7 @@ function plusReady() {
 
 		var webview = plus.webview.currentWebview();
 		webview.reload();
-	})
+	});
 	var header = new Vue({
 		el: '.pageTitle',
 		data: {
@@ -142,25 +145,27 @@ function plusReady() {
 						ucenter.goLogin();
 					} else {
 						mui.toast('请切换党员账号登录');
-						openWindow('views/login.html', 'login');
+						openWindow('views/login.html', 'login', {type: "personal"});
 					}
 				}else {
-					openWindow('views/login.html', 'login');
+					openWindow('views/login.html', 'login', {type: "personal"});
 				}
 				
 			},
 			//组织信息管理
 			gotoOrganization: function(){
 				var userInfo = _load(_get('userInfo'));
+                _tell(userInfo);
 				if(userInfo){
 					if(userInfo.userType == 1) {
-						ucenter.goLogin();
+						// ucenter.goLogin();
+                        openWindow("views/organization.html", "organization");
 					} else {
 						mui.toast('请切换组织账号登录');
-						openWindow('views/login.html', 'login');
+						openWindow('views/login.html', 'login', {type: "organization"});
 					}
 				}else {
-					openWindow('views/login.html', 'login');
+					openWindow('views/login.html', 'login', {type: "organization"});
 				}
 				
 			},
@@ -183,6 +188,15 @@ function plusReady() {
 			regulations: [{id:'1', img: 'http://www.zjsdxf.cn/image.action?url=/image/dangjian/20171212/bmmd_320d.jpg', title: '通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容', newsdate: '2018-01-09'}]
 		},
 		methods: {
+            // 跳转到规章支付
+            gotoRules: function() {
+				//触发列表页面的newList事件
+				mui.fire(plus.webview.getWebviewById("newsList"), 'newList', {
+                    linkerId: linkerId.Rules
+				});
+			
+				openWindow("views/newsList.html", "newsList");
+            },
 			//跳转到规章制度详情
 			gotoDetail:function(i){
 				var self = this;
@@ -197,6 +211,7 @@ function plusReady() {
 				openWindow("views/regulationDetail.html", "regulationDetail");
 			},
 			//跳转到某个专题的活动列表页
+            /*
 			goActivityList:function(id){
 				
 				var userInfo = _load(_get('userInfo'));
@@ -212,6 +227,21 @@ function plusReady() {
 				}
 				
 			},
+            */
+            // 跳转到专题列表
+            goTopicList: function(a) {
+				var userInfo = _load(_get('userInfo'));
+				console.log(userInfo);
+				
+				if(userInfo) {
+					openWindow('views/topicList.html', 'topicList', {
+                        lid: a.id,
+                        name: a.name
+                    });
+				} else {
+					openWindow("views/login.html", "login");
+				}
+            },
 			//获取活动专题
 			getActivitySort: function(){
 				var self = this;
@@ -225,17 +255,18 @@ function plusReady() {
 				console.log("orgId = "+orgId);
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and orgId = ? and id<? order by id desc limit 5",
-					vals: _dump([linkerId.activitySort, orgId, f])
-				},function(d){
-					if(d.success && d.data){
+					// sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and orgId = ? and id < ? order by id desc limit 5",
+                    sql: "select id, name, img from linkers where ifValid = 1 and refId = "+linkerId.activitySort
+					// vals: _dump([linkerId.activitySort, orgId, f])
+				}, function(d) {
+					if (d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r){
 							var arrImg = r.img.split('/upload');
 							r.img = serverAddr + '/upload' + arrImg[1];
 							self.activity.push(r);
-						})
-					}else {
+						});
+					} else {
 						self.bHaveMore = false;
 						if(f != 10e5){
 							mui.toast("没有更多专题了")
@@ -312,6 +343,7 @@ function plusReady() {
 			//新闻列表
 			goNewsList: function(){
 				location.href = "views/newsList.html";
+                // openWindow("views/newsList.html", "")
 			},
 			//获取动态新闻
 			getNews: function(){
@@ -585,6 +617,11 @@ function plusReady() {
 	
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
+        var userInfo = _load(_get('userInfo'));
+        if (page != "index" && page != "ucenter" && !userInfo) {
+            mui.toast("请先登录");
+            return;
+        }
 		changeTab(page, $(this));
 		console.log(page);
 		
@@ -597,7 +634,6 @@ function plusReady() {
 		}else if(page == 'activity'){
 			indexSwiper.show = true;
 			
-			var userInfo = _load(_get('userInfo'));
 			if(userInfo != null){
 				var name = userInfo.userType == 1 ? userInfo.name : userInfo.orgName;
 				$(".mui-title").text(name);

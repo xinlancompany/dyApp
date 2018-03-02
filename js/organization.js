@@ -18,19 +18,19 @@ function plusReady() {
 				var self = this;
 				
 				var userInfo = _load(_get('userInfo'));
-				console.log(userInfo.id);
 				_callAjax({
 					cmd:"fetch",
-					sql:"select o.id, o.name, o.img, o.no, o.secretary, o.type, count(u.id) as memCount from organization o left outer join User u on u.orgId = o.id where o.ifValid = 1 and u.ifValid = 1 and o.id = ?",
-					vals:_dump([userInfo.id])
-				},function(d){
+					sql:"select o.id, o.name, o.img, o.no, o.secretary, o.type, count(u.id) as memCount from organization o left join User u on u.orgNo = o.no and u.ifValid = 1 where o.ifValid = 1 and o.id = ?",
+					vals:_dump([userInfo.id,])
+				},function(d) {
+                    _tell(d);
 					if(d.success && d.data){
 						self.orgInfo = d.data[0];
 						if(self.orgInfo.img == ''){
 							self.orgInfo.img = "../img/organization.jpg";
 						}
 					}
-				})
+				});
 			},
 			
 		},

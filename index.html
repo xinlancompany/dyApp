@@ -86,7 +86,7 @@
 			</div>
 			
 			<div class="news-list">
-				<header class="global-header"><h1 class="title">规章制度</h1><span class="more" >更多</span></header>
+				<header class="global-header" @click="gotoRules"><h1 class="title">规章制度</h1><span class="more" >更多</span></header>
 				<ul class="mui-table-view">
 					<li v-for="i in regulations" @click="gotoDetail(i)">
 						<a>
@@ -102,12 +102,12 @@
 
 			<header class="global-header"><h1 class="title">组织活动</h1></header>
 			<ul class="activity-list">
-				<li v-for="a in activity" @click="goActivityList(a.id)">
+				<li v-for="a in activity" @click="goTopicList(a)">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-					<p>{{a.name}}<span class="activitySort" >进入专题 ></span></p>
+					<p>{{a.name}}<span class="activitySort" >进入 ></span></p>
 				</li>
 			</ul>
-			<footer @click="getActivitySort" class="block-button" v-show="bHaveMore">更多活动专题</footer>
+            <!--<footer @click="getActivitySort" class="block-button" v-show="bHaveMore">更多活动专题</footer>-->
 		</div>
 		
 		<div id="study" class="have-footer main">

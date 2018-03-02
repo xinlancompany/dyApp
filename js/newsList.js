@@ -25,7 +25,10 @@ function plusReady() {
 			},
 	
 			//获取动态新闻
-			getNews: function() {
+			getNews: function(lid) {
+                // 如果没有lid则打开新闻列表
+                if (!lid) lid = linkerId.News;
+
 				var self = this;
 				var f = 10e5;
 				if(self.newsList.length) {
@@ -34,9 +37,10 @@ function plusReady() {
 	
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = ? and id < ? order by id desc limit 10",
-					vals: _dump([linkerId.News, f])
+					sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and id < ? order by id desc limit 10",
+					vals: _dump([lid, f])
 				}, function(d) {
+                    _tell(d);
 					if(d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
@@ -49,21 +53,64 @@ function plusReady() {
 					} else {
 						self.bHaveMore = false;
 						if(f != 10e5) {
-							mui.toast("没有更多新闻了")
+							mui.toast("没有更多新闻了");
 						}
 					}
 				})
 			},
+
+            // 新增新闻
+            newArticle: function() {
+            
+            },
 	
 		},
 		mounted: function() {
 			var self = this;
-	
-			//获取动态新闻
-			self.getNews();
-	
+			// 获取动态新闻
+			// self.getNews();
 		}
-	})
+	});
+
+    // 添加newList自定义监听事件
+    window.addEventListener('newList', function(event) {
+        var lid = event.detail.linkerId;
+        // _tell(_get("userInfo"));
+        // 修改标题
+        _callAjax({
+            cmd: "fetch",
+            sql: "select name from linkers where id = ?",
+            vals: _dump([lid,])
+        }, function(d) {
+            if (!d.success || !d.data) return;
+            $(".mui-title").text(d.data[0].name);
+        });
+
+        // 新增文章列表
+        var userInfoStr = _get("userInfo"),
+            userInfo = _load(userInfoStr);
+        // alert(lid+" -- "+linkerId.Rules);
+        if (!!userInfoStr && !!parseInt(userInfo.userType) && lid == linkerId.Rules) {
+            $("#newArticle").show();
+            $("#newArticle").click(function() {
+                openWindow("articleUpload.html", "articleUpload", {
+                    lid: lid
+                });
+            });
+        } else {
+            $("#newArticle").hide();
+        }
+        newsList.getNews(lid);
+    });
+
+    // 新增后刷新
+    window.addEventListener("refresh", function(event) {
+        // alert("rth");
+        var lid = event.detail.linkerId;
+        newsList.newsList = [];
+        newsList.getNews(lid);
+    });
+
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

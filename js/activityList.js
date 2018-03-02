@@ -10,6 +10,10 @@ var activitySortId = 0;
 
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
+    var wb = plus.webview.currentWebview(),
+        lid = wb.lid;
+    $(".mui-title").text(wb.title);
+
 	var activityList = new Vue({
 		el: '#activityList',
 		data: {
@@ -27,18 +31,17 @@ function plusReady() {
 			},
 			
 			//获取动态新闻
-			getActivityList: function(){
+			getActivityList: function() {
 				var self = this;
 				var f = 10e5;
 				if(self.activityList.length) {
 					f = _at(self.activityList, -1).id;
 				}
-				var orgId = _getOrgId();
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a outer left join activityEnroll e on e.activityId = a.id where a.ifValid =1 and a.orgId = ? and a.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-					vals:_dump([orgId, activitySortId, f])
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where a.ifValid =1 and a.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+					vals:_dump([lid, f])
 				},function(d){
 					if(d.success && d.data) {
 						self.bHaveMore = true;
@@ -53,32 +56,32 @@ function plusReady() {
 							mui.toast("没有更多活动了")
 						}
 					}
-				})
+				});
 			},
 			//初始化操作
-			init: function(){
+			init: function() {
 				var self = this;
 				
 				activitySortId = _get('activitySortId');
 				console.log("111=" + activitySortId);
 				self.activityList = [];
-				self.getActivityList();
+				self.getActivityList(lid);
 				self.bHaveMore = false;
 			}			
 		},
 		mounted: function() {
-			var self = this;
-			
-			self.init();
+            this.activityList = [];
+			this.init();
 		}
-	})
+	});
 	
 	//添加newId自定义事件监听
 	window.addEventListener('activitySortId', function(event) {
 		//获得事件参数
 		activityList.init();
-	})
+	});
 	window.addEventListener('refresh', function(event) {
+        /*
 		var id = event.detail.id;
 		var count = event.detail.count;
 		
@@ -88,8 +91,19 @@ function plusReady() {
 				a.applicant = count;
 				console.log(count);
 			}
-		})
-	})
+		});
+        */
+        lid = event.detail.lid;
+        activityList.init();
+	});
+
+    // 点击打开新增页面
+    $("#newActivity").click(function() {
+        openWindow("activityUpload.html", "activityUpload", {
+            lid: lid,
+        });
+    });
+
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

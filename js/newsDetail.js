@@ -38,11 +38,8 @@ function plusReady() {
 						self.newsData = d.data[0];
 				
 					}
-				})
-				
-				
+				});
 			},
-	
 		},
 		mounted: function() {
 			var self = this;

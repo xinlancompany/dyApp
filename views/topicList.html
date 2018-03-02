@@ -15,18 +15,24 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">活动列表</h1>
-			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="newActivity">新增</button>
+			<h1 class="mui-title">专题列表</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="newTopic">新增</button>
 		</header>
 		
-		<div id="activityList" class="activity have-header have-footer">
-			<ul class="activity-list">
+		<div id="topicList" class="activity have-header have-footer">
+			<ul class="activity-list" v-show="topics.length">
+				<li v-for="i in topics" @click="goToActivity(i)">
+					<div class="img" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+					<p>{{i.name}}<span class="activitySort" >进入 ></span></p>
+				</li>
+                <!--
 				<li v-for="a in activityList" @click="goActivityDetail(a)">
 					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"><span>{{a.applicant}}人已报名</span></div>
 					<p v-text="a.title"></p>
 					<p>活动开始: {{a.starttime}}</p>
 					<p>活动结束: {{a.endtime}}<span class="status">{{a.status}}</span></p>
 				</li>
+                -->
 			</ul>
 			<!--<footer @click="getActivityList" class="block-button" v-show="bHaveMore">查看更多</footer>-->
 		</div>
@@ -34,4 +40,4 @@
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
-<script src="../js/activityList.js"></script>
+<script src="../js/topicList.js"></script>
