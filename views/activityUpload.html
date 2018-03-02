@@ -34,15 +34,14 @@
 			    </div>
 			    <div class="mui-input-row">
 			        <label>开始日期</label>
-			        <input type="text" placeholder="日期" @click="chooseStarttime($event)" v-model="starttime">
+			        <p @click="chooseStarttime($event)" v-model="starttime"></p>
 			    </div>
 			    <div class="mui-input-row">
 			        <label>结束日期</label>
-			        <input type="text" placeholder="日期" @click="chooseEndtime($event)" v-model="endtime">
+			        <p @click="chooseEndtime($event)" v-model="endtime"></p>
 			    </div>
 			    <div class="mui-input-row mui-input-image">
 			        <label>封面图</label>
-                    <!--<div class="thumb-upload" :style="{backgroundImage: 'url('+  +')'}">-->
 			        <div class="thumb-upload" :style="imgStyle">
 			        	<input type="file" accept="image/*" @change="uploadImg($event)">
 			        </div>
@@ -50,6 +49,10 @@
 			    <div class="mui-input-row mui-input-textarea">
 			        <label>内容</label>
 			        <textarea rows="15" placeholder="内容" v-model="content"></textarea>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>筛选用户</label>
+			        <p @click="chooseUsers" v-model="users"></p>
 			    </div>
 			    <div class="mui-button-row">
 			        <button type="button" class="mui-btn mui-btn-primary" @click="newActivity">添加</button>

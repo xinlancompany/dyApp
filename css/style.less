@@ -384,6 +384,26 @@ body {
     }
 }
 
+.activity-block {
+    padding: 0 20px;
+    li {
+        width: 48%;
+        margin-right: 4%;
+        margin-bottom: 8px;
+        float: left;
+        height: 80px;
+        line-height: 80px;
+        font-size: 20px;
+        color: #fff;
+        text-align: center;
+        background-color: #b82419;
+        &:nth-child(2n) {
+            margin-right: 0;
+            background-color: #d4463c;
+        }
+    }
+}
+
 .activity {
     ul.activity-list {
         background-color: #fff;
@@ -746,6 +766,8 @@ body {
             color: #fff;
             font-size: 18px;
             margin-top: 20px;
+            max-width: 70%;
+            .ell;
         }
     }
     ul{
@@ -834,7 +856,7 @@ body {
             margin-right: 10px;
             color: #333;
         }
-        input {
+        input, select {
             border: none;
             background-color: #f7f7f7;
             margin: 0;
@@ -932,5 +954,20 @@ body {
         top: 0;
         right: 0;
         bottom: 0;
+    }
+}
+
+.article-upload {
+    .mui-input-row {
+        label~p {
+            float: right;
+            width: 65%;
+            height: 40px;
+            margin-bottom: 0;
+            padding: 10px 15px 10px 0;
+            border: 0;
+            line-height: 21px;
+            font-size: 17px;
+        }
     }
 }

@@ -535,8 +535,6 @@ function plusReady() {
 			var self = this;
 			
 			self.userInfo = _load(_get('userInfo'));
-			console.log('获取用户信息');
-			_tell(self.userInfo);
 			
 			//获取用户信息
 			if(self.userInfo != null) {
@@ -618,12 +616,11 @@ function plusReady() {
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
         var userInfo = _load(_get('userInfo'));
-        if (page != "index" && page != "ucenter" && !userInfo) {
+        if (page != "index" && !userInfo) {
             mui.toast("请先登录");
-            return;
+			return openWindow('views/login.html', 'login', {type: "personal"});
         }
 		changeTab(page, $(this));
-		console.log(page);
 		
 		$(".mui-title").text("舟山共产党员");
 		header.showOrgTitle = false;

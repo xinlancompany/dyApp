@@ -13,8 +13,8 @@
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .lineTop {
   content: '';
@@ -26,8 +26,8 @@
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .lineRight {
   content: '';
@@ -39,8 +39,8 @@
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
 }
 [v-cloak] {
   display: none;
@@ -65,6 +65,10 @@ ul {
   color: #fff;
 }
 .mui-bar button.mui-btn {
+  color: #fff;
+}
+.mui-bar button.mui-btn:active {
+  border: none;
   color: #fff;
 }
 .mui-slider-text {
@@ -166,3 +170,8 @@ dl dd {
   padding: 8px 0;
   font-size: 14px;
 }
+.mui-input-group .mui-input-textarea,
+.mui-input-group .mui-input-image {
+  height: auto;
+}
+/*# sourceMappingURL=_reset.css.map */

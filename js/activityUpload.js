@@ -12,7 +12,8 @@ function plusReady() {
             img: "",
             imgStyle: {
                 backgroundImage: ""
-            }
+            },
+            users: ""
         },
         methods: {
             uploadImg: function(evt) {
@@ -67,9 +68,6 @@ function plusReady() {
                     sql: "insert into activitys(title, content, img, organizer, starttime, endtime, linkerId) values(?,?,?,?,?,?,?)",
                     vals: _dump([title, content, self.img, organizer, starttime, endtime, self.lid])
                 }, function(d) {
-                    _tell("----------------");
-                    _tell(d);
-                    _tell("----------------");
                     // 返回并刷
                     if (d.success) {
                         mui.toast("添加成功");
@@ -81,6 +79,9 @@ function plusReady() {
                         mui.toast("添加失败");
                     }
                 });
+            },
+            chooseUsers() {
+            	
             }
         },
         created: function() {

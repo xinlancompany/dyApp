@@ -20,7 +20,7 @@ function plusReady() {
         wb = plus.webview.currentWebview(),
         lid = wb.lid,
         mname = wb.name;
-    $(".mui-title").text(mname+" 专题列表");
+    $(".mui-title").text(mname+"列表");
     // 管理员显示新增
     if (!!userInfoStr && !!parseInt(userInfo.userType)) {
         $("#newTopic").show();

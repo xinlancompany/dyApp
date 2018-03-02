@@ -23,6 +23,10 @@ ul {
 .mui-bar button.mui-btn {
   color: #fff;
 }
+.mui-bar button.mui-btn:active {
+  border: none;
+  color: #fff;
+}
 .mui-slider-text {
   position: absolute;
   left: 0;
@@ -560,6 +564,25 @@ body {
   font-size: 14px;
   color: #999;
 }
+.activity-block {
+  padding: 0 20px;
+}
+.activity-block li {
+  width: 48%;
+  margin-right: 4%;
+  margin-bottom: 8px;
+  float: left;
+  height: 80px;
+  line-height: 80px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  background-color: #b82419;
+}
+.activity-block li:nth-child(2n) {
+  margin-right: 0;
+  background-color: #d4463c;
+}
 .activity ul.activity-list {
   background-color: #fff;
 }
@@ -933,6 +956,10 @@ body {
   color: #fff;
   font-size: 18px;
   margin-top: 20px;
+  max-width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .ucenter ul:last-child {
   margin-top: 20px;
@@ -1035,7 +1062,8 @@ body {
   margin-right: 10px;
   color: #333;
 }
-.login .input-frame input {
+.login .input-frame input,
+.login .input-frame select {
   border: none;
   background-color: #f7f7f7;
   margin: 0;
@@ -1128,4 +1156,14 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
+}
+.article-upload .mui-input-row label ~ p {
+  float: right;
+  width: 65%;
+  height: 40px;
+  margin-bottom: 0;
+  padding: 10px 15px 10px 0;
+  border: 0;
+  line-height: 21px;
+  font-size: 17px;
 }

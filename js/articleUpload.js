@@ -27,7 +27,7 @@ function plusReady() {
                 var title = _trim(this.title),
                     reporter = _trim(this.reporter),
                     content = _trim(this.content);
-                this.articleDate = $("#ruleDate").val();
+                this.articleDate = $("#ruleDate").text();
 
                 if (!title) return mui.toast("请填写标题");
                 if (!reporter) return mui.toast("请填写来源");
@@ -52,6 +52,14 @@ function plusReady() {
                     }
                     mui.back();
                 });
+            },
+            changeDate() {
+            	plus.nativeUI.pickDate( function(e){
+					var d = e.date;
+					console.log( "选择的日期："+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate() );
+				},function(e){
+					console.log( "未选择日期："+e.message );
+				});
             }
         },
         created: function() {
@@ -64,7 +72,7 @@ function plusReady() {
     if ("title" in wb) {
         $(".mui-title").text(wb.title);
     }
-    $("#ruleDate").val(_now().split(" ")[0]);
+    $("#ruleDate").text(_now().split(" ")[0]);
 };
 
 if(window.plus) {
