@@ -191,7 +191,16 @@
 					"views/score.html",
 					"views/newsDetail.html",
 					"views/internetCourseware.html",
-					"views/liveDetail.html"
+					"views/liveDetail.html",
+					"views/regulationDetail.html",
+					"views/newsList.html"
+				],
+				"priority": 0
+			},
+			"boot.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
 				],
 				"priority": 0
 			}
@@ -231,7 +240,6 @@
 				"js/liveList.js",
 				"lib/iconfont.css",
 				"js/myActivity.js",
-				"views/newsList.html",
 				"js/liveDetail.js",
 				"fonts/iconfont.svg",
 				"js/score.js",

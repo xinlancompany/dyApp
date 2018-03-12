@@ -1,40 +1,15 @@
 {
-<<<<<<< HEAD
+  "boot.html": {
+    "refer": [
+      "index.html"
+    ]
+  },
   "index.html": {
     "refer": [
       "views/newsDetail.html",
-      "views/internetCourseware.html",
-      "views/internetCourseList.html",
-      "views/liveDetail.html",
-      "views/liveList.html",
-      "views/login.html",
-      "views/activityList.html",
-      "views/score.html"
-    ]
-  },
-  "views/activityList.html": {
-    "refer": [
-      "views/activeDetail.html"
+      "views/regulationDetail.html",
+      "views/score.html",
+      "views/newsList.html"
     ]
   }
-=======
-	"index.html": {
-		"refer": [
-			"views/newsDetail.html",
-			"views/internetCourseware.html",
-			"views/internetCourseList.html",
-			"views/liveDetail.html",
-			"views/liveList.html",
-			"views/login.html",
-			"views/activityList.html",
-			"views/score.html",
-			"views/ucenter.html"
-		]
-	},
-	"views/activityList.html": {
-		"refer": [
-			"views/activeDetail.html"
-		]
-	}
->>>>>>> master
 }

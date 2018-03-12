@@ -77,79 +77,88 @@
 			</div>
 		</div> 
 		
-		<div id="activity" class="have-footer main activity" v-show="activity.length>0">
-			<a class="notice">通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容</a>
+		<div id="activity" class="have-footer main activity-panel" v-show="activity.length>0">
 			
-			<div class="manager-entry">
-				<span><i class="iconfont icon-jifen"></i>组织积分</span>
-				<span><i class="iconfont icon-dangyuan"></i>党员信息</span>
+			<div class="notice">
+				<header><i class="iconfont icon-xiaoxi"></i>通知</header>
+				<div>
+					<h1>关于举办工商管理硕士研究生班招生报名的函</h1>
+					<p>2017-03-08</p>
+				</div>
 			</div>
 			
-			<div class="news-list">
-				<header class="global-header" @click="gotoRules"><h1 class="title">规章制度</h1><span class="more" >更多</span></header>
-				<ul class="mui-table-view">
-					<li v-for="i in regulations" @click="gotoDetail(i)">
-						<a>
-							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-							<div class="mui-media-body">
-								<p class="title" v-text="i.title"></p>
-								<span class="date" v-text="i.newsdate"></span>
-							</div>
-						</a>
-					</li>
-				</ul>
-			</div>
-
-			<header class="global-header"><h1 class="title">组织活动</h1></header>
 			<ul class="activity-block clearfix">
-				<li v-for="a in activity" @click="goTopicList(a)" v-text="a.name"></li>
+				<li><i class="iconfont icon-huodong"></i>组织活动</li>
+				<li><i class="iconfont icon-jifen"></i>组织积分</li>
+				<li><i class="iconfont icon-Id"></i>党员信息</li>
+				<li><i class="iconfont icon-ai-book"></i>规章制度</li>
 			</ul>
+			
 		</div>
 		
 		<div id="study" class="have-footer main">
-			<div class="news-list">
-				<header class="global-header" @click="goNewsList"><h1 class="title">教育动态</h1><span class="more" >更多</span></header>
-				<ul class="mui-table-view">
-					<li v-for="i in headNews" @click="gotoDetail(i)">
-						<a>
-							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-							<div class="mui-media-body">
-								<p class="title" v-text="i.title"></p>
-								<span class="date" v-text="i.newsdate"></span>
-							</div>
-						</a>
-					</li>
-				</ul>
+			<div class="study-block">
+				<div>
+					<img src="./img/studyIcon1.png" />
+					教育动态
+				</div>
+				<div>
+					<img src="./img/studyIcon2.png" />
+					直播课堂
+				</div>
+				<div>
+					<img src="./img/studyIcon3.png" />
+					网络课堂
+				</div>
 			</div>
 			
-			<div class="live-list" v-show="lives.length>0">
-				<header @click="goLiveList" class="global-header"><h1 class="title">直播课堂</h1><span class="more">更多</span></header>
-				<ul>
-					<li v-for="l in lives" @click="goLiveDetail(l)">
-						<p v-text="l.title"></p>
-						<div class="img" :style="{backgroundImage: 'url('+ l.img +')'}"></div>
-						<footer v-cloak>
-							<span><i class="iconfont icon-men"></i> {{l.audience}}人参加</span>
-							<span :class="{'active':l.status=='正在直播'}"><i class="iconfont icon-bofang"></i> {{l.status}}</span>
+			<div class="study-live">
+				<header>
+					<span class="active">今日直播</span>
+					<span>预告</span>
+					<span>已结束</span>
+				</header>
+				<!--
+					
+				无播出节目时显示的提示内容
+				<div class="live-program">今日暂无直播</div>
+				
+				-->
+				<div class="live-program">
+					<div class="thumb"></div>
+					<div class="detail">
+						<h1>两学一做</h1>
+						<footer>
+							<p><i class="iconfont icon-shijian"></i> 10:00</p>
+							<p><i class="iconfont icon-men"></i> 1133</p>
 						</footer>
-					</li>
-				</ul>
+						<span class="open">
+							<i class="iconfont icon-bofang"></i>
+						</span>
+					</div>
+				</div>
 			</div>
 			
-			<div class="news-list internet-list" v-show="internets.length>0">
-				<header @click="goInternetList" class="global-header"><h1 class="title">网络课堂</h1><span class="more">更多</span></header>
-				<ul class="mui-table-view">
-					<li v-for="i in internets" @click="gotoNetCourseDetail(i)">
-						<a>
-							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-							<div class="mui-media-body">
-								<p class="title" v-text="i.title"></p>
-								<p class="desc" v-text='i.brief'></p>
-								<span class="btn">进入学习</span>
-							</div>
-						</a>
-					</li>
-				</ul>
+			<div class="study-internet">
+				<div class="lists">
+					<div class="list">
+						<div class="thumb" style="background-image: url(http://placehold.it/300x200);"></div>
+						<h1>五水共治这三年</h1>
+						<p>
+							<span><i class="iconfont icon-men"></i>1133</span>
+							<span><i class="iconfont icon-icon--"></i>7</span>
+						</p>
+					</div>
+					<div class="list">
+						<div class="thumb" style="background-image: url(http://placehold.it/300x200);"></div>
+						<h1>五水共治这三年</h1>
+						<p>
+							<span><i class="iconfont icon-men"></i>1133</span>
+							<span><i class="iconfont icon-icon--"></i>7</span>
+						</p>
+					</div>
+				</div>
+				<footer><span>换一换</span></footer>
 			</div>
 		</div>
 

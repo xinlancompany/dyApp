@@ -38,6 +38,7 @@ function plusReady() {
 		var webview = plus.webview.currentWebview();
 		webview.reload();
 	});
+	
 	var header = new Vue({
 		el: '.pageTitle',
 		data: {
@@ -185,10 +186,9 @@ function plusReady() {
 		data: {
 			activity: [],
 			bHaveMore: false,
-			regulations: [{id:'1', img: 'http://www.zjsdxf.cn/image.action?url=/image/dangjian/20171212/bmmd_320d.jpg', title: '通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容通知内容', newsdate: '2018-01-09'}]
 		},
 		methods: {
-            // 跳转到规章支付
+            // 跳转到规章
             gotoRules: function() {
 				//触发列表页面的newList事件
 				mui.fire(plus.webview.getWebviewById("newsList"), 'newList', {
@@ -197,89 +197,12 @@ function plusReady() {
 			
 				openWindow("views/newsList.html", "newsList");
             },
-			//跳转到规章制度详情
-			gotoDetail:function(i){
-				var self = this;
-				
-				console.log("regulationId = "+ i.id);
-				_set("regulationId", i.id);
-				
-				//触发详情页面的newsId事件
-				mui.fire(plus.webview.getWebviewById("regulationDetail"), 'regulationId', {
-				});
-			
-				openWindow("views/regulationDetail.html", "regulationDetail");
-			},
-			//跳转到某个专题的活动列表页
-            /*
-			goActivityList:function(id){
-				
-				var userInfo = _load(_get('userInfo'));
-				console.log(userInfo);
-				
-				if(userInfo) {
-					_set('activitySortId', id);
-					mui.fire(plus.webview.getWebviewById("activityList"), 'activitySortId', {});
-					
-					openWindow('views/activityList.html', 'activityList');
-				} else {
-					openWindow("views/login.html", "login");
-				}
-				
-			},
-            */
-            // 跳转到专题列表
-            goTopicList: function(a) {
-				var userInfo = _load(_get('userInfo'));
-				console.log(userInfo);
-				
-				if(userInfo) {
-					openWindow('views/topicList.html', 'topicList', {
-                        lid: a.id,
-                        name: a.name
-                    });
-				} else {
-					openWindow("views/login.html", "login");
-				}
+            goTopicList: function() {
+				openWindow('views/topicList.html', 'topicList');
             },
-			//获取活动专题
-			getActivitySort: function(){
-				var self = this;
-				
-				var f = 10e5;
-				if(self.activity.length) {
-					f = _at(self.activity, -1).id;
-				}
-				
-				var orgId = _getOrgId();
-				console.log("orgId = "+orgId);
-				_callAjax({
-					cmd: "fetch",
-					// sql: "select id, name, img, strftime('%Y-%m-%d %H:%M', logtime) as logtime from linkers where ifValid = 1 and refId = ? and orgId = ? and id < ? order by id desc limit 5",
-                    sql: "select id, name, img from linkers where ifValid = 1 and refId = "+linkerId.activitySort
-					// vals: _dump([linkerId.activitySort, orgId, f])
-				}, function(d) {
-					if (d.success && d.data) {
-						self.bHaveMore = true;
-						d.data.forEach(function(r){
-							var arrImg = r.img.split('/upload');
-							r.img = serverAddr + '/upload' + arrImg[1];
-							self.activity.push(r);
-						});
-					} else {
-						self.bHaveMore = false;
-						if(f != 10e5){
-							mui.toast("没有更多专题了")
-						}
-					}
-				})
-			}
 		},
 		mounted: function() {
 			var self = this;
-	
-			//获取活动专题
-			self.getActivitySort();
 		}
 	})
 	
@@ -293,15 +216,6 @@ function plusReady() {
 			internets: [],//网络课堂
 		},
 		methods: {
-			//跳转到新闻详情
-			gotoDetail: function(i) {
-				_set("newsId", i.id);
-				//触发详情页面的newsId事件
-				mui.fire(plus.webview.getWebviewById("newsDetail"), 'newsId', {});
-			
-				openWindow("views/newsDetail.html", "newsDetail");
-			},
-			
 			//跳转到直播列表
 			goLiveList: function() {
 				openWindow('views/liveList.html','liveList');
@@ -339,11 +253,6 @@ function plusReady() {
 					openWindow("views/login.html", "login");
 				}
 				
-			},
-			//新闻列表
-			goNewsList: function(){
-				location.href = "views/newsList.html";
-                // openWindow("views/newsList.html", "")
 			},
 			//获取动态新闻
 			getNews: function(){
@@ -616,28 +525,23 @@ function plusReady() {
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
         var userInfo = _load(_get('userInfo'));
-        if (page != "index" && !userInfo) {
-            mui.toast("请先登录");
-			return openWindow('views/login.html', 'login', {type: "personal"});
-        }
+//      if (page != "index" && !userInfo) {
+//          mui.toast("请先登录");
+//			return openWindow('views/login.html', 'login', {type: "personal"});
+//      }
 		changeTab(page, $(this));
 		
 		$(".mui-title").text("舟山共产党员");
 		header.showOrgTitle = false;
 		
-		if(page == 'ucenter') {
+		if(page == 'ucenter' || page == 'activity') {
 			indexSwiper.show = false;
-			
-		}else if(page == 'activity'){
+		}else if(page == 'study'){
 			indexSwiper.show = true;
-			
 			if(userInfo != null){
 				var name = userInfo.userType == 1 ? userInfo.name : userInfo.orgName;
-				$(".mui-title").text(name);
 				header.showOrgTitle = true;
 			}
-		}else {
-			indexSwiper.show = true;
 		}
 	})
 }
