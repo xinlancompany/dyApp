@@ -34,11 +34,11 @@
 			    </div>
 			    <div class="mui-input-row">
 			        <label>开始日期</label>
-			        <p @click="chooseStarttime($event)" v-model="starttime"></p>
+			        <p @click="chooseStarttime($event)" v-text="starttime"></p>
 			    </div>
 			    <div class="mui-input-row">
 			        <label>结束日期</label>
-			        <p @click="chooseEndtime($event)" v-model="endtime"></p>
+			        <p @click="chooseEndtime($event)" v-text="endtime"></p>
 			    </div>
 			    <div class="mui-input-row mui-input-image">
 			        <label>封面图</label>
@@ -50,9 +50,9 @@
 			        <label>内容</label>
 			        <textarea rows="15" placeholder="内容" v-model="content"></textarea>
 			    </div>
-			    <div class="mui-input-row">
+			    <div class="mui-input-row" @click="chooseUsers">
 			        <label>筛选用户</label>
-			        <p @click="chooseUsers" v-model="users"></p>
+                    <p v-text="selectUserNames"></p>
 			    </div>
 			    <div class="mui-button-row">
 			        <button type="button" class="mui-btn mui-btn-primary" @click="newActivity">添加</button>

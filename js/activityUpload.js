@@ -13,7 +13,17 @@ function plusReady() {
             imgStyle: {
                 backgroundImage: ""
             },
-            users: ""
+            users: []
+        },
+        computed: {
+            selectUserNames: function() {
+                var self = this;
+                return _map(function(i) {
+                    return i.name;
+                }, _filter(function(i) {
+                    return i.ifSelect;
+                }, self.users)).join(", ");
+            }
         },
         methods: {
             uploadImg: function(evt) {
@@ -29,21 +39,31 @@ function plusReady() {
             chooseStarttime: function(e) {
                 e.preventDefault();
                 var self = this;
-                plus.nativeUI.pickTime(function(e) {
-                    self.starttime = _datetime(e.date);
-                    alert(self.starttime);
-                }, function(e) {
-                    // 不做什么
+                plus.nativeUI.pickDate(function(d) {
+                    plus.nativeUI.pickTime(function(e) {
+                        self.starttime = _datetime(d.date).split(" ")[0]+" "+_datetime(e.date).split(" ")[1];
+                        // alert(self.starttime);
+                    }, function(e) {
+                        // 不做什么
+                    });
                 });
             },
             chooseEndtime: function(e) {
                 e.preventDefault();
                 var self = this;
-                plus.nativeUI.pickTime(function(e) {
-                    self.endtime = _datetime(e.date);
-                    alert(self.endtime);
-                }, function(e) {
-                    // 不做什么
+                plus.nativeUI.pickDate(function(d) {
+                    plus.nativeUI.pickTime(function(e) {
+                        self.endtime = _datetime(d.date).split(" ")[0]+" "+_datetime(e.date).split(" ")[1];
+                        // alert(self.endtime);
+                    }, function(e) {
+                        // 不做什么
+                    });
+                });
+            },
+            chooseUsers: function() {
+                var self = this;
+                openWindow("selectUsers.html", "selectUsers", {
+                    users: self.users
                 });
             },
             newActivity: function() {
@@ -70,6 +90,28 @@ function plusReady() {
                 }, function(d) {
                     // 返回并刷
                     if (d.success) {
+                        // 更新参加人员表activityEnroll
+                        if (self.users.length) {
+                            _callAjax({
+                                cmd: "multiFetch",
+                                multi: _dump([{
+                                            key: "del",
+                                            sql: "delete from activityEnroll where activityId = "+d.data
+                                        }].concat(
+                                            _map(function(i) {
+                                                return {
+                                                    key: "key"+parseInt(Math.random()*10e6),
+                                                    sql: "insert into activityEnroll(userId, activityId) values("+i.id+", "+d.data+")"
+                                                }
+                                            }, _filter(function(i) {
+                                                return i.ifSelect;
+                                            }, self.users))
+                                        ))
+                            }, function(_d) {
+                                alert(_dump(_d));
+                            });
+                        }
+                        
                         mui.toast("添加成功");
                         mui.fire(plus.webview.getWebviewById("activityList"), "refresh", {
                             lid: self.lid
@@ -80,13 +122,15 @@ function plusReady() {
                     }
                 });
             },
-            chooseUsers() {
-            	
-            }
         },
         created: function() {
 
         }
+    });
+
+    // 返回选择学员
+    window.addEventListener("selectUsers", function(event) {
+        upload.users  = event.detail.users;
     });
 
     var wb = plus.webview.currentWebview();
