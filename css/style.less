@@ -1209,3 +1209,56 @@ body {
     }
     
 }
+
+.tree {
+    .controls {
+        display: flex;
+        height: 50px;
+        justify-content: space-around;
+        align-items: center;
+        span {
+            flex: 1;
+            display: flex;
+            height: 50px;
+            justify-content: center;
+            align-items: center;
+            i {
+                font-size: 26px;
+            }
+            &:active {
+                background-color: #f1f1f1;
+            }
+        }
+    }
+    .branches {
+        background-color: #fff;
+        .branch {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+            &:active {
+                background-color: #f1f1f1;
+            }
+            &:last-child:after {
+                display: none;
+            }
+            &:after {
+                .lineBottom(70px);
+            }
+            i {
+                font-size: 36px;
+                display: block;
+                color: #cb0303;
+            }
+            p {
+                flex: 1;
+                margin: 0;
+                margin-left: 20px;
+                .ell;
+                font-size: 16px;
+                color: #333;
+            }
+        }
+    }
+}
