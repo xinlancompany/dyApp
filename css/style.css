@@ -130,6 +130,10 @@ dl dd {
 .mui-input-group .mui-input-image {
   height: auto;
 }
+.mui-search:before {
+  margin: 0;
+  transform: translateY(-50%);
+}
 .ell {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -1190,6 +1194,7 @@ body {
   justify-content: center;
   text-align: center;
   padding-right: 20px;
+  height: 80px;
 }
 .notice header i {
   font-size: 32px;
@@ -1208,17 +1213,22 @@ body {
   -webkit-transform: scaleX(0.5);
   transform: scaleX(0.5);
 }
-.notice div {
+.notice .notice-swiper {
   flex: 1;
+  height: 80px;
+}
+.notice .detail {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding-left: 20px;
+  height: 80px;
 }
-.notice div h1 {
+.notice .detail h1 {
   font-size: 16px;
 }
-.notice div p {
+.notice .detail p {
   font-size: 14px;
   color: #fff;
   margin: 0;
@@ -1419,4 +1429,10 @@ body {
   font-size: 16px;
   padding: 7px 0;
   text-align: center;
+}
+.search input {
+  margin: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }

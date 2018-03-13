@@ -203,7 +203,7 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
-		}
+		},
 	})
 	
 	var study = new Vue({
@@ -277,9 +277,6 @@ function plusReady() {
 				var self = this;
 				
 				var orgId = _getOrgId();
-				console.log("获取网络课件");
-				console.log(orgId);
-				console.log(linkerId.netCourse);
 				_callAjax({
 					cmd: "fetch",
 					sql: "select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and orgId = "+ orgId + " order by id desc limit 2"
@@ -531,9 +528,16 @@ function plusReady() {
 //      }
 		changeTab(page, $(this));
 		
+		if (page == 'activity') {
+			var noticeSwiper = new Swiper('.notice-swiper', {
+				autoplay: 1500,
+				loop: true,
+			});
+		}
+		
 		$(".mui-title").text("舟山共产党员");
 		header.showOrgTitle = false;
-		
+
 		if(page == 'ucenter' || page == 'activity') {
 			indexSwiper.show = false;
 		}else if(page == 'study'){
@@ -542,6 +546,8 @@ function plusReady() {
 				var name = userInfo.userType == 1 ? userInfo.name : userInfo.orgName;
 				header.showOrgTitle = true;
 			}
+		}else if (page == 'index') {
+			indexSwiper.show = true;
 		}
 	})
 }

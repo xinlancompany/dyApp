@@ -97,11 +97,31 @@ function plusReady() {
         activityList.init();
 	});
 
-    // 点击打开新增页面
-    $("#newActivity").click(function() {
-        openWindow("activityUpload.html", "activityUpload", {
-            lid: lid,
-        });
+    $("#operate").click(function() {
+    	var btnArray = [{
+			title: "查看模式",
+		}, {
+			title: "新增模式"
+		}, {
+			title: "编辑模式"
+		}];
+		plus.nativeUI.actionSheet({
+			title: "操作",
+			cancel: "取消",
+			buttons: btnArray
+		}, function(e) {
+			var index = e.index;
+			switch(index) {
+				case 0:
+					break;
+				case 1:
+					openWindow("activityUpload.html", "activityUpload", {
+			            lid: lid,
+			        });
+					break;
+				case 2:
+					break;
+		})
     });
 
 }
