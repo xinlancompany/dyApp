@@ -20,14 +20,14 @@
 			<h1 class="mui-title">舟山共产党员<i class="iconfont icon-more" v-show="showOrgTitle"></i></h1>
 		</header>
 
-		<footer class="footer-tab">
-			<a class="active go-index" data-page="index">
+		<footer class="footer-tab" id="index-footer">
+			<a class="active go-index" data-page="index" @click="switchIndexTopNews">
 				<i class="iconfont icon-danghui-copy"></i> 首页
 			</a>
 			<a class="go-activity" data-page="activity">
 				<i class="iconfont icon-0045"></i> 组织生活
 			</a>
-			<a class="go-study" data-page="study">
+			<a class="go-study" data-page="study" @click="switchStudyTopNews">
 				<i class="iconfont icon-xuexi"></i> 学习平台
 			</a>
 			<a class="go-ucenter" data-page="ucenter">

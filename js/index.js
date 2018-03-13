@@ -50,6 +50,8 @@ function plusReady() {
 		el: '.index-swiper',
 		data: {
 			scrollNews: [],
+            indexTopNews: [],
+            studyTopNews: [],
 			activeSlideText: '',
 			show: true
 		},
@@ -95,15 +97,26 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by id desc limit 10"
+					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and linkerId = " + linkerId.IndexNews +" order by id desc limit 10"
 				},function(d){
-					if(d.success && d.data) {
+					if(d.success && d.data && d.data.length) {
+                        /*
 						if(d.data.length>5){
 							indexSwiper.scrollNews = d.data.slice(0,5);
 							self.headNews = d.data.slice(5,8);
 						}else {
 							indexSwiper.scrollNews = d.data;
 						}
+                        */
+                        d.data.forEach(function(i) {
+                            if (i.credit > 0) {
+                                indexSwiper.indexTopNews.push(i);
+                            } else {
+                                self.headNews.push(i);
+                            }
+                        });
+                        // 设置为首页新闻
+                        indexSwiper.scrollNews = indexSwiper.indexTopNews;
 						
 						indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
 						setTimeout(function(){
@@ -115,7 +128,17 @@ function plusReady() {
 							});
 						}, 500)
 					}
-				})
+				});
+
+                // 获取学习置顶新闻
+                _callAjax({
+                    cmd: "fetch",
+                    sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid = 1 and credit > 0 and linkerId = " + linkerId.News +" order by id desc limit 10"
+                }, function(d) {
+                    if (d.success && d.data && d.data.length) {
+                        indexSwiper.studyTopNews = d.data;
+                    }
+                });
 			},
 			//获取活动专题
 			getActivitySort: function(){
@@ -262,6 +285,7 @@ function plusReady() {
 					cmd:"fetch",
 					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by newsdate desc limit 10"
 				},function(d){
+                    // alert(_dump(d));
 					if(d.success && d.data) {
 						if(d.data.length>5){
 	//						self.scrollNews = d.data.slice(0,5);
@@ -521,6 +545,21 @@ function plusReady() {
 			}
 		}
 	}
+
+    // 底部事件绑定
+    var footer = new Vue({
+        el: "#index-footer",
+        methods: {
+            switchIndexTopNews: function() {
+                indexSwiper.scrollNews = indexSwiper.indexTopNews;
+                indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
+            },
+            switchStudyTopNews: function() {
+                indexSwiper.scrollNews = indexSwiper.studyTopNews;
+                indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
+            }
+        }
+    });
 	
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
