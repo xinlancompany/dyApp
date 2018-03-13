@@ -16,6 +16,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">组织信息</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">切换</button>
 		</header>
 		
 		<div id="organization" class="have-header have-footer ucenter">
@@ -27,10 +28,15 @@
 			</div>
 			
 			<ul class="mui-table-view">
-			    <li class="mui-table-view-cell" v-cloak>代码：{{orgInfo.no}}</li>
-			    <li class="mui-table-view-cell" v-cloak>类别：{{orgInfo.type}}</li>
-			    <li class="mui-table-view-cell" v-cloak>书记：{{orgInfo.secretary}}</li>
-			    <li class="mui-table-view-cell" v-cloak>人数：{{orgInfo.memCount}}</li>
+			    <li class="mui-table-view-cell" v-cloak>组织代码：{{orgInfo.no}}</li>
+			    <li class="mui-table-view-cell" v-cloak>组织类别：{{orgInfo.type}}</li>
+			    <li class="mui-table-view-cell" v-cloak>组织书记：{{orgInfo.secretary}}</li>
+			    <li class="mui-table-view-cell" v-cloak><a class="mui-navigate-right">组织人数：{{orgInfo.memCount}}</a></li>
+			</ul>
+			
+			<ul class="mui-table-view">
+			    <li class="mui-table-view-cell" v-cloak>组织积分：{{orgInfo.no}}</li>
+			    <li class="mui-table-view-cell" v-cloak>累计活动：{{orgInfo.type}}</li>
 			</ul>
 		</div>
 	</body>

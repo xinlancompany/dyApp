@@ -1436,3 +1436,65 @@ body {
   -moz-border-radius: 0;
   border-radius: 0;
 }
+.tree .controls {
+  display: flex;
+  height: 50px;
+  justify-content: space-around;
+  align-items: center;
+}
+.tree .controls span {
+  flex: 1;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+.tree .controls span i {
+  font-size: 26px;
+}
+.tree .controls span:active {
+  background-color: #f1f1f1;
+}
+.tree .branches {
+  background-color: #fff;
+}
+.tree .branches .branch {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+}
+.tree .branches .branch:active {
+  background-color: #f1f1f1;
+}
+.tree .branches .branch:last-child:after {
+  display: none;
+}
+.tree .branches .branch:after {
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 70px;
+  bottom: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+.tree .branches .branch i {
+  font-size: 36px;
+  display: block;
+  color: #cb0303;
+}
+.tree .branches .branch p {
+  flex: 1;
+  margin: 0;
+  margin-left: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 16px;
+  color: #333;
+}

@@ -191,17 +191,7 @@
 					"views/score.html",
 					"views/newsDetail.html",
 					"views/internetCourseware.html",
-					"views/liveDetail.html",
-					"views/regulationDetail.html",
-					"views/newsList.html",
-					"views/login.html"
-				],
-				"priority": 0
-			},
-			"boot.html": {
-				"resources": [],
-				"refer": [
-					"index.html"
+					"views/liveDetail.html"
 				],
 				"priority": 0
 			}
@@ -241,6 +231,7 @@
 				"js/liveList.js",
 				"lib/iconfont.css",
 				"js/myActivity.js",
+				"views/newsList.html",
 				"js/liveDetail.js",
 				"fonts/iconfont.svg",
 				"js/score.js",
@@ -257,6 +248,7 @@
 				"css/less-components/_reset.css",
 				"lib/iconfont.js",
 				"views/activityList.html",
+				"views/login.html",
 				"lib/mui.picker.min.css"
 			]
 		}
