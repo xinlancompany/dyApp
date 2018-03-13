@@ -29,7 +29,13 @@ function plusReady() {
 			var self = this;
 			
 		}
-	})
+	});
+
+    /*
+    window.addEventListener("updateUserInfo", function(evt) {
+        ucenter.getInfo();
+    });
+    */
 
 	ucenter.getInfo();
 }

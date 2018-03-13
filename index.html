@@ -47,6 +47,11 @@
 		</div>
 
 		<div id="index" class="have-footer main" style="display:block">
+			<div class="manager-entry">
+				<span @click="gotoOrganization"><i class="iconfont icon-partyflag"></i>组织登录</span>
+				<span @click="gotoUcenter"><i class="iconfont icon-dangyuan"></i>党员登录</span>
+			</div>
+
 			<div class="news-list">
 				<ul class="mui-table-view">
 					<li v-for="i in headNews" @click="gotoDetail(i)">
@@ -60,12 +65,8 @@
 					</li>
 				</ul>
 			</div>
-			
-			<div class="manager-entry">
-				<span @click="gotoOrganization"><i class="iconfont icon-partyflag"></i>组织信息管理</span>
-				<span @click="gotoUcenter"><i class="iconfont icon-dangyuan"></i>党员信息管理</span>
-			</div>
-			
+		
+            <!--
 			<div class="activity" v-show="activity.length>0">
 				<header @click="goActivityTab" class="global-header"><h1 class="title">活动专题</h1><span class="more">更多</span></header>
 				<ul class="activity-list">
@@ -75,6 +76,7 @@
 					</li>
 				</ul>
 			</div>
+            -->
 		</div> 
 		
 		<div id="activity" class="have-footer main activity-panel" v-show="activity.length>0">
@@ -110,7 +112,7 @@
 		
 		<div id="study" class="have-footer main">
 			<div class="study-block">
-				<div>
+				<div @click="">
 					<img src="./img/studyIcon1.png" />
 					教育动态
 				</div>

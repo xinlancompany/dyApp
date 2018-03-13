@@ -26,6 +26,48 @@ var changeTab = function(el, self) {
 	self.addClass('active').siblings().removeClass('active');
 }
 
+// 重新加载用户信息
+var ucenterReload = function(ucenter) {
+    if (!ucenter) return;
+    var self = ucenter;
+    
+    self.userInfo = _load(_get('userInfo'));
+    
+    //获取用户信息
+    if(self.userInfo != null) {
+        var userType = self.userInfo.userType;
+        console.log("首页登录usertype=" + userType);
+        var sql = '';
+        if(userType == 1){
+            //组织登录
+            sql = "select * from organization where name = ? and pswd = ?";
+        }else {
+            //党员登录
+            sql = "select id,name,orgName,orgNo,pswd from User where name = ? and pswd = ?";					
+        }
+        
+        _callAjax({
+            cmd: "fetch",
+            sql: sql,
+            vals: _dump([self.userInfo.name, self.userInfo.pswd])
+        }, function(d) {
+        
+            if(d.success && d.data) {
+                self.isLogin = true;
+                self.userInfo = d.data[0];
+                self.userInfo.userType = userType;
+                _set('userInfo', _dump(self.userInfo));
+                self.userType = userType;
+            } else {
+                self.isLogin = false;
+                self.userInfo = {};
+                plus.storage.removeItem('userInfo');
+                self.userType = null;
+            }
+        });
+    }
+};
+
 function plusReady() {
 	pullToRefresh();
 	
@@ -35,9 +77,21 @@ function plusReady() {
 	window.addEventListener('loginBack', function(event) {
 		console.log('loginback回调');
 
-		var webview = plus.webview.currentWebview();
-		webview.reload();
+		// var webview = plus.webview.currentWebview();
+		// webview.reload();
+        var tp = event.detail.tp;
+        if (tp == "organization") {
+            $(".go-activity").click();
+        } else {
+            ucenterReload(ucenter);
+            $(".go-ucenter").click();
+        }
 	});
+    
+    // 关闭boot
+    window.addEventListener("closeBoot", function() {
+        plus.webview.close(plus.webview.getLaunchWebview());
+    });
 	
 	var header = new Vue({
 		el: '.pageTitle',
@@ -122,6 +176,8 @@ function plusReady() {
 						setTimeout(function(){
 							var swiper = new Swiper('.index-swiper', {
 								pagination: '.swiper-pagination',
+                                observer: true,
+                                observerParents: false,
 								onSlideChangeEnd: function(swiper){
 							      	indexSwiper.activeSlideText = indexSwiper.scrollNews[swiper.activeIndex].title
 								}
@@ -162,19 +218,22 @@ function plusReady() {
 			},
 			//党员信息管理
 			gotoUcenter: function(){
+                $(".go-ucenter").click();
+                /*
 				var userInfo = _load(_get('userInfo'));
-				_tell(userInfo);
 				if(userInfo){
 					if(userInfo.userType == 0) {
+                        alert("rth1");
 						ucenter.goLogin();
 					} else {
-						mui.toast('请切换党员账号登录');
-						openWindow('views/login.html', 'login', {type: "personal"});
+                        alert("rth2");
+                        $(".go-ucenter").click();
 					}
-				}else {
-					openWindow('views/login.html', 'login', {type: "personal"});
+				} else {
+                    alert("rth3");
+                    $(".go-ucenter").click();
 				}
-				
+				*/
 			},
 			//组织信息管理
 			gotoOrganization: function(){
@@ -183,9 +242,10 @@ function plusReady() {
 				if(userInfo){
 					if(userInfo.userType == 1) {
 						// ucenter.goLogin();
-                        openWindow("views/organization.html", "organization");
+                        // openWindow("views/organization.html", "organization");
+                        $(".go-activity").click();
 					} else {
-						mui.toast('请切换组织账号登录');
+						// mui.toast('请切换组织账号登录');
 						openWindow('views/login.html', 'login', {type: "organization"});
 					}
 				}else {
@@ -285,10 +345,8 @@ function plusReady() {
 					cmd:"fetch",
 					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid =1 and linkerId = " + linkerId.News +" order by newsdate desc limit 10"
 				},function(d){
-                    // alert(_dump(d));
 					if(d.success && d.data) {
 						if(d.data.length>5){
-	//						self.scrollNews = d.data.slice(0,5);
 							self.headNews = d.data.slice(5,8);
 						}else {
 							self.scrollNews = d.data;
@@ -336,14 +394,13 @@ function plusReady() {
 			var self = this;
 			
 			//获取动态新闻
-			self.getNews();
+			// self.getNews();
 			//获取网络课件
-			self.getNetClass();
+			// self.getNetClass();
 			//获取直播课件
-			self.getliveClass();
-			
+			// self.getliveClass();
 		}
-	})
+	});
 	
 	var ucenter = new Vue({
 		el: '#ucenter',
@@ -561,10 +618,16 @@ function plusReady() {
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
         var userInfo = _load(_get('userInfo'));
-//      if (page != "index" && !userInfo) {
-//          mui.toast("请先登录");
-//			return openWindow('views/login.html', 'login', {type: "personal"});
-//      }
+        // 组织生活需要组织登录
+        if (page == "activity" && !userInfo) {
+            mui.toast("需组织登录");
+            return openWindow('views/login.html', 'login', {type: "organization"});
+        }
+        // 学习与用户中心需个人登录
+        if ((page == "study" || page == "ucenter") && (!userInfo || ("no" in userInfo))) {
+            mui.toast("需党员登录");
+            return openWindow('views/login.html', 'login', {type: "personal"});
+        }
 		changeTab(page, $(this));
 		
 		if (page == 'activity') {
@@ -588,5 +651,5 @@ function plusReady() {
 		}else if (page == 'index') {
 			indexSwiper.show = true;
 		}
-	})
+	});
 }

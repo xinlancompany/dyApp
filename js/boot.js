@@ -24,6 +24,7 @@ function plusReady() {
 		},
 		methods: {
 			openIndex: function() {
+                mui.fire(plus.webview.getWebviewById("index"), "closeBoot");
 				openWindow('index.html', 'index');
 				clearInterval(ck);
 				
@@ -51,6 +52,7 @@ function plusReady() {
 				ck = setInterval(function() {
 					boot.time--;
 					if(boot.time == 0) {
+                        mui.fire(plus.webview.getWebviewById("index"), "closeBoot");
 						openWindow('index.html', 'index');
 						self.openIndex();
 					};

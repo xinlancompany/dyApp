@@ -24,8 +24,8 @@ function plusReady() {
 				if(self.type == "personal"){
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id,name,orgName,orgNo,pswd from User where name = ? and pswd= ?",
-						vals: _dump([name, pswd])
+						sql: "select id,name,orgName,orgNo,pswd from User where (idno = ? or phone = ?) and pswd= ?",
+						vals: _dump([name, name, pswd])
 					}, function(d) {
 						if(d.success && d.data && d.data.length) {
 							// if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
@@ -36,7 +36,9 @@ function plusReady() {
 							userInfo.userType = 0; // 个人登陆
 							_set('userInfo',_dump(userInfo));
 						
-							mui.fire(plus.webview.getWebviewById('index'), 'loginBack');
+							mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
+                                tp: "person"
+                            });
 						
 							setTimeout(function() {
 								mui.back();
@@ -60,7 +62,9 @@ function plusReady() {
 							userInfo.userType = 1; // 组织登陆
 							_set('userInfo', _dump(userInfo));
 					
-							mui.fire(plus.webview.getWebviewById('index'), 'loginBack');
+							mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
+                                tp: "organization"
+                            });
 					
 							setTimeout(function() {
 								mui.back();
