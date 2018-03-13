@@ -10,7 +10,7 @@
     "icons": {
         "72": "icon.png"
     },
-    "launch_path": "boot.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
+    "launch_path": "views/selectTags.html",/*应用的入口页面，默认为根目录下的index.html；支持网络地址，必须以http://或https://开头*/
     "developer": {
         "name": "",/*开发者名称*/
         "email": "",/*开发者邮箱地址*/
@@ -193,7 +193,8 @@
 					"views/internetCourseware.html",
 					"views/liveDetail.html",
 					"views/regulationDetail.html",
-					"views/newsList.html"
+					"views/newsList.html",
+					"views/login.html"
 				],
 				"priority": 0
 			},
@@ -256,7 +257,6 @@
 				"css/less-components/_reset.css",
 				"lib/iconfont.js",
 				"views/activityList.html",
-				"views/login.html",
 				"lib/mui.picker.min.css"
 			]
 		}

@@ -953,6 +953,7 @@ body {
        justify-content: center;
        text-align: center;
        padding-right: 20px;
+       height: 80px;
        i {
            font-size: 32px;
            margin-bottom: 10px;
@@ -971,12 +972,17 @@ body {
             transform: scaleX(.5);
        }
    }
-   div {
+   .notice-swiper {
        flex: 1;
+       height: 80px;
+   }
+   .detail {
+       width: 100%;
        display: flex;
        flex-direction: column;
        justify-content: space-between;
-       padding-left: 20px;;
+       padding-left: 20px;
+       height: 80px;
        h1 {
            font-size: 16px;
        }
@@ -1192,4 +1198,14 @@ body {
             text-align: center;
         }
     }
+}
+
+.search {
+    input {
+        margin: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+    
 }

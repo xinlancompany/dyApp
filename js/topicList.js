@@ -23,9 +23,9 @@ function plusReady() {
     $(".mui-title").text(mname+"列表");
     // 管理员显示新增
     if (!!userInfoStr && !!parseInt(userInfo.userType)) {
-        $("#newTopic").show();
+        $("#operate").show();
     } else {
-        $("#newTopic").hide();
+        $("#operate").hide();
     }
     var getTopics = function() {
         _callAjax({
@@ -41,12 +41,32 @@ function plusReady() {
         });
     };
     getTopics();
-    // 点击打开新增页面
-    $("#newTopic").click(function() {
-        openWindow("topicUpload.html", "topicUpload", {
-            lid: lid,
-            orgNo: userInfo.id
-        });
+    $("#operate").click(function() {
+    	var btnArray = [{
+			title: "查看模式",
+		}, {
+			title: "新增模式"
+		}, {
+			title: "编辑模式"
+		}];
+		plus.nativeUI.actionSheet({
+			title: "操作",
+			cancel: "取消",
+			buttons: btnArray
+		}, function(e) {
+			var index = e.index;
+			switch(index) {
+				case 0:
+					break;
+				case 1:
+					openWindow("topicUpload.html", "topicUpload", {
+			            lid: lid,
+			            orgNo: userInfo.id
+			        });
+					break;
+				case 2:
+					break;
+		})
     });
     
     // 新增后刷新
