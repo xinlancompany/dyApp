@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">打分</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">确定</button>
+		</header>
+		
+		<div id="grade" class="have-header">
+						
+			<ul class="mui-table-view">
+			    <li class="mui-table-view-cell"><a class="mui-navigate-right">打分类型<span>五星制</span></a></li>
+			</ul>
+			
+			<!--百分制-->
+			<div class="num-grade">55<span>分</span></div>
+			
+			<!--五星制-->
+			<div class="star-grade">
+				<!--点亮时-->
+				<i class="iconfont icon-shoucang"></i>
+				<!--未点亮时-->
+				<i class="iconfont icon-shoucang-xianxing"></i>
+				<i class="iconfont icon-shoucang-xianxing"></i>
+				<i class="iconfont icon-shoucang-xianxing"></i>
+				<i class="iconfont icon-shoucang-xianxing"></i>
+			</div>
+			<!--
+				var userPicker = new $.PopPicker();
+					userPicker.setData([{
+						value: '1',
+						text: '1'
+					}]);
+					userPicker.show(function(items) {
+						userResult.innerText = JSON.stringify(items[0]);
+					});
+				
+			-->
+			
+
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+

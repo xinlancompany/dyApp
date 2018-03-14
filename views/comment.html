@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">评论</h1>
+		</header>
+		
+		<div id="comment" class="have-header">
+			<div class="reply">
+				<textarea placeholder="说说你的看法" v-model="content"></textarea>
+				<a :class="{ active: content.length > 0 }" @click="publish">发表</a>
+			</div>
+			
+			<div class="comment-list comment-lists" v-if="comments.length != 0">
+				<div>
+					<dl v-for="i in comments">
+						<dt>
+							<img :src="i.img" width="30px" height="30px" />
+							<strong v-text="i.name"></strong>
+							<time v-text="i.logtime"></time>
+							<span :class="{ 'active' : i.liked }" @click="changeLiked(i)"><i class="iconfont icon-dianzan1"></i> {{i.zan}}</span>
+						</dt>
+						<dd v-text="i.content"></dd>
+					</dl>
+				</div>
+				<footer v-show="bHaveMore" @click="getComments">更多评论<i class="iconfont icon-jiantou3"></i></footer>
+			</div>
+		</div>
+	</body>
+</html>

@@ -277,12 +277,6 @@ body {
   background-repeat: no-repeat;
   background-position: 50%;
 }
-.have-header {
-  margin-top: 44px;
-}
-.have-footer {
-  padding-bottom: 50px;
-}
 .news-list {
   margin-bottom: 8px;
 }
@@ -737,9 +731,6 @@ body {
   margin: 10px 0;
 }
 .activity-detail ul li {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
   font-size: 16px;
 }
 .activity-detail ul li i {
@@ -758,6 +749,7 @@ body {
 .activity-detail article {
   background-color: #fff;
   padding: 20px;
+  margin-bottom: 20px;
 }
 .activity-detail article header {
   margin-bottom: 10px;
@@ -1616,4 +1608,132 @@ body {
   left: 40%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
+}
+.reply {
+  background-color: #fff;
+  padding: 15px;
+  text-align: right;
+  position: relative;
+}
+.reply textarea {
+  background-color: #f1f1f1;
+  border: none;
+  font-size: 16px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+.reply a {
+  background-color: #e9e9e9;
+  padding: 8px 13px;
+  color: #333;
+  font-size: 16px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+.reply a.active {
+  background-color: #e14937;
+  color: #fff;
+}
+.reply:after {
+  content: '';
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  height: 1px;
+  background-color: #C8C7CC;
+  transform: scaleY(0.5);
+  -webkit-transform: scaleY(0.5);
+}
+.comment-lists {
+  margin: 0;
+  padding-top: 20px;
+}
+.comment-lists dl {
+  position: relative;
+  padding-bottom: 40px;
+  padding-top: 20px;
+}
+.comment-lists dl:first-child {
+  padding-top: 0;
+}
+.comment-lists dl:last-child:after {
+  height: 0;
+}
+.comment-lists dl:after {
+  content: '';
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  height: 1px;
+  background-color: #C8C7CC;
+  transform: scaleY(0.5);
+  -webkit-transform: scaleY(0.5);
+}
+.comment-lists dl dt span {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  padding: 0 10px;
+  border: 1px solid #eee;
+  font-size: 14px;
+  transition: all 0.3s ease-in;
+}
+.comment-lists dl dt span i {
+  font-size: 16px;
+}
+.comment-lists dl dt span.active {
+  background-color: #e14937;
+  border-color: #e14937;
+  color: #fff;
+}
+.comment-lists dl dt span.active i {
+  color: #fff;
+}
+.comment-lists dl dd {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+}
+.comment-lists > footer i {
+  margin-left: 10px;
+}
+.mAR h4 {
+  line-height: normal;
+}
+#grade .mui-navigate-right span {
+  float: right;
+  margin-right: 30px;
+  color: #666;
+}
+#grade .num-grade {
+  margin: 100px 0;
+  text-align: center;
+  color: #e14937;
+  font-size: 65px;
+  font-weight: 600;
+}
+#grade .num-grade span {
+  font-size: 12px;
+  color: #666;
+  margin-left: 5px;
+}
+#grade .star-grade {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0;
+}
+#grade .star-grade i {
+  font-size: 40px;
+}
+#grade .star-grade i.icon-shoucang {
+  color: #e14937;
 }

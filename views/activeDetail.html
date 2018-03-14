@@ -23,22 +23,32 @@
 			
 			<ul class="mui-table-view" v-cloak>
 				<li class="mui-table-view-cell">
-					<i class="iconfont icon-men"></i>报名人数: {{detailData.applicant}}人
+					报名人数: {{detailData.applicant}}人
 				</li>
 				<li class="mui-table-view-cell" @click="changeStartTime()">
-					<i class="iconfont icon-shijian"></i>开始时间: {{detailData.starttime}}
+					开始时间: {{detailData.starttime}}
 				</li>
 				<li class="mui-table-view-cell" @click="changeEndTime()">
-					<i class="iconfont icon-shijian"></i>结束时间: {{detailData.endtime}}
+					结束时间: {{detailData.endtime}}
 				</li>
 				<li class="mui-table-view-cell" @click="changeAddress()">
-					<i class="iconfont icon-position-copy"></i>活动地点: {{detailData.address}}
+					活动地点: {{detailData.address}}
 				</li>
+			</ul>
+			
+			<ul class="mui-table-view">
+			    <li class="mui-table-view-cell"><a class="mui-navigate-right">活动心得</a></li>
+			    <li class="mui-table-view-cell"><a class="mui-navigate-right">记录上传</a></li>
 			</ul>
 			
 			<article>
 				<header><i class="iconfont icon-jianjie"></i>活动简介：</header>
 				<textarea v-text="detailData.content"></textarea>
+			</article>
+			
+			<article>
+				<header><i class="iconfont icon-jianjie"></i>活动记录：</header>
+				<p></p>
 			</article>
 			
 			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'"></footer>
