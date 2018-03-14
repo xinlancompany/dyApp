@@ -731,9 +731,6 @@ body {
   margin: 10px 0;
 }
 .activity-detail ul li {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
   font-size: 16px;
 }
 .activity-detail ul li i {
@@ -752,6 +749,7 @@ body {
 .activity-detail article {
   background-color: #fff;
   padding: 20px;
+  margin-bottom: 20px;
 }
 .activity-detail article header {
   margin-bottom: 10px;
