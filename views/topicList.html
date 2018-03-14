@@ -16,14 +16,14 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">专题列表</h1>
-			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="operate">新增</button>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="operate">添加</button>
 		</header>
 		
 		<div id="topicList" class="activity have-header have-footer">
 			<ul class="activity-list" v-show="topics.length">
 				<li v-for="i in topics" @click="goToActivity(i)">
 					<div class="img" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-					<p>{{i.name}}<span class="activitySort" >进入 ></span></p><span class="activitySort" v-show="!!userType" >编辑 ></span></p><span class="activitySort" v-show="!!userType">删除  ></span></p>
+					<p>{{i.name}}<span class="activitySort"><i class="iconfont icon-zhuanfa"></i></span><span class="activitySort"><i class="iconfont icon-shanchu"></i></span><span class="activitySort"><i class="iconfont icon-bianji"></i></span></p>
 				</li>
                 <!--
 				<li v-for="a in activityList" @click="goActivityDetail(a)">

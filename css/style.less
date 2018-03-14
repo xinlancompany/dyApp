@@ -460,8 +460,8 @@ body {
                     float: right;
                     color: red;
                     font-size: 14px;
+                    padding: 0 10px;
                 }  
-                             
                 .status{
                     float: right;
                     color: red;
@@ -1093,6 +1093,7 @@ body {
             background-position: 50%;
             width: 40%;
             height: 100px;
+            margin-right: 15px;
         }
         .detail {
             flex: 1;
@@ -1102,6 +1103,7 @@ body {
             position: relative;
             h1 {
                 font-size: 16px;
+                .line-clamp(2);
             }
             footer {
                 color: #666;
@@ -1162,6 +1164,7 @@ body {
                 font-weight: normal;
                 font-size: 16px;
                 padding: 10px;
+                .line-clamp(2);
                 margin: 0;
             }
             p {
@@ -1259,6 +1262,113 @@ body {
                 font-size: 16px;
                 color: #333;
             }
+        }
+    }
+}
+
+.comment-list {
+    background-color: #fff;
+    margin-top: 8px;
+    padding: 0 25px;
+    header {
+        font-size: 16px;
+        position: relative;
+        font-weight: 700;
+        height: 50px;
+        line-height: 50px;
+    }
+    dl {
+        dt {
+            display: flex;
+            color: #666;
+            font-size: 16px;
+            align-items: center;
+            img {
+                display: block;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+            strong {
+                flex: 1;
+                font-weight: normal;
+            }
+            time {
+                font-size: 14px;
+            }
+        }
+        dd {
+            font-size: 16px;
+            color: #333;
+            .line-clamp(2);
+            margin-top: 10px;
+        }
+    }
+    footer {
+        font-size: 16px;
+        font-weight: 700;
+        height: 50px;
+        line-height: 50px;
+        color: @base;
+        text-align: center;
+    }
+}
+
+.comment-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: #fff;
+    display: flex;
+    &:before {
+        content: '';
+        display: block;
+        left: 0;
+        right: 0;
+        top: 0;
+        width: 100%;
+        position: absolute;
+        height: 1px;
+        background-color: #C8C7CC;
+        transform: scaleY(.5);
+        -webkit-transform: scaleY(.5);
+    }
+    span {
+        flex: 1;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        &:first-child {
+            border-right: 1px solid #c8c7cc;
+            i {
+                font-size: 24px;
+            }
+        }
+    }
+    em {
+        font-style: normal;
+    }
+    i {
+        font-size: 30px;
+        color: #333;
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        height: 20px;
+        width: 40px;
+        &:before {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
         }
     }
 }

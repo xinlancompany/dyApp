@@ -191,7 +191,31 @@
 					"views/score.html",
 					"views/newsDetail.html",
 					"views/internetCourseware.html",
-					"views/liveDetail.html"
+					"views/liveDetail.html",
+					"views/login.html",
+					"views/newsList.html",
+					"views/topicList.html"
+				],
+				"priority": 0
+			},
+			"boot.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
+				],
+				"priority": 0
+			},
+			"views/newsList.html": {
+				"resources": [],
+				"refer": [
+					"views/newsDetail.html"
+				],
+				"priority": 0
+			},
+			"views/topicList.html": {
+				"resources": [],
+				"refer": [
+					"views/activityList.html"
 				],
 				"priority": 0
 			}
@@ -231,7 +255,6 @@
 				"js/liveList.js",
 				"lib/iconfont.css",
 				"js/myActivity.js",
-				"views/newsList.html",
 				"js/liveDetail.js",
 				"fonts/iconfont.svg",
 				"js/score.js",
@@ -247,8 +270,6 @@
 				"img/default.png",
 				"css/less-components/_reset.css",
 				"lib/iconfont.js",
-				"views/activityList.html",
-				"views/login.html",
 				"lib/mui.picker.min.css"
 			]
 		}

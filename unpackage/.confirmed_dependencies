@@ -1,18 +1,29 @@
 {
-  "boot.html": {
-    "refer": [
-      "index.html"
-    ],
-    "resources": []
-  },
-  "index.html": {
-    "refer": [
-      "views/newsDetail.html",
-      "views/regulationDetail.html",
-      "views/score.html",
-      "views/newsList.html",
-      "views/login.html"
-    ],
-    "resources": []
-  }
+	"boot.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": []
+	},
+	"index.html": {
+		"refer": [
+			"views/newsDetail.html",
+			"views/regulationDetail.html",
+			"views/score.html",
+			"views/newsList.html",
+			"views/login.html",
+			"views/topicList.html"
+		],
+		"resources": []
+	},
+	"views/newsList.html": {
+		"refer": [
+			"views/newsDetail.html"
+		]
+	},
+	"views/topicList.html": {
+		"refer": [
+			"views/activityList.html"
+		]
+	}
 }

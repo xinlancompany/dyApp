@@ -16,7 +16,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">活动列表</h1>
-			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="operate">操作</button>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="operate">添加</button>
 		</header>
 		
 		<div id="activityList" class="activity have-header have-footer">
@@ -26,6 +26,7 @@
 					<p v-text="a.title"></p>
 					<p>活动开始: {{a.starttime}}</p>
 					<p>活动结束: {{a.endtime}}<span class="status">{{a.status}}</span></p>
+					<p><span class="activitySort"><i class="iconfont icon-zhuanfa"></i></span><span class="activitySort"><i class="iconfont icon-shanchu"></i></span><span class="activitySort"><i class="iconfont icon-bianji"></i></span></p>
 				</li>
 			</ul>
 			<!--<footer @click="getActivityList" class="block-button" v-show="bHaveMore">查看更多</footer>-->
