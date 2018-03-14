@@ -72,11 +72,7 @@ function plusReady() {
 		}
 	});
 
-    // 添加newList自定义监听事件
-    window.addEventListener('newList', function(event) {
-        var lid = event.detail.linkerId;
-        // _tell(_get("userInfo"));
-        // 修改标题
+    var updateNewsList = function(lid) {
         _callAjax({
             cmd: "fetch",
             sql: "select name from linkers where id = ?",
@@ -101,6 +97,22 @@ function plusReady() {
             $("#newArticle").hide();
         }
         newsList.getNews(lid);
+    };
+
+    var wb = plus.webview.currentWebview(),
+        lid = wb.linkerId;
+    if (lid) {
+        updateNewsList(lid);
+    }
+
+    // 添加newList自定义监听事件
+    window.addEventListener('newList', function(event) {
+        var lid = event.detail.linkerId;
+        // _tell(_get("userInfo"));
+        // 修改标题
+        if (lid) {
+            updateNewsList(lis);
+        }
     });
 
     // 新增后刷新

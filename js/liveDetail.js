@@ -31,14 +31,16 @@ mui.init({
 
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
-	var livecourseId = 0;
+	// var livecourseId = 0;
+
+    var wb = plus.webview.currentWebview(),
+        livecourseId = wb.liveId;
 
 	liveDetail = new Vue({
 		el: '#liveDetail',
 		data: {
 			liveData: {},  //直播数据
 			studyTime: 0, //学习时间
-
 		},
 		methods: {
 			//获取直播详情
@@ -47,7 +49,7 @@ function plusReady() {
 			
 				_callAjax({
 					cmd: "fetch",
-					sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, a.credit, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(e.id) as audience from lives a outer left join liveEnroll e on e.liveId = a.id where a.id = ?",
+					sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.url, a.brief, a.credit, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.status, count(distinct e.userId) as audience from lives a left join liveEnroll e on e.liveId = a.id where a.id = ?",
 					vals: _dump([livecourseId])
 				}, function(d) {
 
@@ -63,8 +65,10 @@ function plusReady() {
 						if(url == '#' || url.length <= 0) {
 							var src = $(content).find('video').attr('src');
 							console.log("live src=" + src);
-							var arrSrc = src.split('/upload');
-							src = serverAddr + '/upload' + arrSrc[1];
+                            if (src.indexOf("m3u8") == -1) {
+                                var arrSrc = src.split('/upload');
+                                src = serverAddr + '/upload' + arrSrc[1];
+                            }
 							self.liveData.url = src;
 						}
 						console.log("img="+self.liveData.img);
@@ -78,6 +82,8 @@ function plusReady() {
 				var userInfo = _load(_get('userInfo'));
 			
 				//先删除再插入
+                // 较为低效
+                /*
 				_callAjax({
 						cmd: "exec",
 						sql: "delete from liveEnroll where userId = ? and liveId = ?",
@@ -95,12 +101,23 @@ function plusReady() {
 								}
 							})
 						}
-					})
+					});
+                */
+                _callAjax({
+                    cmd: "exec",
+                    sql: "insert into liveEnroll(userId, liveId) values(?,?)",
+                    vals: _dump([userInfo.id, livecourseId])
+                }, function(d) {
+                    if(d.success) {
+                        // mui.alert('恭喜您获得' + self.liveData.credit + '学分');
+                        mui.alert("已学习"+(self.studyTime/60)+"分钟");
+                    }
+                });
 			},
 			//初始化
 			init: function(){
 				var self = this;
-				livecourseId = _get('livecourseId');
+				// livecourseId = _get('livecourseId');
 
 				self.getLiveDetail();
 				
@@ -110,7 +127,7 @@ function plusReady() {
 			studyTime: function() {
 				var self = this;
 				console.log(self.studyTime);
-				if(self.studyTime == 15 * 1) {
+				if(self.studyTime > 0 && self.studyTime % 60 == 0) {
 					self.recordStudy();
 				}
 			}

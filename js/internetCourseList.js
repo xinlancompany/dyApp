@@ -17,6 +17,7 @@ function plusReady() {
 		methods: {
 			//跳转到网络课堂详情
 			gotoNetCourseDetail: function(i) {
+                /*
 				var userInfo = _load(_get('userInfo'));
 				
 				if(userInfo) {
@@ -27,7 +28,22 @@ function plusReady() {
 				} else {
 					openWindow("login.html", "login");
 				}
-				
+				*/
+
+                var wb = plus.webview.getWebviewById("newsDetail");
+                if (!!wb) {
+                    // 预加载成功
+                    _set("newsId", i.id)
+                    mui.fire(wb, "courseId");
+                    openWindow("newsDetail.html", "newsDetail");
+                } else {
+                    // 预加载失败
+                    _set("newsId", "");
+                    openWindow("newsDetail.html", "newsDetail", {
+                        aid: i.id,
+                        table: "courses"
+                    });
+                }
 			},
 			//获取课件列表
 			getInternetList: function(){
@@ -37,11 +53,15 @@ function plusReady() {
 					f = _at(self.internets, -1).id;
 				}
 				
-				var orgId = _getOrgId();
+				// var orgId = _getOrgId();
 
 				_callAjax({
 					cmd:"fetch",
-					sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and id< ? and linkerId = ? and orgId = "+ orgId + " order by id desc limit 10",
+                    // 按部门授课
+					// sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and id< ? and linkerId = ? and orgId = "+ orgId + " order by id desc limit 10",
+					// vals:_dump([f, linkerId.netCourse])
+                    // 统一授课
+					sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and id< ? and linkerId = ? order by id desc limit 10",
 					vals:_dump([f, linkerId.netCourse])
 				},function(d){
 					_tell(d);

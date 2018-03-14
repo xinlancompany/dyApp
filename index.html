@@ -112,15 +112,15 @@
 		
 		<div id="study" class="have-footer main">
 			<div class="study-block">
-				<div @click="">
+				<div @click="goStudyNews">
 					<img src="./img/studyIcon1.png" />
 					教育动态
 				</div>
-				<div>
+				<div @click="goLiveList">
 					<img src="./img/studyIcon2.png" />
 					直播课堂
 				</div>
-				<div>
+				<div @click="goInternetList">
 					<img src="./img/studyIcon3.png" />
 					网络课堂
 				</div>
@@ -128,25 +128,27 @@
 			
 			<div class="study-live">
 				<header>
-					<span class="active">今日直播</span>
-					<span>预告</span>
-					<span>已结束</span>
+                    <span :class="{active:tabid==1}" @click="switchToLive(1)">今日直播</span>
+					<span :class="{active:tabid==2}" @click="switchToLive(2)">明日预告</span>
+					<span :class="{active:tabid==3}" @click="switchToLive(3)">最新录像</span>
 				</header>
 				<!--
 					
 				无播出节目时显示的提示内容
-				<div class="live-program">今日暂无直播</div>
 				
 				-->
-				<div class="live-program">
-					<div class="thumb"></div>
+
+				<div class="live-program" v-show="!tabLive">暂无内容</div>
+
+				<div class="live-program" v-show="!!tabLive">
+                    <div class="thumb" :style="{backgroundImage: 'url('+ (tabLive?tabLive.img:'') +')'}"></div>
 					<div class="detail">
-						<h1>两学一做</h1>
+                        <h1>{{tabLive?tabLive.title:''}}</h1>
 						<footer>
-							<p><i class="iconfont icon-shijian"></i> 10:00</p>
-							<p><i class="iconfont icon-men"></i> 1133</p>
+                            <p><i class="iconfont icon-shijian"></i> {{tabLive?tabLive.starttime:''}}</p>
+                            <p><i class="iconfont icon-men"></i> {{tabLive?tabLive.cnt:''}}</p>
 						</footer>
-						<span class="open">
+						<span class="open" @click="openTabLive">
 							<i class="iconfont icon-bofang"></i>
 						</span>
 					</div>
@@ -155,24 +157,18 @@
 			
 			<div class="study-internet">
 				<div class="lists">
-					<div class="list">
-						<div class="thumb" style="background-image: url(http://placehold.it/300x200);"></div>
-						<h1>五水共治这三年</h1>
+					<div class="list" v-for="i in randomCourses" @click="openCourse(i)">
+                        <div class="thumb" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+						<h1 v-text="i.title"></h1>
 						<p>
-							<span><i class="iconfont icon-men"></i>1133</span>
+                        <span><i class="iconfont icon-men"></i>{{i.readcnt}}</span>
+                        <!--
 							<span><i class="iconfont icon-icon--"></i>7</span>
-						</p>
-					</div>
-					<div class="list">
-						<div class="thumb" style="background-image: url(http://placehold.it/300x200);"></div>
-						<h1>五水共治这三年</h1>
-						<p>
-							<span><i class="iconfont icon-men"></i>1133</span>
-							<span><i class="iconfont icon-icon--"></i>7</span>
+                            -->
 						</p>
 					</div>
 				</div>
-				<footer><span>换一换</span></footer>
+				<footer @click="randomTwoCourses"><span>换一换</span></footer>
 			</div>
 		</div>
 

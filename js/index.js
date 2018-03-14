@@ -14,17 +14,21 @@ mui.init({
 	},{
 		url: 'views/score.html',
 		id: 'score'
-	},{
+	},
+    /*
+    {
         url: 'views/newsList.html',
         id: 'newsList'
-    }]
-})	
+    }
+    */
+    ]
+});
 
 var changeTab = function(el, self) {
 	$('.main').hide();
 	$('#' + el + '').show();
 	self.addClass('active').siblings().removeClass('active');
-}
+};
 
 // 重新加载用户信息
 var ucenterReload = function(ucenter) {
@@ -297,8 +301,69 @@ function plusReady() {
 			activeSlideText: '',
 			lives: [], //直播课堂
 			internets: [],//网络课堂
+            tabid: 1, // 直播tab
+            tabLive: null,
+            todayLive: null,
+            tommorrowLive: null,
+            recentRecord: null,
+            randomCourses: []
 		},
 		methods: {
+            // 打开课件
+            openCourse: function(i) {
+                var wb = plus.webview.getWebviewById("newsDetail");
+                if (!!wb) {
+                    // 预加载成功
+                    _set("newsId", i.id)
+                    mui.fire(wb, "courseId");
+                    openWindow("views/newsDetail.html", "newsDetail");
+                } else {
+                    // 预加载失败
+                    _set("newsId", "");
+                    openWindow("views/newsDetail.html", "newsDetail", {
+                        aid: i.id,
+                        table: "courses"
+                    });
+                }
+            },
+            // 随机获取2个网络课件
+            randomTwoCourses: function() {
+                var self = this;
+                _callAjax({
+                    cmd: "fetch",
+                    sql: "select id, title, img, readcnt from courses order by random() limit 2"
+                }, function(d) {
+                    if (d.success && d.data && d.data.length) {
+                        self.randomCourses = d.data;
+                    }
+                });
+            },
+            //  打开tab的直播
+            openTabLive: function() {
+                var self = this;
+                openWindow("views/liveDetail.html", "liveDetail", {
+                    liveId: self.tabLive.id
+                });
+            },
+            // 切换直播tab
+            switchToLive: function(id) {
+                this.tabid = id;
+                if (id == 1) this.tabLive = this.todayLive;
+                if (id == 2) this.tabLive = this.tommorrowLive;
+                if (id == 3) this.tabLive = this.recentRecord;
+            },
+            // 跳转到教育动态
+            goStudyNews: function() {
+                /*
+				mui.fire(plus.webview.getWebviewById("newsList"), 'newList', {
+                    linkerId: linkerId.News
+				});
+                */
+			
+				openWindow("views/newsList.html", "newsList", {
+                    linkerId: linkerId.News
+                });
+            },
 			//跳转到直播列表
 			goLiveList: function() {
 				openWindow('views/liveList.html','liveList');
@@ -399,6 +464,47 @@ function plusReady() {
 			// self.getNetClass();
 			//获取直播课件
 			// self.getliveClass();
+            
+            // 随机取两个课件
+            self.randomTwoCourses();
+            
+            // 获取今日直播信息
+            var today = _now().split(" ")[0];
+            _callAjax({
+                cmd: "fetch",
+                sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) as cnt from lives l left join liveEnroll e on e.liveId = l.id where l.starttime > '"+today+" 00:00:00' and l.starttime < '"+today+" 23:59:59' group by l.id limit 1"
+            }, function(d) {
+                if (d.success && d.data && d.data.length) {
+                    study.todayLive = d.data[0];
+                    study.tabLive = d.data[0];
+                }
+            });
+
+            // 获取明天的直播
+            var dt = new Date();
+            dt.setDate(dt.getDate()+1);
+            var tommorrow = _datetime(dt).split(" ")[0];
+            _callAjax({
+                cmd: "fetch",
+                sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) as cnt from lives l left join liveEnroll e on e.liveId = l.id where l.starttime > '"+tommorrow+" 00:00:00' and l.starttime < '"+tommorrow+" 23:59:59' group by l.id limit 1"
+            }, function(d) {
+                if (d.success && d.data && d.data.length) {
+                    study.tommorrowLive = d.data[0];
+                }
+            });
+
+            // 今天之前录像
+            var today = _now().split(" ")[0];
+            _callAjax({
+                cmd: "fetch",
+                sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) from lives l left join liveEnroll e on e.liveId = l.id where l.starttime < '"+today+" 00:00:00' group by l.id order by l.id desc limit 1"
+            }, function(d) {
+                // alert(_dump(d));
+                if (d.success && d.data && d.data.length) {
+                    study.recentRecord = d.data[0];
+                }
+            });
+
 		}
 	});
 	
