@@ -38,6 +38,7 @@ var ucenterReload = function(ucenter) {
     self.userInfo = _load(_get('userInfo'));
     
     //获取用户信息
+    /*
     if(self.userInfo != null) {
         var userType = self.userInfo.userType;
         console.log("首页登录usertype=" + userType);
@@ -70,6 +71,7 @@ var ucenterReload = function(ucenter) {
             }
         });
     }
+    */
 };
 
 function plusReady() {
@@ -273,6 +275,8 @@ function plusReady() {
 		data: {
 			activity: [],
 			bHaveMore: false,
+            activityCategories: [],
+            categoryDict: {}
 		},
 		methods: {
             // 跳转到规章
@@ -287,11 +291,44 @@ function plusReady() {
             goTopicList: function() {
 				openWindow('views/topicList.html', 'topicList');
             },
+            openActivityChoices: function() {
+                var self = this,
+                    buttons = _map(function(i) {
+                        return {
+                            title: i.name
+                        };
+                    }, self.activityCategories);
+                plus.nativeUI.actionSheet({
+                    title: "活动类别",
+                    cancel: "取消",
+                    buttons: buttons
+                }, function(e) {
+                    if (e.index == 0) return;
+                    var name = buttons[e.index-1].title,
+                        lid = self.categoryDict[name];
+                    openWindow('views/topicList.html', 'topicList', {
+                        lid: lid,
+                        name: name
+                    });
+                });
+            }
 		},
 		mounted: function() {
 			var self = this;
+            _callAjax({
+                cmd: "fetch",
+                sql: "select id, name from linkers where refid = ?",
+                vals: _dump([linkerId.Activity,])
+            }, function(d) {
+                if (d.success && d.data && d.data.length) {
+                    d.data.forEach(function(i) {
+                        self.categoryDict[i.title] = i.id;
+                        self.activityCategories.push(i);
+                    });
+                } 
+            });
 		},
-	})
+	});
 	
 	var study = new Vue({
 		el: '#study',
@@ -625,6 +662,7 @@ function plusReady() {
 			}
 		},
 		mounted: function(){
+            /*
 			var self = this;
 			
 			self.userInfo = _load(_get('userInfo'));
@@ -665,6 +703,7 @@ function plusReady() {
 				});
 				
 			}
+            */
 			
 			//获取版本号
 			_callAjax({
@@ -720,10 +759,14 @@ function plusReady() {
             }
         }
     });
+
+    // 获取用户信息
 	
 	$('.footer-tab a').on('click', function() {
 		var page = $(this).data('page');
-        var userInfo = _load(_get('userInfo'));
+        var userInfoStr = _get('userInfo');
+        var userInfo = null;
+        if (!!userInfoStr) userInfo = _load(userInfoStr);
         // 组织生活需要组织登录
         if (page == "activity" && !userInfo) {
             mui.toast("需组织登录");

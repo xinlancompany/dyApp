@@ -2,7 +2,8 @@ function plusReady() {
     var vm = new Vue({
         el: "#topicList",
         data: {
-            topics: []
+            topics: [],
+            userType: 0
         },
         methods: {
             goToActivity: function(i) {
@@ -21,6 +22,8 @@ function plusReady() {
         lid = wb.lid,
         mname = wb.name;
     $(".mui-title").text(mname+"列表");
+    // 设置编辑、删除按钮是否显示
+    vm.userType = parseInt(userInfo.userType);
     // 管理员显示新增
     if (!!userInfoStr && !!parseInt(userInfo.userType)) {
         $("#operate").show();
@@ -41,6 +44,16 @@ function plusReady() {
         });
     };
     getTopics();
+
+    // 新增
+    $("#operate").click(function() {
+        openWindow("topicUpload.html", "topicUpload", {
+            lid: lid,
+            orgNo: userInfo.id
+        });
+    });
+
+    /*
     $("#operate").click(function() {
     	var btnArray = [{
 			title: "查看模式",
@@ -66,8 +79,10 @@ function plusReady() {
 					break;
 				case 2:
 					break;
-		})
+            };
+		});
     });
+    */
     
     // 新增后刷新
     window.addEventListener("refresh", function(event) {
