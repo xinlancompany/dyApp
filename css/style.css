@@ -277,12 +277,6 @@ body {
   background-repeat: no-repeat;
   background-position: 50%;
 }
-.have-header {
-  margin-top: 44px;
-}
-.have-footer {
-  padding-bottom: 50px;
-}
 .news-list {
   margin-bottom: 8px;
 }
@@ -1713,4 +1707,35 @@ body {
 }
 .comment-lists > footer i {
   margin-left: 10px;
+}
+.mAR h4 {
+  line-height: normal;
+}
+#grade .mui-navigate-right span {
+  float: right;
+  margin-right: 30px;
+  color: #666;
+}
+#grade .num-grade {
+  margin: 100px 0;
+  text-align: center;
+  color: #e14937;
+  font-size: 65px;
+  font-weight: 600;
+}
+#grade .num-grade span {
+  font-size: 12px;
+  color: #666;
+  margin-left: 5px;
+}
+#grade .star-grade {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0;
+}
+#grade .star-grade i {
+  font-size: 40px;
+}
+#grade .star-grade i.icon-shoucang {
+  color: #e14937;
 }

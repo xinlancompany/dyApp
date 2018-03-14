@@ -121,6 +121,7 @@ function plusReady() {
 					break;
 				case 2:
 					break;
+			}
 		})
     });
 
