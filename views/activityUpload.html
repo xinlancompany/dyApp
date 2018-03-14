@@ -54,9 +54,9 @@
 			        <label>筛选用户</label>
                     <p v-text="selectUserNames"></p>
 			    </div>
-			    <div class="mui-input-row">
+			    <div class="mui-input-row" @click="chooseTopics">
 			        <label>活动标签</label>
-                    <p></p>
+                    <p v-text="selectTagNames"></p>
 			    </div>
 			    <div class="mui-button-row">
 			        <button type="button" class="mui-btn mui-btn-primary" @click="newActivity">添加</button>

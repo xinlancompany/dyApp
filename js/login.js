@@ -27,6 +27,7 @@ function plusReady() {
 						sql: "select id,name,orgName,orgNo,pswd from User where (idno = ? or phone = ?) and pswd= ?",
 						vals: _dump([name, name, pswd])
 					}, function(d) {
+                        alert(_dump(d));
 						if(d.success && d.data && d.data.length) {
 							// if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
 							// console.log(d.data[0].orgName);

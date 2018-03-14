@@ -2,6 +2,7 @@ function plusReady() {
     var upload = new Vue({
         el: "#activityUpload",
         data: {
+            aid: null, // 编辑模式
             lid: 0,
             title: "",
             organizer: "",
@@ -13,7 +14,50 @@ function plusReady() {
             imgStyle: {
                 backgroundImage: ""
             },
-            users: []
+            users: [],
+            tags: []
+        },
+        watch: {
+            aid: function(i) {
+                if (!i) {
+                    // 设置头部等信息
+                    return;
+                }
+                var self = this;
+                _callAjax({
+                    cmd: "multiFetch",
+                    multi: _dump([
+                        {
+                            key: "info",
+                            sql: "select title,img,content,organizer,address,strftime('%Y-%m-%d %H:%M:%S', starttime) as starttime,strftime('%Y-%m-%d %H:%M:%S', endtime) as endtime, tags from activitys where id = "+self.aid
+                        },
+                        {
+                            key: "enroll",
+                            sql: "select u.id, u.name from activityEnroll a, user u where a.activityId = "+self.aid+" and a.userId = u.id"
+                        }
+                    ])
+                }, function(d) {
+                    if (!d.success || !d.data) return;
+                    if ("info" in d.data) {
+                        var inf = d.data["info"][0];
+                        self.title = inf.title;
+                        self.organizer = inf.organizer;
+                        self.location = inf.address;
+                        self.starttime = inf.starttime;
+                        self.endtime = inf.endtime;
+                        self.content = inf.content;
+                        self.img = inf.img;
+                        self.imgStyle.backgroundImage = "url("+inf.img+")";
+                        self.tags = _load(inf.tags);
+                    }
+                    if ("enroll" in d.data && d.data["enroll"].length) {
+                        d.data["enroll"].forEach(function(i) {
+                            i.ifSelect = true;
+                            self.users.push(i);
+                        });
+                    }
+                });
+            }
         },
         computed: {
             selectUserNames: function() {
@@ -23,6 +67,14 @@ function plusReady() {
                 }, _filter(function(i) {
                     return i.ifSelect;
                 }, self.users)).join(", ");
+            },
+            selectTagNames: function() {
+                var self = this;
+                return _map(function(i) {
+                    return i.name;
+                }, _filter(function(i) {
+                    return i.ifSelect;
+                }, self.tags)).join(", ");
             }
         },
         methods: {
@@ -63,7 +115,14 @@ function plusReady() {
             chooseUsers: function() {
                 var self = this;
                 openWindow("selectUsers.html", "selectUsers", {
-                    users: self.users
+                    users: self.users,
+                    aid: self.aid
+                });
+            },
+            chooseTopics: function() {
+                var self = this;
+                openWindow("selectTags.html", "selectTags", {
+                    tags: self.tags
                 });
             },
             newActivity: function() {
@@ -82,13 +141,23 @@ function plusReady() {
                 if (!content) return mui.toast("请填写内容");
                 if (!this.img) return mui.toast("请上传头图");
                 
-                var self = this;
+                var self = this,
+                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags) values(?,?,?,?,?,?,?,?)",
+                    vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tags)]);
+
+                if (!!self.aid) {
+                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=? where id = ?";
+                    vals = _dump([title,content,self.img,organizer,location,starttime,endtime,self.aid]);
+                }
+                
                 _callAjax({
                     cmd: "exec",
-                    sql: "insert into activitys(title, content, img, organizer, starttime, endtime, linkerId) values(?,?,?,?,?,?,?)",
-                    vals: _dump([title, content, self.img, organizer, starttime, endtime, self.lid])
+                    sql: sql,
+                    vals: vals
                 }, function(d) {
                     // 返回并刷
+                    var aid = d.data;
+                    if (!!self.aid) aid = self.aid;
                     if (d.success) {
                         // 更新参加人员表activityEnroll
                         if (self.users.length) {
@@ -96,19 +165,19 @@ function plusReady() {
                                 cmd: "multiFetch",
                                 multi: _dump([{
                                             key: "del",
-                                            sql: "delete from activityEnroll where activityId = "+d.data
+                                            sql: "delete from activityEnroll where activityId = "+aid
                                         }].concat(
                                             _map(function(i) {
                                                 return {
                                                     key: "key"+parseInt(Math.random()*10e6),
-                                                    sql: "insert into activityEnroll(userId, activityId) values("+i.id+", "+d.data+")"
+                                                    sql: "insert into activityEnroll(userId, activityId) values("+i.id+", "+aid+")"
                                                 }
                                             }, _filter(function(i) {
                                                 return i.ifSelect;
                                             }, self.users))
                                         ))
                             }, function(_d) {
-                                alert(_dump(_d));
+                                // alert(_dump(_d));
                             });
                         }
                         
@@ -133,12 +202,21 @@ function plusReady() {
         upload.users  = event.detail.users;
     });
 
+    // 返回标签
+    window.addEventListener("selectTags", function(event) {
+        upload.tags = event.detail.tags;
+    });
+
     var wb = plus.webview.currentWebview();
     upload.lid = wb.lid;
     if ("title" in wb) {
         $(".mui-title").text(wb.title);
     }
-    $("#ruleDate").val(_now().split(" ")[0]);
+    // 编辑模式
+    if ("aid" in wb) {
+        upload.aid = wb.aid;
+    }
+    // $("#ruleDate").val(_now().split(" ")[0]);
 };
 
 if(window.plus) {

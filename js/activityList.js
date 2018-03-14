@@ -19,8 +19,32 @@ function plusReady() {
 		data: {
 			activityList:[],
 			bHaveMore: false,
+            isAdmin: wb.isAdmin
 		},
 		methods: {
+            // 删除操作
+            delActivity: function(i, idx) {
+                var self = this;
+                mui.confirm("确定删除？", "提示", ["是", "否"], function(e) {
+                    if (e.index == 0) {
+                        _callAjax({
+                            cmd: "exec",
+                            sql: "update activitys set ifValid = 0 where id = ?",
+                            vals: _dump([i.id,])
+                        }, function(d) {
+                            mui.toast("删除"+(d.success?"成功":"失败"));
+                            self.activityList = _del_ele(self.activityList, idx);
+                        });
+                    }
+                });
+            },
+            editActivity: function(i, idx) {
+                openWindow("activityUpload.html", "activityUpload", {
+                    aid: i.id,
+                    idx: idx,
+                    lid: lid,
+                });
+            },
 			//跳转到活动详情页
 			goActivityDetail: function(i) {
 				_set('activityId', i.id);
@@ -98,6 +122,13 @@ function plusReady() {
 	});
 
     $("#operate").click(function() {
+        openWindow("activityUpload.html", "activityUpload", {
+            lid: lid,
+        });
+    });
+
+    /*
+    $("#operate").click(function() {
     	var btnArray = [{
 			title: "查看模式",
 		}, {
@@ -121,10 +152,12 @@ function plusReady() {
 					break;
 				case 2:
 					break;
-		})
+            };
+		});
     });
-
+    */
 }
+
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {
 	plusReady();

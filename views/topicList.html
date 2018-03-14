@@ -21,9 +21,23 @@
 		
 		<div id="topicList" class="activity have-header have-footer">
 			<ul class="activity-list" v-show="topics.length">
-				<li v-for="i in topics" @click="goToActivity(i)">
-					<div class="img" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-					<p>{{i.name}}<span class="activitySort"><i class="iconfont icon-zhuanfa"></i></span><span class="activitySort"><i class="iconfont icon-shanchu"></i></span><span class="activitySort"><i class="iconfont icon-bianji"></i></span></p>
+				<li v-for="(i, idx) in topics">
+					<div class="img" :style="{backgroundImage: 'url('+ i.img +')'}" @click="goToActivity(i)"></div>
+					<p>{{i.name}}
+                        <!--暂时不加推送功能-->
+                        <span class="activitySort" v-show="false">
+                            <i class="iconfont icon-zhuanfa"></i>
+                        </span>
+                        <span class="activitySort" v-show="isAdmin" @click="delTopic(i, idx)">
+                            <i class="iconfont icon-shanchu"></i>
+                        </span>
+                        <span class="activitySort" v-show="isAdmin" @click="editTopic(i)">
+                            <i class="iconfont icon-bianji"></i>
+                        </span>
+                        <span class="activitySort" v-show="!isAdmin" @click="goToActivity(i)">
+                            进入>
+                        </span>
+                    </p>
 				</li>
                 <!--
 				<li v-for="a in activityList" @click="goActivityDetail(a)">

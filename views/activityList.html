@@ -21,12 +21,27 @@
 		
 		<div id="activityList" class="activity have-header have-footer">
 			<ul class="activity-list">
-				<li v-for="a in activityList" @click="goActivityDetail(a)">
-					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"><span>{{a.applicant}}人已报名</span></div>
+				<li v-for="(a, idx) in activityList">
+					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}" @click="goActivityDetail(a)"><span>{{a.applicant}}人已报名</span></div>
 					<p v-text="a.title"></p>
 					<p>活动开始: {{a.starttime}}</p>
 					<p>活动结束: {{a.endtime}}<span class="status">{{a.status}}</span></p>
-					<p><span class="activitySort"><i class="iconfont icon-zhuanfa"></i></span><span class="activitySort"><i class="iconfont icon-shanchu"></i></span><span class="activitySort"><i class="iconfont icon-bianji"></i></span></p>
+					<p>
+                        <!-- 暂时不提供向下级推送的服务
+                        <span class="activitySort" v-show="isAdmin">
+                            <i class="iconfont icon-zhuanfa"></i>
+                        </span>
+                        -->
+                        <span class="activitySort" v-show="isAdmin" @click="delActivity(a, idx)">
+                            <i class="iconfont icon-shanchu"></i>
+                        </span>
+                        <span class="activitySort" v-show="isAdmin" @click="editActivity(a, idx)">
+                            <i class="iconfont icon-bianji"></i>
+                        </span>
+                        <span class="activitySort" v-show="!isAdmin">
+                            进入>
+                        </span>
+                    </p>
 				</li>
 			</ul>
 			<!--<footer @click="getActivityList" class="block-button" v-show="bHaveMore">查看更多</footer>-->

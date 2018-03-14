@@ -35,9 +35,9 @@
 
         var userInfo = _load(_get("userInfo"));
         var wb = plus.webview.currentWebview();
-        vm.users = wb.users;
+        if (!wb.aid) vm.users = wb.users;
 
-        if (!vm.users.length) {
+        if (!vm.users.length || !!wb.aid) {
             _callAjax({
                 cmd: "fetch",
                 sql: "select id, name from User where ifValid = 1 and orgNo = ?",
@@ -46,6 +46,13 @@
                 if (!d.success || !d.data) return;
                 d.data.forEach(function(i) {
                     i.ifSelect = false;
+                    if (!!wb.aid) {
+                        wb.users.forEach(function(j) {
+                            if (j.id == i.id) {
+                                i.ifSelect = true;
+                            }
+                        });
+                    }
                     vm.users.push(i);
                 });
             });
