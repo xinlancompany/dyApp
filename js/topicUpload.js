@@ -56,6 +56,7 @@ function plusReady() {
     var wb = plus.webview.currentWebview();
     upload.lid = wb.lid;
     upload.orgNo = wb.orgNo;
+    alert(wb.lid);
 };
 
 if(window.plus) {

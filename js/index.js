@@ -322,7 +322,7 @@ function plusReady() {
             }, function(d) {
                 if (d.success && d.data && d.data.length) {
                     d.data.forEach(function(i) {
-                        self.categoryDict[i.title] = i.id;
+                        self.categoryDict[i.name] = i.id;
                         self.activityCategories.push(i);
                     });
                 } 
