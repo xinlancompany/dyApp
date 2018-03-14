@@ -1372,3 +1372,102 @@ body {
         }
     }
 }
+
+.reply {
+    background-color: #fff;
+    padding: 15px;
+    text-align: right;
+    position: relative;
+    textarea {
+        background-color: #f1f1f1;
+        border: none;
+        font-size: 16px;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+    a {
+        background-color: #e9e9e9;
+        padding: 8px 13px;
+        color: #333;
+        font-size: 16px;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        &.active {
+            background-color: @base;
+            color: #fff;
+        }
+    }
+    &:after {
+        content: '';
+        display: block;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        position: absolute;
+        height: 1px;
+        background-color: #C8C7CC;
+        transform: scaleY(.5);
+        -webkit-transform: scaleY(.5);
+    }
+}
+
+.comment-lists {
+    margin: 0;
+    padding-top: 20px;
+    dl {
+        position: relative;
+        padding-bottom: 40px;
+        padding-top: 20px;
+        &:first-child {
+            padding-top: 0;
+        }
+        &:last-child:after {
+            height: 0;
+        }
+        &:after {
+            content: '';
+            display: block;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            position: absolute;
+            height: 1px;
+            background-color: #C8C7CC;
+            transform: scaleY(.5);
+            -webkit-transform: scaleY(.5);
+        }
+        dt {
+            span {
+                position: absolute;
+                right: 0;
+                bottom: 10px;
+                padding: 0 10px;
+                border: 1px solid #eee;
+                font-size: 14px;
+                transition: all .3s ease-in;
+                i {
+                    font-size: 16px;
+                }
+                &.active {
+                    background-color: @base;
+                    border-color: @base;
+                    color: #fff;
+                    i {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        dd {
+            .line-clamp(10);
+        }
+    }
+    &>footer {
+        i {
+            margin-left: 10px;
+        }
+    }
+}

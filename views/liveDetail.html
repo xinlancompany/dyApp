@@ -27,6 +27,28 @@
 			<p class="count"><i class="iconfont icon-men"></i> {{liveData.audience}}人参与</p>
 			<p class="brief" v-cloak>简介：{{liveData.brief}}</p>
 		</div>
+		
+		<div id="comment" class="have-footer">
+			<div class="comment-list" v-show="comments.length != 0">
+				<header>热门评论</header>
+				<div>
+					<dl v-for="c in comments">
+						<dt>
+							<img :src="c.img" width="30px" height="30px" />
+							<strong v-text="c.name"></strong>
+							<time v-text="c.logtime"></time>
+						</dt>
+						<dd v-text="c.content"></dd>
+					</dl>
+					<footer @click="goComment" v-text="'全部'+allCommentsLength+'条评论'"></footer>
+				</div>
+			</div>
+
+			<div class="comment-bar" @click="goComment">
+				<span><i class="iconfont icon-xie"></i><em>写评论</em></span>
+				<span><i class="iconfont icon-pinglun1"></i><em>20</em></span>
+			</div>
+		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
