@@ -7,6 +7,7 @@
 		<script src="../lib/jquery.min.js"></script>
 		<script src="../lib/vue.min.js"></script>
 		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/swiper.min.css" rel="stylesheet" />
 		<link href="../lib/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../lib/iconfont.css" />
 		<link rel="stylesheet" href="../css/style.css" />
@@ -20,14 +21,23 @@
 		</header>
 		
 		<div id="review" class="have-header have-footer news-detail">
-            <p v-text="title"></p>
+            <header v-text="title"></header>
 			<article>
-				<p v-text="content"></p>
-				<p v-text="imgs"></p>
+				<p v-html="content"></p>
+			</article>
+			<article>
+				<div class="swiper-container review-swiper">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="img in imgs">
+							<img :src="img" width="100%" />
+						</div>
+					</div>
+				</div>
 			</article>
 		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
+<script src="../lib/swiper.min.js"></script>
 <script src="../lib/a_ref.js"></script>
 <script src="../js/reviewDetail.js"></script>

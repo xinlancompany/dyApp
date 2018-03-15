@@ -20,9 +20,7 @@
 		
 		<div id="recordUpload" class="article-upload have-header have-footer">
 			<form class="mui-input-group">
-			    <div class="mui-input-row mui-input-image">
-			        <label>图片上传</label>
-                    <!--<div class="thumb-upload" :style="{backgroundImage: 'url('+  +')'}">-->
+			    <div class="mui-input-row mui-input-image record-upload-imgs">
 			        <div class="thumb-upload" :style="imgStyle1">
 			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
 			        </div>
@@ -33,14 +31,11 @@
 			        	<input type="file" accept="image/*" @change="uploadImg3($event)">
 			        </div>
 			    </div>
-			    <div class="mui-input-row mui-input-textarea">
-			        <label>记录</label>
-			        <textarea rows="15" placeholder="内容" v-model="record"></textarea>
-			    </div>
+		        <textarea rows="15" placeholder="请输入内容" v-model="record"></textarea>
 			    <div class="mui-button-row">
 			        <button type="button" class="mui-btn mui-btn-primary" @click="uploadRecord">上传记录</button>
 			    </div>
-			</form>			
+			</form>
 		</div>
 	</body>
 </html>

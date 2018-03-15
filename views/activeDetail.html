@@ -6,8 +6,9 @@
 		<title></title>
 		<script src="../lib/jquery.min.js"></script>
 		<script src="../lib/vue.min.js"></script>
-		<script src="../lib/mui.min.js"></script>
+		<script src="../lib/mui.min.js"></script>		
 		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link href="../lib/swiper.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../lib/iconfont.css" />
 		<link rel="stylesheet" href="../css/style.css" />
 	</head>
@@ -55,10 +56,15 @@
 				<p v-text="detailData.record?detailData.record:'无'"></p>
 			</article>
 
-			<article>
+			<article v-show="detailData.recordImgs">
 				<header><i class="iconfont icon-jianjie"></i>活动照片：</header>
-				<p v-text="detailData.recordImgs?detailData.recordImgs:'无'"></p>
-                <!--照片，在isAdmin情况下可编辑-->
+				<div class="swiper-container activity-swiper">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="img in detailData.recordImgs">
+							<img :src="img" width="100%"/>
+						</div>
+					</div>
+				</div>
 			</article>
 			
 			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'" v-show="!isAdmin && !isSub"></footer>
@@ -66,6 +72,7 @@
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
+<script src="../lib/swiper.min.js"></script>
 <script src="../lib/a_ref.js"></script>
 <script src="../js/activeDetail.js"></script>
 

@@ -194,7 +194,10 @@
 					"views/liveDetail.html",
 					"views/login.html",
 					"views/newsList.html",
-					"views/topicList.html"
+					"views/topicList.html",
+					"views/tree.html",
+					"views/articleUpload.html",
+					"views/memberManage.html"
 				],
 				"priority": 0
 			},
@@ -208,21 +211,69 @@
 			"views/newsList.html": {
 				"resources": [],
 				"refer": [
-					"views/newsDetail.html"
+					"views/newsDetail.html",
+					"views/articleUpload.html"
 				],
 				"priority": 0
 			},
 			"views/topicList.html": {
 				"resources": [],
 				"refer": [
-					"views/activityList.html"
+					"views/activityList.html",
+					"views/topicUpload.html"
 				],
 				"priority": 0
 			},
 			"views/activityList.html": {
 				"resources": [],
 				"refer": [
-					"views/activeDetail.html"
+					"views/activeDetail.html",
+					"views/activityUpload.html"
+				],
+				"priority": 0
+			},
+			"views/tree.html": {
+				"resources": [],
+				"refer": [
+					"views/subOrg.html"
+				],
+				"priority": 0
+			},
+			"views/memberManage.html": {
+				"resources": [],
+				"refer": [
+					"views/memberActivityRecord.html"
+				],
+				"priority": 0
+			},
+			"views/memberActivityRecord.html": {
+				"resources": [],
+				"refer": [
+					"views/grade.html"
+				],
+				"priority": 0
+			},
+			"views/activeDetail.html": {
+				"resources": [],
+				"refer": [
+					"views/activityExperiences.html",
+					"views/memberRanks.html",
+					"views/recordUpload.html",
+					"views/experienceUpload.html"
+				],
+				"priority": 0
+			},
+			"views/activityExperiences.html": {
+				"resources": [],
+				"refer": [
+					"views/reviewDetail.html"
+				],
+				"priority": 0
+			},
+			"views/memberRanks.html": {
+				"resources": [],
+				"refer": [
+					"views/grade.html"
 				],
 				"priority": 0
 			}

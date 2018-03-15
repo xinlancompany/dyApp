@@ -24,27 +24,23 @@
 			        <label>标题</label>
 			    	<input type="text" class="mui-input-clear" placeholder="标题" v-model="title">
 			    </div>
-			    <div class="mui-input-row mui-input-image">
-			        <label>图片上传</label>
-                    <!--<div class="thumb-upload" :style="{backgroundImage: 'url('+  +')'}">-->
+			    <div class="mui-input-row mui-input-image record-upload-imgs">
 			        <div class="thumb-upload" :style="imgStyle1">
 			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
 			        </div>
 			        <div class="thumb-upload" :style="imgStyle2">
 			        	<input type="file" accept="image/*" @change="uploadImg2($event)">
 			        </div>
+
 			        <div class="thumb-upload" :style="imgStyle3">
 			        	<input type="file" accept="image/*" @change="uploadImg3($event)">
 			        </div>
 			    </div>
-			    <div class="mui-input-row mui-input-textarea">
-			        <label>记录</label>
-			        <textarea rows="15" placeholder="内容" v-model="experience"></textarea>
-			    </div>
+		        <textarea rows="15" placeholder="内容" v-model="experience"></textarea>
 			    <div class="mui-button-row">
 			        <button type="button" class="mui-btn mui-btn-primary" @click="uploadExperience">上传记录</button>
 			    </div>
-			</form>			
+		 	</form>
 		</div>
 	</body>
 </html>

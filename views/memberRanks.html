@@ -22,7 +22,8 @@
 			<!--组织信息中查看组织成员时显示-->
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="rankMember(i)">
-                    {{i.name+" "+i.scoreTag}}
+                    {{i.name}}
+                    <span v-text="i.scoreTag"></span>
                 </li>
 			</ul>
 		</div>

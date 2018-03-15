@@ -10,8 +10,14 @@
         });
 
         var wb = plus.webview.currentWebview();
-        ["title", "content", "imgs"].forEach(function(k) {
+        var arr = ["title", "content", "imgs"]; 
+        arr.forEach(function(k, i) {
             vm[k] = wb[k];
+            if(i == arr.length - 1) {
+            	var swiper = new Swiper('.review-swiper', {
+            		loop: true
+            	});
+            }
         });
 
         if (!wb.isAdmin) {

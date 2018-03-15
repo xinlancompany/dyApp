@@ -1,34 +1,73 @@
 {
-  "boot.html": {
-    "refer": [
-      "index.html"
-    ],
-    "resources": []
-  },
-  "index.html": {
-    "refer": [
-      "views/newsDetail.html",
-      "views/regulationDetail.html",
-      "views/score.html",
-      "views/newsList.html",
-      "views/login.html",
-      "views/topicList.html"
-    ],
-    "resources": []
-  },
-  "views/newsList.html": {
-    "refer": [
-      "views/newsDetail.html"
-    ]
-  },
-  "views/topicList.html": {
-    "refer": [
-      "views/activityList.html"
-    ]
-  },
-  "views/activityList.html": {
-    "refer": [
-      "views/activeDetail.html"
-    ]
-  }
+	"boot.html": {
+		"refer": [
+			"index.html"
+		],
+		"resources": []
+	},
+	"index.html": {
+		"refer": [
+			"views/newsDetail.html",
+			"views/regulationDetail.html",
+			"views/score.html",
+			"views/newsList.html",
+			"views/login.html",
+			"views/topicList.html",
+			"views/tree.html",
+			"views/articleUpload.html",
+			"views/memberManage.html"
+		],
+		"resources": []
+	},
+	"views/newsList.html": {
+		"refer": [
+			"views/newsDetail.html",
+			"views/articleUpload.html"
+		]
+	},
+	"views/topicList.html": {
+		"refer": [
+			"views/activityList.html",
+			"views/topicUpload.html"
+		]
+	},
+	"views/activityList.html": {
+		"refer": [
+			"views/activeDetail.html",
+			"views/activityUpload.html"
+		]
+	},
+	"views/tree.html": {
+		"refer": [
+			"views/subOrg.html"
+		]
+	},
+	"views/memberManage.html": {
+		"refer": [
+			"views/memberActivityRecord.html"
+		]
+	},
+	"views/memberActivityRecord.html": {
+		"refer": [
+			"views/grade.html"
+		]
+	},
+	"views/activeDetail.html": {
+		"refer": [
+			"views/activityExperiences.html",
+			"views/memberRanks.html",
+			"views/recordUpload.html",
+			"views/experienceUpload.html"
+		]
+	},
+	"views/activityExperiences.html": {
+		"refer": [
+			"views/reviewDetail.html"
+		]
+	},
+	"views/memberRanks.html": {
+		"refer": [
+			"views/grade.html"
+		]
+	}
 }

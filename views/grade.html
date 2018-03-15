@@ -26,10 +26,10 @@
 			</ul>
 			
 			<!--百分制-->
-            <div class="num-grade" v-show="gradeType=='百分制'" @click="score1">{{s1}}<span>分</span></div>
+            <div class="num-grade" v-show="gradeType=='百分制'" @click="score1" v-cloak>{{s1}}<span>分</span></div>
 			
 			<!--五星制-->
-			<div class="star-grade" v-show="gradeType=='五星制'">
+			<div class="star-grade" v-show="gradeType=='五星制'" v-cloak>
                 <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 == 0, 'icon-shoucang': s2 > 0}" @click="score2(1)"></i>
                 <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 2, 'icon-shoucang': s2 > 1}" @click="score2(2)"></i>
 				<i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 3, 'icon-shoucang': s2 > 2}" @click="score2(3)"></i>

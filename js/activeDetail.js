@@ -67,7 +67,13 @@ function plusReady() {
 					if(d.success && d.data) {
 						var arrImg = d.data[0].img.split('/upload');
 						d.data[0].img = serverAddr + '/upload' + arrImg[1];
-						self.detailData = d.data[0];						
+						self.detailData = d.data[0];	
+						self.detailData.recordImgs = _load(d.data[0].recordImgs)
+						setTimeout(function() {
+							var swiper = new Swiper('.activity-swiper', {
+								loop: true
+							});
+						}, 500)
 					}
 				})
 			},

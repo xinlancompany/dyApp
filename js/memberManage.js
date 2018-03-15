@@ -1,5 +1,7 @@
 (function() {
     var plusReady = function() {
+		pullToRefresh();
+    	
         var wb = plus.webview.currentWebview();
         
         var vm = new Vue({
