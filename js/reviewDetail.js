@@ -7,17 +7,17 @@
                 content: "",
                 imgs: [],
             },
+            methods: {
+            	openGallery: function() {
+					plus.nativeUI.previewImage(this.imgs,{'current': 0, 'loop': true})
+            	}
+            }
         });
 
         var wb = plus.webview.currentWebview();
         var arr = ["title", "content", "imgs"]; 
         arr.forEach(function(k, i) {
             vm[k] = wb[k];
-            if(i == arr.length - 1) {
-            	var swiper = new Swiper('.review-swiper', {
-            		loop: true
-            	});
-            }
         });
 
         if (!wb.isAdmin) {

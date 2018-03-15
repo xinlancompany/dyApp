@@ -37,7 +37,6 @@ function plusReady() {
 		},
 		created: function() {
 			var self = this;
-			console.log("启动页");
 			//获取启动页
 			_callAjax({
 				cmd: "fetch",

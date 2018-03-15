@@ -8,7 +8,6 @@
 		<script src="../lib/vue.min.js"></script>
 		<script src="../lib/mui.min.js"></script>		
 		<link href="../lib/mui.min.css" rel="stylesheet" />
-		<link href="../lib/swiper.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../lib/iconfont.css" />
 		<link rel="stylesheet" href="../css/style.css" />
 	</head>
@@ -58,12 +57,8 @@
 
 			<article v-show="detailData.recordImgs">
 				<header><i class="iconfont icon-jianjie"></i>活动照片：</header>
-				<div class="swiper-container activity-swiper">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="img in detailData.recordImgs">
-							<img :src="img" width="100%"/>
-						</div>
-					</div>
+				<div class="gallery" @click="openGallery">
+					<div class="thumb" v-for="img in detailData.recordImgs" :style="{'backgroundImage': 'url('+img+')'}"></div>
 				</div>
 			</article>
 			
@@ -72,7 +67,6 @@
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
-<script src="../lib/swiper.min.js"></script>
 <script src="../lib/a_ref.js"></script>
 <script src="../js/activeDetail.js"></script>
 

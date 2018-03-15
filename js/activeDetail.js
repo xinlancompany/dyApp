@@ -22,6 +22,9 @@ function plusReady() {
             experiencePermitted: 0, // 心得是否审定
 		},
 		methods: {
+			openGallery: function() {
+				plus.nativeUI.previewImage(this.detailData.recordImgs,{'current': 0, 'loop': true})
+			},
             // 活动打分
             openRanks: function() {
                 var self = this;
@@ -69,11 +72,6 @@ function plusReady() {
 						d.data[0].img = serverAddr + '/upload' + arrImg[1];
 						self.detailData = d.data[0];	
 						self.detailData.recordImgs = _load(d.data[0].recordImgs)
-						setTimeout(function() {
-							var swiper = new Swiper('.activity-swiper', {
-								loop: true
-							});
-						}, 500)
 					}
 				})
 			},
