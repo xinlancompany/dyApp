@@ -1,4 +1,6 @@
 function plusReady() {
+    var wb = plus.webview.currentWebview();
+
     var upload = new Vue({
         el: "#articleUpload",
         data: {
@@ -11,7 +13,8 @@ function plusReady() {
             img: "",
             imgStyle: {
                 backgroundImage: ""
-            }
+            },
+            submitTag: ("aid" in wb)? "编辑":"添加"
         },
         methods: {
             uploadImg: function(evt) {
@@ -36,20 +39,26 @@ function plusReady() {
                 if (!this.img && !this.isNotice) return mui.toast("请上传头图");
                 if (!this.articleDate) return mui.toast("请选择日期");
                 
-                var self = this;
+                var self = this,
+                    sql = "insert into articles(title, content, img, reporter, newsdate, linkerId) values(?,?,?,?,?,?)",
+                    vals = _dump([title, content, self.img, reporter, self.articleDate, self.lid]);
+                if ("aid" in wb) {
+                    sql = "update articles set title = ?, content = ? where id = ?";
+                    vals = _dump([title, content, wb.aid])
+                }
                 _callAjax({
                     cmd: "exec",
-                    sql: "insert into articles(title, content, img, reporter, newsdate, linkerId) values(?,?,?,?,?,?)",
-                    vals: _dump([title, content, self.img, reporter, self.articleDate, self.lid])
+                    sql: sql,
+                    vals: vals
                 }, function(d) {
                     // 返回并刷
                     if (d.success) {
-                        mui.toast("添加成功");
+                        mui.toast(self.submitTag+"成功");
                         mui.fire(plus.webview.getWebviewById("newsList"), "refresh", {
                             linkerId: self.lid
                         });
                     } else {
-                        mui.toast("添加失败");
+                        mui.toast(self.submitTag+"失败");
                     }
                     mui.back();
                 });
@@ -68,7 +77,6 @@ function plusReady() {
         }
     });
 
-    var wb = plus.webview.currentWebview();
     upload.lid = wb.lid;
     if ("title" in wb) {
         $(".mui-title").text(wb.title);
@@ -79,6 +87,11 @@ function plusReady() {
         $("#reporter-input").hide();
         $("#img-input").hide();
         $(".mui-title").text(wb.title);
+    }
+    // 编辑模式
+    if ("aid" in wb) {
+        upload.title = wb.title;
+        upload.content = wb.content;
     }
     $("#ruleDate").text(_now().split(" ")[0]);
 };

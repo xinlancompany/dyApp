@@ -23,7 +23,7 @@
 		
 		<div id="newsList" class = "news-list have-header have-footer">
 			<ul class="mui-table-view">
-				<li v-for="i in newsList" @click="gotoDetail(i)">
+				<li v-for="(i, idx) in newsList" @click="gotoDetail(i)">
 					<a>
 						<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="!!i.img"></div>
 						<div class="mui-media-body">
@@ -35,10 +35,10 @@
 		                            <i class="iconfont icon-zhuanfa"></i>
 		                        </span>
 		                        -->
-		                        <span class="activitySort">
+		                        <span class="activitySort" v-show="isAdmin" @click.stop="delArticle(i, idx)">
 		                            <i class="iconfont icon-shanchu"></i>
 		                        </span>
-		                        <span class="activitySort">
+		                        <span class="activitySort" v-show="isAdmin" @click.stop="editArticle(i)">
 		                            <i class="iconfont icon-bianji"></i>
 		                        </span>
 		                    </footer>

@@ -22,19 +22,19 @@
 		<div id="subOrg" class="have-header have-footer activity-panel">
 			
 			<div class="notice">
-				<header><i class="iconfont icon-xiaoxi"></i>通知</header>
+				<header @click="openNotices"><i class="iconfont icon-xiaoxi"></i>通知</header>
 				<div class="swiper-container notice-swiper">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide">
 							<div class="detail">
-								<h1>关于举办工商管理硕士研究生班招生报名的函</h1>
-								<p>2017-03-08</p>
+								<h1></h1>
+								<p></p>
 							</div>
 						</div>
-						<div class="swiper-slide">
+						<div class="swiper-slide" v-for="i in notices" @click="openNotice(i)">
 							<div class="detail">
-								<h1>关于举办工商管理硕士研究生班招生报名的函</h1>
-								<p>2017-03-08</p>
+								<h1 v-text="i.title"></h1>
+								<p v-text="i.logtime"></p>
 							</div>
 						</div>
 					</div>
@@ -43,12 +43,12 @@
 			
 			<ul class="activity-block clearfix">
 				<li @click="openActivityChoices"><i class="iconfont icon-huodong"></i>组织活动</li>
-				<li><i class="iconfont icon-Id"></i>党员管理</li>
-				<li><i class="iconfont icon-ai-book"></i>规章制度</li>
+				<li @click="openMembers"><i class="iconfont icon-Id"></i>党员管理</li>
+				<li @click="openRules"><i class="iconfont icon-ai-book"></i>规章制度</li>
                 <li @click="goBack"><i class="iconfont icon-chexiaofanhuichehuishangyibu"></i>返回列表</li>
 			</ul>
 			
-			<p class="tips">累计组织200场活动，50000人参与</p>
+            <p class="tips">累计组织{{summary.activity}}次活动，{{summary.member}}人次参与</p>
 			
 			
 		</div>

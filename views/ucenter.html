@@ -21,7 +21,7 @@
 		<div id="ucenter" class="have-header have-footer ucenter">
 			<div class="user">
 				<div class="user-img">
-					<img :src="userInfo.img"/>
+					<img src="../img/organization.jpg"/>
 				</div>
 				<p v-text="userInfo.name"></p>
 			</div>
@@ -33,7 +33,7 @@
 			</ul>
 			
 			<ul class="mui-table-view">
-			    <li class="mui-table-view-cell"><a class="mui-navigate-right">修改密码</a></li>
+			    <li class="mui-table-view-cell" @click="changePswd"><a class="mui-navigate-right">修改密码</a></li>
 			</ul>
 		</div>
 	</body>

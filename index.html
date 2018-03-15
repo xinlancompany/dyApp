@@ -85,6 +85,13 @@
                 <header @click="openNotices"><i class="iconfont icon-xiaoxi"></i>通知</header>
 				<div class="swiper-container notice-swiper">
 					<div class="swiper-wrapper">
+                        <!--解决第一个无法被点击的bug-->
+						<div class="swiper-slide">
+							<div class="detail">
+								<h1></h1>
+								<p></p>
+							</div>
+						</div>
 						<div class="swiper-slide" v-for="i in notices" @click="openNotice(i)">
 							<div class="detail">
 								<h1 v-text="i.title"></h1>
@@ -108,10 +115,10 @@
 				<li @click="openTree"><i class="iconfont icon-jifen"></i>组织层级</li>
 				<li @click="openMembers"><i class="iconfont icon-Id"></i>党员管理</li>
 				<li @click="openRules"><i class="iconfont icon-ai-book"></i>规章制度</li>
-				<span class="center"><i class="iconfont icon-key"></i></span>
+				<span class="center" @click="changePswd"><i class="iconfont icon-key"></i></span>
 			</ul>
 			
-			<p class="tips">累计组织200场活动，50000人参与</p>
+            <p class="tips" v-cloak>累计组织{{summary.activity}}次活动，{{summary.member}}人次参与</p>
 			
 		</div>
 		
@@ -192,11 +199,13 @@
 			</div>
 			<!--党员登录-->
 			<ul class="mui-table-view" v-show="userType != 1">
+                <!--
 				<li class="mui-table-view-cell" @click="goPost">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-xiaoxi"></i>消息
 					</a>
 				</li>
+                -->
 				<li class="mui-table-view-cell" @click="goMyStudy">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-wodesk"></i>我的学习

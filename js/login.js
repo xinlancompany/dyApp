@@ -45,8 +45,8 @@ function plusReady() {
 								mui.back();
 							}, 1500);
 						} else {
-							mui.toast("个人账号不存在");						
-						}
+							mui.toast("个人账号登录失败")
+                        }
 					});
 				} else {
 					//如果是组织
@@ -71,7 +71,7 @@ function plusReady() {
 								mui.back();
 							}, 1500);
 						} else {
-							mui.toast("组织账号不存在");
+							mui.toast("组织账号登录失败");
 						}
 					});
 				}

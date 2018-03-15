@@ -13,6 +13,7 @@ function plusReady() {
 		data: {
 			newsList: [],
 			bHaveMore: false,
+            isAdmin: false,
 		},
 		methods: {
 			//跳转到新闻详情
@@ -67,11 +68,38 @@ function plusReady() {
 				})
 			},
 
-            // 新增新闻
-            newArticle: function() {
-            
+            // 删除新闻
+            delArticle: function(i, idx) {
+                var self = this;
+                mui.confirm("确定删除？", "提示", ["确定", "取消"], function(e) {
+                    if (e.index == 0) {
+                        _callAjax({
+                            cmd: "exec",
+                            sql: "update articles set ifValid = 0 where id = ?",
+                            vals: _dump([i.id,])
+                        }, function(d) {
+                            if (d.success) {
+                                self.newsList = _del_ele(self.newsList, idx);
+                            }
+                        });
+                    }
+                });
             },
 	
+            // 编辑新闻
+            editArticle: function(i) {
+                var t;
+                if (lid == linkerId.Rules) t = "编辑规章制度";
+                if (lid == linkerId.Notice) t = "编辑通知";
+                openWindow("articleUpload.html", "articleUpload", {
+                    lid: lid,
+                    reporter: no,
+                    title: t,
+                    aid: i.id,
+                    title: i.title,
+                    content: i.content
+                });
+            }
 		},
 		mounted: function() {
 			var self = this;
@@ -91,10 +119,9 @@ function plusReady() {
         });
 
         // 新增文章列表
-        var userInfoStr = _get("userInfo"),
-            userInfo = _load(userInfoStr);
+            // newsList.isAdmin = "no" in userInfo;
         // alert(lid+" -- "+linkerId.Rules);
-        if (!!userInfoStr && !!parseInt(userInfo.userType)) {
+        if (newsList.isAdmin) {
             $("#newArticle").show();
             $("#newArticle").click(function() {
                 var t;
@@ -114,7 +141,14 @@ function plusReady() {
 
     var wb = plus.webview.currentWebview(),
         lid = wb.linkerId;
+    var userInfoStr = _get("userInfo"),
+        userInfo = _load(userInfoStr);
     var no = null;
+    if ("isAdmin" in wb) {
+        newsList.isAdmin = wb.isAdmin;
+    } else {
+        newsList.isAdmin = "no" in userInfo;
+    }
     if (lid) {
         if ("orgNo" in wb) no = wb.orgNo;
         updateNewsList(lid, no);

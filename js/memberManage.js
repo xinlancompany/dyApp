@@ -2,7 +2,12 @@
     var plusReady = function() {
 		pullToRefresh();
     	
-        var wb = plus.webview.currentWebview();
+        var wb = plus.webview.currentWebview(),
+            userInfo = _load(_get("userInfo")),
+            isAdmin = "no" in userInfo;
+        if ("isAdmin" in wb) {
+            isAdmin = wb.isAdmin;
+        }
         
         var vm = new Vue({
             el: "#memberManage",
@@ -11,8 +16,7 @@
             },
             methods: {
                 openMember: function(i) {
-                    var userInfo = _load(_get("userInfo"));
-                    if ("no" in userInfo) {
+                    if (isAdmin) {
                         openWindow("memberActivityRecord.html", "memberActivityRecord", {
                             idx: i.id,
                             name: i.name,

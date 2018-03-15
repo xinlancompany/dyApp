@@ -285,9 +285,13 @@ function plusReady() {
             // noticeTag: "通知",
             isAdmin: false,
             orgNo: "",
+            summary: {
+                activity: 0,
+                member: 0
+            }
 		},
 		methods: {
-            // 规章制度哦
+            // 规章制度
             openRules: function() {
                 var self = this;
 				openWindow("views/newsList.html", "newsList", {
@@ -410,13 +414,32 @@ function plusReady() {
                 self.orgNo = orgNo; // 新增通知时要用到
                 _callAjax({
                     cmd: "fetch",
-                    sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = ? and linkerId = ?",
+                    sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = ? and linkerId = ? and ifValid = 1 limit 3",
                     vals: _dump([orgNo, linkerId.Notice])
                 }, function(d) {
                     // alert(_dump(d));
                     if (d.success && d.data && d.data.length) {
                         self.notices = d.data;
                     }
+                });
+
+                // 获取统计信息
+                _callAjax({
+                    cmd: "multiFetch",
+                    multi: _dump([
+                        {
+                            key: "activity",
+                            sql: "select count(*) as cnt from activitys where linkerId in (select id from linkers where orgId ="+parseInt(orgNo)+")"
+                        },
+                        {
+                            key: "member",
+                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where linkerId in (select id from linkers where orgId = "+parseInt(orgNo)+"))"
+                        }
+                    ])
+                }, function(d) {
+                    // alert(_dump(d));
+                    self.summary.activity = d.data.activity[0].cnt;
+                    self.summary.member = d.data.member[0].cnt;
                 });
             },
             // 党员信息
@@ -426,6 +449,45 @@ function plusReady() {
                     orgNo: self.orgNo
                 });
             },
+            // 更改密码
+            changePswd: function() {
+                var self = this;
+                var pswd1, pswd2;
+                mui.confirm('<input type="password" id="changepswd" />', "输入新密码", ['确定', '取消'], function(e) {
+                    var pswd = _trim($("#changepswd").val());
+                    if (e.index == 0) {
+                        if (pswd == '') {
+                            mui.toast("请输入密码");
+                            return false;
+                        } else {
+                            pswd1 = pswd;
+                            mui.confirm('<input type="password" id="changepswd" />', "再次输入密码", ['确定', '取消'], function(e) {
+                                var pswd = _trim($("#changepswd").val());
+                                if (e.index == 0) {
+                                    if (pswd == '') {
+                                        mui.toast("请输入密码");
+                                        return false;
+                                    } else {
+                                        pswd2 = pswd;
+                                        if (pswd1 != pswd2) {
+                                            mui.toast("密码不一致，请重填");
+                                            return false;
+                                        } else {
+                                            _callAjax({
+                                                cmd: "exec",
+                                                sql: "update organization set pswd = ? where no = ?",
+                                                vals: _dump([pswd1, self.orgNo])
+                                            }, function(d) {
+                                                mui.toast("修改"+(d.success?"成功":"失败"));
+                                            });
+                                        }
+                                    }
+                                }
+                            }, 'div');
+                        }
+                    }
+                }, 'div');
+            }
 		},
 		mounted: function() {
             this.init();
@@ -896,16 +958,29 @@ function plusReady() {
 		changeTab(page, $(this));
 		
 		if (page == 'activity') {
+            if ("no" in userInfo) {
+                $(".mui-title").text(userInfo.name);
+            } else {
+                $(".mui-title").text(userInfo.orgName);
+            }
             // observer用于添加后更新
 			var noticeSwiper = new Swiper('.notice-swiper', {
-				autoplay: 1500,
+				autoplay: 2000,
 				loop: true,
                 observer: true,
                 observeParents: false,
 			});
 		}
-		
-		$(".mui-title").text("舟山共产党员");
+
+        if (page == "ucenter") {
+            $(".mui-title").text("个人中心");
+        }
+        if (page == "study") {
+            $(".mui-title").text("学习平台");
+        }
+        if (page == "index") {
+            $(".mui-title").text("舟山共产党员");
+        }
 		header.showOrgTitle = false;
 
 		if(page == 'ucenter' || page == 'activity') {
