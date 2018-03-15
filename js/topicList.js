@@ -48,8 +48,15 @@ function plusReady() {
     $(".mui-title").text(mname);
     // 设置编辑、删除按钮是否显示
     vm.isAdmin = !!parseInt(userInfo.userType);
+
+    // 子组织打开模式
+    if ("isSub" in wb) {
+        orgNo = wb.orgNo;
+        vm.isAdmin = false;
+    }
+    
     // 管理员显示新增
-    if (!!userInfoStr && !!parseInt(userInfo.userType)) {
+    if (vm.isAdmin) {
         $("#operate").show();
     } else {
         $("#operate").hide();

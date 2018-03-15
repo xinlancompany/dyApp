@@ -1,10 +1,12 @@
 //预加载页面
+/*
 mui.init({
 	preloadPages: [{
 		url: 'activeDetail.html',
 		id: 'activeDetail',
 	}],
 });
+*/
 
 var activitySortId = 0;
 
@@ -24,6 +26,10 @@ function plusReady() {
 		methods: {
             // 删除操作
             delActivity: function(i, idx) {
+                if (i.status != "即将开始") {
+                    mui.alert("活动"+i.status+"，无法删除");
+                    return;
+                }
                 var self = this;
                 mui.confirm("确定删除？", "提示", ["是", "否"], function(e) {
                     if (e.index == 0) {
@@ -39,6 +45,10 @@ function plusReady() {
                 });
             },
             editActivity: function(i, idx) {
+                if (i.status != "即将开始") {
+                    mui.alert("活动"+i.status+"，无法修改");
+                    return;
+                }
                 openWindow("activityUpload.html", "activityUpload", {
                     aid: i.id,
                     idx: idx,
@@ -47,10 +57,14 @@ function plusReady() {
             },
 			//跳转到活动详情页
 			goActivityDetail: function(i) {
-				_set('activityId', i.id);
+				// _set('activityId', i.id);
 				
-				mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
-				openWindow('activeDetail.html', 'activeDetail');
+                // alert(wb.isAdmin);
+				// mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
+				openWindow('activeDetail.html', 'activeDetail', {
+                    activityId: i.id,
+                    isAdmin: wb.isAdmin
+                });
 				
 			},
 			
@@ -66,15 +80,23 @@ function plusReady() {
 					cmd:"fetch",
 					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where a.ifValid =1 and a.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
 					vals:_dump([lid, f])
-				},function(d){
-					if(d.success && d.data) {
+				}, function(d) {
+					if (d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
 							var arrImg = r.img.split('/upload');
 							r.img = serverAddr + '/upload' + arrImg[1];
+                            // 设置活动的状态，不能从数据库取
+                            if (_dateCompare(r.starttime, _now())) {
+                                r.status = "即将开始";
+                            } else if (_dateCompare(r.endtime, _now())) {
+                                r.status = "正在进行";
+                            } else {
+                                r.status = "已结束";
+                            }
 							self.activityList.push(r);
-						})
-					}else {
+						});
+					} else {
 						self.bHaveMore = false;
 						if(f != 10e5){
 							mui.toast("没有更多活动了")
@@ -126,6 +148,12 @@ function plusReady() {
             lid: lid,
         });
     });
+
+    if (wb.isAdmin) {
+        $("#operate").show();
+    } else {
+        $("#operate").hide();
+    }
 
     /*
     $("#operate").click(function() {

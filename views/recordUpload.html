@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">记录上传</h1>
+		</header>
+		
+		<div id="recordUpload" class="article-upload have-header have-footer">
+			<form class="mui-input-group">
+			    <div class="mui-input-row mui-input-image">
+			        <label>图片上传</label>
+                    <!--<div class="thumb-upload" :style="{backgroundImage: 'url('+  +')'}">-->
+			        <div class="thumb-upload" :style="imgStyle1">
+			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
+			        </div>
+			        <div class="thumb-upload" :style="imgStyle2">
+			        	<input type="file" accept="image/*" @change="uploadImg2($event)">
+			        </div>
+			        <div class="thumb-upload" :style="imgStyle3">
+			        	<input type="file" accept="image/*" @change="uploadImg3($event)">
+			        </div>
+			    </div>
+			    <div class="mui-input-row mui-input-textarea">
+			        <label>记录</label>
+			        <textarea rows="15" placeholder="内容" v-model="record"></textarea>
+			    </div>
+			    <div class="mui-button-row">
+			        <button type="button" class="mui-btn mui-btn-primary" @click="uploadRecord">上传记录</button>
+			    </div>
+			</form>			
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/recordUpload.js"></script>

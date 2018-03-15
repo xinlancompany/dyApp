@@ -92,6 +92,7 @@ function plusReady() {
             ucenterReload(ucenter);
             $(".go-ucenter").click();
         }
+        activity.init();
 	});
     
     // 关闭boot
@@ -276,9 +277,22 @@ function plusReady() {
 			activity: [],
 			bHaveMore: false,
             activityCategories: [],
-            categoryDict: {}
+            categoryDict: {},
+            notices: [],
+            noticeTag: "通知",
+            isAdmin: false,
+            orgNo: "",
 		},
 		methods: {
+            // 规章制度哦
+            openRules: function() {
+                var self = this;
+				openWindow("views/newsList.html", "newsList", {
+                    linkerId: linkerId.Rules,
+                    orgNo: self.orgNo,
+                    isAdmin: self.isAdmin,
+                });
+            },
             // 跳转到规章
             gotoRules: function() {
 				//触发列表页面的newList事件
@@ -311,23 +325,105 @@ function plusReady() {
                         name: name
                     });
                 });
-            }
+            },
+            openTree: function() {
+                var userInfo = _load(_get("userInfo")),
+                    orgNo;
+                if ("no" in userInfo) {
+                    orgNo = userInfo.no;
+                } else {
+                    orgNo = userInfo.orgNo;
+                }
+                openWindow("views/tree.html", "tree", {
+                    orgNo: orgNo
+                });
+            },
+            openNotice: function(i) {
+                var wb = plus.webview.getWebviewById("newsDetail");
+                if (!!wb) {
+                    // 预加载成功
+                    _set("newsId", i.id)
+                    mui.fire(wb, "newsId");
+                    openWindow("views/newsDetail.html", "newsDetail");
+                } else {
+                    // 预加载失败
+                    _set("newsId", "");
+                    openWindow("views/newsDetail.html", "newsDetail", {
+                        aid: i.id,
+                        table: "articles"
+                    });
+                }
+            },
+            newNotice: function() {
+                if (!this.isAdmin) return;
+                var self = this;
+                openWindow("views/articleUpload.html", "articleUpload", {
+                    lid: linkerId.Notice,
+                    reporter: self.orgNo,
+                    title: "新增通知",
+                });
+            },
+            init: function() {
+                var self = this;
+                self.activity = [];
+                self.bHaveMore = false;
+                self.activityCategories = [];
+                self.categoryDict = {},
+                self.notices = [],
+                self.noticeTag = "通知",
+                self.isAdmin = false,
+                self.orgNo = "",
+                // 获取活动分类
+                _callAjax({
+                    cmd: "fetch",
+                    sql: "select id, name from linkers where refid = ?",
+                    vals: _dump([linkerId.Activity,])
+                }, function(d) {
+                    if (d.success && d.data && d.data.length) {
+                        d.data.forEach(function(i) {
+                            self.categoryDict[i.name] = i.id;
+                            self.activityCategories.push(i);
+                        });
+                    } 
+                });
+
+                // 获取通知信息
+                var userInfo = _load(_get("userInfo")),
+                    orgNo;
+                self.isAdmin = "no" in userInfo;
+                if ("no" in userInfo) {
+                    orgNo = userInfo.no;
+                } else {
+                    orgNo = userInfo.orgNo;
+                }
+                self.orgNo = orgNo; // 新增通知时要用到
+                _callAjax({
+                    cmd: "fetch",
+                    sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = ? and linkerId = ?",
+                    vals: _dump([orgNo, linkerId.Notice])
+                }, function(d) {
+                    // alert(_dump(d));
+                    if (d.success && d.data && d.data.length) {
+                        self.notices = d.data;
+                    }
+                });
+
+                // 管理员可添加通知
+                if (self.isAdmin) {
+                    self.noticeTag = "新增通知";
+                }
+            },
+            // 党员信息
+            openMembers: function() {
+                var self = this;
+                openWindow("views/memberManage.html", "memberManage", {
+                    orgNo: self.orgNo
+                });
+            },
 		},
 		mounted: function() {
-			var self = this;
-            _callAjax({
-                cmd: "fetch",
-                sql: "select id, name from linkers where refid = ?",
-                vals: _dump([linkerId.Activity,])
-            }, function(d) {
-                if (d.success && d.data && d.data.length) {
-                    d.data.forEach(function(i) {
-                        self.categoryDict[i.name] = i.id;
-                        self.activityCategories.push(i);
-                    });
-                } 
-            });
-		},
+            this.init();
+        },
 	});
 	
 	var study = new Vue({
@@ -780,9 +876,12 @@ function plusReady() {
 		changeTab(page, $(this));
 		
 		if (page == 'activity') {
+            // observer用于添加后更新
 			var noticeSwiper = new Swiper('.notice-swiper', {
 				autoplay: 1500,
 				loop: true,
+                observer: true,
+                observeParents: false,
 			});
 		}
 		

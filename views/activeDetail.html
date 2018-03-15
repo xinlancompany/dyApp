@@ -25,33 +25,43 @@
 				<li class="mui-table-view-cell">
 					报名人数: {{detailData.applicant}}人
 				</li>
-				<li class="mui-table-view-cell" @click="changeStartTime()">
+				<li class="mui-table-view-cell">
 					开始时间: {{detailData.starttime}}
 				</li>
-				<li class="mui-table-view-cell" @click="changeEndTime()">
+				<li class="mui-table-view-cell">
 					结束时间: {{detailData.endtime}}
 				</li>
-				<li class="mui-table-view-cell" @click="changeAddress()">
+				<li class="mui-table-view-cell">
 					活动地点: {{detailData.address}}
 				</li>
 			</ul>
 			
 			<ul class="mui-table-view">
-			    <li class="mui-table-view-cell"><a class="mui-navigate-right">活动心得</a></li>
-			    <li class="mui-table-view-cell"><a class="mui-navigate-right">记录上传</a></li>
+			    <li class="mui-table-view-cell" @click="openExperiences"><a class="mui-navigate-right">活动心得</a></li>
+                <!--仅管理员可以上传记录-->
+			    <li class="mui-table-view-cell" v-show="isAdmin"><a class="mui-navigate-right" @click="uploadRecord">记录上传</a></li>
+			    <li class="mui-table-view-cell" v-show="!isAdmin && !isSub" @click="uploadExperience"><a class="mui-navigate-right">心得上传</a></li>
+			    <li class="mui-table-view-cell" v-show="isAdmin" @click="openRanks"><a class="mui-navigate-right">活动打分</a></li>
 			</ul>
 			
 			<article>
 				<header><i class="iconfont icon-jianjie"></i>活动简介：</header>
-				<textarea v-text="detailData.content"></textarea>
+                <!--<textarea v-text="detailData.content" disabled></textarea>-->
+                <p v-text="detailData.content"></p>
 			</article>
 			
 			<article>
 				<header><i class="iconfont icon-jianjie"></i>活动记录：</header>
-				<p></p>
+				<p v-text="detailData.record?detailData.record:'无'"></p>
+			</article>
+
+			<article>
+				<header><i class="iconfont icon-jianjie"></i>活动照片：</header>
+				<p v-text="detailData.recordImgs?detailData.recordImgs:'无'"></p>
+                <!--照片，在isAdmin情况下可编辑-->
 			</article>
 			
-			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'"></footer>
+			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'" v-show="!isAdmin && !isSub"></footer>
 		</div>
 	</body>
 </html>

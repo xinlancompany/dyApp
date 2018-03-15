@@ -15,20 +15,20 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">活动记录</h1>
+			<h1 class="mui-title">活动心得</h1>
 		</header>
 		
-		<div id="mAR" class="have-header have-footer mAR">
+		<div id="activityExperiences" class="have-header have-footer mAR">
 			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
-		        <li class="mui-table-view-cell" v-for="i in activities" @click="actions(i)">
+		        <li class="mui-table-view-cell" v-for="i in experiences" @click="openExperience(i)">
 		            <div class="mui-table">
 		                <div class="mui-table-cell mui-col-xs-9">
-		                    <h4 class="mui-ellipsis" v-text="i.title"></h4>
-                            <h5>{{i.experience?i.experience:"暂无心得"}}</h5>
-                            <p class="mui-h6 mui-ellipsis">{{i.score?(i.score+(i.scoreType=="百分制"?"分":"星")):"暂未打分"}}</p>
+		                    <h4 class="mui-ellipsis" v-text="i.experienceTitle"></h4>
+		                    <h5 v-text="i.name"></h5>
+                            <p class="mui-h6 mui-ellipsis">{{parseInt(i.experiencePermitted)?"已审核":"未审核"}}</p>
 		                </div>
 		                <div class="mui-table-cell mui-col-xs-3 mui-text-right">
-                            <span class="mui-h5">{{i.logtime}}</span>
+		                    <span class="mui-h5" v-text="i.experienceTime"></span>
 		                </div>
 		            </div>
 		        </li>
@@ -38,5 +38,5 @@
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
-<script src="../js/memberActivityRecord.js"></script>
+<script src="../js/activityExperiences.js"></script>
 

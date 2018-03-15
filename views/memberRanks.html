@@ -11,32 +11,24 @@
 		<link rel="stylesheet" href="../lib/iconfont.css" />
 		<link rel="stylesheet" href="../css/style.css" />
 	</head>
-	
 	<body>
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">文章列表</h1>
-			<!--若为规章制度则显示新增按钮-->
-			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="newArticle">新增</button>
+			<h1 class="mui-title">活动打分</h1>
 		</header>
 		
-		<div id="newsList" class = "news-list have-header have-footer">
+		<div id="memberRanks" class="have-header have-footer">
+			<!--组织信息中查看组织成员时显示-->
 			<ul class="mui-table-view">
-				<li v-for="i in newsList" @click="gotoDetail(i)">
-					<a>
-						<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="!!i.img"></div>
-						<div class="mui-media-body">
-							<p class="title" v-text="i.title"></p>
-							<span class="date" v-text="i.newsdate"></span>
-						</div>
-					</a>
-				</li>
+				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="rankMember(i)">
+                    {{i.name+" "+i.scoreTag}}
+                </li>
 			</ul>
-			<footer @click="getNews" class="block-button" v-show="bHaveMore">查看更多</footer>
 		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
-<script src="../js/newsList.js"></script>
+<script src="../js/memberRanks.js"></script>
+

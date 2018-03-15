@@ -21,11 +21,14 @@
 		<div id="memberManage" class="have-header have-footer">
 			<!--组织信息中查看组织成员时显示-->
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-left">{{i.name}}</li>
+				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
+                    {{i.name+" "+i.tag}}
+                </li>
 			</ul>
 		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
+<script src="../js/memberManage.js"></script>
 

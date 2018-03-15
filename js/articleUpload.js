@@ -5,6 +5,7 @@ function plusReady() {
             lid: 0,
             title: "",
             reporter: "",
+            isNotice: false,
             content: "",
             articleDate: "",
             img: "",
@@ -32,7 +33,7 @@ function plusReady() {
                 if (!title) return mui.toast("请填写标题");
                 if (!reporter) return mui.toast("请填写来源");
                 if (!content) return mui.toast("请填写内容");
-                if (!this.img) return mui.toast("请上传头图");
+                if (!this.img && !this.isNotice) return mui.toast("请上传头图");
                 if (!this.articleDate) return mui.toast("请选择日期");
                 
                 var self = this;
@@ -44,9 +45,15 @@ function plusReady() {
                     // 返回并刷
                     if (d.success) {
                         mui.toast("添加成功");
-                        mui.fire(plus.webview.getWebviewById("newsList"), "refresh", {
-                            linkerId: self.lid
-                        });
+                        if (self.isNotice) {
+                            mui.fire(plus.webview.getWebviewById("index"), "loginBack", {
+                                tp: "organization"
+                            });
+                        } else {
+                            mui.fire(plus.webview.getWebviewById("newsList"), "refresh", {
+                                linkerId: self.lid
+                            });
+                        }
                     } else {
                         mui.toast("添加失败");
                     }
@@ -70,6 +77,13 @@ function plusReady() {
     var wb = plus.webview.currentWebview();
     upload.lid = wb.lid;
     if ("title" in wb) {
+        $(".mui-title").text(wb.title);
+    }
+    if ("reporter" in wb) {
+        upload.reporter = wb.reporter;
+        upload.isNotice = true;
+        $("#reporter-input").hide();
+        $("#img-input").hide();
         $(".mui-title").text(wb.title);
     }
     $("#ruleDate").text(_now().split(" ")[0]);

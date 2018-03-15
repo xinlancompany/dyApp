@@ -25,7 +25,7 @@ function plusReady() {
 			},
 	
 			//获取动态新闻
-			getNews: function(lid) {
+			getNews: function(lid, orgNo) {
                 // 如果没有lid则打开新闻列表
                 if (!lid) lid = linkerId.News;
 
@@ -34,11 +34,19 @@ function plusReady() {
 				if(self.newsList.length) {
 					f = _at(self.newsList, -1).id;
 				}
+
+                var sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and id < ? order by id desc limit 10",
+                    vals =  _dump([lid, f]);
+
+                if (!!orgNo) {
+                    sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and id < ? and reporter = ? order by id desc limit 10";
+                    vals =  _dump([lid, f, orgNo]);
+                }
 	
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and id < ? order by id desc limit 10",
-					vals: _dump([lid, f])
+					sql: sql,
+					vals: vals
 				}, function(d) {
                     _tell(d);
 					if(d.success && d.data) {
@@ -72,7 +80,7 @@ function plusReady() {
 		}
 	});
 
-    var updateNewsList = function(lid) {
+    var updateNewsList = function(lid, orgNo) {
         _callAjax({
             cmd: "fetch",
             sql: "select name from linkers where id = ?",
@@ -90,20 +98,25 @@ function plusReady() {
             $("#newArticle").show();
             $("#newArticle").click(function() {
                 openWindow("articleUpload.html", "articleUpload", {
-                    lid: lid
+                    lid: lid,
+                    reporter: no,
+                    title: "新增规章制度"
                 });
             });
         } else {
             $("#newArticle").hide();
         }
-        newsList.getNews(lid);
+        newsList.getNews(lid, orgNo);
     };
 
     var wb = plus.webview.currentWebview(),
         lid = wb.linkerId;
+    var no = null;
     if (lid) {
-        updateNewsList(lid);
+        if ("orgNo" in wb) no = wb.orgNo;
+        updateNewsList(lid, no);
     }
+        
 
     // 添加newList自定义监听事件
     window.addEventListener('newList', function(event) {
@@ -111,7 +124,7 @@ function plusReady() {
         // _tell(_get("userInfo"));
         // 修改标题
         if (lid) {
-            updateNewsList(lis);
+            updateNewsList(lid, no);
         }
     });
 
@@ -120,7 +133,7 @@ function plusReady() {
         // alert("rth");
         var lid = event.detail.linkerId;
         newsList.newsList = [];
-        newsList.getNews(lid);
+        newsList.getNews(lid, no);
     });
 
 }

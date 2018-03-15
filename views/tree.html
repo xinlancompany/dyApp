@@ -20,22 +20,25 @@
 		
 		<div id="tree" class="have-header have-footer tree">
 			<div class="controls">
-				<span><i class="iconfont icon-chexiaofanhuichehuishangyibu"></i></span>
-				<span><i class="iconfont icon-fanhuidingbu"></i></span>
+				<span @click="openPrev"><i class="iconfont icon-chexiaofanhuichehuishangyibu"></i></span>
+				<span @click="openTop"><i class="iconfont icon-fanhuidingbu"></i></span>
 			</div>
 			<ul class="branches">
+				<li class="branch" v-for="i in orgs">
+					<i class="iconfont icon-minzhengxinxi-kunnandangyuan" @click="openDetail(i)"></i>
+					<p v-text="i.name" @click="openNext(i)"></p>
+				</li>
+                <!--
 				<li class="branch">
 					<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
 					<p>我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5</p>
 				</li>
-				<li class="branch">
-					<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
-					<p>我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5</p>
-				</li>
+                -->
 			</ul>
 		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
+<script src="../js/tree.js"></script>
 

@@ -142,7 +142,7 @@ function plusReady() {
                 if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
-                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags) values(?,?,?,?,?,?,?,?)",
+                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags) values(?,?,?,?,?,?,?,?,?)",
                     vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tags)]);
 
                 if (!!self.aid) {
