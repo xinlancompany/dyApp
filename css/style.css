@@ -303,6 +303,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   height: 80px;
+  position: relative;
 }
 .news-list li .mui-media-body .title {
   font-size: 16px;
@@ -325,6 +326,16 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
   white-space: normal;
+}
+.news-list li .mui-media-body footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #e14937;
+}
+.news-list li .mui-media-body footer span {
+  margin-left: 10px;
+  padding: 2px 5px;
 }
 .news-list li:last-child:after {
   height: 0;

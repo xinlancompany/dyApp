@@ -134,6 +134,7 @@ body {
             flex-direction: column;
             justify-content: space-between;
             height: 80px;
+            position: relative;
             .title {
                 font-size: 16px;
                 .line-clamp(2);
@@ -147,6 +148,16 @@ body {
                color: #999;
                font-size: 14px;
                .line-clamp(1);
+            }
+            footer {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                color: @base;
+                span {
+                    margin-left: 10px;
+                    padding: 2px 5px;
+                }
             }
         }
         &:last-child:after {
