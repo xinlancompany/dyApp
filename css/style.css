@@ -1764,3 +1764,18 @@ body {
 .record-upload-imgs .thumb-upload:nth-child(2) {
   margin: 0 10px;
 }
+.gallery {
+  display: flex;
+}
+.gallery .thumb {
+  flex: 1;
+  height: 120px;
+  width: 100%;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: 50%;
+}
+.gallery .thumb:nth-child(2) {
+  margin: 0 10px;
+}

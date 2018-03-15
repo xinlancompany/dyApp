@@ -7,7 +7,6 @@
 		<script src="../lib/jquery.min.js"></script>
 		<script src="../lib/vue.min.js"></script>
 		<script src="../lib/mui.min.js"></script>
-		<link href="../lib/swiper.min.css" rel="stylesheet" />
 		<link href="../lib/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="../lib/iconfont.css" />
 		<link rel="stylesheet" href="../css/style.css" />
@@ -26,18 +25,13 @@
 				<p v-html="content"></p>
 			</article>
 			<article>
-				<div class="swiper-container review-swiper">
-					<div class="swiper-wrapper">
-						<div class="swiper-slide" v-for="img in imgs">
-							<img :src="img" width="100%" />
-						</div>
-					</div>
+				<div class="gallery" @click="openGallery">
+					<div class="thumb" v-for="img in imgs" :style="{'backgroundImage': 'url('+img+')'}"></div>
 				</div>
 			</article>
 		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
-<script src="../lib/swiper.min.js"></script>
 <script src="../lib/a_ref.js"></script>
 <script src="../js/reviewDetail.js"></script>

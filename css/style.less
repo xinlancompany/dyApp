@@ -1535,3 +1535,20 @@ body {
         }
     }
 }
+
+.gallery {
+    display: flex;
+    .thumb {
+        flex: 1;
+        height: 120px;
+        width: 100%;
+
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        background-size: cover;
+        background-position: 50%;
+        &:nth-child(2) {
+            margin: 0 10px;
+        }
+    }
+}
