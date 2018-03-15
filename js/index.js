@@ -35,7 +35,9 @@ var ucenterReload = function(ucenter) {
     if (!ucenter) return;
     var self = ucenter;
     
+    self.isLogin = true;
     self.userInfo = _load(_get('userInfo'));
+    self.userType = self.userInfo.userType;
     
     //获取用户信息
     /*
@@ -669,6 +671,7 @@ function plusReady() {
 			},
 			//查看党员先锋指数
 			checkPoints: function(){
+                /*
 				if(this.isLogin){
 					_set('checkPoints','0');
 					mui.fire(plus.webview.getWebviewById("score"), 'checkPoints', {});
@@ -677,10 +680,15 @@ function plusReady() {
 				}else{
 					openWindow("views/login.html","login");
 				}
-				
+				*/
+                mui.fire(plus.webview.getWebviewById("score"), "checkPoints", {
+                    showTab: 0
+                });
+                openWindow("views/score.html","score");
 			},
 			//查看学习积分
 			checkCredit: function(){
+                /*
 				if(this.isLogin){
 					_set('checkPoints', '1');
 					mui.fire(plus.webview.getWebviewById("score"), 'checkPoints', {});
@@ -689,6 +697,11 @@ function plusReady() {
 				}else{
 					openWindow("views/login.html","login");
 				}
+                */
+                mui.fire(plus.webview.getWebviewById("score"), "checkPoints", {
+                    showTab: 1
+                });
+                openWindow("views/score.html","score");
 			},
 			//我的消息
 			goPost: function(){
@@ -758,6 +771,11 @@ function plusReady() {
 			}
 		},
 		mounted: function(){
+			var self = this;
+			self.userInfo = _load(_get('userInfo'));
+            self.isLogin = true;
+            self.userType = self.userInfo.userType;
+
             /*
 			var self = this;
 			
