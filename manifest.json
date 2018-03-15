@@ -197,7 +197,8 @@
 					"views/topicList.html",
 					"views/tree.html",
 					"views/articleUpload.html",
-					"views/memberManage.html"
+					"views/memberManage.html",
+					"views/ucenter.html"
 				],
 				"priority": 0
 			},
@@ -293,7 +294,6 @@
 				"fonts/iconfont.ttf",
 				"lib/a_ref.js",
 				"views/liveList.html",
-				"views/ucenter.html",
 				"fonts/mui.ttf",
 				"css/less-components/_reset.less",
 				"views/myActivity.html",
