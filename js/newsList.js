@@ -94,13 +94,16 @@ function plusReady() {
         var userInfoStr = _get("userInfo"),
             userInfo = _load(userInfoStr);
         // alert(lid+" -- "+linkerId.Rules);
-        if (!!userInfoStr && !!parseInt(userInfo.userType) && lid == linkerId.Rules) {
+        if (!!userInfoStr && !!parseInt(userInfo.userType)) {
             $("#newArticle").show();
             $("#newArticle").click(function() {
+                var t;
+                if (lid == linkerId.Rules) t = "新增规章制度";
+                if (lid == linkerId.Notice) t = "新增通知";
                 openWindow("articleUpload.html", "articleUpload", {
                     lid: lid,
                     reporter: no,
-                    title: "新增规章制度"
+                    title: t
                 });
             });
         } else {

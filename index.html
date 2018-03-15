@@ -82,7 +82,7 @@
 		<div id="activity" class="have-footer main activity-panel" v-show="activity.length>0">
 			
 			<div class="notice">
-                <header @click="newNotice"><i class="iconfont icon-xiaoxi"></i>{{noticeTag}}</header>
+                <header @click="openNotices"><i class="iconfont icon-xiaoxi"></i>通知</header>
 				<div class="swiper-container notice-swiper">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" v-for="i in notices" @click="openNotice(i)">

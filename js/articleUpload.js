@@ -45,15 +45,9 @@ function plusReady() {
                     // 返回并刷
                     if (d.success) {
                         mui.toast("添加成功");
-                        if (self.isNotice) {
-                            mui.fire(plus.webview.getWebviewById("index"), "loginBack", {
-                                tp: "organization"
-                            });
-                        } else {
-                            mui.fire(plus.webview.getWebviewById("newsList"), "refresh", {
-                                linkerId: self.lid
-                            });
-                        }
+                        mui.fire(plus.webview.getWebviewById("newsList"), "refresh", {
+                            linkerId: self.lid
+                        });
                     } else {
                         mui.toast("添加失败");
                     }

@@ -11,11 +11,12 @@ mui.init({
 	},{
 		url: 'views/regulationDetail.html',
 		id: 'regulationDetail'
-	},{
+	},
+    /*
+    {
 		url: 'views/score.html',
 		id: 'score'
 	},
-    /*
     {
         url: 'views/newsList.html',
         id: 'newsList'
@@ -281,7 +282,7 @@ function plusReady() {
             activityCategories: [],
             categoryDict: {},
             notices: [],
-            noticeTag: "通知",
+            // noticeTag: "通知",
             isAdmin: false,
             orgNo: "",
 		},
@@ -356,13 +357,21 @@ function plusReady() {
                     });
                 }
             },
-            newNotice: function() {
+            openNotices: function() {
+                /*
                 if (!this.isAdmin) return;
                 var self = this;
                 openWindow("views/articleUpload.html", "articleUpload", {
                     lid: linkerId.Notice,
                     reporter: self.orgNo,
                     title: "新增通知",
+                });
+                */
+                var self = this;
+				openWindow("views/newsList.html", "newsList", {
+                    linkerId: linkerId.Notice,
+                    orgNo: self.orgNo,
+                    isAdmin: self.isAdmin,
                 });
             },
             init: function() {
@@ -372,7 +381,7 @@ function plusReady() {
                 self.activityCategories = [];
                 self.categoryDict = {},
                 self.notices = [],
-                self.noticeTag = "通知",
+                // self.noticeTag = "通知",
                 self.isAdmin = false,
                 self.orgNo = "",
                 // 获取活动分类
@@ -409,11 +418,6 @@ function plusReady() {
                         self.notices = d.data;
                     }
                 });
-
-                // 管理员可添加通知
-                if (self.isAdmin) {
-                    self.noticeTag = "新增通知";
-                }
             },
             // 党员信息
             openMembers: function() {
@@ -681,10 +685,9 @@ function plusReady() {
 					openWindow("views/login.html","login");
 				}
 				*/
-                mui.fire(plus.webview.getWebviewById("score"), "checkPoints", {
-                    showTab: 0
+                openWindow("views/score.html","score", {
+                    tab: 0
                 });
-                openWindow("views/score.html","score");
 			},
 			//查看学习积分
 			checkCredit: function(){
@@ -698,10 +701,9 @@ function plusReady() {
 					openWindow("views/login.html","login");
 				}
                 */
-                mui.fire(plus.webview.getWebviewById("score"), "checkPoints", {
-                    showTab: 1
+                openWindow("views/score.html","score", {
+                    tab: 1
                 });
-                openWindow("views/score.html","score");
 			},
 			//我的消息
 			goPost: function(){
