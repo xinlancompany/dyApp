@@ -55,7 +55,7 @@
         var init = function() {
             _callAjax({
                 cmd: "fetch",
-                sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType from activityEnroll e, activitys a where e.userId = ? and e.activityId = a.id",
+                sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType from activityEnroll e, activitys a where e.userId = ? and e.activityId = a.id and a.ifValid = 1",
                 vals: _dump([wb.idx,])
             }, function(d) {
                 // alert(_dump(d.data));
