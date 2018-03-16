@@ -131,8 +131,6 @@
 
         var noticeSwiper = new Swiper('.notice-swiper', {
             autoplay: 2000,
-            loop: true,
-            observeParents: false,
             observer: true,
         });
     };
