@@ -22,9 +22,11 @@
 			<!--组织信息中查看组织成员时显示-->
 			<ul class="mui-table-view" v-cloak>
 				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
-                    {{i.name}}
-                    <span v-show="i.tag.split(' ')[0]" v-text="i.tag.split(' ')[0]"></span>
-                    <span v-show="i.tag.split(' ')[1]" v-text="i.tag.split(' ')[1]"></span>
+					<a class="mui-navigate-right">
+	                    {{i.name}}
+	                    <span v-show="i.tag.split(' ')[0]" v-text="i.tag.split(' ')[0]"></span>
+	                    <span v-show="i.tag.split(' ')[1]" v-text="i.tag.split(' ')[1]"></span>
+                  	</a>
                 </li>
 			</ul>
 		</div>

@@ -198,7 +198,11 @@
 					"views/tree.html",
 					"views/articleUpload.html",
 					"views/memberManage.html",
-					"views/ucenter.html"
+					"views/ucenter.html",
+					"views/myStudy.html",
+					"views/myActivity.html",
+					"views/liveList.html",
+					"views/internetCourseList.html"
 				],
 				"priority": 0
 			},
@@ -277,6 +281,28 @@
 					"views/grade.html"
 				],
 				"priority": 0
+			},
+			"views/myStudy.html": {
+				"resources": [],
+				"refer": [
+					"views/internetCourseware.html"
+				],
+				"priority": 0
+			},
+			"views/internetCourseList.html": {
+				"resources": [],
+				"refer": [
+					"views/internetCourseware.html",
+					"views/newsDetail.html"
+				],
+				"priority": 0
+			},
+			"views/liveList.html": {
+				"resources": [],
+				"refer": [
+					"views/liveDetail.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {
@@ -293,10 +319,8 @@
 				"js/newsList.js",
 				"fonts/iconfont.ttf",
 				"lib/a_ref.js",
-				"views/liveList.html",
 				"fonts/mui.ttf",
 				"css/less-components/_reset.less",
-				"views/myActivity.html",
 				"css/less-components/_var.less",
 				"css/less-components/_mixin.less",
 				"lib/jquery.min.js",
@@ -305,7 +329,6 @@
 				"lib/vue.min.js",
 				"js/index.js",
 				"img/ucenterbg.jpg",
-				"views/myStudy.html",
 				"js/newsDetail.js",
 				"img/trophy.png",
 				"js/myStudy.js",
@@ -317,7 +340,6 @@
 				"js/score.js",
 				"img/default.jpg",
 				"lib/swiper.min.js",
-				"views/internetCourseList.html",
 				"js/activityList.js",
 				"js/login.js",
 				"css/style.css",

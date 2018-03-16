@@ -22,7 +22,7 @@
 			<video :src="courseData.url" controls webkit-playsinline playsinline :poster="courseData.img" onplaying="startTimeOut()" onpause="clearTimeOut()"></video>
 			<p class="brief" v-cloak>简介：{{courseData.brief}}</p>
 			
-			<div class="other-courseware">
+			<div class="other-courseware" v-if="otherCoursewares.length > 0">
 				<header class="global-header"><h1 class="title">其他课件</h1></header>
 				<ul class="clearfix">
 					<li v-for="c in otherCoursewares" @click="changeCoursewares(c)">
