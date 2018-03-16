@@ -695,11 +695,16 @@ body {
   color: #fff;
   font-size: 14px;
 }
+.activity ul.activity-list li h1 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 15px;
+}
 .activity ul.activity-list li p {
   margin-top: 15px;
   margin-bottom: 0;
-  font-size: 16px;
-  color: #333;
+  font-size: 14px;
+  color: #666;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -1390,8 +1395,7 @@ body {
 .study-live .live-program .detail .open {
   position: absolute;
   right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 0;
   background-color: #2c59d4;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -1777,6 +1781,10 @@ body {
 #grade .star-grade i.icon-shoucang {
   color: #e14937;
 }
+#memberManage li a,
+#memberRanks li a {
+  padding-right: 35px;
+}
 #memberManage li span,
 #memberRanks li span {
   float: right;
@@ -1814,4 +1822,22 @@ body {
 }
 .gallery .thumb:nth-child(2) {
   margin: 0 10px;
+}
+#notice .mui-media-object i {
+  font-size: 30px;
+}
+#notice .mui-media-object i.icon-093info {
+  color: #007AFF;
+}
+#notice .mui-media-object i.icon-088help02 {
+  color: #C0C0C0;
+}
+#notice .mui-media-object i.icon-72jingshi {
+  color: #EC971F;
+}
+#notice .mui-media-object i.icon-71shibai {
+  color: #CB0303;
+}
+#notice .mui-media-object i.icon-70chenggong {
+  color: #2AC845;
 }

@@ -23,10 +23,10 @@
 				<div class="user-img">
 					<img src="../img/organization.jpg"/>
 				</div>
-				<p v-text="userInfo.name"></p>
+				<p v-text="userInfo.name" v-cloak></p>
 			</div>
 			
-			<ul class="mui-table-view">
+			<ul class="mui-table-view" v-cloak>
 			    <li class="mui-table-view-cell" v-cloak>身份证号：{{userInfo.idNo}}</li>
 			    <li class="mui-table-view-cell" v-cloak>人员类别：党员</li>
 			    <li class="mui-table-view-cell" v-cloak>所在党支部：{{userInfo.orgName}}</li>

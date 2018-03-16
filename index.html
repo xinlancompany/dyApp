@@ -86,13 +86,13 @@
 				<div class="swiper-container notice-swiper">
 					<div class="swiper-wrapper">
                         <!--解决第一个无法被点击的bug-->
-						<div class="swiper-slide">
+						<!--<div class="swiper-slide">
 							<div class="detail">
 								<h1></h1>
 								<p></p>
 							</div>
-						</div>
-						<div class="swiper-slide" v-for="i in notices" @click="openNotice(i)">
+						</div>-->
+						<div class="swiper-slide" v-for="i, index in notices" @click="openNotice(i)">
 							<div class="detail">
 								<h1 v-text="i.title"></h1>
 								<p v-text="i.logtime"></p>

@@ -16,12 +16,12 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">文章列表</h1>
+			<h1 class="mui-title"></h1>
 			<!--若为规章制度则显示新增按钮-->
 			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="newArticle">添加</button>
 		</header>
 		
-		<div id="newsList" class = "news-list have-header have-footer">
+		<div id="newsList" class = "news-list have-header have-footer" v-cloak>
 			<ul class="mui-table-view">
 				<li v-for="(i, idx) in newsList" @click="gotoDetail(i)">
 					<a>

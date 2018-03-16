@@ -963,12 +963,9 @@ function plusReady() {
             } else {
                 $(".mui-title").text(userInfo.orgName);
             }
-            // observer用于添加后更新
 			var noticeSwiper = new Swiper('.notice-swiper', {
 				autoplay: 2000,
-				loop: true,
                 observer: true,
-                observeParents: false,
 			});
 		}
 
