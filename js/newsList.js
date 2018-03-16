@@ -14,6 +14,7 @@ function plusReady() {
 			newsList: [],
 			bHaveMore: false,
             isAdmin: false,
+            subOrgs: [],
 		},
 		methods: {
 			//跳转到新闻详情
@@ -99,7 +100,62 @@ function plusReady() {
                     title: i.title,
                     content: i.content
                 });
-            }
+            },
+
+            // 推送消息
+            _push: function(i) {
+                var multi = _map(function(k) {
+                    return {
+                        key: "push"+parseInt(Math.random()*10e6),
+                        sql: "insert into articles(title,img,content,linkerId,reporter) values('"+i.title+"', '"+i.img+"', '"+i.content+"', "+i.linkerId+", '"+k.no+"')"
+                    };
+                }, this.subOrgs);
+                multi.push({
+                    key: "update",
+                    sql: "update articles set subtitle = 'pushed' where id = "+i.id
+                });
+                // 设置以免重复推送
+                i.subtitle = "pushed";
+                _callAjax({
+                    cmd: "multiFetch",
+                    multi: _dump(multi)
+                }, function(d) {
+                    mui.toast("推送"+(d.success?"成功":"失败"));
+                });
+            },
+
+            askToPush: function(i) {
+                var self = this;
+                mui.confirm("是否推送下一级？", "提示", ["确定", "取消"], function(e) {
+                    if (e.index == 0) {
+                        self.pushArticle(i);
+                    }
+                });
+            },
+            
+            pushArticle: function(i) {
+                if (i.subtitle == "pushed") {
+                    mui.toast("该文章已经推送过");
+                    return;
+                }
+                var self = this;
+                if (!self.subOrgs.length) {
+                    _callAjax({
+                        cmd: "fetch",
+                        sql: "select no from organization where superOrgNo = ?",
+                        vals: _dump([no,])
+                    }, function(d) {
+                        if (d.success && d.data && d.data.length) {
+                            self.subOrgs = d.data;
+                            self._push(i);
+                        } else {
+                            mui.toast("无下级支部可推送");
+                        }
+                    });
+                } else {
+                    self._push(i);
+                }
+            },
 		},
 		mounted: function() {
 			var self = this;

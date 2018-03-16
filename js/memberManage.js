@@ -31,7 +31,7 @@
         _callAjax({
             cmd: "fetch",
             // sql: "select id, name from user where orgNo = ?",
-            sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id  where u.orgNo = ? group by u.id, e.scoreType",
+            sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id left join activitys a on e.activityId = a.id where u.orgNo = ? and a.ifValid = 1 group by u.id, e.scoreType",
             vals: _dump([wb.orgNo,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {

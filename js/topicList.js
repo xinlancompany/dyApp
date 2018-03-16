@@ -29,9 +29,20 @@ function plusReady() {
                             cmd: "exec",
                             sql: "update linkers set ifValid = 0 where id = ?",
                             vals: _dump([i.id,])
-                        }, function(d) {
-                            mui.toast("删除"+(d.success?"成功":"失败"));
-                            self.topics = _del_ele(self.topics, idx);
+                        }, function(_d) {
+                            if (_d.success) {
+                                self.topics = _del_ele(self.topics, idx);
+                                _callAjax({
+                                    cmd: "exec",
+                                    sql: "update activitys set ifValid = 0 where id in (select id from activitys where linkerId = "+i.id+")"
+                                }, function(d) {
+                                    if (d.success && d.data && d.data.length) {
+                                        mui.toast("删除"+(d.success?"成功":"失败"));
+                                    }
+                                });
+                            } else {
+                                mui.toast("删除失败");
+                            }
                         });
                     }
                 });

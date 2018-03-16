@@ -161,7 +161,7 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and linkerId = " + linkerId.IndexNews +" order by id desc limit 10"
+					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and linkerId = " + linkerId.IndexNews +" order by newsdate desc limit 10"
 				},function(d){
 					if(d.success && d.data && d.data.length) {
                         /*

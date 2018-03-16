@@ -94,6 +94,8 @@ function plusReady() {
 							}, function(d) {
 								if(d.success) {
 									mui.toast('报名成功');
+                                    self.bClick = 0;
+                                    /*
 									self.getActivityDetail();
 					
 									setTimeout(function() {
@@ -102,6 +104,7 @@ function plusReady() {
 											count: self.detailData.applicant
 										});
 									}, 500)
+                                    */
 					
 								} else {
 									mui.toast('报名失败');

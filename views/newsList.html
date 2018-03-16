@@ -18,7 +18,7 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">文章列表</h1>
 			<!--若为规章制度则显示新增按钮-->
-			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="newArticle">新增</button>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="newArticle">添加</button>
 		</header>
 		
 		<div id="newsList" class = "news-list have-header have-footer">
@@ -30,11 +30,9 @@
 							<p class="title" v-text="i.title"></p>
 							<span class="date" v-text="i.newsdate"></span>
 							<footer>
-		                        <!-- 暂时不提供向下级推送的服务
-		                        <span class="activitySort" v-show="isAdmin">
+		                        <span class="activitySort" v-show="isAdmin" @click.stop="askToPush(i)">
 		                            <i class="iconfont icon-zhuanfa"></i>
 		                        </span>
-		                        -->
 		                        <span class="activitySort" v-show="isAdmin" @click.stop="delArticle(i, idx)">
 		                            <i class="iconfont icon-shanchu"></i>
 		                        </span>
