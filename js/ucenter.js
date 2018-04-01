@@ -7,12 +7,22 @@ function plusReady() {
 		data: {
 			userInfo:{},
 		},
+		computed: {
+			userImg: function() {
+				var img = "../img/organization.jpg";
+				if ("img" in this.userInfo && !!this.userInfo.img) {
+					img = this.userInfo.img;
+				}
+				return {
+					"background-image": 'url('+img+')',
+				};
+			}
+		},
 		methods: {
 			getInfo: function(){
 				var self = this;
 				
 				var userInfo = _load(_get('userInfo'));
-				_tell(userInfo);
 				_callAjax({
 					cmd:"fetch",
 					sql:"select u.id, u.name, u.idNo, u.img, o.name as orgName from User u, organization o where u.orgNo = o.no and u.ifValid = 1 and u.id = ?",
@@ -21,7 +31,28 @@ function plusReady() {
 					if(d.success && d.data){
 						self.userInfo = d.data[0];
 					}
-				})
+				});
+			},
+
+			// 更新头像
+			uploadImg: function(evt) {
+				// alert("rth");
+				var self = this;
+				plus.nativeUI.showWaiting('上传中...')
+				uploadImage("users", evt, function(r) {
+					plus.nativeUI.closeWaiting();
+					self.userInfo.img = serverAddr+'/upload/pic/users/'+r.thumb;
+                    _tell("img: ---> "+self.img);
+                    _callAjax({
+                    	cmd: "exec",
+                    	sql: "update user set img = ? where id = ?",
+                    	vals: _dump([self.userInfo.img, self.userInfo.id])
+                    }, function(d) {
+                    	if (d.success) {
+							_set("userInfo", _dump(self.userInfo));
+                    	}
+                    });
+				});
 			},
 
             // 更改密码

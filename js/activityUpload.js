@@ -15,7 +15,7 @@ function plusReady() {
                 backgroundImage: ""
             },
             users: [],
-            tags: []
+            tag: null
         },
         watch: {
             aid: function(i) {
@@ -48,7 +48,7 @@ function plusReady() {
                         self.content = inf.content;
                         self.img = inf.img;
                         self.imgStyle.backgroundImage = "url("+inf.img+")";
-                        self.tags = _load(inf.tags);
+                        self.tag = _load(inf.tags);
                     }
                     if ("enroll" in d.data && d.data["enroll"].length) {
                         d.data["enroll"].forEach(function(i) {
@@ -68,13 +68,9 @@ function plusReady() {
                     return i.ifSelect;
                 }, self.users)).join(", ");
             },
-            selectTagNames: function() {
-                var self = this;
-                return _map(function(i) {
-                    return i.name;
-                }, _filter(function(i) {
-                    return i.ifSelect;
-                }, self.tags)).join(", ");
+            selectTagName: function() {
+            	if (this.tag) return this.tag.name;
+            	return "";
             }
         },
         methods: {
@@ -143,11 +139,11 @@ function plusReady() {
                 
                 var self = this,
                     sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags) values(?,?,?,?,?,?,?,?,?)",
-                    vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tags)]);
+                    vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tag)]);
 
                 if (!!self.aid) {
-                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=? where id = ?";
-                    vals = _dump([title,content,self.img,organizer,location,starttime,endtime,self.aid]);
+                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=? where id = ?";
+                    vals = _dump([title,content,self.img,organizer,location,starttime,endtime,_dump(self.tag),self.aid]);
                 }
                 
                 _callAjax({
@@ -161,6 +157,8 @@ function plusReady() {
                     if (d.success) {
                         // 更新参加人员表activityEnroll
                         if (self.users.length) {
+                        	var credits = 3;
+                        	if ("credits" in self.tag && self.tag.credits) credits = self.tag.credits;
                             _callAjax({
                                 cmd: "multiFetch",
                                 multi: _dump([{
@@ -170,12 +168,12 @@ function plusReady() {
                                             _map(function(i) {
                                                 return {
                                                     key: "key"+parseInt(Math.random()*10e6),
-                                                    sql: "insert into activityEnroll(userId, activityId) values("+i.id+", "+aid+")"
+                                                    sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+credits+")"
                                                 }
                                             }, _filter(function(i) {
                                                 return i.ifSelect;
                                             }, self.users))
-                                        ))
+                                        ));
                             }, function(_d) {
                                 // alert(_dump(_d));
                             });
@@ -204,7 +202,7 @@ function plusReady() {
 
     // 返回标签
     window.addEventListener("selectTags", function(event) {
-        upload.tags = event.detail.tags;
+        upload.tag = event.detail.tag;
     });
 
     var wb = plus.webview.currentWebview();

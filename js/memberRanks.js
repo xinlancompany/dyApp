@@ -3,7 +3,17 @@
         var vm = new Vue({
             el: "#memberRanks",
             data: {
-                members: []
+                members: [],
+                searchWord: "",
+            },
+            computed: {
+            	filterMembers: function() {
+            		var sw = _trim(this.searchWord);
+            		if (!sw) return this.members;
+            		return _filter(function(i) {
+            			return i.name.indexOf(sw) >= 0;
+            		}, this.members);
+            	}
             },
             methods: {
                 rankMember: function(i) {

@@ -7,13 +7,35 @@
                 studyScore: 0,
                 activeTab: 0,
                 totalScore: 0,
+				userInfo: _load(_get("userInfo")),
+				activityList: [], //党员先锋指数数据
+				liveList: [], // 直播学习列表
+				courseList: [],  //学习数据
+				contentList:[], //当前选中tab数据
+				bHaveMore_activity: true,
+				bHaveMore_course: true,
+				bHaveMore_live: true,
+            },
+            computed:{
+            	s2: function() {
+            		return this.activityScore/5.0;
+            	},
+            	courseLiveList: function() {
+            		var l = this.courseList.concat(this.liveList);
+            		l.sort(function(a, b) {
+            			return a.time < b.time;
+            		});
+            		return l;
+            	}
             },
             watch: {
                 activeTab: function(i) {
                     if (i) {
                         this.totalScore = this.studyScore;
+                        this.contentList = this.courseLiveList;
                     } else {
                         this.totalScore = this.activityScore;
+                        this.contentList = this.activityList;
                     }
                 }
             },
@@ -25,7 +47,141 @@
                     } else {
                         this.totalScore = this.activityScore;
                     }
-                }
+                },
+
+				//获取活动列表
+				getActivityList: function(){
+					var self = this;
+					
+					if(self.userInfo) {
+						var f = 10e5;
+					
+						if(self.activityList.length) {
+							f = _at(self.activityList, -1).id;
+						}
+					
+						console.log("f="+f);
+						_callAjax({
+							cmd: "fetch",
+//							sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+							sql: "select a.id, a.title, e.score, strftime('%Y-%m-%d %H:%M', a.starttime)as time, e.score as points from activityEnroll e, activitys a where a.ifValid = 1 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
+							vals: _dump([self.userInfo.id, f])
+						}, function(d) {
+							if(d.success && d.data) {
+								d.data.forEach(function(r) {
+									self.activityList.push(r);
+					
+								});
+					
+								if(self.activityList.length < 10) {
+									self.bHaveMore_activity = false;
+								} else {
+									self.bHaveMore_activity = true;
+								}
+
+								if(self.activeTab == 0){
+									self.contentList = self.activityList;
+								}
+							} else {
+								self.bHaveMore_activity = false;
+								if(f != 10e5) {
+									mui.toast("没有更多活动了")
+								}
+							}
+						})
+					}
+				},
+				// 获取直播学习列表
+				getLiveList: function(){
+					var self = this;
+					
+					if(self.userInfo && self.bHaveMore_live) {
+						var f = 10e5;
+
+						if(self.liveList.length) {
+							f = _at(self.liveList, -1).id;
+						}
+					
+						_callAjax({
+							cmd: "fetch",
+//							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', a.newsdate)as time, a.credit as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
+							sql: "select l.id, l.title, strftime('%Y-%m-%d %H:%M', e.logtime)as time, count(e.id) as points from lives l, liveEnroll e where l.ifValid = 1 and e.liveId = l.id and e.userId = ? and l.id < ? group by l.id order by l.id desc",
+							vals: _dump([self.userInfo.id, f])
+						}, function(d) {
+							if(d.success && d.data) {
+								d.data.forEach(function(r) {
+									r.points = studyScoreSetting.livePerMinute * r.points;
+									r.points = Math.round(r.points*100)/100.0;
+									self.liveList.push(r);				
+								});
+					
+								if(self.courseList.length < 10) {
+									self.bHaveMore_live = false;
+								} else {
+									self.bHaveMore_live = true;
+								}
+
+								if(self.activeTab == 1){
+									self.contentList = self.courseLiveList;
+								}
+							} else {
+								self.bHaveMore_live = false;
+								if(f != 10e5) {
+									mui.toast("没有更多课件了")
+								}
+							}
+						})
+					}
+				},
+				//获取学习列表
+				getCourseList: function(){
+					var self = this;
+					
+					if(self.userInfo && self.bHaveMore_course) {
+						var f = 10e5;
+
+						if(self.courseList.length) {
+							f = _at(self.courseList, -1).id;
+						}
+					
+						_callAjax({
+							cmd: "fetch",
+							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, a.credit as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
+							vals: _dump([self.userInfo.id, f, linkerId.netCourse])
+						}, function(d) {
+							if(d.success && d.data) {
+								d.data.forEach(function(r) {
+									self.courseList.push(r);				
+								});
+					
+								if(self.courseList.length < 10) {
+									self.bHaveMore_course = false;
+								} else {
+									self.bHaveMore_course = true;
+								}
+
+								if(self.activeTab == 1){
+									self.contentList = self.courseLiveList;
+								}
+							} else {
+								self.bHaveMore_course = false;
+								if(f != 10e5) {
+									mui.toast("没有更多课件了")
+								}
+							}
+						})
+					}
+				},
+				getMoreList: function() {
+					var self = this;
+					
+					if(self.activeTab == 0){
+						self.getActivityList();
+					}else {
+						self.getCourseList();
+						self.getLiveList();
+					}
+				},
             }
         });
 
@@ -52,7 +208,8 @@
             if ("score" in d.data && d.data.score && d.data.score.length) {
                 d.data.score.forEach(function(i) {
                     if (i.scoreType == "百分制") vm.activityScore += parseInt(i.total);
-                    if (i.scoreType == "五星制") vm.activityScore += i.total * 20;
+                    // 五星制取消
+                    // if (i.scoreType == "五星制") vm.activityScore += i.total * 20;
                 });
             }
             if ("course" in d.data && d.data.course && d.data.course.length) {
@@ -60,17 +217,30 @@
             }
             if ("live" in d.data && d.data.live && d.data.live.length) {
                 d.data.live.forEach(function(i) {
-                    var score = cnt * 0.2;
-                    if (score > 10) score = 10;
+                    var score = i.cnt * studyScoreSetting.livePerMinute; // 每10分钟1分
+                    if (score > 1) score = 1; // 最多能得到1分
                     vm.studyScore += score;
+                    vm.studyScore = Math.round(vm.studyScore*100)/100.0;
                 });
             }
+            if (vm.studyScore > 20) {
+                vm.studyScore = 20;
+            }
+            // 党员先锋指数要包含学习分数
+            vm.activityScore += vm.studyScore;
             if (vm.activeTab) {
                 vm.totalScore = vm.studyScore;
             } else {
                 vm.totalScore = vm.activityScore;
             }
         });
+
+		vm.activityList = [];
+		vm.courseList = [];
+		vm.getActivityList();
+		vm.getCourseList();
+		vm.getLiveList();
+
 
         var wb = plus.webview.currentWebview();
         vm.activeTab = wb.tab;

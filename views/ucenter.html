@@ -20,8 +20,9 @@
 		
 		<div id="ucenter" class="have-header have-footer ucenter">
 			<div class="user">
-				<div class="user-img">
-					<img src="../img/organization.jpg"/>
+				<div class="user-img" :style="userImg">
+					<!--<img src="../img/organization.jpg"/>-->
+					<input type="file" accept="image/*" @change="uploadImg($event)">
 				</div>
 				<p v-text="userInfo.name" v-cloak></p>
 			</div>

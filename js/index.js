@@ -79,6 +79,31 @@ var ucenterReload = function(ucenter) {
 
 function plusReady() {
 	pullToRefresh();
+
+    // 获取学习积分的设置，覆盖util.js里的设置
+    _callAjax({
+        cmd: "fetch",
+        sql: "select * from studyScoreSetting"
+    }, function(d) {
+       if (d.success && d.data && d.data.length) {
+           d.data.forEach(function(i) {
+               if (i.tag == "totalScore") studyScoreSetting.totalScore = i.score;
+               if (i.tag == "livePerMinute") studyScoreSetting.livePerMinute = i.score;
+           });
+       }
+    });
+
+	// 获取活动积分设置
+    _callAjax({
+        cmd: "fetch",
+        sql: "select * from activityScoreSetting"
+    }, function(d) {
+       if (d.success && d.data && d.data.length) {
+           d.data.forEach(function(i) {
+               if (i.tag == "activityLimit") activityScoreSetting.activityLimit = i.score;
+           });
+       }
+    });
 	
 	var swiperStudy = null;
 	
@@ -327,11 +352,59 @@ function plusReady() {
                     if (e.index == 0) return;
                     var name = buttons[e.index-1].title,
                         lid = self.categoryDict[name];
-                    openWindow('views/topicList.html', 'topicList', {
-                        lid: lid,
-                        name: name
-                    });
+                    self.openActicityTopics(lid, name);
+//                  openWindow('views/topicList.html', 'topicList', {
+//                      lid: lid,
+//                      name: name
+//                  });
                 });
+            },
+            openActicityTopics: function(lid, name) {
+            	var self = this;
+            	_callAjax({
+            		cmd: "fetch",
+					sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id desc",
+					vals: _dump([self.orgNo, lid])
+            	}, function(d) {
+            		var buttons = [];
+            		if (d.success && d.data && d.data.length) {
+            			buttons = d.data;
+            		}
+            		if (self.isAdmin) {
+            			["新建", "编辑"].forEach(function(i) {
+							buttons.push({
+								title: i
+							});
+            			});
+            		}
+					plus.nativeUI.actionSheet({
+						title: name+"主题",
+						cancel: "取消",
+						buttons: buttons
+					}, function(e) {
+						if (e.index == 0) return;
+						if (buttons[e.index-1].title == "新建") {
+							openWindow("views/topicUpload.html", "topicUpload", {
+								lid: lid,
+								orgNo: self.orgNo
+							});
+							return;
+						}
+						if (buttons[e.index-1].title == "编辑") {
+							openWindow('views/topicList.html', 'topicList', {
+								lid: lid,
+								name: name
+							});
+							return;
+						}
+						var i = buttons[e.index-1];
+						openWindow("views/activityList.html", "activityList", {
+							lid: i.topicId,
+							title: i.title,
+							isAdmin: self.isAdmin
+						});
+					});
+            	});
             },
             openTree: function() {
                 var userInfo = _load(_get("userInfo")),

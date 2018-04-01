@@ -57,7 +57,7 @@
                             value: i,
                             text: i
                         }
-                    }, _range(1, 100)));
+                    }, _range(1, activityScoreSetting.activityLimit)));
 					userPicker.show(function(items) {
 						// userResult.innerText = JSON.stringify(items[0]);
                         self.s1 = items[0].value;
