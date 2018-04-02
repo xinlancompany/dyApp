@@ -23,8 +23,9 @@
 				<input type="search" class="mui-input-clear" placeholder="搜索">
 			</div>
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-checkbox mui-left" v-for="i in tags" @click="showSelects">
-                    <input name="checkbox" type="checkbox" :value="i.id" v-model="i.ifSelect" >{{i.name}}
+				<li class="mui-table-view-cell mui-radio checkbox mui-left" v-for="i, idx in tags" @click="showSelects(idx)">
+                    <!--<input name="checkbox" type="checkbox" :value="i.id" v-model="i.ifSelect" >{{i.name}}-->
+                    <input name="radio" type="radio" :value="idx" v-model="selectTagIndex" >{{i.name+"("+i.credits+"分)"}}
 				</li>
 			</ul>
 		</div>

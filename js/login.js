@@ -10,8 +10,29 @@ function plusReady() {
             type: 'personal',
 			username: '',  //账号
 			password: '',  //密码
+			year: _now().split("-")[0], // 年份
+			yearId: 0,
+			years: []
 		},
 		methods: {
+			// 选择年份
+			chooseYear: function() {
+                var self = this,
+                    buttons = _map(function(i) {
+                        return {
+                            title: i.year,
+                        };
+                    }, self.years);
+                plus.nativeUI.actionSheet({
+                    title: "年份选择",
+                    cancel: "取消",
+                    buttons: buttons
+                }, function(e) {
+                    if (e.index == 0) return;
+                    self.year = self.years[e.index-1].year;
+                    self.yearId = e.index-1;
+                });
+			},
 			//登录
 			login:function(){
                 // alert(this.type);
@@ -44,6 +65,9 @@ function plusReady() {
 							setTimeout(function() {
 								mui.back();
 							}, 1500);
+
+							// 重置服务器
+							var _callAjax = _genCallAjax(self.years[self.yearId].server + "/db4web");
 						} else {
 							mui.toast("个人账号登录失败")
                         }
@@ -80,6 +104,15 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
+		}
+	});
+
+	_callAjax({
+		cmd: "fetch",
+		sql: "select year, server from yearServerConfig"
+	}, function(d) {
+		if (d.success && d.data) {
+			login.years = d.data;
 		}
 	});
 

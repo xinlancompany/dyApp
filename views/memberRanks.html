@@ -21,7 +21,10 @@
 		<div id="memberRanks" class="have-header have-footer">
 			<!--组织信息中查看组织成员时显示-->
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="rankMember(i)">
+				<li class="mui-table-view-cell mui-left">
+					<input type="text" v-model="searchWord" />
+				</li>
+				<li class="mui-table-view-cell mui-left" v-for="i in filterMembers" @click="rankMember(i)">
                     {{i.name}}
                     <span v-text="i.scoreTag"></span>
                 </li>

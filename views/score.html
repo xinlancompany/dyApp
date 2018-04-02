@@ -31,10 +31,17 @@
 			</div>
 			
 			<div class="content">
-				<span v-text="totalScore"></span>
+				<span v-text="totalScore" v-show="activeTab==1"></span>
+                <div class="star-grade" v-show="activeTab==0">
+                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 == 0, 'icon-shoucang': s2 > 0}"></i>
+                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 2, 'icon-shoucang': s2 > 1}"></i>
+                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 3, 'icon-shoucang': s2 > 2}"></i>
+                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 4, 'icon-shoucang': s2 > 3}"></i>
+                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 5, 'icon-shoucang': s2 > 4}"></i>
+					<span>(学习积分：{{studyScore}})</span>
+                </div>
 			</div>
 			
-            <!--
 			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 		        <li class="mui-table-view-cell" v-for="i in contentList" @click="gotoDetail(i)">
 		            <div class="mui-table">
@@ -49,8 +56,7 @@
 		        </li>
 		    </ul>
 			
-			<footer class="block-button" @click="getMoreList" v-show="activeTab == 0? bHaveMore_activity: bHaveMore_course">查看更多</footer>
-            -->
+			<footer class="block-button" @click="getMoreList" v-show="activeTab == 0? bHaveMore_activity: (bHaveMore_course||bHaveMore_live)">查看更多</footer>
 		</div>
 	</body>
 </html>

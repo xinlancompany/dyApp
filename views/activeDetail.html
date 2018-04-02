@@ -63,6 +63,7 @@
 			</article>
 			
 			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'" v-show="!isAdmin && !isSub"></footer>
+			<!--<footer :class="{'active': !ifFinished}" class="block-button" @click="finishActivity" v-text="ifFinished? '已结束':'结束'" v-show="isAdmin && !isSub"></footer>-->
 		</div>
 	</body>
 </html>

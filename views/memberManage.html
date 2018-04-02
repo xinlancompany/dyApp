@@ -15,17 +15,22 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">党员管理</h1>
+			<h1 class="mui-title">党员活动管理</h1>
 		</header>
 		
 		<div id="memberManage" class="have-header have-footer">
 			<!--组织信息中查看组织成员时显示-->
 			<ul class="mui-table-view" v-cloak>
-				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
+				<li class="mui-table-view-cell mui-left">
+					<input type="text" v-model="searchWord" />
+				</li>
+				<li class="mui-table-view-cell mui-left" v-for="i in filterMembers" @click="openMember(i)">
 					<a class="mui-navigate-right">
 	                    {{i.name}}
-	                    <span v-show="i.tag.split(' ')[0]" v-text="i.tag.split(' ')[0]"></span>
-	                    <span v-show="i.tag.split(' ')[1]" v-text="i.tag.split(' ')[1]"></span>
+                        <span v-text="i.tag"></span>
+                        <!--兼容五星与百分制的模式，已弃用-->
+	                    <!--<span v-show="i.tag.split(' ')[0]" v-text="i.tag.split(' ')[0]"></span>
+                        <span v-show="i.tag.split(' ')[1]" v-text="i.tag.split(' ')[1]"></span>-->
                   	</a>
                 </li>
 			</ul>

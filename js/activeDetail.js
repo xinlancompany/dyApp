@@ -20,6 +20,30 @@ function plusReady() {
             isAdmin: wb.isAdmin,
             isSub: "no" in userInfo && !wb.isAdmin, // 是否子页面打开
             experiencePermitted: 0, // 心得是否审定
+            // ifFinished: false, // 活动是否关闭
+		},
+		computed: {
+			finishState: function() {
+				var ifRecordUploaded = "record" in this.detailData && !!this.detailData["record"];
+				if (!ifRecordUploaded) return {
+					ifFinished: false,
+					tag: "活动记录未上传"
+				};
+				var ifRecordImgsUploaded = "recordImgs" in this.detailData && !!this.detailData["recordImgs"];
+				if (!ifRecordImgsUploaded) return {
+					ifFinished: false,
+					tag: "活动记录照片未上传",
+				};
+				var ifTimeup = _dateCompare(_now(), this.detailData.endtime);
+				if (!ifTimeup) return {
+					ifFinished: false,
+					tag: "活动时间为结束"
+				};
+				return {
+					ifFinished:true,
+					tag: "已结束"
+				};
+			}
 		},
 		methods: {
 			openGallery: function() {
@@ -28,9 +52,16 @@ function plusReady() {
             // 活动打分
             openRanks: function() {
                 var self = this;
-                openWindow("memberRanks.html", "memberRanks", {
-                    aid: activityId,
-                    title: self.detailData.title
+                if (!self.finishState.ifFinished) return mui.toast(self.finishState.tag);
+                _callAjax({
+                	cmd: "exec",
+                	sql: "update activityEnroll set score = preScore, preScore = 0 where activityId = ? and preScore > 0",
+                	vals: _dump([activityId,])
+                }, function(_d) {
+					openWindow("memberRanks.html", "memberRanks", {
+						aid: activityId,
+						title: self.detailData.title
+					});
                 });
             },
             // 上传心得
@@ -64,7 +95,7 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
 					vals:_dump([activityId])
 				}, function(d) {
 					if(d.success && d.data) {

@@ -12,7 +12,17 @@
         var vm = new Vue({
             el: "#memberManage",
             data: {
-                members: []
+                members: [],
+                searchWord:"",
+            },
+            computed: {
+            	filterMembers: function() {
+            		var sw = _trim(this.searchWord);
+            		if (!sw) return this.members;
+            		return _filter(function(i) {
+            			return i.name.indexOf(sw) >= 0;
+            		}, this.members);
+            	}
             },
             methods: {
                 openMember: function(i) {
@@ -31,6 +41,7 @@
         _callAjax({
             cmd: "fetch",
             // sql: "select id, name from user where orgNo = ?",
+            /* 百分制与五星制在一起
             sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id left join activitys a on e.activityId = a.id where u.orgNo = ? and a.ifValid = 1 group by u.id, e.scoreType",
             vals: _dump([wb.orgNo,])
         }, function(d) {
@@ -51,6 +62,20 @@
                         }
                         prev.tag += " "+i.score+(i.scoreType=="百分制"?"分":"星");
                     }
+                });
+            }
+            */
+
+            // 仅百分制
+            sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id where u.orgNo = ? and a.ifValid = 1 group by u.id, e.scoreType order by score desc",
+            vals: _dump([wb.orgNo,])
+        }, function(d) {
+            if (d.success && d.data && d.data.length) {
+                d.data.forEach(function(i) {
+                    if (!i.score) score = 0;
+                    if (!i.scoreType) i.scoreType = "百分制";
+                    i.tag = i.score+"分";
+                    vm.members.push(i);
                 });
             }
         });

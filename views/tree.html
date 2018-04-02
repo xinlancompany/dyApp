@@ -24,7 +24,10 @@
 				<span @click="openTop"><i class="iconfont icon-fanhuidingbu"></i></span>
 			</div>
 			<ul class="branches">
-				<li class="branch" v-for="i in orgs">
+				<li class="branch">
+					<input type="text" v-model="searchWord" />
+				</li>
+				<li class="branch" v-for="i in filterOrgs">
 					<i class="iconfont icon-minzhengxinxi-kunnandangyuan" @click="openDetail(i)"></i>
 					<p v-text="i.name" @click="openNext(i)"></p>
 				</li>

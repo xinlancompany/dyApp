@@ -9,7 +9,17 @@
             data: {
                 topOrgNo: orgNo,
                 topOrgs: null,
-                orgs: []
+                orgs: [],
+                searchWord: "",
+            },
+            computed: {
+            	filterOrgs: function() {
+            		var sw = _trim(this.searchWord);
+            		if (!sw) return this.orgs;
+            		return _filter(function(i) {
+            			return i.name.indexOf(sw) >= 0;
+            		}, this.orgs);
+            	}
             },
             methods: {
                 openDetail: function(i) {
