@@ -790,6 +790,7 @@ function plusReady() {
 			isNew: false,
 			userType: null,
 			userInfo: {
+				img: ""
 			}
 		},
 		methods: {

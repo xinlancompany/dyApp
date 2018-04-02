@@ -8,11 +8,17 @@ function plusReady() {
 		el: '#login',
 		data: {
             type: 'personal',
+            usernameTag: "手机号或身份证号登录",
 			username: '',  //账号
 			password: '',  //密码
 			year: _now().split("-")[0], // 年份
 			yearId: 0,
 			years: []
+		},
+		watch: {
+			type: function(i) {
+				this.usernameTag = i == "personal" ? "手机号或身份证号登录" : "组织代码";
+			}
 		},
 		methods: {
 			// 选择年份
@@ -45,7 +51,7 @@ function plusReady() {
 				if(self.type == "personal"){
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id,name,orgName,orgNo,pswd from User where (idno = ? or phone = ?) and pswd= ?",
+						sql: "select id,name,img,orgName,orgNo,pswd from User where (idno = ? or phone = ?) and pswd= ?",
 						vals: _dump([name, name, pswd])
 					}, function(d) {
                         // alert(_dump(d));
