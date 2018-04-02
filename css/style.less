@@ -806,6 +806,10 @@ body {
         flex-direction: column;
         .user-img {
             background-color: rgba(0, 0, 0, .6);
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: 50%;
+            background-repeat: no-repeat;
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -828,6 +832,14 @@ body {
                 -webkit-transform: translate(-50%, -50%);
                 color: #fff;
                 font-size: 32px;
+            }
+            input {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                opacity: 0;
             }
         }
 
@@ -938,22 +950,23 @@ body {
 
 .score {
     .content {
+        padding: 120px 0;
+        top: 40px;
         background-color: rgb(255, 158, 13);
         background-image: url(../img/trophy.png);
         background-repeat: no-repeat;  
         background-position: right bottom;
         -webkit-background-size: 130px auto;
         background-size: 130px auto;
-        padding: 220px 0 20px;
         position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         span {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 50px;
             text-align: center;
             color: #fff;
             font-size: 50px;
+            position: relative;
             &:before {
                 content: '总分';
                 position: absolute;
@@ -962,6 +975,17 @@ body {
                 top: -45px;
                 font-size: 18px;
                 color: #f1f1f1;
+            }
+        }
+        .star-grade {
+            text-align: center;
+            p {
+                font-size: 14px;
+                color: #fff;
+            }
+            i {
+                color: #fff;
+                font-size: 26px;
             }
         }
     }
@@ -1514,6 +1538,9 @@ body {
     h4 {
         line-height: normal;
     }
+    h5 {
+        .ell;
+    }
 }
 
 #grade {
@@ -1615,6 +1642,104 @@ body {
             &.icon-70chenggong {
                 color: #2AC845;
             }
+        }
+    }
+}
+
+.search-bar {
+    padding: 10px;
+    input {
+        margin: 0;
+    }
+}
+
+.scroll-org {
+    background-color: #fff;
+    height: 100px;
+    margin: 10px 0;
+    .swiper-slide {
+        width: 150px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        i {
+            font-size: 42px;
+            color: @base;
+            height: 50px;
+            position: relative;
+            &:before {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -21px;
+                margin-top: -10px;
+            }
+        }
+        p {
+            color: #333;
+            font-size: 14px;
+            .line-clamp(2);
+            margin: 0;
+            max-width: 80%;
+        }
+    }
+}
+
+.unaudited-activity-title {
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    padding: 0 5px;
+}
+
+.my-activity {
+    background-color: #fff;
+    width: 100%;
+    li {
+        display: flex;
+        position: relative;
+        padding: 10px;
+        width: 100%;
+        align-items: center;
+        &:after {
+            .lineBottom(10px);
+        }
+        .img {
+            width: 60px;
+            height: 60px;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: 50%;
+            background-repeat: no-repeat;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .info {
+            width: 70%;
+            h4 {
+                line-height: 1.5;
+                margin: 0;
+            }
+            &>* {
+                width: 100%;
+                .ell;
+            }
+            p {
+                margin: 0;
+            }
+        }
+        span {
+            flex: 1;
+            text-align: center;
+            background-color: @base;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            color: #fff;
+            padding: 2px;
+            font-size: 12px;
         }
     }
 }

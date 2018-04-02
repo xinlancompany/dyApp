@@ -17,7 +17,7 @@
 	<body>
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav pageTitle">
-			<h1 class="mui-title">舟山共产党员<i class="iconfont icon-more" v-show="showOrgTitle"></i></h1>
+			<h1 class="mui-title">舟山共产党员</h1>
 		</header>
 
 		<footer class="footer-tab" id="index-footer">
@@ -50,6 +50,23 @@
 			<div class="manager-entry">
 				<span @click="gotoOrganization"><i class="iconfont icon-partyflag"></i>组织登录</span>
 				<span @click="gotoUcenter"><i class="iconfont icon-dangyuan"></i>党员登录</span>
+			</div>
+			
+			<div class="swiper-container scroll-org">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
+						<p>中共舟山广播电视总台技术口支部委员会</p>
+					</div>
+					<div class="swiper-slide">
+						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
+						<p>中共舟山广播电视总台技术口支部委员会</p>
+					</div>
+					<div class="swiper-slide">
+						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
+						<p>中共舟山广播电视总台技术口支部委员会</p>
+					</div>
+				</div>
 			</div>
 
 			<div class="news-list">
@@ -85,27 +102,12 @@
                 <header @click="openNotices"><i class="iconfont icon-xiaoxi"></i>通知</header>
 				<div class="swiper-container notice-swiper">
 					<div class="swiper-wrapper">
-                        <!--解决第一个无法被点击的bug-->
-						<!--<div class="swiper-slide">
-							<div class="detail">
-								<h1></h1>
-								<p></p>
-							</div>
-						</div>-->
 						<div class="swiper-slide" v-for="i, index in notices" @click="openNotice(i)">
 							<div class="detail">
 								<h1 v-text="i.title"></h1>
 								<p v-text="i.logtime"></p>
 							</div>
 						</div>
-                        <!--
-						<div class="swiper-slide">
-							<div class="detail">
-								<h1>关于举办工商管理硕士研究生班招生报名的函</h1>
-								<p>2017-03-08</p>
-							</div>
-						</div>
-                        -->
 					</div>
 				</div>
 			</div>
@@ -216,7 +218,7 @@
 					<a class="mui-navigate-right">
 						<!--<i class="iconfont icon-huodong"></i>我的活动-->
 						<i class="iconfont icon-huodong"></i>组织活动轨迹
-					<!--</a>-->
+					</a>
 				</li>
 			</ul>
 			<!--组织登录-->

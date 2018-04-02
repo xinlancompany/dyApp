@@ -202,7 +202,10 @@
 					"views/myStudy.html",
 					"views/myActivity.html",
 					"views/liveList.html",
-					"views/internetCourseList.html"
+					"views/internetCourseList.html",
+					"views/activityList.html",
+					"views/regulationDetail.html",
+					"views/topicUpload.html"
 				],
 				"priority": 0
 			},
@@ -301,6 +304,13 @@
 				"resources": [],
 				"refer": [
 					"views/liveDetail.html"
+				],
+				"priority": 0
+			},
+			"views/activityUpload.html": {
+				"resources": [],
+				"refer": [
+					"views/selectTags.html"
 				],
 				"priority": 0
 			}

@@ -296,6 +296,11 @@ function plusReady() {
 			self.getNews();
 			//获取活动专题
 			self.getActivitySort();
+			
+			var scrollOrgSwiper = new Swiper('.scroll-org', {
+				slidesPerView: 'auto',
+				freeMode: true,
+			})
 		}
 	})
 	
@@ -353,10 +358,6 @@ function plusReady() {
                     var name = buttons[e.index-1].title,
                         lid = self.categoryDict[name];
                     self.openActicityTopics(lid, name);
-//                  openWindow('views/topicList.html', 'topicList', {
-//                      lid: lid,
-//                      name: name
-//                  });
                 });
             },
             openActicityTopics: function(lid, name) {
@@ -495,7 +496,6 @@ function plusReady() {
                         self.notices = d.data;
                     }
                 });
-
                 // 获取统计信息
                 _callAjax({
                     cmd: "multiFetch",

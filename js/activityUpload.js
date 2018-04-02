@@ -173,7 +173,7 @@ function plusReady() {
                                             }, _filter(function(i) {
                                                 return i.ifSelect;
                                             }, self.users))
-                                        ));
+                                        ))
                             }, function(_d) {
                                 // alert(_dump(_d));
                             });

@@ -23,7 +23,7 @@
 			<img src="../img/default.png" alt="" />
 			
 			<div class="input-frame">
-				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="12" placeholder="请输入您的账号" v-model="username"/>
+				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="12" placeholder="手机号或身份证号登录" v-model="username"/>
 			</div>
 			<div class="input-frame">
 				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入您的密码" v-model="password"/>
@@ -36,7 +36,7 @@
                 </select>
 			</div>
 			<div class="input-frame" @click="chooseYear" >
-				<i class="iconfont icon-mima"></i><p v-text="year"></p>
+				<i class="iconfont icon-more"></i><input type="text" v-model="year" disabled/>
 			</div>
 			<span @click="login">登录</span>
 		</div>

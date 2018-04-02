@@ -23,20 +23,23 @@
 				<span @click="openPrev"><i class="iconfont icon-chexiaofanhuichehuishangyibu"></i></span>
 				<span @click="openTop"><i class="iconfont icon-fanhuidingbu"></i></span>
 			</div>
+			<form action="" class="search-bar">
+				<input type="search" maxlength="8" placeholder="请输入组织名称搜索" v-model="searchWord" />
+			</form>
 			<ul class="branches">
-				<li class="branch">
-					<input type="text" v-model="searchWord" />
-				</li>
 				<li class="branch" v-for="i in filterOrgs">
 					<i class="iconfont icon-minzhengxinxi-kunnandangyuan" @click="openDetail(i)"></i>
 					<p v-text="i.name" @click="openNext(i)"></p>
 				</li>
-                <!--
-				<li class="branch">
-					<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
-					<p>我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5我党V5</p>
+			</ul>
+			<p class="unaudited-activity-title">待审核活动列表</p>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					活动标题一
+					<button type="button" class="mui-btn mui-btn-primary">
+						待审核
+					</button>
 				</li>
-                -->
 			</ul>
 		</div>
 	</body>
