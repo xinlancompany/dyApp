@@ -688,6 +688,20 @@ body {
   background-position: 50%;
   background-repeat: no-repeat;
 }
+.activity ul.activity-list li .img:after {
+  content: '未审核';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #ddd;
+  color: #fff;
+  font-size: 14px;
+}
+.activity ul.activity-list li .img.active:after {
+  content: '已审核';
+  background-color: #e14937;
+}
 .activity ul.activity-list li .img span {
   position: absolute;
   right: 4px;
@@ -768,6 +782,21 @@ body {
   background-position: 50%;
   width: 100%;
   height: 200px;
+  position: relative;
+}
+.activity-detail .banner:after {
+  content: '未审核';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #ddd;
+  color: #fff;
+  font-size: 14px;
+}
+.activity-detail .banner.active:after {
+  content: '已审核';
+  background-color: #e14937;
 }
 .activity-detail ul {
   margin: 10px 0;

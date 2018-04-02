@@ -22,7 +22,8 @@
 		<div id="activityList" class="activity have-header have-footer">
 			<ul class="activity-list" v-cloak>
 				<li v-for="(a, idx) in activityList">
-					<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}" @click="goActivityDetail(a)"><span>{{a.applicant}}人已报名</span></div>
+		        	<!-- img 上添加class active 即为已审核 -->
+					<div class="img active" :style="{backgroundImage: 'url('+ a.img +')'}" @click="goActivityDetail(a)"><span>{{a.applicant}}人已报名</span></div>
 					<h1 v-text="a.title"></h1>
 					<p>活动时间: {{a.starttime}} - {{a.endtime}}</p>
 					<p><span class="status">{{a.status}} 进入></span></p>

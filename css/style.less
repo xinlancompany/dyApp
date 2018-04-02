@@ -469,6 +469,20 @@ body {
                 background-size: cover;
                 background-position: 50%;
                 background-repeat: no-repeat;
+                &:after {
+                    content: '未审核';
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 2px 5px;
+                    background-color: #ddd;
+                    color: #fff;           
+                    font-size: 14px;         
+                }
+                &.active:after {
+                    content: '已审核';
+                    background-color: @base;
+                }
                 span {
                     position: absolute; 
                     right: 4px; 
@@ -542,6 +556,21 @@ body {
         background-position: 50%;
         width: 100%;
         height: 200px;
+        position: relative;
+        &:after {
+            content: '未审核';
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 2px 5px;
+            background-color: #ddd;
+            color: #fff;           
+            font-size: 14px;         
+        }
+        &.active:after {
+            content: '已审核';
+            background-color: @base;
+        }
     }
     ul {
         margin: 10px 0;
