@@ -21,16 +21,24 @@
 		<div id="activityUpload" class="article-upload have-header have-footer">
 			<form class="mui-input-group">
 			    <div class="mui-input-row">
-			        <label>标题</label>
-			    	<input type="text" class="mui-input-clear" placeholder="标题" v-model="title">
+			        <label>主题</label>
+			    	<input type="text" class="mui-input-clear" placeholder="主题" v-model="title">
 			    </div>
 			    <div class="mui-input-row">
 			        <label>主持人</label>
 			        <input type="text" class="mui-input-clear" placeholder="主持人" v-model="organizer">
 			    </div>
 			    <div class="mui-input-row">
+			        <label>记录人</label>
+			        <input type="text" class="mui-input-clear" placeholder="记录人" v-model="recorder">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>上级列席</label>
+			        <input type="text" class="mui-input-clear" placeholder="上级党委列席人员" v-model="superAttenders">
+			    </div>
+			    <div class="mui-input-row">
 			        <label>地点</label>
-			        <input type="text" class="mui-input-clear" placeholder="来源" v-model="location">
+			        <input type="text" class="mui-input-clear" placeholder="地点" v-model="location">
 			    </div>
 			    <div class="mui-input-row">
 			        <label>开始日期</label>
@@ -53,6 +61,10 @@
 			    <div class="mui-input-row" @click="chooseUsers">
 			        <label>筛选用户</label>
                     <p v-text="selectUserNames"></p>
+			    </div>
+			    <div class="mui-input-row mui-input-textarea">
+			        <label>缺席原因</label>
+			        <textarea rows="15" placeholder="缺席原因" v-model="unattendReason"></textarea>
 			    </div>
 			    <div class="mui-input-row" @click="chooseTopics">
 			        <label>活动标签</label>

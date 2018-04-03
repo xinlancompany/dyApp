@@ -6,6 +6,8 @@
                 title: "",
                 content: "",
                 imgs: [],
+                userId: null,
+           		title: "",
             },
             methods: {
             	openGallery: function() {
@@ -38,10 +40,29 @@
                                 mui.fire(plus.webview.getWebviewById("activityExperiences"), "refresh");
                                 mui.back();
                             }
+
+							// 通知
+							_callAjax({
+								cmd:"exec",
+								sql: "insert into notices(userId, msg, tp) values(?,?,?)",
+								vals: _dump([vm.userId, vm.title+"，心得: "+(wb.permitted?"驳回":"通过"), (wb.permitted?"fail":"success")])
+							}, function(d) {
+								
+							});
                         });
                     }
                 })
             });
+
+                _callAjax({
+                		cmd: "fetch",
+                		sql: "select a.title, e.userId from activityEnroll e, activitys a where e.activityId = a.id and e.id = "+wb.idx
+                }, function(d) {
+                		if (d.success && d.data) {
+                			vm.userId = d.data[0].userId;
+                			vm.title = d.data[0].title;
+                		}
+                });
         }
     };
 

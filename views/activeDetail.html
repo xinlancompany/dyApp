@@ -20,11 +20,35 @@
 		
 		<div id="activeDetail" class="activity-detail have-header have-footer">
         	<!-- img 上添加class active 即为已审核 -->
-			<div class="banner" :style="{backgroundImage: 'url('+detailData.img+')'}"></div>
+			<div class="banner" :style="{backgroundImage: 'url('+detailData.img+')'}" :class="{'active': detailData.ifValid == 4, 'waiting': detailData.ifValid == 3, 'withdraw': detailData.ifValid == 2}"></div>
 			
 			<ul class="mui-table-view" v-cloak>
 				<li class="mui-table-view-cell">
+					主题: {{detailData.title}}
+				</li>
+				<li class="mui-table-view-cell">
+					支部: {{orgName}}
+				</li>
+				<li class="mui-table-view-cell">
+					主持人: {{detailData.organizer}}
+				</li>
+				<li class="mui-table-view-cell">
+					记录人: {{detailData.recorder}}
+				</li>
+				<li class="mui-table-view-cell">
+					上级列席: {{detailData.superAttenders}}
+				</li>
+				<li class="mui-table-view-cell">
 					报名人数: {{detailData.applicant}}人
+				</li>
+				<li class="mui-table-view-cell">
+					与会人员: {{attenders.join(",")}}
+				</li>
+				<li class="mui-table-view-cell">
+					缺席人员: {{unattenders.join(",")}}
+				</li>
+				<li class="mui-table-view-cell">
+					缺席原因: {{detailData.unattendReason}}
 				</li>
 				<li class="mui-table-view-cell">
 					开始时间: {{detailData.starttime}}
@@ -44,6 +68,12 @@
 			    <li class="mui-table-view-cell" v-show="!isAdmin && !isSub" @click="uploadExperience"><a class="mui-navigate-right">心得上传</a></li>
 			    <li class="mui-table-view-cell" v-show="isAdmin" @click="openRanks"><a class="mui-navigate-right">活动打分</a></li>
 			</ul>
+
+			<article v-show="isAdmin && detailData.ifValid == 2">
+				<header><i class="iconfont icon-jianjie"></i>打回理由：</header>
+                <!--<textarea v-text="detailData.content" disabled></textarea>-->
+                <p v-text="detailData.withdrawTxt"></p>
+			</article>
 			
 			<article>
 				<header><i class="iconfont icon-jianjie"></i>活动简介：</header>
@@ -64,7 +94,7 @@
 			</article>
 			
 			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'" v-show="!isAdmin && !isSub"></footer>
-			<!--<footer :class="{'active': !ifFinished}" class="block-button" @click="finishActivity" v-text="ifFinished? '已结束':'结束'" v-show="isAdmin && !isSub"></footer>-->
+			<footer v-show="isAdmin && detailData.ifValid < 3 && !isSub" class="active block-button" @click="submitActivity">提交</footer>
 		</div>
 	</body>
 </html>

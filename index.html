@@ -54,17 +54,9 @@
 			
 			<div class="swiper-container scroll-org">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide">
+					<div class="swiper-slide" v-for="i in recommandedOrgs" @click="openRecommandedOrg(i)">
 						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
-						<p>中共舟山广播电视总台技术口支部委员会</p>
-					</div>
-					<div class="swiper-slide">
-						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
-						<p>中共舟山广播电视总台技术口支部委员会</p>
-					</div>
-					<div class="swiper-slide">
-						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
-						<p>中共舟山广播电视总台技术口支部委员会</p>
+						<p v-text="i.name"></p>
 					</div>
 				</div>
 			</div>
@@ -201,13 +193,11 @@
 			</div>
 			<!--党员登录-->
 			<ul class="mui-table-view" v-show="userType != 1">
-                <!--
 				<li class="mui-table-view-cell" @click="goPost">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-xiaoxi"></i>消息
 					</a>
 				</li>
-                -->
 				<li class="mui-table-view-cell" @click="goMyStudy">
 					<a class="mui-navigate-right">
 						<!--<i class="iconfont icon-wodesk"></i>我的学习-->

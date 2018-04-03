@@ -698,6 +698,26 @@ body {
   color: #fff;
   font-size: 14px;
 }
+.activity ul.activity-list li .img.withdraw:after {
+  content: '打回';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #ddd;
+  color: #fff;
+  font-size: 14px;
+}
+.activity ul.activity-list li .img.waiting:after {
+  content: '待审核';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #ddd;
+  color: #fff;
+  font-size: 14px;
+}
 .activity ul.activity-list li .img.active:after {
   content: '已审核';
   background-color: #e14937;
@@ -786,6 +806,26 @@ body {
 }
 .activity-detail .banner:after {
   content: '未审核';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #ddd;
+  color: #fff;
+  font-size: 14px;
+}
+.activity-detail .banner.withdraw:after {
+  content: '打回';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #ddd;
+  color: #fff;
+  font-size: 14px;
+}
+.activity-detail .banner.waiting:after {
+  content: '待审核';
   position: absolute;
   right: 0;
   top: 0;

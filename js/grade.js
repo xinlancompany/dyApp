@@ -22,6 +22,15 @@
                             }
                         }
                     });
+
+					// 打分
+					_callAjax({
+						cmd:"exec",
+						sql: "insert into notices(userId, msg, tp) values(?,?,?)",
+						vals: _dump([vm.userId, vm.title+"，活动打分: "+score, "success"])
+					}, function(d) {
+						
+					});
                 }
             }
         });
@@ -32,6 +41,8 @@
                 gradeType: "百分制",
                 s1: 0,
                 s2: 0,
+                userId: null,
+                title: "",
             },
             methods: {
                 switchType: function() {
@@ -74,6 +85,15 @@
                 } else {
                     this.s2 = wb.score;
                 }
+                _callAjax({
+                		cmd: "fetch",
+                		sql: "select a.title, e.userId from activityEnroll e, activitys a where e.activityId = a.id and e.id = "+wb.idx
+                }, function(d) {
+                		if (d.success && d.data) {
+                			vm.userId = d.data[0].userId;
+                			vm.title = d.data[0].title;
+                		}
+                });
             }
         });
 

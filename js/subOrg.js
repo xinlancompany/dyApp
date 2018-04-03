@@ -12,7 +12,7 @@
                 summary: {
                     activity: 0,
                     member: 0
-                }
+                },
             },
             methods: {
                 openNotice: function(i) {
@@ -66,20 +66,52 @@
                         cancel: "取消",
                         buttons: buttons
                     }, function(e) {
-                        if (e.index == 0) return;
-                        var name = buttons[e.index-1].title,
-                            lid = self.categoryDict[name];
-                        openWindow('topicList.html', 'topicList', {
-                            lid: lid,
-                            name: name,
-                            isSub: true,
-                            orgNo: wb.orgNo
-                        });
+						if (e.index == 0) return;
+						var name = buttons[e.index-1].title,
+							lid = self.categoryDict[name];
+						self.openActicityTopics(lid, name);
+//                      if (e.index == 0) return;
+//                      var name = buttons[e.index-1].title,
+//                          lid = self.categoryDict[name];
+//                      openWindow('topicList.html', 'topicList', {
+//                          lid: lid,
+//                          name: name,
+//                          isSub: true,
+//                          orgNo: wb.orgNo
+//                      });
                     });
                 },
                 goBack: function() {
                     mui.back();
-                }
+                },
+				openActicityTopics: function(lid, name) {
+					var self = this;
+					_callAjax({
+						cmd: "fetch",
+						sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id",
+						vals: _dump([wb.orgNo, lid])
+					}, function(d) {
+						var buttons = [];
+						if (d.success && d.data && d.data.length) {
+							buttons = d.data;
+						}
+						plus.nativeUI.actionSheet({
+							title: name+"主题",
+							cancel: "取消",
+							buttons: buttons
+						}, function(e) {
+							if (e.index == 0) return;
+							var i = buttons[e.index-1];
+							openWindow("activityList.html", "activityList", {
+								lid: i.topicId,
+								title: i.title,
+								isAdmin: self.isAdmin,
+								isSub: true,
+								orgId: wb.orgId
+							});
+						});
+					});
+				},
             },
             mounted: function() {
                 var self = this;

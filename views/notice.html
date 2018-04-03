@@ -20,16 +20,16 @@
 		
 		<div id="notice" class="have-header have-footer">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-media">
+				<li class="mui-table-view-cell mui-media" v-for="i in notices">
 					<a href="javascript:;">
-						<span class="mui-media-object mui-pull-left"><i class="iconfont icon-093info"></i></span>
+						<span class="mui-media-object mui-pull-left"><i class="iconfont" :class="{'icon-093info': i.tp=='info', 'icon-70chenggong': i.tp=='success', 'icon-71shibai': i.tp=='fail'}"></i></span>
 						<div class="mui-media-body">
-							消息消息消息消息消息消息消息消息消息消息消息消息消息
-							<p class="mui-ellipsis">2017-05-05</p>
+							{{i.msg}}
+							<p class="mui-ellipsis" v-text="i.logtime"></p>
 						</div>
 					</a>
 				</li>
-				<li class="mui-table-view-cell mui-media">
+				<!--<li class="mui-table-view-cell mui-media">
 					<a href="javascript:;">
 						<span class="mui-media-object mui-pull-left"><i class="iconfont icon-088help02"></i></span>
 						<div class="mui-media-body">
@@ -64,10 +64,11 @@
 							<p class="mui-ellipsis">2017-05-05</p>
 						</div>
 					</a>
-				</li>
+				</li>-->
 			</ul>
 		</div>
 	</body>
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
+<script src="../js/notice.js"></script>

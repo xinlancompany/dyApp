@@ -45,10 +45,14 @@ function plusReady() {
                 });
             },
             editActivity: function(i, idx) {
-                if (i.status != "即将开始") {
-                    mui.alert("活动"+i.status+"，无法修改");
-                    return;
-                }
+//              if (i.status != "即将开始") {
+//                  mui.alert("活动"+i.status+"，无法修改");
+//                  return;
+//              }
+				if (i.ifValid == 4) {
+					mui.alert("活动已审定，无法修改");
+					return;
+				}
                 openWindow("activityUpload.html", "activityUpload", {
                     aid: i.id,
                     idx: idx,
@@ -75,11 +79,24 @@ function plusReady() {
 				if(self.activityList.length) {
 					f = _at(self.activityList, -1).id;
 				}
+
+				var userInfo = _load(_get("userInfo"));
+				var orgId;
+				if ("no" in userInfo) {
+					orgId = userInfo.id;
+				} else {
+					orgId = userInfo.orgId;
+				}
+
+				// subOrg打开
+				if ("orgId" in wb) {
+					orgId = wb.orgId;
+				}
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where a.ifValid =1 and a.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-					vals:_dump([lid, f])
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, a.ifValid, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where a.ifValid > 0 and orgId = ? and a.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+					vals:_dump([orgId, lid, f])
 				}, function(d) {
 					if (d.success && d.data) {
 						self.bHaveMore = true;
@@ -94,6 +111,7 @@ function plusReady() {
                             } else {
                                 r.status = "已结束";
                             }
+                            r.ifValid = parseInt(r.ifValid);
 							self.activityList.push(r);
 						});
 					} else {

@@ -14,6 +14,9 @@ function plusReady() {
 	var activityDetail = new Vue({
 		el: '#activeDetail',
 		data: {
+			orgName: "", // 支部名称
+			unattenders: [], // 缺席人员
+			attenders:[], // 与会人员名单
 			detailData: {},  //活动详情数据
 			userInfo: null,
 			bClick: false,  //报名按钮是否可点击
@@ -95,16 +98,45 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId,a.unattendReason, a.organizer,a.recorder,a.superAttenders, a.ifValid, a.withdrawTxt, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
 					vals:_dump([activityId])
 				}, function(d) {
 					if(d.success && d.data) {
 						var arrImg = d.data[0].img.split('/upload');
 						d.data[0].img = serverAddr + '/upload' + arrImg[1];
+						d.data[0].ifValid = parseInt(d.data[0].ifValid); // 转换字符为数字
 						self.detailData = d.data[0];	
 						self.detailData.recordImgs = _load(d.data[0].recordImgs)
 					}
-				})
+				});
+
+				// 与会名单
+				_callAjax({
+					cmd:"fetch",
+					sql:"select name from user where id in (select userId from activityEnroll where activityId = ?)",
+					vals:_dump([activityId,])
+				}, function(d) {
+					if (d.success && d.data && d.data.length) self.attenders = _map(function(i) {
+						return i.name;
+					}, d.data);
+				});
+
+				var orgNo;
+				if ("no" in self.userInfo) {
+					orgNo = self.userInfo.no;
+				} else {
+					orgNo = self.userInfo.orgNo;
+				}
+				// 缺席人员
+				_callAjax({
+					cmd: "fetch",
+					sql: "select name from user where orgNo = ? and id not in (select userId from activityEnroll where activityId = ?)",
+					vals: _dump([orgNo, activityId])
+				}, function(d) {
+					if (d.success && d.data && d.data.length) self.unattenders = _map(function(i) {
+						return i.name;
+					}, d.data);
+				});
 			},
 			//报名
 			enroll: function(){
@@ -198,19 +230,41 @@ function plusReady() {
 				}, 'div');
 				
 				//修改完后需要保存
+
 			},
 			//初始化
 			init: function(){
 				var self = this;
 				
 				self.userInfo = _load(_get('userInfo'));
+				if ("no" in self.userInfo) {
+					self.orgName = self.userInfo.name;
+				} else {
+					self.orgName = self.userInfo.orgName;
+				}
 				
 				// activityId = _get('activityId');
                 activityId = wb.activityId;
 				self.getActivityDetail();
 				self.checkEnroll();
-			}
+			},
 			
+			// 提交活动
+			submitActivity: function() {
+                var self = this;
+                mui.confirm("是否提交审核？", "提示", ["确定", "取消"], function(e) {
+                    if (e.index == 0) {
+                    		_callAjax({
+                    			cmd: "exec",
+                    			sql: "update activitys set ifValid = 3 where id = ?",
+                    			vals:_dump([activityId,])
+                    		}, function(d) {
+                    			mui.toast("提交"+(d.success?"成功":"失败"));
+                    			if (d.success) self.detailData.ifValid = 3;
+                    		});
+                    }
+                });
+			}
 		},
 		mounted: function() {
 			var self = this;

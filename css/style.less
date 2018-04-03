@@ -479,6 +479,26 @@ body {
                     color: #fff;           
                     font-size: 14px;         
                 }
+                &.withdraw:after {
+                    content: '打回';
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 2px 5px;
+                    background-color: #ddd;
+                    color: #fff;           
+                    font-size: 14px;         
+                }
+                &.waiting:after {
+                    content: '待审核';
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 2px 5px;
+                    background-color: #ddd;
+                    color: #fff;           
+                    font-size: 14px;         
+                }
                 &.active:after {
                     content: '已审核';
                     background-color: @base;
@@ -559,6 +579,26 @@ body {
         position: relative;
         &:after {
             content: '未审核';
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 2px 5px;
+            background-color: #ddd;
+            color: #fff;           
+            font-size: 14px;         
+        }
+        &.withdraw:after {
+            content: '打回';
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 2px 5px;
+            background-color: #ddd;
+            color: #fff;           
+            font-size: 14px;         
+        }
+        &.waiting:after {
+            content: '待审核';
             position: absolute;
             right: 0;
             top: 0;

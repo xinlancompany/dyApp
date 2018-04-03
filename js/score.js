@@ -18,8 +18,10 @@
             },
             computed:{
             	s2: function() {
-            		return this.activityScore/5.0;
-            	},
+				var r = this.activityScore/20.0;
+				return r;
+				// return 2;
+           	},
             	courseLiveList: function() {
             		var l = this.courseList.concat(this.liveList);
             		l.sort(function(a, b) {
@@ -64,7 +66,7 @@
 						_callAjax({
 							cmd: "fetch",
 //							sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-							sql: "select a.id, a.title, e.score, strftime('%Y-%m-%d %H:%M', a.starttime)as time, e.score as points from activityEnroll e, activitys a where a.ifValid = 1 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
+							sql: "select a.id, a.title, e.score, strftime('%Y-%m-%d %H:%M', a.starttime)as time, e.score as points from activityEnroll e, activitys a where a.ifValid > 0 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
 							vals: _dump([self.userInfo.id, f])
 						}, function(d) {
 							if(d.success && d.data) {
@@ -105,7 +107,7 @@
 						_callAjax({
 							cmd: "fetch",
 //							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', a.newsdate)as time, a.credit as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
-							sql: "select l.id, l.title, strftime('%Y-%m-%d %H:%M', e.logtime)as time, count(e.id) as points from lives l, liveEnroll e where l.ifValid = 1 and e.liveId = l.id and e.userId = ? and l.id < ? group by l.id order by l.id desc",
+							sql: "select l.id, l.title, strftime('%Y-%m-%d %H:%M', e.logtime)as time, count(e.id) as points from lives l, liveEnroll e where l.ifValid > 0 and e.liveId = l.id and e.userId = ? and l.id < ? group by l.id order by l.id desc",
 							vals: _dump([self.userInfo.id, f])
 						}, function(d) {
 							if(d.success && d.data) {
@@ -115,7 +117,7 @@
 									self.liveList.push(r);				
 								});
 					
-								if(self.courseList.length < 10) {
+								if(self.liveList.length < 10) {
 									self.bHaveMore_live = false;
 								} else {
 									self.bHaveMore_live = true;
@@ -192,7 +194,7 @@
             multi: _dump([
                 {
                     key: "score",
-                    sql: "select sum(score) as total, scoreType from activityEnroll where userId = "+userInfo.id+" group by scoreType"
+                    sql: "select sum(score) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid > 0)"
                 },
                 {
                     sql: "select sum(credit) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id",
@@ -206,11 +208,9 @@
         }, function(d) {
             if (!d.success) return;
             if ("score" in d.data && d.data.score && d.data.score.length) {
-                d.data.score.forEach(function(i) {
-                    if (i.scoreType == "百分制") vm.activityScore += parseInt(i.total);
+				vm.activityScore += parseInt(d.data.score[0].total);
                     // 五星制取消
                     // if (i.scoreType == "五星制") vm.activityScore += i.total * 20;
-                });
             }
             if ("course" in d.data && d.data.course && d.data.course.length) {
                 vm.studyScore += parseInt(d.data.course[0].total);

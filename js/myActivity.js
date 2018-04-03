@@ -29,7 +29,7 @@ function plusReady() {
 					// var orgId = _getOrgId();
 					_callAjax({
 						cmd: "fetch",
-						sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, count(e.id) as applicant from activitys a, activityEnroll e where e.activityId = a.id and ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+						sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, a.address, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, e.experience, e.score from activitys a, activityEnroll e where e.activityId = a.id and ifValid > 0 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
 						vals: _dump([self.userInfo.id, f])
 					}, function(d) {
 						if(d.success && d.data) {
@@ -41,6 +41,7 @@ function plusReady() {
                                 } else {
                                     r.status = "已结束";
                                 }
+                                if (!r.experience) r.experience = '无';
 								self.activityList.push(r);
 							});
 							

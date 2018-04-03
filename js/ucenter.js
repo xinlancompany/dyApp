@@ -25,7 +25,7 @@ function plusReady() {
 				var userInfo = _load(_get('userInfo'));
 				_callAjax({
 					cmd:"fetch",
-					sql:"select u.id, u.name, u.idNo, u.img, o.name as orgName, orgNo from User u, organization o where u.orgNo = o.no and u.ifValid = 1 and u.id = ?",
+					sql: "select u.id, u.name, u.idNo, u.img, o.name as orgName, orgNo, o.id as orgId from User u, organization o where u.orgNo = o.no and u.ifValid = 1 and u.id = ?",
 					vals:_dump([userInfo.id])
 				}, function(d) {
 					if(d.success && d.data){

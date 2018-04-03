@@ -157,6 +157,7 @@ function plusReady() {
 		data: {
 			headNews: [],
 			activity: [], //活动专题
+			recommandedOrgs:[], // 推荐支部
 		},
 		methods: {
 			//跳转到新闻详情
@@ -288,6 +289,13 @@ function plusReady() {
 				}
 				
 			},
+			openRecommandedOrg: function(i) {
+				openWindow("views/subOrg.html", "subOrg", {
+                    orgId: i.id,
+					orgNo: i.no,
+					orgName: i.name
+				});
+			}
 		},
 		mounted: function() {
 			var self = this;
@@ -297,10 +305,27 @@ function plusReady() {
 			//获取活动专题
 			self.getActivitySort();
 			
-			var scrollOrgSwiper = new Swiper('.scroll-org', {
-				slidesPerView: 'auto',
-				freeMode: true,
-			})
+//			var scrollOrgSwiper = new Swiper('.scroll-org', {
+//				slidesPerView: 'auto',
+//				freeMode: true,
+//			});
+
+			// 获取推荐支部
+			_callAjax({
+				cmd: "fetch",
+				sql: "select id, no, name from organization where ifRecommanded = 1 and ifValid =1 limit 5"
+			}, function(d) {
+				if (d.success && d.data && d.data.length) {
+					index.recommandedOrgs = d.data;
+
+					index.$nextTick(function() {
+						var scrollOrgSwiper = new Swiper('.scroll-org', {
+							slidesPerView: 'auto',
+							freeMode: true,
+						});
+					});
+				}
+			});
 		}
 	})
 	
@@ -364,7 +389,7 @@ function plusReady() {
             	var self = this;
             	_callAjax({
             		cmd: "fetch",
-					sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id desc",
+					sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id",
 					vals: _dump([self.orgNo, lid])
             	}, function(d) {
             		var buttons = [];
@@ -465,7 +490,7 @@ function plusReady() {
                 // 获取活动分类
                 _callAjax({
                     cmd: "fetch",
-                    sql: "select id, name from linkers where refid = ?",
+                    sql: "select id, name from linkers where refId = ?",
                     vals: _dump([linkerId.Activity,])
                 }, function(d) {
                     if (d.success && d.data && d.data.length) {
@@ -502,11 +527,11 @@ function plusReady() {
                     multi: _dump([
                         {
                             key: "activity",
-                            sql: "select count(*) as cnt from activitys where linkerId in (select id from linkers where orgId ="+parseInt(orgNo)+")"
+                            sql: "select count(*) as cnt from activitys where orgId in (select id from organization where no = '"+orgNo+"')"
                         },
                         {
                             key: "member",
-                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where linkerId in (select id from linkers where orgId = "+parseInt(orgNo)+"))"
+                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where orgId in (select id from organization where no = '"+orgNo+"'))"
                         }
                     ])
                 }, function(d) {
@@ -524,6 +549,7 @@ function plusReady() {
             },
             // 更改密码
             changePswd: function() {
+            		if (!("no" in _load(_get("userInfo")))) return mui.toast("仅管理员可修改密码");
                 var self = this;
                 var pswd1, pswd2;
                 mui.confirm('<input type="password" id="changepswd" />', "输入新密码", ['确定', '取消'], function(e) {
@@ -843,7 +869,7 @@ function plusReady() {
 			},
 			//我的消息
 			goPost: function(){
-				
+				openWindow("views/notice.html","notice");
 			},
 			//我的学习
 			goMyStudy: function(){

@@ -32,13 +32,11 @@
 					<p v-text="i.name" @click="openNext(i)"></p>
 				</li>
 			</ul>
-			<p class="unaudited-activity-title">待审核活动列表</p>
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell">
-					活动标题一
-					<button type="button" class="mui-btn mui-btn-primary">
-						待审核
-					</button>
+			<p class="unaudited-activity-title" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">待审核活动列表</p>
+			<ul class="mui-table-view" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">
+				<li class="mui-table-view-cell" v-for="i, idx in examines" @click="openActivity(i)">
+					{{i.title}}
+					<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateActivity(i, idx)">操作</button>
 				</li>
 			</ul>
 		</div>

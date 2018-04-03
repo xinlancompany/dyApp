@@ -29,11 +29,11 @@
 		        	<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
 		        	<div class="info">
 		        		<h4 v-text="a.title"></h4>
-		        		<h5>地点</h5>
-		        		<p>心得心得心得心得心得心得心得心得心得心得心得心得心得心得</p>
-		        		<p>{{a.starttime}} - {{a.endtime}}</p>
+		        		<h5 v-text="a.address"></h5>
+		        		<p>{{a.starttime}}</p>
+		        		<p v-text="'心得：'+a.experience"></p>
 		        	</div>
-		        	<span class="score">5分</span>
+		        	<span class="score">{{a.score}}分</span>
 		        </li>
 		    </ul>
 			<footer @click="getActivityList" class="block-button" v-show="bHaveMore">查看更多</footer>

@@ -60,7 +60,7 @@
                 multi: _dump([
                     {
                         key: "activity",
-                        sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType from activityEnroll e, activitys a where e.userId = "+wb.idx+" and e.activityId = a.id and a.ifValid = 1",
+                        sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType from activityEnroll e, activitys a where e.userId = "+wb.idx+" and e.activityId = a.id and a.ifValid > 0",
                     },
                     /*
                     {

@@ -67,7 +67,7 @@
             */
 
             // 仅百分制
-            sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id where u.orgNo = ? and a.ifValid = 1 group by u.id, e.scoreType order by score desc",
+            sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id where u.orgNo = ? and a.ifValid > 0 group by u.id, e.scoreType order by score desc",
             vals: _dump([wb.orgNo,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {

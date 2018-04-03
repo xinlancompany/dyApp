@@ -6,10 +6,13 @@ function plusReady() {
             lid: 0,
             title: "",
             organizer: "",
+            recorder: "",
+            superAttenders:"",
             location: "",
             starttime: "",
             endtime: "",
             content: "",
+            unattendReason: "",
             img: "",
             imgStyle: {
                 backgroundImage: ""
@@ -29,7 +32,7 @@ function plusReady() {
                     multi: _dump([
                         {
                             key: "info",
-                            sql: "select title,img,content,organizer,address,strftime('%Y-%m-%d %H:%M:%S', starttime) as starttime,strftime('%Y-%m-%d %H:%M:%S', endtime) as endtime, tags from activitys where id = "+self.aid
+                            sql: "select title,img,content,organizer,recorder,superAttenders,unattendReason,address,strftime('%Y-%m-%d %H:%M:%S', starttime) as starttime,strftime('%Y-%m-%d %H:%M:%S', endtime) as endtime, tags from activitys where id = "+self.aid
                         },
                         {
                             key: "enroll",
@@ -49,6 +52,9 @@ function plusReady() {
                         self.img = inf.img;
                         self.imgStyle.backgroundImage = "url("+inf.img+")";
                         self.tag = _load(inf.tags);
+                        self.recorder = inf.recorder;
+                        self.superAttenders = inf.superAttenders;
+                        self.unattendReason = inf.unattendReason;
                     }
                     if ("enroll" in d.data && d.data["enroll"].length) {
                         d.data["enroll"].forEach(function(i) {
@@ -127,7 +133,10 @@ function plusReady() {
                     location = _trim(this.location),
                     starttime = _trim(this.starttime),
                     endtime = _trim(this.endtime),
-                    content = _trim(this.content);
+                    content = _trim(this.content),
+                    recorder = _trim(this.recorder),
+                    superAttenders = _trim(this.superAttenders),
+                    unattendReason = _trim(this.unattendReason);
 
                 if (!title) return mui.toast("请填写标题");
                 if (!organizer) return mui.toast("请填写组织者");
@@ -138,12 +147,12 @@ function plusReady() {
                 if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
-                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags) values(?,?,?,?,?,?,?,?,?)",
-                    vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tag)]);
+                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags, orgId,recorder,superAttenders,unattendReason) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tag), _load(_get("userInfo")).id,recorder,superAttenders,unattendReason])
 
                 if (!!self.aid) {
-                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=? where id = ?";
-                    vals = _dump([title,content,self.img,organizer,location,starttime,endtime,_dump(self.tag),self.aid]);
+                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=?,recorder=?,superAttenders=?,unattendReason=? where id = ?";
+                    vals = _dump([title,content,self.img,organizer,location,starttime,endtime,_dump(self.tag),recorder,superAttenders,unattendReason,self.aid]);
                 }
                 
                 _callAjax({
@@ -173,10 +182,19 @@ function plusReady() {
                                             }, _filter(function(i) {
                                                 return i.ifSelect;
                                             }, self.users))
+                                        ).concat(
+												_map(function(i) {
+													return {
+														key: "key"+parseInt(Math.random()*10e6),
+														sql: "insert into notices(userId, msg, tp) values("+i.id+", '参加"+title+"', 'info')"
+													}
+												}, _filter(function(i) {
+													return i.ifSelect;
+												}, self.users))
                                         ))
                             }, function(_d) {
-                                // alert(_dump(_d));
                             });
+
                         }
                         
                         mui.toast("添加成功");

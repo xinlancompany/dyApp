@@ -21,13 +21,13 @@
 		
 		<div id="myStudy" class="news-list internet-list have-header have-footer" v-cloak>
 			<ul class="mui-table-view">
-				<li v-for="i in internets" @click="gotoNetCourseDetail(i)">
+				<li v-for="i in courseLiveList" @click="gotoNetCourseDetail(i)">
 					<a>
 						<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 						<div class="mui-media-body">
 							<p class="title" v-text="i.title"></p>
 							<p class="desc" v-text='i.brief'></p>
-							<span class="btn" v-cloak>已学习 {{i.time}}</span>
+							<span class="btn" v-cloak>{{i.time}}</span>
 						</div>
 					</a>
 				</li>
