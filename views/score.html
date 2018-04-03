@@ -33,11 +33,11 @@
 			<div class="content">
 				<span v-text="totalScore" v-show="activeTab == 1"></span>
                 <div class="star-grade" v-show="activeTab == 0">
-                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 == 0, 'icon-shoucang': s2 > 0}"></i>
-                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 2, 'icon-shoucang': s2 > 1}"></i>
-                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 3, 'icon-shoucang': s2 > 2}"></i>
-                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 4, 'icon-shoucang': s2 > 3}"></i>
-                    <i class="iconfont" :class="{'icon-shoucang-xianxing': s2 < 5, 'icon-shoucang': s2 > 4}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 == 0, 'icon-star': s2 > 0}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 2, 'icon-star': s2 > 1}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 3, 'icon-star': s2 > 2}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 4, 'icon-star': s2 > 3}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 5, 'icon-star': s2 > 4}"></i>
                     <p>(学习积分：{{studyScore}})</p>
                 </div>
 			</div>

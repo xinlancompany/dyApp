@@ -16,16 +16,22 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">选择标签</h1>
+            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">新增</button>
 		</header>
 		
 		<div id="selectTags" class="have-header have-footer">
 			<div class="mui-input-row mui-search search">
 				<input type="search" class="mui-input-clear" placeholder="搜索">
 			</div>
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-radio checkbox mui-left" v-for="i, idx in tags" @click="showSelects(idx)">
-                    <!--<input name="checkbox" type="checkbox" :value="i.id" v-model="i.ifSelect" >{{i.name}}-->
-                    <input name="radio" type="radio" :value="idx" v-model="selectTagIndex" >{{i.name+"("+i.credits+"分)"}}
+			<ul class="mui-table-view select-tags">
+				<li class="mui-table-view-cell mui-radio checkbox mui-left mui-transitioning" v-for="i, idx in tags" @click="showSelects(idx)">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+	                    <!--<input name="checkbox" type="checkbox" :value="i.id" v-model="i.ifSelect" >{{i.name}}-->
+	                    <input name="radio" type="radio" :value="idx" v-model="selectTagIndex" >{{i.name+"("+i.credits+"分)"}}
+                	</div>
 				</li>
 			</ul>
 		</div>

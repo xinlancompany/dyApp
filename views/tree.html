@@ -33,10 +33,17 @@
 				</li>
 			</ul>
 			<p class="unaudited-activity-title" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">待审核活动列表</p>
-			<ul class="mui-table-view" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">
+			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">
 				<li class="mui-table-view-cell" v-for="i, idx in examines" @click="openActivity(i)">
-					{{i.title}}
-					<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateActivity(i, idx)">操作</button>
+					<div class="mui-table">
+		                <div class="mui-table-cell mui-col-xs-10">
+		                    <h4 class="mui-ellipsis" v-text="i.title">信息化推进办公室张彦合同付款信息化</h4>
+		                    <p class="mui-h6 mui-ellipsis">支部名称</p>
+		                </div>
+		                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+							<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateActivity(i, idx)">操作</button>
+		                </div>
+		            </div>
 				</li>
 			</ul>
 		</div>

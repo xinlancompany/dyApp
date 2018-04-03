@@ -689,34 +689,22 @@ body {
   background-repeat: no-repeat;
 }
 .activity ul.activity-list li .img:after {
-  content: '未审核';
+  content: '未提交';
   position: absolute;
   right: 0;
   top: 0;
   padding: 2px 5px;
-  background-color: #ddd;
+  background-color: #bbb;
   color: #fff;
   font-size: 14px;
 }
 .activity ul.activity-list li .img.withdraw:after {
   content: '打回';
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 2px 5px;
-  background-color: #ddd;
-  color: #fff;
-  font-size: 14px;
+  background-color: #b6976b;
 }
 .activity ul.activity-list li .img.waiting:after {
   content: '待审核';
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 2px 5px;
-  background-color: #ddd;
-  color: #fff;
-  font-size: 14px;
+  background-color: #bbb;
 }
 .activity ul.activity-list li .img.active:after {
   content: '已审核';
@@ -724,10 +712,12 @@ body {
 }
 .activity ul.activity-list li .img span {
   position: absolute;
-  right: 4px;
-  bottom: 2px;
+  right: 0;
+  bottom: 0;
+  padding: 2px 5px;
   color: #fff;
   font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .activity ul.activity-list li h1 {
   font-size: 18px;
@@ -805,34 +795,22 @@ body {
   position: relative;
 }
 .activity-detail .banner:after {
-  content: '未审核';
+  content: '未提交';
   position: absolute;
   right: 0;
   top: 0;
   padding: 2px 5px;
-  background-color: #ddd;
+  background-color: #bbb;
   color: #fff;
   font-size: 14px;
 }
 .activity-detail .banner.withdraw:after {
   content: '打回';
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 2px 5px;
-  background-color: #ddd;
-  color: #fff;
-  font-size: 14px;
+  background-color: #b6976b;
 }
 .activity-detail .banner.waiting:after {
   content: '待审核';
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 2px 5px;
-  background-color: #ddd;
-  color: #fff;
-  font-size: 14px;
+  background-color: #bbb;
 }
 .activity-detail .banner.active:after {
   content: '已审核';
@@ -1259,6 +1237,18 @@ body {
   padding-left: 0;
   color: #333;
 }
+.login .input-frame span {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  margin: 0;
+  padding: 0;
+  margin-top: -15px;
+}
 .score .content {
   padding: 120px 0;
   top: 40px;
@@ -1639,6 +1629,9 @@ body {
   font-size: 16px;
   color: #333;
 }
+.tree h4.mui-ellipsis {
+  line-height: 1.5;
+}
 .comment-list {
   background-color: #fff;
   margin-top: 8px;
@@ -1876,7 +1869,7 @@ body {
 #grade .star-grade i {
   font-size: 40px;
 }
-#grade .star-grade i.icon-shoucang {
+#grade .star-grade i.icon-star {
   color: #e14937;
 }
 #memberManage li a,
@@ -1903,8 +1896,17 @@ body {
 .record-upload-imgs .thumb-upload {
   flex: 1;
 }
+.record-upload-imgs .thumb-upload:first-child:before {
+  content: '签到表';
+}
+.record-upload-imgs .thumb-upload:last-child:before {
+  content: '会标';
+}
 .record-upload-imgs .thumb-upload:nth-child(2) {
   margin: 0 10px;
+}
+.record-upload-imgs .thumb-upload:nth-child(2):before {
+  content: '会场全景图';
 }
 .gallery {
   display: flex;
@@ -1941,9 +1943,16 @@ body {
 }
 .search-bar {
   padding: 10px;
+  display: flex;
+  align-items: center;
 }
 .search-bar input {
   margin: 0;
+  flex: 1;
+}
+.search-bar i {
+  font-size: 24px;
+  padding: 0 15px;
 }
 .scroll-org {
   background-color: #fff;
@@ -2048,4 +2057,13 @@ body {
   color: #fff;
   padding: 2px;
   font-size: 12px;
+}
+.select-tags .mui-radio.mui-left input[type="radio"] {
+  left: -35px;
+  top: 0;
+  width: 21px;
+  height: 21px;
+}
+.select-tags .mui-radio.mui-left input[type="radio"]:before {
+  font-size: 21px;
 }
