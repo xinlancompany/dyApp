@@ -19,7 +19,7 @@
 		</header>
 		
 		<div id="recordUpload" class="article-upload have-header have-footer">
-			<form class="mui-input-group">
+			<form class="mui-input-group clearfix">
 			    <div class="mui-input-row mui-input-image record-upload-imgs">
 			        <div class="thumb-upload" :style="imgStyle1">
 			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
@@ -32,10 +32,23 @@
 			        </div>
 			    </div>
 		        <textarea rows="15" placeholder="请输入内容" v-model="record"></textarea>
-			    <div class="mui-button-row">
-			        <button type="button" class="mui-btn mui-btn-primary" @click="uploadRecord">上传记录</button>
-			    </div>
+		        <span class="tape-btn" @touchstart="startTape" @touchend="endTape" v-text="isTape ? '松开结束' : '按住说话'" v-show="!tapeComplete"></span>
+		        <span class="audio-btn" @click="audioPicker" v-show="tapeComplete" :class="{active:isAudioPlay}">
+		        	<i class="line1 line"></i>
+		        	<i class="line2 line"></i>
+		        	<i class="line3 line"></i>
+		        	<u v-text="audioTime"></u>
+		        </span>
+		        <span class="recog-btn" @click="audioRecog">语音识别</span>
 			</form>
+			<footer @click="uploadRecord" class="block-button">上传记录</footer>
+			
+			<div class="rp" v-show="isTape" v-cloak>
+				<div class="rprogress">
+					<div class="rschedule"></div>
+				</div>
+				<div class="rtime" v-text="tapeTime">00:00:00</div>
+			</div>
 		</div>
 	</body>
 </html>

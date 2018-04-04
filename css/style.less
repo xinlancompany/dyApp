@@ -1150,6 +1150,9 @@ body {
 }
 
 .article-upload {
+    form.mui-input-group {
+        padding-bottom: 10px;
+    }
     .mui-input-row {
         label~p {
             float: right;
@@ -1160,6 +1163,65 @@ body {
             border: 0;
             line-height: 21px;
             font-size: 17px;
+        }
+    }
+    .tape-btn,
+    .audio-btn,
+    .recog-btn {
+        background-color: #16c2c2;
+        color: #fff;
+        font-size: 14px;
+        padding: 10px 10px;
+        margin-left: 10px;
+        width: 120px;
+        text-align: center;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        float: left;
+    }
+    .recog-btn {
+        background-color: #999;
+    }
+    .audio-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        &.active {
+            .line {
+                border-color: transparent #fff transparent transparent;
+            }
+            .line2 {
+                animation: line2PlayAni 1s infinite linear;
+            }
+            .line3 {
+                animation: line3PlayAni 1s infinite linear;
+            }
+        }
+        u {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        .line {
+            width: 15px;
+            height: 10px;
+            display: block;
+            border-width: 1px;
+            border-style: solid;
+            border-color: transparent #0d8888 transparent transparent;
+            margin-left: -10px;
+            border-radius: 60%;
+        }
+        .line2 {
+            height: 15px;
+        }
+        .line3 {
+            height: 20px;
         }
     }
 }
@@ -1831,5 +1893,77 @@ body {
         &:before {
             font-size: 21px;
         }
+    }
+}
+
+.rp {
+    width: 120px;
+    height: 120px;
+    text-align: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -60px;
+    margin-left: -60px;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    overflow: hidden;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.rprogress {
+    background: url(../img/arecord.png) no-repeat center center;
+    background-size: 32px 32px;
+    margin-bottom: 15px;
+    .rschedule {
+        background-color: rgba(0, 0, 0, 0);
+        border: 5px solid rgba(0, 183, 229, 0.9);
+        opacity: .9;
+        border-left: 5px solid rgba(0, 0, 0, 0);
+        border-right: 5px solid rgba(0, 0, 0, 0);
+        border-radius: 50px;
+        box-shadow: 0 0 15px #2187e7;
+        width: 36px;
+        height: 36px;
+        margin: 0 auto;
+        -webkit-animation: spin 1s infinite linear;
+        animation: spin 1s infinite linear;
+    }
+}
+.rtime {
+    font-size: 18px;
+    color: #fff;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes line2PlayAni {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+}
+
+@keyframes line3PlayAni {
+    20% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
     }
 }

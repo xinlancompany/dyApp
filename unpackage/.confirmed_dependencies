@@ -24,7 +24,9 @@
 			"views/activityList.html",
 			"views/topicUpload.html"
 		],
-		"resources": []
+		"resources": [
+			"img/organization.jpg"
+		]
 	},
 	"views/newsList.html": {
 		"refer": [
