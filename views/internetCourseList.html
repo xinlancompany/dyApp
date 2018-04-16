@@ -15,10 +15,16 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">网络课堂</h1>
+			<h1 class="mui-title">掌中课堂</h1>
 		</header>
 		
 		<div id="internetList" class="news-list internet-list have-header have-footer" v-cloak>
+			<div class="scroll-tabs">
+				<span class="active">全部</span>
+				<span>群岛先锋</span>
+				<span>机关党工委</span>
+				<span>劳动人事局</span>
+			</div>
 			<ul class="mui-table-view">
 				<li v-for="i in internets" @click="gotoNetCourseDetail(i)">
 					<a>
