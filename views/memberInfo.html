@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">党员信息</h1>
+		</header>
+		
+		<div id="memberInfo" class="have-header have-footer">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>姓名</label>
+					<input type="text" placeholder="请输入党员姓名" maxlength="6">
+				</div>
+				<div class="mui-input-row">
+					<label>身份证</label>
+					<input type="text" placeholder="请输入党员身份证号码" maxlength="18"/>
+				</div>
+				<div class="mui-input-row">
+					<label>联系方式</label>
+					<input type="tel" placeholder="请输入党员联系方式" maxlength="11"/>
+				</div>
+				<div class="mui-input-row">
+					<label>生日</label>
+					<input type="date" placeholder="请输入党员生日" />
+				</div>
+				<div class="mui-input-row">
+					<label>性别</label>
+					<select>
+						<option value="male">男</option>
+						<option value="female">女</option>
+					</select>
+				</div>
+			</form>
+			<footer class="block-button">提交</footer>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+
+
