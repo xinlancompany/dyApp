@@ -157,7 +157,7 @@ function plusReady() {
 		data: {
 			headNews: [],
 			activity: [], //活动专题
-//			recommandedOrgs:[], // 推荐支部
+			recommandedOrgs:[], // 推荐支部
 		},
 		methods: {
 			//跳转到新闻详情
@@ -304,23 +304,28 @@ function plusReady() {
 			self.getNews();
 			//获取活动专题
 			self.getActivitySort();
+			
+//			var scrollOrgSwiper = new Swiper('.scroll-org', {
+//				slidesPerView: 'auto',
+//				freeMode: true,
+//			});
 
 			// 获取推荐支部
-//			_callAjax({
-//				cmd: "fetch",
-//				sql: "select id, no, name from organization where ifRecommanded = 1 and ifValid =1 limit 5"
-//			}, function(d) {
-//				if (d.success && d.data && d.data.length) {
-//					index.recommandedOrgs = d.data;
-//
-//					index.$nextTick(function() {
-//						var scrollOrgSwiper = new Swiper('.scroll-org', {
-//							slidesPerView: 'auto',
-//							freeMode: true,
-//						});
-//					});
-//				}
-//			});
+			_callAjax({
+				cmd: "fetch",
+				sql: "select id, no, name from organization where ifRecommanded = 1 and ifValid =1 limit 5"
+			}, function(d) {
+				if (d.success && d.data && d.data.length) {
+					index.recommandedOrgs = d.data;
+
+					index.$nextTick(function() {
+						var scrollOrgSwiper = new Swiper('.scroll-org', {
+							slidesPerView: 'auto',
+							freeMode: true,
+						});
+					});
+				}
+			});
 		}
 	})
 	
@@ -338,8 +343,7 @@ function plusReady() {
             summary: {
                 activity: 0,
                 member: 0
-            },
-            curOrgName: ''
+            }
 		},
 		methods: {
             // 规章制度
@@ -585,16 +589,7 @@ function plusReady() {
             }
 		},
 		mounted: function() {
-			var self = this;
-            self.init();
-            var userInfoStr = _get('userInfo');
-	        var userInfo = null;
-	        if (!!userInfoStr) userInfo = _load(userInfoStr);
-            if ("no" in userInfo) {
-            	self.curOrgName = userInfo.name;
-            } else {
-            	self.curOrgName = userInfo.orgName;
-            }
+            this.init();
         },
 	});
 	
@@ -636,7 +631,7 @@ function plusReady() {
                 var self = this;
                 _callAjax({
                     cmd: "fetch",
-                    sql: "select id, title, img, readcnt from courses order by random() limit 4"
+                    sql: "select id, title, img, readcnt from courses order by random() limit 2"
                 }, function(d) {
                     if (d.success && d.data && d.data.length) {
                         self.randomCourses = d.data;
@@ -705,9 +700,7 @@ function plusReady() {
 				} else {
 					openWindow("views/login.html", "login");
 				}
-			},
-			goStudyRank: function() {
-				openWindow("views/studyRank.html", "studyRank");
+				
 			},
 			//获取动态新闻
 			getNews: function(){
@@ -1065,6 +1058,11 @@ function plusReady() {
 		changeTab(page, $(this));
 		
 		if (page == 'activity') {
+            if ("no" in userInfo) {
+                $(".mui-title").text(userInfo.name);
+            } else {
+                $(".mui-title").text(userInfo.orgName);
+            }
 			var noticeSwiper = new Swiper('.notice-swiper', {
 				autoplay: 2000,
                 observer: true,

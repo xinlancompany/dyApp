@@ -52,14 +52,14 @@
 				<span @click="gotoUcenter"><i class="iconfont icon-dangyuan"></i>党员登录</span>
 			</div>
 			
-			<!--<div class="swiper-container scroll-org">
+			<div class="swiper-container scroll-org">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="i in recommandedOrgs" @click="openRecommandedOrg(i)">
 						<i class="iconfont icon-minzhengxinxi-kunnandangyuan"></i>
 						<p v-text="i.name"></p>
 					</div>
 				</div>
-			</div>-->
+			</div>
 
 			<div class="news-list">
 				<ul class="mui-table-view">
@@ -89,11 +89,6 @@
 		</div> 
 		
 		<div id="activity" class="have-footer main activity-panel" v-show="activity.length>0">
-			
-			<header class="org-info">
-				<h1 v-cloak>{{curOrgName}}</h1>
-				<div class="stars"><i class="iconfont icon-star"></i><i class="iconfont icon-starhalfempty"></i><i class="iconfont icon-staro"></i></div>
-			</header>
 			
 			<div class="notice">
                 <header @click="openNotices"><i class="iconfont icon-xiaoxi"></i>通知</header>
@@ -125,39 +120,29 @@
 			<div class="study-block">
 				<div @click="goStudyNews">
 					<img src="./img/studyIcon1.png" />
-					党建动态
+					教育动态
 				</div>
 				<div @click="goLiveList">
 					<img src="./img/studyIcon2.png" />
-					支部活动
+					直播课堂
 				</div>
 				<div @click="goInternetList">
 					<img src="./img/studyIcon3.png" />
-					掌中课堂
+					网络课堂
 				</div>
 			</div>
 			
-			<div class="study-block">
-				<div @click="goStudyNews">
-					<img src="./img/studyIcon4.png" />
-					通知公告
-				</div>
-				<div @click="goLiveList">
-					<img src="./img/studyIcon5.png" />
-					关注舟山
-				</div>
-				<div @click="goStudyRank">
-					<img src="./img/studyIcon6.png" />
-					学时排行
-				</div>
-			</div>
-			
-			<!--<div class="study-live">
+			<div class="study-live">
 				<header>
                     <span :class="{active:tabid==1}" @click="switchToLive(1)">今日直播</span>
 					<span :class="{active:tabid==2}" @click="switchToLive(2)">明日预告</span>
 					<span :class="{active:tabid==3}" @click="switchToLive(3)">最新录像</span>
 				</header>
+				<!--
+					
+				无播出节目时显示的提示内容
+				
+				-->
 
 				<div class="live-program" v-show="!tabLive">暂无内容</div>
 
@@ -174,10 +159,10 @@
 						</span>
 					</div>
 				</div>
-			</div>-->
+			</div>
 			
 			<div class="study-internet">
-				<div class="lists clearfix">
+				<div class="lists">
 					<div class="list" v-for="i in randomCourses" @click="openCourse(i)">
                         <div class="thumb" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 						<h1 v-text="i.title"></h1>
