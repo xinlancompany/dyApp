@@ -1077,14 +1077,26 @@ function plusReady() {
 		header.showOrgTitle = false;
 
 		if(page == 'ucenter' || page == 'activity') {
+			$(".mui-bar").css({
+				"background-color": "#cb0303",
+				"background-image": "url('../img/navbarbg.jpg')"
+			});
 			indexSwiper.show = false;
-		}else if(page == 'study'){
+		} else if(page == 'study') {
+			$(".mui-bar").css({
+				"background-color": "#56ccba",
+				"background-image": "none"
+			});
 			indexSwiper.show = true;
 			if(userInfo != null){
 				var name = userInfo.userType == 1 ? userInfo.name : userInfo.orgName;
 				header.showOrgTitle = true;
 			}
-		}else if (page == 'index') {
+		} else if (page == 'index') {
+			$(".mui-bar").css({
+				"background-color": "#cb0303",
+				"background-image": "url('../img/navbarbg.jpg')"
+			});
 			indexSwiper.show = true;
 		}
 	});

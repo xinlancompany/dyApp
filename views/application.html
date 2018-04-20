@@ -31,9 +31,24 @@
 			        	<input type="file" accept="image/*" @change="uploadImg($event)">
 			        </div>
 			    </div>
+			    <div class="mui-input-row">
+			        <label>分数</label>
+			        <select v-model="score">
+			        		<option>-5</option>
+			        		<option>-4</option>
+			        		<option>-3</option>
+			        		<option>-2</option>
+			        		<option>-1</option>
+			        		<option>1</option>
+			        		<option>2</option>
+			        		<option>3</option>
+			        		<option>4</option>
+			        		<option>5</option>
+			        	</select>
+			    </div>
 			</form>	
-			<footer class="block-button">提交</footer>
-			<footer class="block-button" style="background-color: #0062cc;">驳回</footer>
+			<footer class="block-button" v-show="userInfo.userType == 0" @click="submitApplication">提交</footer>
+			<footer class="block-button" style="background-color: #0062cc;" v-show="userInfo.userType == 1" @click="operateApplication">驳回</footer>
 		</div>
 	</body>
 </html>

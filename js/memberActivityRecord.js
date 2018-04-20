@@ -7,9 +7,27 @@
             el: "#mAR",
             data: {
                 activities: [],
+                isAdmin: false,
                 // studyScore: 0,
             },
             methods: {
+            		operateUserScore: function() {
+                    var buttons = [
+                        {
+                            title: "加分"
+                        },
+                        {
+                            title: "减分"
+                        }
+                    ];
+                    plus.nativeUI.actionSheet({
+                        title: "操作",
+                        cancel: "取消",
+                        buttons: buttons
+                    }, function(e) {
+                        if (e.index == 0) return;
+                    });
+            		},
                 actions: function(i) {
                     var buttons = [
                         {
@@ -49,6 +67,9 @@
                         }
                     });
                 }
+            },
+            created: function() {
+            		if ("isAdmin" in wb) this.isAdmin = wb.isAdmin;
             }
         });
 

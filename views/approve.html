@@ -33,9 +33,9 @@
 			</div>
 			<div>
 				<div id="item1" class="mui-control-content mui-active">
-					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 						<li class="mui-table-view-cell" v-for="i, idx in examines" @click="openActivity(i)">
-							<div class="mui-table">
+							<div class="mui-table" v-for="i in examines">
 				                <div class="mui-table-cell mui-col-xs-10">
 				                    <h4 class="mui-ellipsis" v-text="i.title"></h4>
 				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>

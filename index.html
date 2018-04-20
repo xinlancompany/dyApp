@@ -211,6 +211,7 @@
 					<i class="iconfont icon-gerenzhongxinxia" v-show="!isLogin"></i>
 				</div>
 				<p v-text="isLogin ? userInfo.name : '立即登录'"></p>
+				<p v-text="isLogin ? userInfo.orgName: ''" v-show="isLogin"></p>
 			</div>
 			
 			<div class="ucenter-flex">
