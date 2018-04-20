@@ -17,20 +17,22 @@
 	<body>
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav pageTitle">
+            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-left goZSDJ">舟山党建网</button>
 			<h1 class="mui-title">舟山共产党员</h1>
+            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right logout">退出</button>
 		</header>
 
 		<footer class="footer-tab" id="index-footer">
 			<a class="active go-index" data-page="index" @click="switchIndexTopNews">
 				<i class="iconfont icon-danghui-copy"></i> 首页
 			</a>
-			<a class="go-activity" data-page="activity">
+			<a class="go-activity" data-page="activity" v-show="isOrganization">
 				<i class="iconfont icon-0045"></i> 组织生活
 			</a>
-			<a class="go-study" data-page="study" @click="switchStudyTopNews">
+			<a class="go-study" data-page="study" @click="switchStudyTopNews" v-show="isPersonal">
 				<i class="iconfont icon-xuexi"></i> 学习平台
 			</a>
-			<a class="go-ucenter" data-page="ucenter">
+			<a class="go-ucenter" data-page="ucenter" v-show="isPersonal">
 				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
 			</a>
 		</footer>
@@ -47,10 +49,10 @@
 		</div>
 
 		<div id="index" class="have-footer main" style="display:block">
-			<div class="manager-entry">
+			<!--<div class="manager-entry">
 				<span @click="gotoOrganization"><i class="iconfont icon-partyflag"></i>组织登录</span>
 				<span @click="gotoUcenter"><i class="iconfont icon-dangyuan"></i>党员登录</span>
-			</div>
+			</div>-->
 			
 			<!--<div class="swiper-container scroll-org">
 				<div class="swiper-wrapper">
@@ -92,7 +94,11 @@
 			
 			<header class="org-info">
 				<h1 v-cloak>{{curOrgName}}</h1>
-				<div class="stars"><i class="iconfont icon-star"></i><i class="iconfont icon-starhalfempty"></i><i class="iconfont icon-staro"></i></div>
+				<div class="stars">
+					<i class="iconfont icon-star"></i>
+					<i class="iconfont icon-starhalfempty"></i>
+					<i class="iconfont icon-staro"></i>
+				</div>
 			</header>
 			
 			<div class="notice">
@@ -110,7 +116,8 @@
 			</div>
 			
 			<ul class="activity-block clearfix">
-				<li @click="openActivityChoices"><i class="iconfont icon-huodong"></i>组织活动</li>
+				<!--<li @click="openActivityChoices"><i class="iconfont icon-huodong"></i>组织活动</li>-->
+				<li @click="openActicityTopics"><i class="iconfont icon-huodong"></i>组织活动</li>
 				<li @click="openTree"><i class="iconfont icon-jifen"></i>组织层级</li>
 				<li @click="openMembers"><i class="iconfont icon-Id"></i>党员管理</li>
 				<li @click="openRules"><i class="iconfont icon-ai-book"></i>规章制度</li>

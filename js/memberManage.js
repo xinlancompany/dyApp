@@ -14,15 +14,26 @@
             data: {
                 members: [],
                 searchWord:"",
+                sortBy: "down",
             },
             computed: {
-            	filterMembers: function() {
-            		var sw = _trim(this.searchWord);
-            		if (!sw) return this.members;
-            		return _filter(function(i) {
-            			return i.name.indexOf(sw) >= 0;
-            		}, this.members);
-            	}
+					filterMembers: function() {
+						var sw = _trim(this.searchWord);
+						if (!sw) return this.members;
+						var ret = [];
+						ret = _filter(function(i) {
+							return i.name.indexOf(sw) >= 0;
+						}, this.members);
+						if (ret.length) return ret;
+						ret = _filter(function(i) {
+							return i.pinyin.indexOf(sw) >= 0;
+						}, this.members);
+						if (ret.length) return ret;
+						ret = _filter(function(i) {
+							return i.py.indexOf(sw) >= 0;
+						}, this.members);
+						if (ret.length) return ret;
+					}
             },
             methods: {
                 openMember: function(i) {
@@ -34,10 +45,25 @@
                     } else {
                         mui.toast("仅书记可查看详细信息");
                     }
+                },
+                upsideDown: function() {
+                		var self = this;
+                		this.members.sort(function(a, b) {
+                			if (self.sortBy == "up") {
+                				return a.score < b.score;
+                			} else {
+                				return a.score > b.score;
+                			}
+                		});
+                		this.sortBy = this.sortBy == "up" ? "down": "up";
+                },
+                newUser: function() {
+                    	openWindow("newUser.html", "newUser");
                 }
             }
         });
 
+		var getUsers = function() {
         _callAjax({
             cmd: "fetch",
             // sql: "select id, name from user where orgNo = ?",
@@ -67,18 +93,29 @@
             */
 
             // 仅百分制
-            sql: "select u.id as id, u.name as name, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id where u.orgNo = ? and a.ifValid > 0 group by u.id, e.scoreType order by score desc",
+//          sql: "select u.id as id, u.name as name, pinyin, py, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id, e.scoreType order by score desc",
+//          sql: "select u.id as id, u.name as name, pinyin, py, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e, activitys a on e.userId = u.id and e.scoreType = '百分制' and e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id order by score desc",
+			sql: "select u.id as id, u.name as name, pinyin, py, ifnull(sum(e.score), 0) as score, ifnull(e.scoreType, '百分制') as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id, e.scoreType order by score desc",
             vals: _dump([wb.orgNo,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {
+            		vm.members = [];
                 d.data.forEach(function(i) {
-                    if (!i.score) score = 0;
+                    if (!i.score) i.score = 0;
+                    i.score = parseInt(i.score);
                     if (!i.scoreType) i.scoreType = "百分制";
                     i.tag = i.score+"分";
                     vm.members.push(i);
                 });
             }
         });
+        };
+        getUsers();
+
+		//		刷新用户列表
+		window.addEventListener('updateUsers', function(event) {
+			getUsers();
+		});
     };
 
     if(window.plus) {

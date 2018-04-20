@@ -78,6 +78,7 @@ var ucenterReload = function(ucenter) {
 };
 
 function plusReady() {
+	//	打开舟山党建网
 	pullToRefresh();
 
     // 获取学习积分的设置，覆盖util.js里的设置
@@ -115,8 +116,12 @@ function plusReady() {
 		// webview.reload();
         var tp = event.detail.tp;
         if (tp == "organization") {
+        		footer.isOrganization = true;
+        		footer.isPersonal = false;
             $(".go-activity").click();
         } else {
+        		footer.isOrganization = false;
+        		footer.isPersonal = true;
             ucenterReload(ucenter);
             $(".go-ucenter").click();
         }
@@ -134,7 +139,7 @@ function plusReady() {
 			showOrgTitle: false,
 		}
 	});
-	
+
 	var indexSwiper = new Vue({
 		el: '.index-swiper',
 		data: {
@@ -381,11 +386,14 @@ function plusReady() {
                     self.openActicityTopics(lid, name);
                 });
             },
-            openActicityTopics: function(lid, name) {
-            	var self = this;
+//          openActicityTopics: function(lid, name) {
+            openActicityTopics: function() {
+            	var self = this,
+            		lid = linkerId.Activity;
             	_callAjax({
             		cmd: "fetch",
 					sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id",
+//					vals: _dump([self.orgNo, lid])
 					vals: _dump([self.orgNo, lid])
             	}, function(d) {
             		var buttons = [];
@@ -415,7 +423,7 @@ function plusReady() {
 						if (buttons[e.index-1].title == "编辑") {
 							openWindow('views/topicList.html', 'topicList', {
 								lid: lid,
-								name: name
+								name: "组织生活"
 							});
 							return;
 						}
@@ -906,9 +914,6 @@ function plusReady() {
 			//退出登录
 			logout: function(){
 				var self = this;
-//				self.isLogin = false;
-//				self.userInfo = {};
-//				self.userType = null;
 				plus.storage.removeItem('userInfo');
 				mui.toast('退出成功');
 				plus.webview.currentWebview().reload();
@@ -1033,6 +1038,10 @@ function plusReady() {
     // 底部事件绑定
     var footer = new Vue({
         el: "#index-footer",
+        data:{
+        		isOrganization: false,
+        		isPersonal: false,
+        },
         methods: {
             switchIndexTopNews: function() {
                 indexSwiper.scrollNews = indexSwiper.indexTopNews;
@@ -1042,6 +1051,20 @@ function plusReady() {
                 indexSwiper.scrollNews = indexSwiper.studyTopNews;
                 indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
             }
+        },
+        created: function() {
+        		var userInfoStr = _get("userInfo");
+        		var userInfo = null;
+        		if (!!userInfoStr) userInfo = _load(userInfoStr);
+        		if (userInfo) {
+        			if ("no" in userInfo) {
+        				this.isOrganization = true;
+        				this.isPersonal = false;
+        			} else {
+        				this.isOrganization = false;
+        				this.isPersonal = true;
+        			}
+        		}
         }
     });
 
@@ -1093,5 +1116,17 @@ function plusReady() {
 		}else if (page == 'index') {
 			indexSwiper.show = true;
 		}
+	});
+
+	$('.goZSDJ').on('click', function() {
+		openOutlink('http://www.zsdj.gov.cn/', '舟山党建网')
+	});
+
+	$('.logout').on('click', function() {
+		plus.storage.removeItem('userInfo');
+		mui.toast('退出成功');
+//		plus.webview.currentWebview().reload();
+		openWindow("views/login.html", "login");
+        plus.webview.close(plus.webview.getWebviewById("index"));
 	});
 }

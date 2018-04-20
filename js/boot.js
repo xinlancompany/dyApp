@@ -12,30 +12,43 @@ function plusReady() {
 	//预加载页面
 	mui.init({
 		preloadPages: [{
+			url: 'views/login.html',
+			id: 'login'
+		},{
 			url: 'index.html',
 			id: 'index'
-		},],
+		}],
 	});
 	var boot = new Vue({
 		el: '.boot',
 		data: {
 			link: '',
-			time: 7
+			time: 7,
+			userInfo: null,
 		},
 		methods: {
 			openIndex: function() {
-                mui.fire(plus.webview.getWebviewById("index"), "closeBoot");
-				openWindow('index.html', 'index');
+				if (this.userInfo) {
+					mui.fire(plus.webview.getWebviewById("index"), "closeBoot");
+					openWindow('index.html', 'index');
+				} else {
+					mui.fire(plus.webview.getWebviewById("login"), "closeBoot");
+					openWindow('views/login.html', 'login');
+				}
 				clearInterval(ck);
 				
-				var userInfo = _load(_get('userInfo'));
-				if(userInfo != null && userInfo.name){
+//				var userInfo = _load(_get('userInfo'));
+				if(this.userInfo != null && this.userInfo.name){
 					//若已登录 显示欢迎信息
-					mui.toast(userInfo.name+"\n欢迎您!");
+					mui.toast(this.userInfo.name+"\n欢迎您!");
 				}
 			}
 		},
 		created: function() {
+			// 判断是否已经登陆
+			var userInfoStr = _get("userInfo");
+			if (!!userInfoStr) this.userInfo = _load(userInfoStr);
+
 			var self = this;
 			//获取启动页
 			_callAjax({
@@ -56,7 +69,7 @@ function plusReady() {
 						self.openIndex();
 					};
 				}, 1000)
-			})
+			});
 		}
 	})
 }

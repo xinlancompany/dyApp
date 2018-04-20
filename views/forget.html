@@ -19,23 +19,27 @@
 			<h1 class="mui-title">忘记密码</h1>
 		</header>
 		
-		<div id="login" class="have-header login">
+		<div id="forget" class="have-header login">
 			<img src="../img/default.png" alt="" />
 			
 			<div class="input-frame">
-				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="12" placeholder="手机号"/>
+				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="12" placeholder="手机号" v-model="phone"/>
 			</div>
 			<div class="input-frame">
-				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入新密码"/>
+				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入新密码" v-model="pswd1"/>
 			</div>
 			<div class="input-frame">
-				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请再次输入新密码"/>
+				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请再次输入新密码" v-model="pswd2"/>
 			</div>
 			<div class="input-frame">
-				<i class="iconfont icon-yanzhengma"></i><input type="number" maxlength="4" placeholder="请输入验证码"/>
-				<span>获取验证码</span>
+				<i class="iconfont icon-yanzhengma"></i><input type="number" maxlength="4" placeholder="请输入验证码" v-model="code"/>
+				<span v-text="codeTag" @click="sendCode"></span>
 			</div>
-			<span>重置</span>
+			<!--<span click="resetPswd">重置</span>-->
+
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" @click="resetPswd">重置</button>
+			</div>
 		</div>
 	</body>
 </html>

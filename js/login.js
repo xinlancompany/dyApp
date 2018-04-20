@@ -4,9 +4,6 @@ mui.init({
 
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
-	$('.goZSDJ').on('click', function() {
-		openOutlink('http://www.zsdj.gov.cn/', '舟山党建网')
-	})
 	var login = new Vue({
 		el: '#login',
 		data: {
@@ -72,7 +69,8 @@ function plusReady() {
                             });
 						
 							setTimeout(function() {
-								mui.back();
+//								mui.back();
+								openWindow("../index.html", "index");
 							}, 1500);
 
 							// 重置服务器
@@ -101,14 +99,18 @@ function plusReady() {
                             });
 					
 							setTimeout(function() {
-								mui.back();
+//								mui.back();
+								openWindow("../index.html", "index");
 							}, 1500);
 						} else {
 							mui.toast("组织账号登录失败");
 						}
 					});
 				}
-
+			},
+			forgetPswd: function() {
+				var self = this;
+				openWindow("forget.html", "forget");
 			}
 		},
 		mounted: function() {
@@ -129,6 +131,31 @@ function plusReady() {
     if ("type" in wb) {
         login.type = wb.type;
     }
+
+    // 关闭boot
+    window.addEventListener("closeBoot", function() {
+        plus.webview.close(plus.webview.getLaunchWebview());
+        plus.webview.close(plus.webview.getWebviewById("index"));
+    });
+
+	// 重载安卓返回
+	if('Android' == plus.os.name) {
+		ucenter.androidUpdate = true;
+		var first = null;
+		mui.back = function() {
+			if(!first) {
+				first = new Date().getTime();
+				mui.toast('再按一次退出应用');
+				setTimeout(function() {
+					first = null;
+				}, 1000);
+			} else {
+				if(new Date().getTime() - first < 1000) {
+					plus.runtime.quit();
+				}
+			}
+		}
+	}
 
 }
 // 判断扩展API是否准备，否则监听'plusready'事件

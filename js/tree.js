@@ -139,7 +139,7 @@
 		// 获取子部门提交的活动
 		_callAjax({
 			cmd: "fetch",
-			sql: "select id, title from activitys where ifValid = 3 and orgId in (select id from organization where superOrgNo = ?)",
+			sql: "select a.id, a.title, o.name as orgName from activitys a, organization o where a.orgId = o.id and a.ifValid = 3 and a.orgId in (select id from organization where superOrgNo = ?)",
 			vals: _dump([orgNo,])
 		}, function(d) {
 			if (d.success && d.data && d.data.length) {

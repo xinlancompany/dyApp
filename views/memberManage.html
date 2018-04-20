@@ -23,15 +23,21 @@
 			<!--组织信息中查看组织成员时显示-->
 			<form action="" class="search-bar">
 				<input type="search" maxlength="8" v-model="searchWord" placeholder="请输入党员姓名搜索"/>
-				<i class="iconfont icon-pailie"></i>
-				<i class="iconfont icon-zengjia"></i>
+				<i class="iconfont icon-pailie" @click="upsideDown"></i>
+				<i class="iconfont icon-zengjia" @click="newUser"></i>
 			</form>
 			<ul class="mui-table-view" v-cloak>
 				<li class="mui-table-view-cell mui-left" v-for="i in filterMembers" @click="openMember(i)">
 					<a class="mui-navigate-right">
 	                    {{i.name}}
                         <span v-text="i.tag"></span>
-                        <span><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i></span>
+                        <span>
+								<i class="iconfont" :class="{'icon-star': i.score>=20, 'icon-starhalfempty': i.score<20 && i.score>=10, 'icon-staro': i.score<10}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=40, 'icon-starhalfempty': i.score<40 && i.score>=30, 'icon-staro': i.score<30}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=60, 'icon-starhalfempty': i.score<60 && i.score>=50, 'icon-staro': i.score<50}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=80, 'icon-starhalfempty': i.score<80 && i.score>=70, 'icon-staro': i.score<70}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=100, 'icon-starhalfempty': i.score<100 && i.score>=90, 'icon-staro': i.score<90}"></i>
+                        </span>
                   	</a>
                 </li>
 			</ul>
