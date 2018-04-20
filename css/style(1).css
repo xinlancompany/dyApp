@@ -1,3 +1,47 @@
+.ell {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.lineTop {
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
+}
+.lineRight {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
+}
+.lineLeft {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
+}
 [v-cloak] {
   display: none;
 }
@@ -149,8 +193,8 @@ dl dd {
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .lineRight {
   content: '';
@@ -162,8 +206,8 @@ dl dd {
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
 }
 .lineLeft {
   content: '';
@@ -175,8 +219,8 @@ dl dd {
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
 }
 html {
   height: 100%;
@@ -350,8 +394,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .news-list li:active {
   background-color: #f1f1f1;
@@ -399,7 +443,7 @@ body {
   width: 100%;
 }
 .news-detail .like {
-  transition: all 0.2s ease-in;
+  transition: all .2s ease-in;
   padding: 8px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -440,7 +484,7 @@ body {
   top: 0;
   background-color: #C8C7CC;
   height: 1px;
-  transform: translateY(0.5);
+  transform: translateY(.5);
 }
 .news-detail .share .line:after {
   content: '分享到';
@@ -483,7 +527,7 @@ body {
 .footer-tab:before {
   content: '';
   height: 1px;
-  transform: scaleY(0.5);
+  transform: scaleY(.5);
   background-color: #C8C7CC;
   left: 0;
   right: 0;
@@ -612,8 +656,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .activity-block li:before {
   content: '';
@@ -625,8 +669,8 @@ body {
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
 }
 .activity-block li:first-child:before,
 .activity-block li:nth-child(4):before {
@@ -722,8 +766,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .activity ul.activity-list li:active {
   background-color: #f1f1f1;
@@ -908,8 +952,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .live-list ul li:active {
   background-color: #f1f1f1;
@@ -1111,7 +1155,7 @@ body {
   margin-top: 20px;
 }
 .ucenter ul li a {
-  display: flex!important;
+  display: flex !important;
   flex-wrap: nowrap;
   align-items: center;
   font-size: 16px;
@@ -1159,8 +1203,8 @@ body {
   top: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
 }
 .login {
   padding: 10px 20px;
@@ -1205,8 +1249,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
   left: 0;
 }
 .login .input-frame i {
@@ -1324,8 +1368,8 @@ body {
   top: 0;
   z-index: 2;
   background-color: #fff;
-  -webkit-transform: scaleX(0.5);
-  transform: scaleX(0.5);
+  -webkit-transform: scaleX(.5);
+  transform: scaleX(.5);
 }
 .notice .notice-swiper {
   flex: 1;
@@ -1568,8 +1612,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .study-internet .lists .list:last-child {
   margin: 0;
@@ -1665,8 +1709,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .tree .branches .branch i {
   font-size: 36px;
@@ -1754,8 +1798,8 @@ body {
   position: absolute;
   height: 1px;
   background-color: #C8C7CC;
-  transform: scaleY(0.5);
-  -webkit-transform: scaleY(0.5);
+  transform: scaleY(.5);
+  -webkit-transform: scaleY(.5);
 }
 .comment-bar span {
   flex: 1;
@@ -1826,8 +1870,8 @@ body {
   position: absolute;
   height: 1px;
   background-color: #C8C7CC;
-  transform: scaleY(0.5);
-  -webkit-transform: scaleY(0.5);
+  transform: scaleY(.5);
+  -webkit-transform: scaleY(.5);
 }
 .comment-lists {
   margin: 0;
@@ -1854,8 +1898,8 @@ body {
   position: absolute;
   height: 1px;
   background-color: #C8C7CC;
-  transform: scaleY(0.5);
-  -webkit-transform: scaleY(0.5);
+  transform: scaleY(.5);
+  -webkit-transform: scaleY(.5);
 }
 .comment-lists dl dt span {
   position: absolute;
@@ -1864,7 +1908,7 @@ body {
   padding: 0 10px;
   border: 1px solid #eee;
   font-size: 14px;
-  transition: all 0.3s ease-in;
+  transition: all .3s ease-in;
 }
 .comment-lists dl dt span i {
   font-size: 16px;
@@ -2069,8 +2113,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .my-activity li .img {
   width: 60px;
@@ -2198,8 +2242,8 @@ body {
   bottom: 0;
   z-index: 2;
   background-color: #c8c7cc;
-  -webkit-transform: scaleY(0.5);
-  transform: scaleY(0.5);
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
 }
 .table .table-cell .id {
   width: 20%;
@@ -2243,3 +2287,4 @@ body {
     opacity: 1;
   }
 }
+/*# sourceMappingURL=style.css.map */
