@@ -35,7 +35,7 @@
 			    </div>
 			    <div class="mui-input-row">
 			        <label>手机号码</label>
-			        <input type="text" class="mui-input-clear" placeholder="手机号码" v-model="phone">
+			        <input type="tel" class="mui-input-clear" placeholder="手机号码" v-model="phone">
 			    </div>
 			    <div class="mui-input-row mui-input-image" id="img-input">
 			        <label>头像</label>
@@ -44,10 +44,8 @@
 			        	<input type="file" accept="image/*" @change="uploadImg($event)">
 			        </div>
 			    </div>
-			    <div class="mui-button-row">
-			        <button type="button" class="mui-btn mui-btn-primary" @click="newUser">添加</button>
-			    </div>
 			</form>			
+			<footer class="block-button" @click="newUser">提交</footer>
 		</div>
 	</body>
 </html>

@@ -11,18 +11,7 @@ mui.init({
 	},{
 		url: 'views/regulationDetail.html',
 		id: 'regulationDetail'
-	},
-    /*
-    {
-		url: 'views/score.html',
-		id: 'score'
-	},
-    {
-        url: 'views/newsList.html',
-        id: 'newsList'
-    }
-    */
-    ]
+	},]
 });
 
 var changeTab = function(el, self) {
@@ -110,10 +99,6 @@ function plusReady() {
 	
 	//添加登录返回refresh自定义事件监听
 	window.addEventListener('loginBack', function(event) {
-		console.log('loginback回调');
-
-		// var webview = plus.webview.currentWebview();
-		// webview.reload();
         var tp = event.detail.tp;
         if (tp == "organization") {
         		footer.isOrganization = true;
@@ -260,21 +245,6 @@ function plusReady() {
 			//党员信息管理
 			gotoUcenter: function(){
                 $(".go-ucenter").click();
-                /*
-				var userInfo = _load(_get('userInfo'));
-				if(userInfo){
-					if(userInfo.userType == 0) {
-                        alert("rth1");
-						ucenter.goLogin();
-					} else {
-                        alert("rth2");
-                        $(".go-ucenter").click();
-					}
-				} else {
-                    alert("rth3");
-                    $(".go-ucenter").click();
-				}
-				*/
 			},
 			//组织信息管理
 			gotoOrganization: function(){
@@ -283,10 +253,8 @@ function plusReady() {
 				if(userInfo){
 					if(userInfo.userType == 1) {
 						// ucenter.goLogin();
-                        // openWindow("views/organization.html", "organization");
                         $(".go-activity").click();
 					} else {
-						// mui.toast('请切换组织账号登录');
 						openWindow('views/login.html', 'login', {type: "organization"});
 					}
 				}else {
@@ -304,7 +272,6 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
-			
 			//获取动态新闻
 			self.getNews();
 			//获取活动专题
@@ -488,7 +455,6 @@ function plusReady() {
                 self.activityCategories = [];
                 self.categoryDict = {},
                 self.notices = [],
-                // self.noticeTag = "通知",
                 self.isAdmin = false,
                 self.orgNo = "",
                 // 获取活动分类
@@ -520,7 +486,6 @@ function plusReady() {
                     sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = ? and linkerId = ? and ifValid = 1 limit 3",
                     vals: _dump([orgNo, linkerId.Notice])
                 }, function(d) {
-                    // alert(_dump(d));
                     if (d.success && d.data && d.data.length) {
                         self.notices = d.data;
                     }
@@ -539,7 +504,6 @@ function plusReady() {
                         }
                     ])
                 }, function(d) {
-                    // alert(_dump(d));
                     self.summary.activity = d.data.activity[0].cnt;
                     self.summary.member = d.data.member[0].cnt;
                 });
@@ -590,6 +554,9 @@ function plusReady() {
                         }
                     }
                 }, 'div');
+            },
+            openApprove: function() {
+                openWindow("views/approve.html", "approve");
             }
 		},
 		mounted: function() {
@@ -902,6 +869,10 @@ function plusReady() {
 					openWindow("views/login.html","login");
 				}
 				
+			},
+			//民主评议申请 
+			goApplication: function() {
+				openWindow("views/application.html","application");
 			},
 			//跳转到组织学习tab
 			goOrgStudy: function() {

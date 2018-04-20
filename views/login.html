@@ -28,21 +28,23 @@
 			<div class="input-frame">
 				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入您的密码" v-model="password"/>
 			</div>
-			<div class="input-frame">
-                <i class="iconfont icon-cengji"></i>
-                <select v-model="type">
-                    <option value="organization">组织账户</option>
-                    <option value="personal">个人账户</option>
-                </select>
-			</div>
 			<div class="input-frame" @click="chooseYear" >
 				<i class="iconfont icon-more"></i><input type="text" v-model="year" disabled/>
 			</div>
+			<div class="input-frame">
+                <div class="mui-input-row mui-radio mui-left">
+					<label>个人账户</label>
+					<input name="userType" type="radio" checked @change="userTypeChange('personal')">
+				</div>
+				<div class="mui-input-row mui-radio mui-left">
+					<label>组织账户</label>
+					<input name="userType" type="radio" @change="userTypeChange('organization')">
+				</div>
+			</div>
 			<div class="login-btns">
 				<span @click="login">登录</span>
-				<span>游客登录</span>
 			</div>
-			<div class="footer"><a @click="forgetPswd">忘记密码</a></div>
+			<div class="footer"><a>没有账号?游客浏览</a><a @click="forgetPswd">忘记密码</a></div>
 		</div>
 	</body>
 </html>

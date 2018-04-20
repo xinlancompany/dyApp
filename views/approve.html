@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">事项审批</h1>
+		</header>
+
+		<div id="approve" class="have-header approve">
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">
+						活动审批
+					</a>
+					<a class="mui-control-item" href="#item2">
+						民主评议审批
+					</a>
+				</div>
+			</div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" v-show="orgs.length && orgs[0].no == topOrgNo && examines.length">
+						<li class="mui-table-view-cell" v-for="i, idx in examines" @click="openActivity(i)">
+							<div class="mui-table">
+				                <div class="mui-table-cell mui-col-xs-10">
+				                    <h4 class="mui-ellipsis" v-text="i.title"></h4>
+				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>
+				                </div>
+				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+									<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateActivity(i, idx)">操作</button>
+				                </div>
+				            </div>
+						</li>
+					</ul>
+				</div>
+				<div id="item2" class="mui-control-content">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+						<li class="mui-table-view-cell">
+				            <div class="mui-table">
+				                <div class="mui-table-cell mui-col-xs-10">
+				                    <h4 class="mui-ellipsis">信息化推进办公室张彦合同付款信息化</h4>
+				                    
+				                    <p class="mui-h6 mui-ellipsis">Hi，李明明，申请交行信息卡，100元等你拿，李明明，申请交行信息卡，100元等你拿，</p>
+				                </div>
+				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+				                    <span class="mui-h5">12:25</span>
+				                </div>
+				            </div>
+				        </li>
+				   	</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/approve.js"></script>

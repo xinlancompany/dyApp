@@ -77,17 +77,22 @@
 				</ul>
 			</div>
 		
-            <!--
-			<div class="activity" v-show="activity.length>0">
-				<header @click="goActivityTab" class="global-header"><h1 class="title">活动专题</h1><span class="more">更多</span></header>
-				<ul class="activity-list">
-					<li v-for="a in activity" @click="goActivityList(a.id)">
-						<div class="img" :style="{backgroundImage: 'url('+ a.img +')'}"></div>
-						<p>{{a.name}}<span class="activitySort">进入专题 ></span></p>
+            
+			<div class="activity news-list">
+				<header class="global-header"><h1 class="title">推荐活动</h1></header>
+				<ul class="mui-table-view">
+					<li v-for="i in headNews" @click="gotoDetail(i)">
+						<a>
+							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+							<div class="mui-media-body">
+								<p class="title" v-text="i.title"></p>
+								<span class="date" v-text="i.newsdate"></span>
+							</div>
+						</a>
 					</li>
 				</ul>
 			</div>
-            -->
+            
 		</div> 
 		
 		<div id="activity" class="have-footer main activity-panel" v-show="activity.length>0">
@@ -115,13 +120,13 @@
 				</div>
 			</div>
 			
-			<ul class="activity-block clearfix">
-				<!--<li @click="openActivityChoices"><i class="iconfont icon-huodong"></i>组织活动</li>-->
+			<ul class="activity-block">
 				<li @click="openActicityTopics"><i class="iconfont icon-huodong"></i>组织活动</li>
 				<li @click="openTree"><i class="iconfont icon-jifen"></i>组织层级</li>
 				<li @click="openMembers"><i class="iconfont icon-Id"></i>党员管理</li>
 				<li @click="openRules"><i class="iconfont icon-ai-book"></i>规章制度</li>
-				<span class="center" @click="changePswd"><i class="iconfont icon-key"></i></span>
+				<li @click="openApprove"><i class="iconfont icon-user-approval"></i>事项审批</li>
+				<li @click="changePswd"><i class="iconfont icon-key"></i>修改密码</li>
 			</ul>
 			
             <p class="tips" v-cloak>累计组织{{summary.activity}}次活动，{{summary.member}}人次参与</p>
@@ -184,19 +189,18 @@
 			</div>-->
 			
 			<div class="study-internet">
-				<div class="lists clearfix">
+				<div class="lists">
 					<div class="list" v-for="i in randomCourses" @click="openCourse(i)">
                         <div class="thumb" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
-						<h1 v-text="i.title"></h1>
-						<p>
-                        <span><i class="iconfont icon-men"></i>{{i.readcnt}}</span>
-                        <!--
-							<span><i class="iconfont icon-icon--"></i>7</span>
-                            -->
-						</p>
+                        <div class="info">
+							<h1 v-text="i.title"></h1>
+							<p>
+	                        	<span><i class="iconfont icon-men"></i>{{i.readcnt}}</span>
+							</p>
+						</div>
 					</div>
 				</div>
-				<footer @click="randomTwoCourses"><span>换一换</span></footer>
+				<!--<footer @click="randomTwoCourses"><span>更多课件</span></footer>-->
 			</div>
 		</div>
 
@@ -223,14 +227,17 @@
 				</li>
 				<li class="mui-table-view-cell" @click="goMyStudy">
 					<a class="mui-navigate-right">
-						<!--<i class="iconfont icon-wodesk"></i>我的学习-->
 						<i class="iconfont icon-wodesk"></i>平台学习轨迹
 					</a>
 				</li>
 				<li class="mui-table-view-cell" @click="goMyActivity">
 					<a class="mui-navigate-right">
-						<!--<i class="iconfont icon-huodong"></i>我的活动-->
 						<i class="iconfont icon-huodong"></i>组织活动轨迹
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="goApplication">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-shenqingdaishenhe"></i>民主评议申请
 					</a>
 				</li>
 			</ul>

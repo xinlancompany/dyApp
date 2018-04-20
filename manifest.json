@@ -209,14 +209,18 @@
 					"views/regulationDetail.html",
 					"views/topicUpload.html",
 					"views/subOrg.html",
-					"views/notice.html"
+					"views/notice.html",
+					"views/application.html",
+					"views/studyRank.html",
+					"views/approve.html"
 				],
 				"priority": 0
 			},
 			"boot.html": {
 				"resources": [],
 				"refer": [
-					"index.html"
+					"index.html",
+					"views/login.html"
 				],
 				"priority": 0
 			},
@@ -254,7 +258,8 @@
 			"views/memberManage.html": {
 				"resources": [],
 				"refer": [
-					"views/memberActivityRecord.html"
+					"views/memberActivityRecord.html",
+					"views/newUser.html"
 				],
 				"priority": 0
 			},
@@ -315,6 +320,13 @@
 				"resources": [],
 				"refer": [
 					"views/selectTags.html"
+				],
+				"priority": 0
+			},
+			"views/login.html": {
+				"resources": [],
+				"refer": [
+					"index.html"
 				],
 				"priority": 0
 			}

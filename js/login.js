@@ -54,10 +54,7 @@ function plusReady() {
 						sql: "select u.id,u.name,u.img,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no",
 						vals: _dump([name, name, pswd])
 					}, function(d) {
-                        // alert(_dump(d));
 						if(d.success && d.data && d.data.length) {
-							// if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
-							// console.log(d.data[0].orgName);
 							mui.toast(d.data[0].name + "，欢迎登陆!");
 							
 							var userInfo = d.data[0];
@@ -69,7 +66,6 @@ function plusReady() {
                             });
 						
 							setTimeout(function() {
-//								mui.back();
 								openWindow("../index.html", "index");
 							}, 1500);
 
@@ -87,7 +83,6 @@ function plusReady() {
 						vals: _dump([name, pswd])
 					}, function(d) {
 						if (d.success && d.data && d.data.length) {
-							// if(d.data[0].pswd != self.password.trim()) return mui.toast('密码输入错误');
 							mui.toast(d.data[0].name+"，欢迎登陆");
 					
 							var userInfo = d.data[0];
@@ -99,7 +94,6 @@ function plusReady() {
                             });
 					
 							setTimeout(function() {
-//								mui.back();
 								openWindow("../index.html", "index");
 							}, 1500);
 						} else {
@@ -109,8 +103,10 @@ function plusReady() {
 				}
 			},
 			forgetPswd: function() {
-				var self = this;
 				openWindow("forget.html", "forget");
+			},
+			userTypeChange: function(t) {
+				this.type = t;
 			}
 		},
 		mounted: function() {
@@ -140,7 +136,6 @@ function plusReady() {
 
 	// 重载安卓返回
 	if('Android' == plus.os.name) {
-		ucenter.androidUpdate = true;
 		var first = null;
 		mui.back = function() {
 			if(!first) {
