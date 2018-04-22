@@ -22,14 +22,14 @@
             <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right logout">退出</button>
 		</header>
 
-		<footer class="footer-tab" id="index-footer">
-			<a class="active go-index" data-page="index" @click="switchIndexTopNews">
+		<footer class="footer-tab" id="index-footer" v-show="isOrganization || isPersonal">
+			<a class="active go-index" data-page="index">
 				<i class="iconfont icon-danghui-copy"></i> 首页
 			</a>
 			<a class="go-activity" data-page="activity" v-show="isOrganization">
 				<i class="iconfont icon-0045"></i> 组织生活
 			</a>
-			<a class="go-study" data-page="study" @click="switchStudyTopNews" v-show="isPersonal">
+			<a class="go-study" data-page="study" v-show="isPersonal">
 				<i class="iconfont icon-xuexi"></i> 学习平台
 			</a>
 			<a class="go-ucenter" data-page="ucenter" v-show="isPersonal">
@@ -64,6 +64,7 @@
 			</div>-->
 
 			<div class="news-list">
+				<header class="global-header"><h1 class="title">新闻</h1></header>
 				<ul class="mui-table-view">
 					<li v-for="i in headNews" @click="gotoDetail(i)">
 						<a>
@@ -75,22 +76,25 @@
 						</a>
 					</li>
 				</ul>
+				<footer class="block-button" v-show="hasMoreNews" @click="openNewsList">查看更多</footer>
 			</div>
 		
             
-			<div class="activity news-list">
+			<div class="activity news-list" v-show="activities.length">
 				<header class="global-header"><h1 class="title">推荐活动</h1></header>
 				<ul class="mui-table-view">
-					<li v-for="i in headNews" @click="gotoDetail(i)">
+					<li v-for="i in activities" @click="gotoActivityDetail(i)">
 						<a>
-							<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
+							<!--<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="i.img"></div>-->
 							<div class="mui-media-body">
 								<p class="title" v-text="i.title"></p>
-								<span class="date" v-text="i.newsdate"></span>
+								<span class="date" v-text="i.orgName"></span>
+								<span class="date" v-text="i.logtime"></span>
 							</div>
 						</a>
 					</li>
 				</ul>
+				<footer class="block-button" v-show="hasMoreActivities" @click="openRecommend">查看更多</footer>
 			</div>
             
 		</div> 
@@ -100,9 +104,10 @@
 			<header class="org-info">
 				<h1 v-cloak>{{curOrgName}}</h1>
 				<div class="stars">
-					<i class="iconfont icon-star"></i>
+					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummary" :class="{'icon-star': i[0] && [1], 'icon-starhalfempty': i[0] ^ i[1], 'icon-staro': !i[0] && !i[1]}"></i>
+					<!--<i class="iconfont icon-star"></i>
 					<i class="iconfont icon-starhalfempty"></i>
-					<i class="iconfont icon-staro"></i>
+					<i class="iconfont icon-staro"></i>-->
 				</div>
 			</header>
 			
@@ -133,28 +138,28 @@
 			
 		</div>
 		
-		<div id="study" class="have-footer main">
+		<div id="study" class="have-footer main activity-panel">
 			<div class="study-block">
 				<div @click="goStudyNews">
 					<img src="./img/studyIcon1.png" />
 					党建动态
 				</div>
-				<div @click="goLiveList">
+				<div @click="goBranchAct">
 					<img src="./img/studyIcon2.png" />
 					支部活动
 				</div>
-				<div @click="goInternetList">
+				<div @click="goHandCourse">
 					<img src="./img/studyIcon3.png" />
 					掌中课堂
 				</div>
 			</div>
 			
 			<div class="study-block">
-				<div @click="goStudyNews">
+				<div @click="goPublicNotice">
 					<img src="./img/studyIcon4.png" />
 					通知公告
 				</div>
-				<div @click="goLiveList">
+				<div @click="goZhoushanNews">
 					<img src="./img/studyIcon5.png" />
 					关注舟山
 				</div>

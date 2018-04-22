@@ -758,9 +758,13 @@ body {
 }
 .activity-panel .org-info .stars {
   text-align: center;
+  margin-top: 20px;
 }
 .activity-panel .org-info .stars i {
   color: #e14937;
+  font-size: 24px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .activity-detail {
   margin-bottom: 10px;
@@ -2168,6 +2172,7 @@ body {
   overflow-x: scroll;
 }
 .scroll-tabs span {
+  width: 200px;
   background-color: #fff;
   border-radius: 2px;
   margin-right: 5px;
@@ -2216,8 +2221,37 @@ body {
 .approve h4.mui-ellipsis {
   line-height: 1.5;
 }
-#groupDetail form.mui-input-group {
-  margin-bottom: 15px;
+/*summary*/
+.summary-tabs span {
+  width: 25%;
+  text-align: center;
+}
+.summary-li {
+  margin-bottom: 10px;
+  height: 40px;
+  font-size: 16px;
+  display: flex;
+  flex-flow: row nowrap;
+  border-bottom: none;
+}
+.summary-li .title {
+  width: 33.3%;
+  text-align: left;
+}
+.summary-li .times {
+  width: 33.3%;
+  text-align: center;
+}
+.summary-li .state {
+  width: 33.3%;
+  text-align: right;
+}
+.summary-li .state i {
+  color: deepskyblue;
+  font-size: 20px;
+}
+.summary-li .state i.icon-71shibai {
+  color: red;
 }
 @keyframes spin {
   0% {

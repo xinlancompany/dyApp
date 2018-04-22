@@ -21,7 +21,7 @@ function plusReady() {
 			userInfo: null,
 			bClick: false,  //报名按钮是否可点击
             isAdmin: wb.isAdmin,
-            isSub: "no" in userInfo && !wb.isAdmin, // 是否子页面打开
+            isSub: "isSub" in wb ? wb.isSub : ("no" in userInfo && !wb.isAdmin), // 是否子页面打开
             experiencePermitted: 0, // 心得是否审定
             // ifFinished: false, // 活动是否关闭
 		},

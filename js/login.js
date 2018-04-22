@@ -21,6 +21,15 @@ function plusReady() {
 			}
 		},
 		methods: {
+			openIndex: function() {
+				mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
+					tp: ""
+				});
+			
+				setTimeout(function() {
+					openWindow("../index.html", "index");
+				}, 1500);
+			},
 			// 选择年份
 			chooseYear: function() {
                 var self = this,

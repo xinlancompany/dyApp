@@ -44,7 +44,7 @@
 			<div class="login-btns">
 				<span @click="login">登录</span>
 			</div>
-			<div class="footer"><a>没有账号?游客浏览</a><a @click="forgetPswd">忘记密码</a></div>
+			<div class="footer" @click="openIndex"><a>没有账号?游客浏览</a><a @click="forgetPswd" v-show="type=='personal'">忘记密码</a></div>
 		</div>
 	</body>
 </html>

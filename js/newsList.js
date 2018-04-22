@@ -26,23 +26,29 @@ function plusReady() {
 				openWindow("newsDetail.html", "newsDetail");
 			},
 	
+			getMoreNews: function() {
+				this.getNews(lid, no);
+			},
 			//获取动态新闻
 			getNews: function(lid, orgNo) {
                 // 如果没有lid则打开新闻列表
                 if (!lid) lid = linkerId.News;
 
 				var self = this;
-				var f = 10e5;
+				var f = 10e6;
+				var ndate = '3000-12-31 23:59:59';
 				if(self.newsList.length) {
-					f = _at(self.newsList, -1).id;
+					var ii = _at(self.newsList, -1);
+					f = ii.id;
+					ndate = ii.newsdate;
 				}
 
-                var sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and id < ? order by id desc limit 10",
-                    vals =  _dump([lid, f]);
+                var sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) order by newsdate desc, id desc limit 10",
+                    vals =  _dump([lid, ndate, ndate, f]);
 
                 if (!!orgNo) {
-                    sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and id < ? and reporter = ? order by id desc limit 10";
-                    vals =  _dump([lid, f, orgNo]);
+                    sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and reporter = ? order by newsdate desc, id desc limit 10";
+                    vals =  _dump([lid, ndate, ndate, f, orgNo]);
                 }
 	
 				_callAjax({
@@ -50,7 +56,6 @@ function plusReady() {
 					sql: sql,
 					vals: vals
 				}, function(d) {
-                    _tell(d);
 					if(d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
@@ -58,7 +63,6 @@ function plusReady() {
 								r.img = "../img/default.png";
 							}
 							self.newsList.push(r);
-	
 						});
 					} else {
 						self.bHaveMore = false;

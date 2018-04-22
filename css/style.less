@@ -544,8 +544,12 @@ body {
         }
         .stars {
             text-align: center;
+            margin-top: 20px;
             i {
                 color: @base;
+                font-size: 24px;
+                margin-left: 15px;
+                margin-right: 15px;
             }
         }
     }
@@ -1945,6 +1949,7 @@ body {
     flex-wrap: nowrap;
     overflow-x: scroll;
     span {
+        width: 200px;
         background-color: #fff;
         border-radius: 2px;
         margin-right: 5px;
@@ -1990,13 +1995,38 @@ body {
         line-height: 1.5;
     }
 }
-
-#groupDetail {
-    form.mui-input-group {
-        margin-bottom: 15px;
+/*summary*/
+.summary-tabs span{
+    width: 25%;
+    text-align: center;
+}
+.summary-li{
+    margin-bottom: 10px;
+    height:40px;
+    font-size: 16px;
+    display: flex;
+    flex-flow: row nowrap;
+    border-bottom: none;
+    .title{
+        width: 33.3%;
+        text-align: left;
+    }
+    .times{
+        width: 33.3%;
+        text-align: center;
+    }
+    .state{
+        width: 33.3%;
+        text-align: right;
+        i{
+            color: deepskyblue;
+            font-size: 20px;
+            &.icon-71shibai{
+                 color: red;
+            }
+        }
     }
 }
-
 @keyframes spin {
     0% {
         transform: rotate(0deg);

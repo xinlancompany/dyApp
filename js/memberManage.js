@@ -97,7 +97,7 @@
 //          sql: "select u.id as id, u.name as name, pinyin, py, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id, e.scoreType order by score desc",
 //          sql: "select u.id as id, u.name as name, pinyin, py, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e, activitys a on e.userId = u.id and e.scoreType = '百分制' and e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id order by score desc",
 //			sql: "select u.id as id, u.name as name, pinyin, py, ifnull(sum(e.score), 0) as score, ifnull(e.scoreType, '百分制') as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id, e.scoreType order by score desc",
-			sql: "select u.id, u.name, pinyin, py, ifnull(sum(t.score), 0) as score, ifnull(t.scoreType, '百分制') as scoreType from user u left join activityEnrollList t on u.id = t.userId and t.scoreType = '百分制' where u.orgNo = ? group by u.id, t.scoreType order by score desc",
+			sql: "select u.id, u.name, pinyin, py, ifnull(sum(t.score), 0) as score, ifnull(t.scoreType, '百分制') as scoreType from user u left join activityEnrollList t on u.id = t.userId and t.scoreType = '百分制' where u.orgNo = ? and u.ifValid = 1 group by u.id, t.scoreType order by score desc",
             vals: _dump([wb.orgNo,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {
@@ -117,6 +117,10 @@
 		//		刷新用户列表
 		window.addEventListener('updateUsers', function(event) {
 			getUsers();
+		});
+
+		$(".group-manage").click(function() {
+			openWindow("group.html", "group");
 		});
     };
 

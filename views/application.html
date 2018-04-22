@@ -46,9 +46,13 @@
 			        		<option>5</option>
 			        	</select>
 			    </div>
+			    <div class="mui-input-row mui-input-textarea" v-show="reason != ''">
+			        <label>打回理由</label>
+			        <textarea rows="15" placeholder="打回理由" v-model="reason"></textarea>
+			    </div>
 			</form>	
-			<footer class="block-button" v-show="userInfo.userType == 0" @click="submitApplication">提交</footer>
-			<footer class="block-button" style="background-color: #0062cc;" v-show="userInfo.userType == 1" @click="operateApplication">驳回</footer>
+			<footer class="block-button" @click="submitApplication" v-text="id?'更新':'提交'">footer>
+			<!--<footer class="block-button" style="background-color: #0062cc;" v-show="userInfo.userType == 1" @click="operateApplication">驳回</footer>-->
 		</div>
 	</body>
 </html>

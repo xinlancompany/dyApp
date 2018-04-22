@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">1季度</h1>
+		</header>
+		
+		<div id="summary" class="have-header have-footer">
+			<!--活动发布编辑时筛选组织成员时显示-->
+			<div class="scroll-tabs summary-tabs">
+				<span :class="{active: curIdx == 0}" v-text="season+'季度'" @click="curIdx = 0"></span>
+				<span :class="{active: curIdx == 1}" v-cloak @click="curIdx = 1">{{(season-1)*3+1}}月</span>
+				<span :class="{active: curIdx == 2}" v-cloak @click="curIdx = 2">{{(season-1)*3+2}}月</span>
+				<span :class="{active: curIdx == 3}" v-cloak @click="curIdx = 3">{{(season-1)*3+3}}月</span>
+			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell  mui-left summary-li" v-for="i in showInfo">
+                    <div class="title" v-text="i.name"></div>
+                    <div class="times" v-cloak>{{i.cnt}}次</div>
+                    <div class="state"><i class="iconfont" :class="{'icon-70chenggong': i.code, 'icon-71shibai': !i.code}"></i></div>
+				</li>
+				<!--<li class="mui-table-view-cell  mui-left summary-li">
+                    <div class="title">标题名称</div>
+                    <div class="times">2次</div>
+                    <div class="state"><i class="iconfont icon-71shibai"></i></div>
+				</li>
+				<li class="mui-table-view-cell  mui-left summary-li">
+                    <div class="title">标题名称</div>
+                    <div class="times">2次</div>
+                    <div class="state"><i class="iconfont icon-70chenggong"></i></div>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/summary.js"></script>
+

@@ -1,85 +1,47 @@
 //预加载页面
-mui.init({
-	preloadPages: [{
-		url: 'internetCourseware.html',
-		id: 'internetCourseware'
-	}],
-});
 
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
 	var internetList = new Vue({
 		el: '#internetList',
 		data: {
-			internets:[],
+			courses:[],
 			bHaveMore: false,
+			categories: [],
+			curId: 0,
 		},
 		methods: {
 			//跳转到网络课堂详情
 			gotoNetCourseDetail: function(i) {
-                /*
-				var userInfo = _load(_get('userInfo'));
-				
-				if(userInfo) {
-					_set("netcourseId", i.id);
-					mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
-				
-					openWindow("internetCourseware.html", "internetCourseware");
-				} else {
-					openWindow("login.html", "login");
-				}
-				*/
-
-                var wb = plus.webview.getWebviewById("newsDetail");
-                if (!!wb) {
-                    // 预加载成功
-                    _set("newsId", i.id)
-                    mui.fire(wb, "courseId");
-                    openWindow("newsDetail.html", "newsDetail");
-                } else {
-                    // 预加载失败
-                    _set("newsId", "");
-                    openWindow("newsDetail.html", "newsDetail", {
-                        aid: i.id,
-                        table: "courses"
-                    });
-                }
+				_set("newsId", "");
+				openWindow("newsDetail.html", "newsDetail", {
+					aid: i.id,
+					table: "courses"
+				});
 			},
 			//获取课件列表
 			getInternetList: function(){
-				var self = this;
-				var f = 10e5;
-				if(self.internets.length) {
-					f = _at(self.internets, -1).id;
+				var self = this,
+					fi = 10e6,
+					fn = "3000-12-31 23:59:59";
+				if (this.news.length) {
+					var i = _at(this.news, -1)["id"];
+					fi = i.id;
+					fn = i.newsdate;
 				}
-				
-				// var orgId = _getOrgId();
-
 				_callAjax({
-					cmd:"fetch",
-                    // 按部门授课
-					// sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and id< ? and linkerId = ? and orgId = "+ orgId + " order by id desc limit 10",
-					// vals:_dump([f, linkerId.netCourse])
-                    // 统一授课
-					sql:"select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and id< ? and linkerId = ? order by id desc limit 10",
-					vals:_dump([f, linkerId.netCourse])
-				},function(d){
-					_tell(d);
-					if(d.success && d.data) {
-						self.bHaveMore = true;
-						d.data.forEach(function(r) {
-							self.internets.push(r);
-						
+					cmd: "fetch",
+					sql: "select id, title, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) order by newsdate desc limit 10",
+					vals: _dump([self.lid, fn, fn, fi])
+				}, function(d) {
+					if (d.success && d.data) {
+						if (d.data.length == 10) self.bHaveMore = true;
+						d.data.forEach(function(i) {
+							self.news.push(i);
 						});
-					}else {
-						self.bHaveMore = false;
-						if(f != 10e5){
-							mui.toast("没有更多课件了")
-						}
 					}
-				})
+				});
 			},
-			//初始化操作
 			init: function(){
 				var self = this;
 				self.internets = [];
@@ -88,9 +50,17 @@ function plusReady() {
 			}
 			
 		},
-		mounted: function() {
+		created: function() {
 			var self = this;
-			
+			_callAjax({
+				cmd: "fetch",
+				sql: "select id, name from linkers where refId = ?",
+				vals: _dump([linkerId.HandCourse,])
+			}, function(d) {
+				if (d.success && d.data) {
+					self.categories = d.data;
+				}
+			});
 		}
 	})
 	

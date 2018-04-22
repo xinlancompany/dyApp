@@ -27,7 +27,10 @@
 						活动审批
 					</a>
 					<a class="mui-control-item" href="#item2">
-						民主评议审批
+						增减分审批
+					</a>
+					<a class="mui-control-item" href="#item3">
+						新增党员
 					</a>
 				</div>
 			</div>
@@ -49,15 +52,30 @@
 				</div>
 				<div id="item2" class="mui-control-content">
 					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
-						<li class="mui-table-view-cell">
+						<li class="mui-table-view-cell" v-for="i, idx in appraises" @click="openAppraise(i)">
 				            <div class="mui-table">
 				                <div class="mui-table-cell mui-col-xs-10">
-				                    <h4 class="mui-ellipsis">信息化推进办公室张彦合同付款信息化</h4>
+				                    <h4 class="mui-ellipsis" v-text="i.name+'的增减分申请('+i.stateTag+')'"></h4>
 				                    
-				                    <p class="mui-h6 mui-ellipsis">Hi，李明明，申请交行信息卡，100元等你拿，李明明，申请交行信息卡，100元等你拿，</p>
+				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>
 				                </div>
 				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
-				                    <span class="mui-h5">12:25</span>
+									<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateAppraise(i, idx)">操作</button>
+				                </div>
+				            </div>
+				        </li>
+				   	</ul>
+				</div>
+				<div id="item3" class="mui-control-content">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+						<li class="mui-table-view-cell" v-for="i, idx in users" @click="openUser(i)">
+				            <div class="mui-table">
+				                <div class="mui-table-cell mui-col-xs-10">
+				                    <h4 class="mui-ellipsis" v-text="'新增'+i.name+'的请求'"></h4>
+				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>
+				                </div>
+				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+									<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateUser(i, idx)">操作</button>
 				                </div>
 				            </div>
 				        </li>

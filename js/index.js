@@ -146,8 +146,17 @@ function plusReady() {
 		el: '#index',
 		data: {
 			headNews: [],
-			activity: [], //活动专题
+//			activity: [], //活动专题
 //			recommandedOrgs:[], // 推荐支部
+			activities: []
+		},
+		computed:{
+			hasMoreNews: function() {
+				return this.headNews.length + indexSwiper.indexTopNews.length == 7;
+			},
+			hasMoreActivities: function() {
+				return this.activities.length == 5;
+			}
 		},
 		methods: {
 			//跳转到新闻详情
@@ -177,7 +186,7 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and linkerId = " + linkerId.IndexNews +" order by newsdate desc limit 10"
+					sql:"select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid =1 and linkerId = " + linkerId.IndexNews +" order by newsdate desc limit 7"
 				},function(d){
 					if(d.success && d.data && d.data.length) {
                         /*
@@ -213,14 +222,14 @@ function plusReady() {
 				});
 
                 // 获取学习置顶新闻
-                _callAjax({
-                    cmd: "fetch",
-                    sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid = 1 and credit > 0 and linkerId = " + linkerId.News +" order by id desc limit 10"
-                }, function(d) {
-                    if (d.success && d.data && d.data.length) {
-                        indexSwiper.studyTopNews = d.data;
-                    }
-                });
+//              _callAjax({
+//                  cmd: "fetch",
+//                  sql: "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle, credit from articles where ifValid = 1 and credit > 0 and linkerId = " + linkerId.News +" order by id desc limit 10"
+//              }, function(d) {
+//                  if (d.success && d.data && d.data.length) {
+//                      indexSwiper.studyTopNews = d.data;
+//                  }
+//              });
 			},
 			//获取活动专题
 			getActivitySort: function(){
@@ -268,6 +277,14 @@ function plusReady() {
 					orgNo: i.no,
 					orgName: i.name
 				});
+			},
+			openNewsList: function() {
+				openWindow("views/newsList.html", "newsList", {
+                    linkerId: linkerId.IndexNews
+                });
+			},
+			openRecommend: function() {
+				openWindow("views/recommendList.html", "recommendList");
 			}
 		},
 		mounted: function() {
@@ -275,7 +292,7 @@ function plusReady() {
 			//获取动态新闻
 			self.getNews();
 			//获取活动专题
-			self.getActivitySort();
+//			self.getActivitySort();
 
 			// 获取推荐支部
 //			_callAjax({
@@ -293,6 +310,16 @@ function plusReady() {
 //					});
 //				}
 //			});
+
+			// 获取推荐活动
+			_callAjax({
+				cmd: "fetch",
+				sql: "select activityId, v.title, v.img, o.name as orgName, strftime('%Y-%m-%d', logdate) as logtime from activityRecommend a, organization o, activitys v where a.activityId = v.id and a.orgNo = o.no order by a.logdate desc limit 5"
+			}, function(d) {
+				if (d.success && d.data) {
+					self.activities = d.data;
+				}
+			});
 		}
 	})
 	
@@ -311,7 +338,13 @@ function plusReady() {
                 activity: 0,
                 member: 0
             },
-            curOrgName: ''
+            curOrgName: '',
+            groupNum: 0, // 党小组个数
+            summary: {
+            		activity: 0,
+            		member: 0
+            },
+            seasonSummary: []
 		},
 		methods: {
             // 规章制度
@@ -507,6 +540,13 @@ function plusReady() {
                     self.summary.activity = d.data.activity[0].cnt;
                     self.summary.member = d.data.member[0].cnt;
                 });
+
+				_summaryAjax({
+					cmd: "summary",
+					orgNo: orgNo
+				}, function(d) {
+					if (d.success) self.seasonSummary = d.data;
+				});
             },
             // 党员信息
             openMembers: function() {
@@ -557,6 +597,11 @@ function plusReady() {
             },
             openApprove: function() {
                 openWindow("views/approve.html", "approve");
+            },
+            openSummary: function(idx) {
+            		openWindow("views/summary.html", "summary", {
+            			season: idx+1
+            		});
             }
 		},
 		mounted: function() {
@@ -570,6 +615,48 @@ function plusReady() {
             } else {
             	self.curOrgName = userInfo.orgName;
             }
+
+			// 获取统计数据
+//			_callAjax({
+//				cmd: "fetch",
+//				sql: "select linkerId, count(*) as cnt, strftime('%m') as mon from activitys where orgId = ? and linkerId in (?,?,?,?,?) group by mon, linkerId",
+//				vals: _dump([userInfo.id, linkerId.AllMemberCon, linkerId.BranchCon, linkerId.GroupCon, linkerId.LessonCon, linkerId.ThemeDayCon])
+//			}, function(d) {
+//				if (d.success && d.data) {
+//					var sum = {};
+//					d.data.forEach(function(i) {
+//						if (!(i.mon in sum)) sum[i.mon] = {
+//							branchOrAll: false,
+//							themeDay: false,
+//							groups: 0,
+//							lesson: false
+//						};
+//						if (i.linkId == linkerId.AllMemberCon || i.linkerId == linkerId.BranchCon) sum[i.mon].branchOrAll = true;
+//						if (i.linkId == linkerId.GroupCon) sum[i.mon].groups += 1;
+//						if (i.linkId == linkerId.LessonCon) sum[i.mon].lesson = true;
+//						if (i.linkId == linkerId.LessonCon) sum[i.mon].themeDay = true;
+//					});
+//					Object.keys(sum).forEach(function(m) {
+//						var state = true;
+//						if (!m.branchOrAll) {
+//							state = false;
+//							self.summary[m.mon].errMsg += "，未召开党员大会或支委会";
+//						}
+//						if (!m.themeDay) {
+//							state = false;
+//							self.summary[m.mon].errMsg += "，未召开主题党日会";
+//						}
+//						if (!m.groups < self.groupNum) {
+//							state = false;
+//							self.summary[m.mon].errMsg += "，党小组会议未完成"+self.groupNum+"次";
+//						}
+//						if (!m.lesson) {
+//							state = false;
+//							self.summary[m.mon].errMsg += "，未召开主题党日会";
+//						}
+//					});
+//				}
+//			});
         },
 	});
 	
@@ -634,19 +721,36 @@ function plusReady() {
             },
             // 跳转到教育动态
             goStudyNews: function() {
-                /*
-				mui.fire(plus.webview.getWebviewById("newsList"), 'newList', {
-                    linkerId: linkerId.News
+				openWindow("views/courseList.html", "courseList", {
+					lid: linkerId.News,
+					name: "党建动态",
 				});
-                */
-			
-				openWindow("views/newsList.html", "newsList", {
-                    linkerId: linkerId.News
-                });
             },
 			//跳转到直播列表
-			goLiveList: function() {
-				openWindow('views/liveList.html','liveList');
+			goBranchAct: function() {
+				openWindow("views/courseList.html", "courseList", {
+					lid: linkerId.BranchActNews,
+					name: "支部活动"
+				});
+			},
+			goHandCourse: function() {
+//				openWindow("views/courseList.html", "courseList", {
+//					lid: linkerId.HandCourse,
+//					name: "掌中课堂"
+//				});
+				openWindow('views/internetCourseList.html','internetList');
+			},
+			goPublicNotice: function() {
+				openWindow("views/courseList.html", "courseList", {
+					lid: linkerId.PublicNotice,
+					name: "通知公告"
+				});
+			},
+			goZhoushanNews: function() {
+				openWindow("views/courseList.html", "courseList", {
+					lid: linkerId.ZhoushanNews,
+					name: "关注舟山"
+				});
 			},
 			//跳转到直播课堂详情
 			goLiveDetail: function(i) {			
@@ -751,41 +855,41 @@ function plusReady() {
             self.randomTwoCourses();
             
             // 获取今日直播信息
-            var today = _now().split(" ")[0];
-            _callAjax({
-                cmd: "fetch",
-                sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) as cnt from lives l left join liveEnroll e on e.liveId = l.id where l.starttime > '"+today+" 00:00:00' and l.starttime < '"+today+" 23:59:59' group by l.id limit 1"
-            }, function(d) {
-                if (d.success && d.data && d.data.length) {
-                    study.todayLive = d.data[0];
-                    study.tabLive = d.data[0];
-                }
-            });
+//          var today = _now().split(" ")[0];
+//          _callAjax({
+//              cmd: "fetch",
+//              sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) as cnt from lives l left join liveEnroll e on e.liveId = l.id where l.starttime > '"+today+" 00:00:00' and l.starttime < '"+today+" 23:59:59' group by l.id limit 1"
+//          }, function(d) {
+//              if (d.success && d.data && d.data.length) {
+//                  study.todayLive = d.data[0];
+//                  study.tabLive = d.data[0];
+//              }
+//          });
 
             // 获取明天的直播
-            var dt = new Date();
-            dt.setDate(dt.getDate()+1);
-            var tommorrow = _datetime(dt).split(" ")[0];
-            _callAjax({
-                cmd: "fetch",
-                sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) as cnt from lives l left join liveEnroll e on e.liveId = l.id where l.starttime > '"+tommorrow+" 00:00:00' and l.starttime < '"+tommorrow+" 23:59:59' group by l.id limit 1"
-            }, function(d) {
-                if (d.success && d.data && d.data.length) {
-                    study.tommorrowLive = d.data[0];
-                }
-            });
+//          var dt = new Date();
+//          dt.setDate(dt.getDate()+1);
+//          var tommorrow = _datetime(dt).split(" ")[0];
+//          _callAjax({
+//              cmd: "fetch",
+//              sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) as cnt from lives l left join liveEnroll e on e.liveId = l.id where l.starttime > '"+tommorrow+" 00:00:00' and l.starttime < '"+tommorrow+" 23:59:59' group by l.id limit 1"
+//          }, function(d) {
+//              if (d.success && d.data && d.data.length) {
+//                  study.tommorrowLive = d.data[0];
+//              }
+//          });
 
             // 今天之前录像
-            var today = _now().split(" ")[0];
-            _callAjax({
-                cmd: "fetch",
-                sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) from lives l left join liveEnroll e on e.liveId = l.id where l.starttime < '"+today+" 00:00:00' group by l.id order by l.id desc limit 1"
-            }, function(d) {
-                // alert(_dump(d));
-                if (d.success && d.data && d.data.length) {
-                    study.recentRecord = d.data[0];
-                }
-            });
+//          var today = _now().split(" ")[0];
+//          _callAjax({
+//              cmd: "fetch",
+//              sql: "select l.id, l.title, strftime('%H:%M:%S', l.starttime) as starttime, l.img, count(distinct e.userId) from lives l left join liveEnroll e on e.liveId = l.id where l.starttime < '"+today+" 00:00:00' group by l.id order by l.id desc limit 1"
+//          }, function(d) {
+//              // alert(_dump(d));
+//              if (d.success && d.data && d.data.length) {
+//                  study.recentRecord = d.data[0];
+//              }
+//          });
 
 		}
 	});
@@ -1014,14 +1118,14 @@ function plusReady() {
         		isPersonal: false,
         },
         methods: {
-            switchIndexTopNews: function() {
-                indexSwiper.scrollNews = indexSwiper.indexTopNews;
-                indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
-            },
-            switchStudyTopNews: function() {
-                indexSwiper.scrollNews = indexSwiper.studyTopNews;
-                indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
-            }
+//          switchIndexTopNews: function() {
+//              indexSwiper.scrollNews = indexSwiper.indexTopNews;
+//              indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
+//          },
+//          switchStudyTopNews: function() {
+//              indexSwiper.scrollNews = indexSwiper.studyTopNews;
+//              indexSwiper.activeSlideText = indexSwiper.scrollNews[0].title;
+//          }
         },
         created: function() {
         		var userInfoStr = _get("userInfo");
@@ -1035,6 +1139,9 @@ function plusReady() {
         				this.isOrganization = false;
         				this.isPersonal = true;
         			}
+        		}
+        		if (!this.isOrganization && !this.isPersonal) {
+        			$(".logout").text("登录");
         		}
         }
     });
@@ -1076,7 +1183,7 @@ function plusReady() {
         }
 		header.showOrgTitle = false;
 
-		if(page == 'ucenter' || page == 'activity') {
+		if(page == 'ucenter' || page == 'activity' ) {
 			$(".mui-bar").css({
 				"background-color": "#cb0303",
 				"background-image": "url('../img/navbarbg.jpg')"
@@ -1087,7 +1194,7 @@ function plusReady() {
 				"background-color": "#56ccba",
 				"background-image": "none"
 			});
-			indexSwiper.show = true;
+			indexSwiper.show = false;
 			if(userInfo != null){
 				var name = userInfo.userType == 1 ? userInfo.name : userInfo.orgName;
 				header.showOrgTitle = true;
@@ -1107,9 +1214,8 @@ function plusReady() {
 
 	$('.logout').on('click', function() {
 		plus.storage.removeItem('userInfo');
-		mui.toast('退出成功');
-//		plus.webview.currentWebview().reload();
+		if ($(this).text() == "退出") mui.toast('退出成功');
+		plus.webview.close(plus.webview.getWebviewById("index"));
 		openWindow("views/login.html", "login");
-        plus.webview.close(plus.webview.getWebviewById("index"));
 	});
 }

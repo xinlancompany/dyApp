@@ -3,14 +3,35 @@
     		var vm = new Vue({
     			el: "#newUser",
     			data: {
+    				id: 0,
     				name: "",
     				sex: "男",
-    				idno: "",
+    				idNo: "",
     				phone: "",
     				img: "",
     				imgStyle: {
     					backgroundImage: ""
     				},
+    				reason: "党员发展"
+    			},
+    			watch: {
+    				id: function(i) {
+    					if (!i) return;
+    					var self = this;
+    					_callAjax({
+    						cmd: "fetch",
+    						sql: "select name, sex, idNo, phone, img, reason from user where id = ?",
+    						vals: _dump([i,])
+    					}, function(d) {
+    						if (d.success && d.data) {
+    							var inf = d.data[0];
+    							["name", "sex", "idNo", "phone", "img", "reason"].forEach(function(d) {
+								self[d] = inf[d];
+    							});
+							self.imgStyle.backgroundImage = "url("+self.img+")";
+    						}
+    					});
+    				}
     			},
     			methods:{
 				uploadImg: function(evt) {
@@ -45,17 +66,24 @@
 				newUser: function() {
 					var self = this,
 						name = _trim(self.name),
-						idno = _trim(self.idno),
+						idNo = _trim(self.idNo),
 						phone = _trim(self.phone);
 						
 					if (!name) return mui.toast("请填写姓名");
-					if (!idno || idno.length != 18) return mui.toast("请正确填写身份证");
+					if (!idNo || idNo.length != 18) return mui.toast("请正确填写身份证");
 					if (!phone || phone.length != 11) return mui.toast("请正确填写手机号码");
 
+//					ifvalid为－1时,为待上级审核
+					var sql = "insert into user(name, idNo, sex, phone, img, orgNo, orgName, reason, ifValid) values(?,?,?,?,?,?,?,?,?)",
+						vals = _dump([name,idNo,self.sex,phone,self.img, self.userInfo.no,self.userInfo.name,self.reason,-1]);
+					if (self.id) {
+						sql = "update user set name = ?, idNo = ?, sex = ?, phone = ?, img = ?, reason = ? where id = ?";
+						vals = _dump([name,idNo,self.sex,phone,self.img,self.reason,self.id]);
+					}
 					_callAjax({
 						cmd: "exec",
-						sql: "insert into user(name, idNo, sex, phone, img, orgNo, orgName) values(?,?,?,?,?,?,?)",
-						vals: _dump([name,idno,self.sex,phone,self.img, self.userInfo.no,self.userInfo.name])
+						sql: sql,
+						vals: vals
 					}, function(d) {
 						if (d.success && d.data) {
 							mui.toast("添加成功");
@@ -71,6 +99,9 @@
     				this.userInfo = _load(_get("userInfo"));
     			}
     		});
+
+		var wb = plus.webview.currentWebview();
+		if ("uid" in wb) vm.id = wb.uid;
     };
 
     if(window.plus) {
