@@ -37,8 +37,10 @@ function plusReady() {
 				
 					_callAjax({
 						cmd: "fetch",
-						sql: "select l.id, l.title, l.img, strftime('%Y-%m-%d', e.logtime)as time, count(e.id) as points from lives l, liveEnroll e where l.ifValid > 0 and e.liveId = l.id and e.userId = ? and l.id < ? group by l.id order by l.id desc",
-						vals: _dump([self.userInfo.id, f])
+//						sql: "select l.id, l.title, l.img, strftime('%Y-%m-%d', e.logtime)as time, count(e.id) as points from lives l, liveEnroll e where l.ifValid > 0 and e.liveId = l.id and e.userId = ? and l.id < ? group by l.id order by l.id desc",
+						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%m-%d', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId in (select id from linkers where refId = ?) order by a.id desc limit 10",
+//						vals: _dump([self.userInfo.id, f])
+						vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform])
 					}, function(d) {
 						// alert(_dump(d.data));
 						if(d.success && d.data) {

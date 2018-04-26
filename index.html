@@ -83,7 +83,7 @@
 			<div class="activity news-list" v-show="activities.length">
 				<header class="global-header"><h1 class="title">推荐活动</h1></header>
 				<ul class="mui-table-view">
-					<li v-for="i in activities" @click="gotoActivityDetail(i)">
+					<li v-for="i in activities" @click="goActivity(i)">
 						<a>
 							<!--<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="i.img"></div>-->
 							<div class="mui-media-body">
@@ -194,6 +194,7 @@
 			</div>-->
 			
 			<div class="study-internet">
+				<header class="global-header"><h1 class="title">推荐</h1></header>
 				<div class="lists">
 					<div class="list" v-for="i in randomCourses" @click="openCourse(i)">
                         <div class="thumb" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
@@ -221,7 +222,7 @@
 			
 			<div class="ucenter-flex">
 				<span @click="checkPoints"><i class="iconfont icon-icon1"></i>先锋指数</span>	
-				<span @click="checkCredit"><i class="iconfont icon-jifen"></i>学习积分</span>	
+				<span @click="checkCredit"><i class="iconfont icon-jifen"></i>平台学时</span>	
 			</div>
 			<!--党员登录-->
 			<ul class="mui-table-view" v-show="userType != 1">

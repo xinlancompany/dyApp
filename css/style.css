@@ -1270,7 +1270,6 @@ body {
   position: relative;
 }
 .score .content span:before {
-  content: '总分';
   position: absolute;
   left: 0;
   right: 0;
@@ -2167,12 +2166,14 @@ body {
 }
 .scroll-tabs {
   padding: 10px;
-  display: flex;
-  flex-wrap: nowrap;
+  width: 100%;
   overflow-x: scroll;
+  white-space: nowrap;
+}
+.scroll-tabs::-webkit-scrollbar {
+  display: none;
 }
 .scroll-tabs span {
-  width: 200px;
   background-color: #fff;
   border-radius: 2px;
   margin-right: 5px;

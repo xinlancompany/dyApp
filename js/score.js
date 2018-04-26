@@ -93,8 +93,8 @@
 						})
 					}
 				},
-				// 获取直播学习列表
-				getLiveList: function(){
+				// 获取直播学习列表, 暂时不用了
+				_getLiveList: function(){
 					var self = this;
 					
 					if(self.userInfo && self.bHaveMore_live) {
@@ -148,8 +148,8 @@
 					
 						_callAjax({
 							cmd: "fetch",
-							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, a.credit as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId = ? order by a.id desc limit 10",
-							vals: _dump([self.userInfo.id, f, linkerId.netCourse])
+							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId in (select id from linkers where refId = ?) order by a.id desc limit 10",
+							vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform])
 						}, function(d) {
 							if(d.success && d.data) {
 								d.data.forEach(function(r) {
@@ -181,9 +181,27 @@
 						self.getActivityList();
 					}else {
 						self.getCourseList();
-						self.getLiveList();
+//						self.getLiveList();
 					}
 				},
+				openDetail: function(i) {
+					if (this.activeTab) {
+						this.openCourse(i);
+					} else {
+						this.openActivity(i);
+					}
+				},
+				openCourse: function(i) {
+					openWindow("courseDetail.html", "courseDetail", {
+						cid: i.id
+					});
+				},
+				openActivity: function(i) {
+					openWindow('activeDetail.html', 'activeDetail', {
+						activityId: i.id,
+						isAdmin: false
+					});
+				}
             }
         });
 
@@ -226,8 +244,8 @@
             if (vm.studyScore > 20) {
                 vm.studyScore = 20;
             }
-            // 党员先锋指数要包含学习分数
-            vm.activityScore += vm.studyScore;
+            // 党员先锋指数要包含学习分数时，需要加上学习积分，目前暂时不加上
+            // vm.activityScore += vm.studyScore;
             if (vm.activeTab) {
                 vm.totalScore = vm.studyScore;
             } else {
@@ -239,7 +257,7 @@
 		vm.courseList = [];
 		vm.getActivityList();
 		vm.getCourseList();
-		vm.getLiveList();
+//		vm.getLiveList();
 
 
         var wb = plus.webview.currentWebview();

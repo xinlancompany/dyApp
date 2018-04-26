@@ -1042,7 +1042,7 @@ body {
             font-size: 50px;
             position: relative;
             &:before {
-                content: '总分';
+//              content: '总学时';
                 position: absolute;
                 left: 0;
                 right: 0;
@@ -1942,14 +1942,15 @@ body {
     font-size: 18px;
     color: #fff;
 }
-
 .scroll-tabs {
     padding: 10px;
-    display: flex;
-    flex-wrap: nowrap;
+    width: 100%;
     overflow-x: scroll;
+    white-space: nowrap;
+    &::-webkit-scrollbar{
+        display: none;
+    }
     span {
-        width: 200px;
         background-color: #fff;
         border-radius: 2px;
         margin-right: 5px;

@@ -168,7 +168,10 @@ function plusReady() {
 				openWindow("views/newsDetail.html", "newsDetail");
 			},
 			goActivity: function(i) {
-					
+				openWindow('views/activeDetail.html', 'activeDetail', {
+                    activityId: i.id,
+                    isAdmin: false
+                });
 			},
 			goActivityTab: function() {
 				$('.go-activity').click();
@@ -696,14 +699,23 @@ function plusReady() {
             // 随机获取2个网络课件
             randomTwoCourses: function() {
                 var self = this;
-                _callAjax({
-                    cmd: "fetch",
-                    sql: "select id, title, img, readcnt from courses order by random() limit 4"
-                }, function(d) {
+//              _callAjax({
+//                  cmd: "fetch",
+//                  sql: "select id, title, img, readcnt from courses order by random() limit 4"
+//              }, function(d) {
+//                  if (d.success && d.data && d.data.length) {
+//                      self.randomCourses = d.data;
+//                  }
+//              });
+				_hotAjax({
+					cmd: "hotest",
+					topn: 3,
+					hotn: 3
+				}, function(d) {
                     if (d.success && d.data && d.data.length) {
                         self.randomCourses = d.data;
                     }
-                });
+				});
             },
             //  打开tab的直播
             openTabLive: function() {

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">文章</h1>
+		</header>
+		
+		<div id="courseDetail" class="have-header have-footer news-detail">
+			<header v-cloak>
+				{{newsData.title}}
+				<p v-cloak>
+					<span v-show="newsData.reporter != ''">{{newsData.reporter}} &nbsp;&nbsp;&nbsp;&nbsp; </span>
+					<span>{{newsData.newsdate}} &nbsp;&nbsp;&nbsp;&nbsp; </span>
+					<span>阅读量：{{newsData.readcnt}}</span>
+				</p>
+				<!--<div class="desc" v-text="newsData.brief" v-show="newsData.brief!=''" v-cloak></div>-->
+			</header>
+			<article>
+				<p id="content" v-html="newsData.content"></p>
+			</article>
+			<!--<div class="like" :class="{ active : like }" @click="changeLike"><i class="iconfont icon-heart-copy"></i>{{likeNum}} 个人喜欢 </div>-->
+			<!--<div class="share">
+				<div class="line"></div>
+				<div class="share-item">
+					<i class="iconfont icon-weixin" @click="shareSystem('news', newsData, 'WXSceneSession')"></i>
+					<i class="iconfont icon-pengyouquan" @click="shareSystem('news', newsData, 'WXSceneTimeline')"></i>
+				</div>
+			</div>-->
+		</div>
+		
+        <!--暂时不开放-->
+		<!--<div id="comment" class="have-footer" style="display: none;">
+			<div class="comment-list" v-show="comments.length != 0">
+				<header>热门评论</header>
+				<div>
+					<dl v-for="c in comments">
+						<dt>
+							<img :src="c.img" width="30px" height="30px" />
+							<strong v-text="c.name"></strong>
+							<time v-text="c.logtime"></time>
+						</dt>
+						<dd v-text="c.content"></dd>
+					</dl>
+					<footer @click="goComment" v-text="'全部'+allCommentsLength+'条评论'"></footer>
+				</div>
+			</div>
+
+			<div class="comment-bar" @click="goComment">
+				<span><i class="iconfont icon-xie"></i><em>写评论</em></span>
+				<span><i class="iconfont icon-pinglun1"></i><em>20</em></span>
+			</div>
+		</div>-->
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/courseDetail.js"></script>

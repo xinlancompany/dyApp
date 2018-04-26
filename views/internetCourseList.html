@@ -26,7 +26,7 @@
 				<span>劳动人事局</span>-->
 			</div>
 			<ul class="mui-table-view">
-				<li v-for="i in courses" @click="openCource(i)">
+				<li v-for="i in courses['c_'+curId].news" @click="openCourse(i)">
 					<a>
 						<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 						<div class="mui-media-body">
@@ -38,7 +38,7 @@
 					</a>
 				</li>
 			</ul>
-			<footer @click="getInternetList" class="block-button" v-show="bHaveMore">查看更多</footer>
+			<footer @click="getInternetList" class="block-button" v-show="courses['c_'+curId].bHaveMore">查看更多</footer>
 		</div>
 	</body>
 </html>
