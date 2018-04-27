@@ -25,6 +25,7 @@
 				<span :class="{active: curIdx == 1}" v-cloak @click="curIdx = 1">{{(season-1)*3+1}}月</span>
 				<span :class="{active: curIdx == 2}" v-cloak @click="curIdx = 2">{{(season-1)*3+2}}月</span>
 				<span :class="{active: curIdx == 3}" v-cloak @click="curIdx = 3">{{(season-1)*3+3}}月</span>
+				<span :class="{active: curIdx == 4}" v-cloak @click="curIdx = 4">年度</span>
 			</div>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell  mui-left summary-li" v-for="i in showInfo">

@@ -6,7 +6,7 @@
 				season: null,
 				curIdx: 0,
 				userInfo: null,
-				info: [null,null,null,null],
+				info: [null,null,null,null,null],
 				showInfo: null
 			},
 			watch: {
@@ -21,6 +21,12 @@
 						self.showInfo = d.data[0];
 					});
 					$(".mui-title").text(i+"季度");
+					_summaryAjax({
+						cmd: "year",
+						orgNo: self.userInfo.no,
+					}, function(d) {
+						self.info[4] = d.data[0];
+					});
 				},
 				curIdx: function(i) {
 					var self = this;
