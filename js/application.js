@@ -53,11 +53,15 @@
 					var self = this,
 						content = _trim(self.content);
 					if (!content) return mui.toast("请填写内容");
-					var sql = "insert into easyScore(userId, content, img, score, orgNo) values(?,?,?,?)",
-						vals = _dump([self.userInfo.id, content, self.img, self.score, self.userInfo.orgNo]);
+					var sql = "insert into easyScore(userId, content, img, score, orgNo, ifValid) values(?,?,?,?,?,?)",
+						vals = _dump([self.userInfo.id, content, self.img, self.score, self.userInfo.orgNo, 1]);
+					if (wb.uid) {
+						// 书记直接登记
+						vals = _dump([wb.uid, content, self.img, self.score, wb.orgNo, wb.validVal]);
+					}
 					if (self.id) {
 						sql = "update easyScore set content = ?, img = ?, score = ? where id = ?";
-						vals = _dump([content, self.img, self.score, self.id])
+						vals = _dump([content, self.img, self.score, self.id]);
 					}
 					_callAjax({
 						cmd: "exec",

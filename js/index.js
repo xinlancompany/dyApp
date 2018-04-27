@@ -681,20 +681,23 @@ function plusReady() {
 		methods: {
             // 打开课件
             openCourse: function(i) {
-                var wb = plus.webview.getWebviewById("newsDetail");
-                if (!!wb) {
-                    // 预加载成功
-                    _set("newsId", i.id)
-                    mui.fire(wb, "courseId");
-                    openWindow("views/newsDetail.html", "newsDetail");
-                } else {
-                    // 预加载失败
-                    _set("newsId", "");
-                    openWindow("views/newsDetail.html", "newsDetail", {
-                        aid: i.id,
-                        table: "courses"
-                    });
-                }
+//              var wb = plus.webview.getWebviewById("newsDetail");
+//              if (!!wb) {
+//                  // 预加载成功
+//                  _set("newsId", i.id)
+//                  mui.fire(wb, "courseId");
+//                  openWindow("views/newsDetail.html", "newsDetail");
+//              } else {
+//                  // 预加载失败
+//                  _set("newsId", "");
+//                  openWindow("views/newsDetail.html", "newsDetail", {
+//                      aid: i.id,
+//                      table: "courses"
+//                  });
+//              }
+				openWindow("views/courseDetail.html", "courseDetail", {
+					cid: i.id
+				});
             },
             // 随机获取2个网络课件
             randomTwoCourses: function() {

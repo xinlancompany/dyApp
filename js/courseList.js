@@ -9,7 +9,9 @@
 			},
 			methods: {
 				openCourseDetail: function(i) {
-					
+					openWindow("courseDetail.html", "courseDetail", {
+						cid: i.id
+					});
 				},
 				getNews: function() {
 					var self = this,

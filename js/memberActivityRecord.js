@@ -12,21 +12,12 @@
             },
             methods: {
             		operateUserScore: function() {
-                    var buttons = [
-                        {
-                            title: "加分"
-                        },
-                        {
-                            title: "减分"
-                        }
-                    ];
-                    plus.nativeUI.actionSheet({
-                        title: "操作",
-                        cancel: "取消",
-                        buttons: buttons
-                    }, function(e) {
-                        if (e.index == 0) return;
-                    });
+					openWindow("application.html","application", {
+						uid: wb.idx,
+						name: wb.name,
+						validVal: 2,
+						orgNo: userInfo.no,
+					});
             		},
                 actions: function(i) {
                     var buttons = [
@@ -133,6 +124,10 @@
         window.addEventListener("refresh", function() {
             init();
         });
+
+		$(".operate-user-score").click(function() {
+			vm.operateUserScore();
+		});
     };
 
     if(window.plus) {
