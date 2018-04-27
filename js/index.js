@@ -1233,4 +1233,10 @@ function plusReady() {
 		plus.webview.close(plus.webview.getWebviewById("index"));
 		openWindow("views/login.html", "login");
 	});
+
+
+    window.addEventListener("updateUserInfo", function() {
+        // plus.webview.close(plus.webview.getLaunchWebview());
+        ucenter.userInfo = _load(_get("userInfo"));
+    });
 }

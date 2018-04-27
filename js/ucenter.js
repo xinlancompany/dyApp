@@ -48,9 +48,10 @@ function plusReady() {
                     	sql: "update user set img = ? where id = ?",
                     	vals: _dump([self.userInfo.img, self.userInfo.id])
                     }, function(d) {
-                    	if (d.success) {
+						if (d.success) {
 							_set("userInfo", _dump(self.userInfo));
-                    	}
+							mui.fire(plus.webview.getWebviewById('index'), 'updateUserInfo');
+						}
                     });
 				});
 			},
