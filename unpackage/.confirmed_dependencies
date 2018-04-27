@@ -28,7 +28,10 @@
       "views/notice.html",
       "views/application.html",
       "views/studyRank.html",
-      "views/approve.html"
+      "views/approve.html",
+      "views/recommendList.html",
+      "views/activeDetail.html",
+      "views/summary.html"
     ],
     "resources": [
       "img/organization.jpg"
@@ -70,7 +73,8 @@
   },
   "views/memberActivityRecord.html": {
     "refer": [
-      "views/grade.html"
+      "views/grade.html",
+      "views/application.html"
     ],
     "resources": []
   },
@@ -98,27 +102,33 @@
   "views/myStudy.html": {
     "refer": [
       "views/internetCourseware.html"
-    ]
+    ],
+    "resources": []
   },
   "views/internetCourseList.html": {
     "refer": [
       "views/internetCourseware.html",
       "views/newsDetail.html"
-    ]
+    ],
+    "resources": []
   },
   "views/liveList.html": {
     "refer": [
       "views/liveDetail.html"
-    ]
+    ],
+    "resources": []
   },
   "views/activityUpload.html": {
     "refer": [
       "views/selectTags.html"
-    ]
+    ],
+    "resources": []
   },
   "views/login.html": {
     "refer": [
-      "index.html"
-    ]
+      "index.html",
+      "views/forget.html"
+    ],
+    "resources": []
   }
 }

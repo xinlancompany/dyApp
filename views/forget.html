@@ -35,9 +35,8 @@
 				<i class="iconfont icon-yanzhengma"></i><input type="number" maxlength="4" placeholder="请输入验证码" v-model="code"/>
 				<span v-text="codeTag" @click="sendCode"></span>
 			</div>
-			<!--<span click="resetPswd">重置</span>-->
-			<div class="mui-button-row">
-				<button type="button" class="mui-btn mui-btn-primary" @click="resetPswd">重置</button>
+			<div class="login-btns">
+				<span @click="resetPswd">重置</span>
 			</div>
 		</div>
 	</body>

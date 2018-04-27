@@ -2236,15 +2236,14 @@ body {
   border-bottom: none;
 }
 .summary-li .title {
-  width: 33.3%;
-  text-align: left;
+  flex: 1;
 }
 .summary-li .times {
-  width: 33.3%;
+  width: 60px;
   text-align: center;
 }
 .summary-li .state {
-  width: 33.3%;
+  width: 60px;
   text-align: right;
 }
 .summary-li .state i {

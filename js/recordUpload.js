@@ -162,7 +162,8 @@
 						}
 						if(e.index == 2) {
 							tape = '';
-							self.audioTime = '00:00:00',
+							self.audioTime = '00:00:00';
+							self.tapTime = '00:00:00';
 							self.tapeComplete = false;
 						}
 	                });
