@@ -96,6 +96,10 @@ function plusReady() {
 	})
 	
 	internetList.init();
+	
+	$('.search-btn').on('click', function() {
+		openWindow("searchCourse.html", "searchCourse");
+	})
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

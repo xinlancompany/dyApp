@@ -44,13 +44,19 @@
             },
             methods: {
                 uploadImg1: function(evt) {
-                    var self = this;
-                    plus.nativeUI.showWaiting('上传中...')
-                    uploadImage("activitySortAdd", evt, function(r) {
-                        plus.nativeUI.closeWaiting();
-                        self.img1 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
-                        self.imgStyle1.backgroundImage = "url("+self.img1+")";
-                    });
+//                  var self = this;
+//                  plus.nativeUI.showWaiting('上传中...')
+//                  uploadImage("activitySortAdd", evt, function(r) {
+//                      plus.nativeUI.closeWaiting();
+//                      self.img1 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
+//                      self.imgStyle1.backgroundImage = "url("+self.img1+")";
+//                  });
+
+			         plus.gallery.pick( function(path){
+				    	openWindow('imageClipper.html', 'imageClipper', {path})
+				    }, function ( e ) {
+				    	console.log( "取消选择图片" );
+				    }, {filter:"image"} );
                 },
                 uploadImg2: function(evt) {
                     var self = this;

@@ -212,6 +212,17 @@ body {
             width: 100%;
         }
     }
+    .unread {
+        font-size: 14px;
+        color: #999;
+        position: relative;
+        margin: 10px;
+        border: 1px solid #C8C7CC;
+        padding: 10px;
+        &:before {
+            content:'未阅读名单：'
+        }
+    }
     .like {
         transition: all .2s ease-in;
         padding: 8px;
@@ -544,12 +555,33 @@ body {
         }
         .stars {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
             i {
                 color: @base;
                 font-size: 24px;
                 margin-left: 15px;
                 margin-right: 15px;
+            }
+        }
+        .check {
+            text-align: center;
+            margin-top: 15px;
+            i {
+                color: @base;
+                font-size: 34px;
+                margin-left: 15px;
+                margin-right: 15px;
+                position: relative;
+                &:after {
+                    content: attr(data-progress);
+                    color: #fff;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 12px;
+                    text-shadow: 0 0 1px rgb(0,0,0);
+                }
             }
         }
     }
@@ -1165,9 +1197,6 @@ body {
 }
 
 .article-upload {
-    form.mui-input-group {
-        padding-bottom: 10px;
-    }
     .mui-input-row {
         label~p {
             float: right;
@@ -1178,6 +1207,9 @@ body {
             border: 0;
             line-height: 21px;
             font-size: 17px;
+        }
+        &:last-child:after {
+            display: none;
         }
     }
     .tape-btn,
@@ -1726,17 +1758,20 @@ body {
     align-items: center;
     .thumb-upload {
         flex: 1;
-        &:first-child:before {
+        &.img-1:before {
             content: '签到表'
         }
-        &:last-child:before {
-            content: '会标'
+        &.img-3:before {
+            content: '其他'
         }
-        &:nth-child(2) {
+        &.img-2{
             margin: 0 10px;
             &:before {
                 content: '会场全景图'
             }
+        }
+        &.img-5{
+            margin: 0 10px;
         }
     }
 }
@@ -2002,31 +2037,98 @@ body {
     text-align: center;
 }
 .summary-li{
-    margin-bottom: 10px;
     height:40px;
     font-size: 16px;
-    display: flex;
-    flex-flow: row nowrap;
-    border-bottom: none;
-    .title{
-        flex: 1;
-    }
-    .times{
-        width: 60px;
-        text-align: center;
-    }
-    .state{
-        width: 60px;
-        text-align: right;
-        i{
-            color: deepskyblue;
-            font-size: 20px;
-            &.icon-71shibai{
-                color: red;
+    .mui-slider-handle {
+        display: flex;
+        flex-flow: row nowrap;
+        .title{
+            flex: 1;
+        }
+        .times{
+            width: 60px;
+            text-align: center;
+        }
+        .state{
+            width: 60px;
+            text-align: right;
+            i{
+                color: deepskyblue;
+                font-size: 20px;
+                &.icon-71shibai{
+                    color: red;
+                }
             }
         }
     }
 }
+
+.position() {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+.clipper-container {
+    .position();
+    line-height: 0;
+    background-color: #000;
+    .clipper-part {
+        .position();
+        bottom: 61px;
+        z-index: 102;
+        .pCanvas-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #fff;
+        }
+    }
+    .action-bar {
+        box-sizing: content-box;
+        .position();
+        top: auto;
+        z-index: 103;
+        height: 60px;
+        line-height: 60px;
+        border-top: 1px solid rgba(256, 256, 256, 0.3);
+        button {
+            display: block;
+            padding: 0 15px;
+            line-height: 60px;
+            font-size: 16px;
+            color: #fff;
+            background: none;
+            border: none;
+            outline: 0;
+            &.btn-cancel {
+                float: left;
+            }
+            &.btn-ok {
+                float: right;
+            }
+        }
+    }
+    .mask {
+        .position();
+        z-index: 101;
+        transition: opacity 500ms;
+        background-color: #000;
+        opacity: 0;
+        &.opacity {
+            opacity: 0.8;
+        }
+    }
+    .gesture-mask {
+        .position();
+        bottom: 61px;
+        z-index: 103;
+    }
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);

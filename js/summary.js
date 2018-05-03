@@ -36,7 +36,6 @@
 							month: (self.season-1)*3+i,
 							orgNo: self.userInfo.no
 						}, function(d) {
-//							alert(_dump(d));
 							self.info[i] = d.data[0];
 							self.showInfo = self.info[i];
 						});
@@ -51,6 +50,10 @@
 		});
 		var wb = plus.webview.currentWebview();
 		if ("season" in wb) vm.season = wb.season;
+		
+		$('.rule-btn').on('click', function() {
+            openWindow("newRule.html", "newRule");
+		})
 	};
 
 	if(window.plus) {

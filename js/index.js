@@ -404,7 +404,7 @@ function plusReady() {
             			buttons = d.data;
             		}
             		if (self.isAdmin) {
-            			["新建", "编辑"].forEach(function(i) {
+            			["自定义主题", "自定义编辑"].forEach(function(i) {
 							buttons.push({
 								title: i
 							});
@@ -416,14 +416,14 @@ function plusReady() {
 						buttons: buttons
 					}, function(e) {
 						if (e.index == 0) return;
-						if (buttons[e.index-1].title == "新建") {
+						if (buttons[e.index-1].title == "自定义主题") {
 							openWindow("views/topicUpload.html", "topicUpload", {
 								lid: lid,
 								orgNo: self.orgNo
 							});
 							return;
 						}
-						if (buttons[e.index-1].title == "编辑") {
+						if (buttons[e.index-1].title == "自定义编辑") {
 							openWindow('views/topicList.html', 'topicList', {
 								lid: lid,
 								name: "组织生活"

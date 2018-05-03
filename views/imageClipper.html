@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<div id="imageClipper" class="have-header have-footer">
+			<div class="clipper-container" ref="clipper">
+			    <canvas ref="canvas"></canvas>
+		 
+		     	<!-- 裁剪部分 -->
+		     	<div class="clipper-part">
+		        	<div class="pCanvas-container">
+		            	<canvas ref="pCanvas"></canvas>
+		         	</div>
+		    	</div>
+		 
+			    <!-- 底部操作栏 -->
+			    <div class="action-bar">
+			        <button class="btn-cancel" @click="_cancel">取消</button>
+			        <button class="btn-ok" @click="_clipper">确认</button>
+			    </div>
+			 
+			    <!-- 背景遮罩 -->
+			    <div class="mask" :class="{opacity: maskShow}"></div>
+			
+			    <!-- 手势操作层 -->
+			    <div class="gesture-mask" ref="gesture"></div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/imageClipper.js"></script>

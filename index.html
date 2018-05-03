@@ -103,11 +103,13 @@
 			
 			<header class="org-info">
 				<h1 v-cloak>{{curOrgName}}</h1>
-				<div class="stars">
+				<!--<div class="stars">
 					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummary" :class="{'icon-star': i[0] && [1], 'icon-starhalfempty': i[0] ^ i[1], 'icon-staro': !i[0] && !i[1]}"></i>
-					<!--<i class="iconfont icon-star"></i>
-					<i class="iconfont icon-starhalfempty"></i>
-					<i class="iconfont icon-staro"></i>-->
+				</div>-->
+				<div class="check">
+					<i class="iconfont icon-jindu3" data-progress="10%"></i>
+					<i class="iconfont icon-circle" data-progress="33%"></i>
+					<i class="iconfont icon-chart12" data-progress="67%"></i>
 				</div>
 			</header>
 			
@@ -146,7 +148,7 @@
 				</div>
 				<div @click="goBranchAct">
 					<img src="./img/studyIcon2.png" />
-					支部活动
+					活动案例
 				</div>
 				<div @click="goHandCourse">
 					<img src="./img/studyIcon3.png" />
@@ -165,7 +167,7 @@
 				</div>
 				<div @click="goStudyRank">
 					<img src="./img/studyIcon6.png" />
-					学时排行
+					党建书屋
 				</div>
 			</div>
 			

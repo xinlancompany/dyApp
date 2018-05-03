@@ -32,18 +32,10 @@
 			<article>
 				<p id="content" v-html="newsData.content"></p>
 			</article>
-			<!--<div class="like" :class="{ active : like }" @click="changeLike"><i class="iconfont icon-heart-copy"></i>{{likeNum}} 个人喜欢 </div>-->
-			<!--<div class="share">
-				<div class="line"></div>
-				<div class="share-item">
-					<i class="iconfont icon-weixin" @click="shareSystem('news', newsData, 'WXSceneSession')"></i>
-					<i class="iconfont icon-pengyouquan" @click="shareSystem('news', newsData, 'WXSceneTimeline')"></i>
-				</div>
-			</div>-->
+			<div class="unread"></div>
 		</div>
 		
-        <!--暂时不开放-->
-		<div id="comment" class="have-footer" style="display: none;">
+		<!--<div id="comment" class="have-footer">
 			<div class="comment-list" v-show="comments.length != 0">
 				<header>热门评论</header>
 				<div>
@@ -63,7 +55,7 @@
 				<span><i class="iconfont icon-xie"></i><em>写评论</em></span>
 				<span><i class="iconfont icon-pinglun1"></i><em>20</em></span>
 			</div>
-		</div>
+		</div>-->
 	</body>
 </html>
 <script src="../lib/utils.js"></script>

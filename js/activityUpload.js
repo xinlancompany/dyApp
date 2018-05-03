@@ -18,7 +18,11 @@ function plusReady() {
                 backgroundImage: ""
             },
             users: [],
-            tag: null
+            tag: null,
+            selectUserNames: '请选择与会人员',
+            selectTagName: '请选择积分量化标签',
+            starttime: '请选择开始时间',
+            endtime: '请选择结束时间'
         },
         watch: {
             aid: function(i) {

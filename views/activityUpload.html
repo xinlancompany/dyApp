@@ -41,11 +41,11 @@
 			        <input type="text" class="mui-input-clear" placeholder="地点" v-model="location">
 			    </div>
 			    <div class="mui-input-row">
-			        <label>开始日期</label>
+			        <label>开始时间</label>
 			        <p @click="chooseStarttime($event)" v-text="starttime"></p>
 			    </div>
 			    <div class="mui-input-row">
-			        <label>结束日期</label>
+			        <label>结束时间</label>
 			        <p @click="chooseEndtime($event)" v-text="endtime"></p>
 			    </div>
 			    <div class="mui-input-row mui-input-image">
@@ -54,26 +54,40 @@
 			        	<input type="file" accept="image/*" @change="uploadImg($event)">
 			        </div>
 			    </div>
-			    <div class="mui-input-row mui-input-textarea">
-			        <label>内容</label>
-			        <textarea rows="15" placeholder="内容" v-model="content"></textarea>
-			    </div>
-			    <div class="mui-input-row" @click="chooseUsers">
-			        <label>筛选用户</label>
-                    <p v-text="selectUserNames"></p>
-			    </div>
-			    <div class="mui-input-row mui-input-textarea">
-			        <label>缺席原因</label>
-			        <textarea rows="15" placeholder="缺席原因" v-model="unattendReason"></textarea>
-			    </div>
 			    <div class="mui-input-row" @click="chooseTopics">
-			        <label>活动标签</label>
+			        <label>积分量化</label>
                     <p v-text="selectTagName"></p>
 			    </div>
-			    <div class="mui-button-row">
-			        <button type="button" class="mui-btn mui-btn-primary" @click="newActivity">添加</button>
+			    <div class="mui-input-row" @click="chooseTopics">
+			        <label>活动分类</label>
+			        <p>默认分类名称</p>
 			    </div>
-			</form>			
+			    <div class="mui-input-row mui-input-textarea">
+			        <label>内容</label>
+			        <textarea rows="10" placeholder="内容" v-model="content"></textarea>
+			    </div>
+			    <div class="mui-input-row" @click="chooseUsers">
+			        <label>与会人员</label>
+                    <p v-text="selectUserNames"></p>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>五类人员</label>
+			        <p>请选择缺席的五类人员</p>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>出差人员</label>
+			        <p>请选择缺席的出差人员</p>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>请假人员</label>
+			        <p>请选择缺席的请假人员</p>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>其他人员</label>
+			        <p>请选择缺席的其他人员</p>
+			    </div>
+			</form>		
+		 	<footer @click="newActivity" class="block-button">添加</footer>
 		</div>
 	</body>
 </html>
