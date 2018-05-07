@@ -2,8 +2,8 @@
     var plusReady = function() {
         mui.init({
             beforeback: function() {
-                mui.fire(plus.webview.getWebviewById("activityUpload"), "selectUsers", {
-                    users: vm.users
+                mui.fire(plus.webview.getWebviewById("activityUpload"), "selectMC", {
+                    MC: _filter(function(i) { return i.id == vm.selectId; }, vm.users)
                 });
             }
         });
@@ -11,11 +11,12 @@
         var userInfo = _load(_get("userInfo"));
 
         var vm = new Vue({
-            el: "#selectUsers",
+            el: "#selectMC",
             data: {
                 users: [],
                 groups: [],
                 curGroupid: 0,
+                selectId: -1,
             },
             computed: {
 				filterUsers: function() {
@@ -66,34 +67,18 @@
         });
 
         var wb = plus.webview.currentWebview();
-        if (!wb.aid) vm.users = wb.users;
 
-        if (!vm.users.length || !!wb.aid) {
-            _callAjax({
-                cmd: "fetch",
-                sql: "select id, name, groupId from User where ifValid = 1 and orgNo = ?",
-                vals: _dump([userInfo["no"],])
-            }, function(d) {
-                if (!d.success || !d.data) return;
-                d.data.forEach(function(i) {
-                    i.ifSelect = false;
-                    if (!!wb.aid) {
-                        wb.users.forEach(function(j) {
-                            if (j.id == i.id && j.ifSelect) {
-                                i.ifSelect = true;
-                            }
-                        });
-                    }
-					i.isIn = false;
-					wb.notIn.forEach(function(j) {
-						if (j.id == i.id) {
-							i.isIn = true;
-						}
-					});
-					if (!i.isIn) vm.users.push(i);
-                });
-            });
-        }
+		_callAjax({
+			cmd: "fetch",
+			sql: "select id, name, groupId from User where ifValid = 1 and orgNo = ?",
+			vals: _dump([userInfo["no"],])
+		}, function(d) {
+			if (!d.success || !d.data) return;
+			if (wb.MC) vm.selectId = wb.MC.id;
+			d.data.forEach(function(i) {
+				vm.users.push(i);
+			});
+		});
     };
 
     if(window.plus) {

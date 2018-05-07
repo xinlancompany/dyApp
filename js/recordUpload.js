@@ -27,6 +27,9 @@
                 img1: "",
                 img2: "",
                 img3: "",
+                img4: "",
+                img5: "",
+                img6: "",
                 imgStyle1: {
                     backgroundImage: ""
                 },
@@ -34,6 +37,15 @@
                     backgroundImage: ""
                 },
                 imgStyle3: {
+                    backgroundImage: ""
+                },
+                imgStyle4: {
+                    backgroundImage: ""
+                },
+                imgStyle5: {
+                    backgroundImage: ""
+                },
+                imgStyle6: {
                     backgroundImage: ""
                 },
                 isTape: false,	//是否录音状态
@@ -44,19 +56,19 @@
             },
             methods: {
                 uploadImg1: function(evt) {
-//                  var self = this;
-//                  plus.nativeUI.showWaiting('上传中...')
-//                  uploadImage("activitySortAdd", evt, function(r) {
-//                      plus.nativeUI.closeWaiting();
-//                      self.img1 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
-//                      self.imgStyle1.backgroundImage = "url("+self.img1+")";
-//                  });
+//			         plus.gallery.pick( function(path){
+//				    	openWindow('imageClipper.html', 'imageClipper', {path})
+//				    }, function ( e ) {
+//				    	console.log( "取消选择图片" );
+//				    }, {filter:"image"} );
 
-			         plus.gallery.pick( function(path){
-				    	openWindow('imageClipper.html', 'imageClipper', {path})
-				    }, function ( e ) {
-				    	console.log( "取消选择图片" );
-				    }, {filter:"image"} );
+                    var self = this;
+                    plus.nativeUI.showWaiting('上传中...')
+                    uploadImage("activitySortAdd", evt, function(r) {
+                        plus.nativeUI.closeWaiting();
+                        self.img1 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
+                        self.imgStyle1.backgroundImage = "url("+self.img1+")";
+                    });
                 },
                 uploadImg2: function(evt) {
                     var self = this;
@@ -76,6 +88,33 @@
                         self.imgStyle3.backgroundImage = "url("+self.img3+")";
                     });
                 },
+                uploadImg4: function(evt) {
+                    var self = this;
+                    plus.nativeUI.showWaiting('上传中...')
+                    uploadImage("activitySortAdd", evt, function(r) {
+                        plus.nativeUI.closeWaiting();
+                        self.img4 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
+                        self.imgStyle4.backgroundImage = "url("+self.img4+")";
+                    });
+                },
+                uploadImg5: function(evt) {
+                    var self = this;
+                    plus.nativeUI.showWaiting('上传中...')
+                    uploadImage("activitySortAdd", evt, function(r) {
+                        plus.nativeUI.closeWaiting();
+                        self.img5 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
+                        self.imgStyle5.backgroundImage = "url("+self.img5+")";
+                    });
+                },
+                uploadImg6: function(evt) {
+                    var self = this;
+                    plus.nativeUI.showWaiting('上传中...')
+                    uploadImage("activitySortAdd", evt, function(r) {
+                        plus.nativeUI.closeWaiting();
+                        self.img6 = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
+                        self.imgStyle6.backgroundImage = "url("+self.img6+")";
+                    });
+                },
                 uploadRecord: function() {
                     var record = _trim(this.record);
                     if (!record) return mui.toast("请填写记录内容");
@@ -85,7 +124,7 @@
                     _callAjax({
                         cmd: "exec",
                         sql: "update activitys set record = ?, recordImgs = ?, recordTime = ? where id = ?",
-                        vals: _dump([record, _dump([self.img1, self.img2, self.img3]), _now(), wb.aid])
+                        vals: _dump([record, _dump([self.img1, self.img2, self.img3, self.img4, self.img5, self.img6]), _now(), wb.aid])
                     }, function(d) {
                         if (d.success) {
                             mui.toast("上传成功");
@@ -99,6 +138,7 @@
                     });
                 },
                 startTape: function() {
+                	alert("rth");
                 	var self = this;
 					recorder = plus.audio.getRecorder();	//获取设备录音对象
 					if(recorder == null)  return mui.toast('录音对象未获取');
@@ -195,7 +235,7 @@
             if (d.success && d.data && d.data.length) {
             	console.log(d.data[0].recordImgs)
                 var imgs = _load(d.data[0].recordImgs);
-                [1,2,3].forEach(function(i) {
+                [1,2,3,4,5,6].forEach(function(i) {
                     vm["img"+i] = imgs[i-1];
                     vm["imgStyle"+i].backgroundImage = "url("+imgs[i-1]+")";
                 });

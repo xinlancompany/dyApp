@@ -70,6 +70,10 @@ function plusReady() {
 	//	打开舟山党建网
 	pullToRefresh();
 
+	// 关闭login
+	var loginPage = plus.webview.getWebviewById("login");
+	if (loginPage) plus.webview.close(loginPage);
+
     // 获取学习积分的设置，覆盖util.js里的设置
     _callAjax({
         cmd: "fetch",
@@ -116,6 +120,27 @@ function plusReady() {
     // 关闭boot
     window.addEventListener("closeBoot", function() {
         plus.webview.close(plus.webview.getLaunchWebview());
+
+//			获取未读信息数量
+		_callAjax({
+			cmd: "fetch",
+			sql: "select count(*) as cnt from notices where userId = ? and ifRead = 0",
+			vals: _dump([ucenter.userInfo.id,])
+		}, function(d) {
+			if (d.success && d.data && d.data.length) {
+				var unReadMsgCnt = d.data[0].cnt;
+				if (unReadMsgCnt > 0) {
+					var buttons = ['取消', '确定'];
+					mui.confirm('您有'+unReadMsgCnt+'条未读消息，是否打开', buttons, function(e) {
+						if(e.index == 0) {
+							openWindow('views/notice.html', 'notice', {
+								unRead: unReadMsgCnt
+							});
+						}
+					});
+				}
+			}
+		});
     });
 	
 	var header = new Vue({
@@ -395,13 +420,19 @@ function plusReady() {
             		lid = linkerId.Activity;
             	_callAjax({
             		cmd: "fetch",
-					sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id",
+//					sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id",
+
 //					vals: _dump([self.orgNo, lid])
+					sql: "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where (orgId = ? or orgId = 0) and refId = ? and l.ifValid = 1 group by l.id order by l.id",
 					vals: _dump([self.orgNo, lid])
             	}, function(d) {
             		var buttons = [];
             		if (d.success && d.data && d.data.length) {
-            			buttons = d.data;
+            			d.data.forEach(function(i) {
+            				i.title += "("+i.cnt+")";
+            				buttons.push(i);
+            			})
+//          			buttons = d.data;
             		}
             		if (self.isAdmin) {
             			["自定义主题", "自定义编辑"].forEach(function(i) {
@@ -452,20 +483,9 @@ function plusReady() {
                 });
             },
             openNotice: function(i) {
-                var wb = plus.webview.getWebviewById("newsDetail");
-                if (!!wb) {
-                    // 预加载成功
-                    _set("newsId", i.id)
-                    mui.fire(wb, "newsId");
-                    openWindow("views/newsDetail.html", "newsDetail");
-                } else {
-                    // 预加载失败
-                    _set("newsId", "");
-                    openWindow("views/newsDetail.html", "newsDetail", {
-                        aid: i.id,
-                        table: "articles"
-                    });
-                }
+				openWindow("views/orgNoticeDetail.html", "orgNoticeDetail", {
+					aid: i.id,
+				});
             },
             openNotices: function() {
                 /*
@@ -519,7 +539,7 @@ function plusReady() {
                 self.orgNo = orgNo; // 新增通知时要用到
                 _callAjax({
                     cmd: "fetch",
-                    sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = ? and linkerId = ? and ifValid = 1 limit 3",
+                    sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = ? and linkerId = ? and ifValid = 1 order by logtime desc limit 3",
                     vals: _dump([orgNo, linkerId.Notice])
                 }, function(d) {
                     if (d.success && d.data && d.data.length) {
@@ -609,14 +629,14 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
-            self.init();
             var userInfoStr = _get('userInfo');
 	        var userInfo = null;
 	        if (!!userInfoStr) userInfo = _load(userInfoStr);
             if ("no" in userInfo) {
-            	self.curOrgName = userInfo.name;
+              self.init();
+            	  self.curOrgName = userInfo.name;
             } else {
-            	self.curOrgName = userInfo.orgName;
+            	  self.curOrgName = userInfo.orgName;
             }
 
 			// 获取统计数据
@@ -867,6 +887,10 @@ function plusReady() {
 			// self.getliveClass();
             
             // 随机取两个课件
+            var userInfoStr = _get("userInfo");
+            if (!userInfoStr) return;
+            var userInfo = _load(userInfoStr);
+            if (!userInfo || "no" in userInfo) return;
             self.randomTwoCourses();
             
             // 获取今日直播信息
@@ -918,7 +942,8 @@ function plusReady() {
 			userType: null,
 			userInfo: {
 				img: ""
-			}
+			},
+			unReadMsgCnt: 0
 		},
 		methods: {
 			//登录
@@ -953,7 +978,7 @@ function plusReady() {
                 });
 			},
 			//查看学习积分
-			checkCredit: function(){
+			checkCredit: function() {
                 /*
 				if(this.isLogin){
 					_set('checkPoints', '1');
@@ -1036,9 +1061,14 @@ function plusReady() {
 				}
 			}
 		},
-		mounted: function(){
+		mounted: function() {
+            var userInfoStr = _get("userInfo");
+            if (!userInfoStr) return;
+            var userInfo = _load(userInfoStr);
+            if (!userInfo || "no" in userInfo) return;
+
 			var self = this;
-			self.userInfo = _load(_get('userInfo'));
+			self.userInfo = userInfo;
             self.isLogin = true;
             self.userType = self.userInfo.userType;
 
@@ -1105,7 +1135,7 @@ function plusReady() {
 				}
 			});
 		}
-	})
+	});
 	
 	if('Android' == plus.os.name) {
 		ucenter.androidUpdate = true;
@@ -1224,7 +1254,8 @@ function plusReady() {
 	});
 
 	$('.goZSDJ').on('click', function() {
-		openOutlink('http://www.zsdj.gov.cn/', '舟山党建网')
+//		openOutlink('http://www.zsdj.gov.cn/', '舟山党建网')
+		plus.runtime.openURL('http://www.zsdj.gov.cn/');
 	});
 
 	$('.logout').on('click', function() {

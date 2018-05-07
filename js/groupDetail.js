@@ -27,7 +27,7 @@
 				var self = this;
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name, groupId from user where ifValid = 1 and orgNo = ?",
+					sql: "select id, name, groupId from user where ifValid >= 1 and orgNo = ?",
 					vals: _dump([self.userInfo.no,])
 				}, function(d) {
 					if (d.success && d.data) {

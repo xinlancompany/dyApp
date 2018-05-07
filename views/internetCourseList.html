@@ -16,7 +16,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">掌中课堂</h1>
-			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right search-btn">搜索</button>
+			<!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right search-btn">搜索</button>-->
 		</header>
 		
 		<div id="internetList" class="news-list internet-list have-header have-footer" v-cloak>
@@ -24,8 +24,12 @@
 				<span :class="{active: curId == 0}" @click="curId = 0">全部</span>
 				<span :class="{active: curId == i.id}" v-for="i in categories" v-text="i.name" @click="curId = i.id"></span>
 			</div>
+			<form class="search-bar" onsubmit="return false;">
+				<input type="search" maxlength="8" v-model="searchWord" placeholder="请输入标题搜索" @keyup="searchCourses(event)"/>
+			</form>
 			<ul class="mui-table-view">
-				<li v-for="i in courses['c_'+curId].news" @click="openCourse(i)">
+				<!--<li v-for="i in courses['c_'+curId].news" @click="openCourse(i)">-->
+				<li v-for="i in showCourses" @click="openCourse(i)">
 					<a>
 						<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 						<div class="mui-media-body">

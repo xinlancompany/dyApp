@@ -21,7 +21,9 @@
 		<div id="recordUpload" class="article-upload have-header have-footer">
 			<form class="mui-input-group clearfix">
 			    <div class="mui-input-row mui-input-image record-upload-imgs">
-			        <div class="thumb-upload img-1" :style="imgStyle1" @click="uploadImg1($event)"></div>
+			        <div class="thumb-upload img-1" :style="imgStyle1">
+			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
+			        </div>
 			        <div class="thumb-upload img-2" :style="imgStyle2">
 			        	<input type="file" accept="image/*" @change="uploadImg2($event)">
 			        </div>
@@ -30,14 +32,14 @@
 			        </div>
 			    </div>
 			    <div class="mui-input-row mui-input-image record-upload-imgs">
-			        <div class="thumb-upload img-4" :style="imgStyle1">
-			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
+			        <div class="thumb-upload img-4" :style="imgStyle4">
+			        	<input type="file" accept="image/*" @change="uploadImg4($event)">
 			        </div>
-			        <div class="thumb-upload img-5" :style="imgStyle2">
-			        	<input type="file" accept="image/*" @change="uploadImg2($event)">
+			        <div class="thumb-upload img-5" :style="imgStyle5">
+			        	<input type="file" accept="image/*" @change="uploadImg5($event)">
 			        </div>
-			        <div class="thumb-upload img-6" :style="imgStyle3">
-			        	<input type="file" accept="image/*" @change="uploadImg3($event)">
+			        <div class="thumb-upload img-6" :style="imgStyle6">
+			        	<input type="file" accept="image/*" @change="uploadImg6($event)">
 			        </div>
 			    </div>
 		        <textarea rows="15" placeholder="请输入内容" v-model="record"></textarea>

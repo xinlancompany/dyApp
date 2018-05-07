@@ -15,19 +15,18 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">筛选用户</h1>
-			<button id="selectAll" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">全选</button>
+			<h1 class="mui-title">筛选主持人</h1>
 		</header>
 		
-		<div id="selectUsers" class="have-header have-footer">
+		<div id="selectMC" class="have-header have-footer">
 			<!--活动发布编辑时筛选组织成员时显示-->
 			<div class="scroll-tabs">
 				<span :class="{active: curGroupid == 0}" @click="curGroupid = 0">全部</span>
 				<span :class="{active: curGroupid == i.id}" v-for="i in groups" v-text="i.name" @click="curGroupid = i.id"></span>
 			</div>
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-checkbox mui-left" v-for="i in filterUsers" @click="showSelects">
-                    <input name="checkbox" type="checkbox" v-model="i.ifSelect" >{{i.name}}
+				<li class="mui-table-view-cell mui-radio mui-left" v-for="i in filterUsers" @click="showSelects">
+                    <input name="radio" type="radio" :value="i.id" v-model="selectId" >{{i.name}}
 				</li>
 			</ul>
 		</div>
@@ -35,5 +34,5 @@
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
-<script src="../js/selectUsers.js"></script>
+<script src="../js/selectMC.js"></script>
 

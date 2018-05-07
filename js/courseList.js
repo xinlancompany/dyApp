@@ -5,9 +5,35 @@
 			data: {
 				news:[],
 				bHaveMore: false,
-				lid: null
+				lid: null,
+				searchWord: '',
+				showNews: [],
+				searchState: false
 			},
 			methods: {
+				searchCourse: function(evt) {
+					evt.stopPropagation();
+					evt.preventDefault();
+					var sw = _trim(this.searchWord),
+						self = this;
+					if (sw == '') {
+						this.showNews = this.news;
+						this.searchState = false;
+					}
+					if (evt.code != "Enter") return;
+					if (!sw) mui.toast("请输入搜索标题");
+					_callAjax({
+						cmd: "fetch",
+						sql: "select id, title, newsdate, img from courses where linkerId = "+self.lid+" and title like '%"+sw+"%'"
+					}, function(d) {
+						if (d.success && d.data && d.data.length) {
+							self.showNews = d.data;
+						} else {
+							self.showNews = [];
+						}
+						self.searchState = true;
+					});
+				},
 				openCourseDetail: function(i) {
 					openWindow("courseDetail.html", "courseDetail", {
 						cid: i.id
@@ -32,6 +58,7 @@
 							d.data.forEach(function(i) {
 								self.news.push(i);
 							});
+							self.showNews = self.news;
 						}
 					});
 				}
@@ -46,6 +73,10 @@
 		var wb = plus.webview.currentWebview();
 		if ("lid" in wb) vm.lid = wb.lid;
 		if ("name" in wb) $(".mui-title").text(wb.name);
+
+		$(".search-btn").click(function() {
+			
+		});
 	};
 	
 	if(window.plus) {

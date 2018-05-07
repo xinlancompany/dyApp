@@ -54,7 +54,7 @@
 			    </div>
 			    <div class="mui-input-row" v-show="reason == '其他'">
 			        <label>其他理由</label>
-			        <input type="text" placeholder="其他理由">
+			        <input type="text" placeholder="其他理由" v-model="otherReason">
 			    </div>
 			</form>			
 			<footer class="block-button" @click="newUser" v-text="id?'更新':'提交'"></footer>

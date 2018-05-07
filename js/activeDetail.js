@@ -15,7 +15,7 @@ function plusReady() {
 		el: '#activeDetail',
 		data: {
 			orgName: "", // 支部名称
-			unattenders: [], // 缺席人员
+//			unattenders: [], // 缺席人员
 			attenders:[], // 与会人员名单
 			detailData: {},  //活动详情数据
 			userInfo: null,
@@ -26,6 +26,26 @@ function plusReady() {
             // ifFinished: false, // 活动是否关闭
 		},
 		computed: {
+			invalidNames: function() {
+				if (!this.detailData.notOnDuties) return '';
+				var self = this;
+				return _map(function(i) { return i.name; }, self.detailData.notOnDuties).join(",")
+			},
+			absentNames: function() {
+            		var ret = {};
+            		this.detailData.absents.forEach(function(i) {
+            			if (i.reason in ret) {
+            				ret[i.reason].push(i.name);
+            			} else {
+            				ret[i.reason] = [i.name];
+            			}
+            		});
+            		var retStr = "";
+            		Object.keys(ret).forEach(function(k) {
+            			retStr += k+":"+ret[k].join(",")+"\n";
+            		});
+            		return retStr;
+			},
 			finishState: function() {
 				var ifRecordUploaded = "record" in this.detailData && !!this.detailData["record"];
 				if (!ifRecordUploaded) return {
@@ -98,15 +118,28 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId,a.unattendReason, a.organizer,a.recorder,a.superAttenders, a.ifValid, a.withdrawTxt, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId,a.absents,a.notOnDuties,a.unattendReason, a.organizer,a.recorder,a.superAttenders, a.ifValid, a.withdrawTxt, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
 					vals:_dump([activityId])
 				}, function(d) {
 					if(d.success && d.data) {
-						var arrImg = d.data[0].img.split('/upload');
-						d.data[0].img = serverAddr + '/upload' + arrImg[1];
+						if (d.data[0].img) {
+							var arrImg = d.data[0].img.split('/upload');
+							d.data[0].img = serverAddr + '/upload' + arrImg[1];
+						} else {
+							d.data[0].img = serverAddr+"/upload/pic/activityListAdd/activity_default.jpeg";
+						}
 						d.data[0].ifValid = parseInt(d.data[0].ifValid); // 转换字符为数字
 						self.detailData = d.data[0];	
-						self.detailData.recordImgs = _load(d.data[0].recordImgs)
+						if (self.detailData.organizer) self.detailData.organizer = _load(self.detailData.organizer);
+						if (self.detailData.recorder) self.detailData.recorder = _load(self.detailData.recorder);
+						if (self.detailData.absents) self.detailData.absents = _load(self.detailData.absents);
+						if (self.detailData.notOnDuties) self.detailData.notOnDuties = _load(self.detailData.notOnDuties);
+						if (self.detailData.recordImgs) self.detailData.recordImgs = _load(d.data[0].recordImgs)
+//						self.detailData.organizer = _load(self.detailData.organizer);
+//						self.detailData.recorder = _load(self.detailData.recorder);
+//						self.detailData.absents = _load(self.detailData.absents);
+//						self.detailData.notOnDuties = _load(self.detailData.notOnDuties);
+//						self.detailData.recordImgs = _load(d.data[0].recordImgs)
 					}
 				});
 

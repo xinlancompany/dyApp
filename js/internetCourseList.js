@@ -13,14 +13,49 @@ function plusReady() {
 			},
 			bHaveMore: false,
 			categories: [],
-			curId: 0,
+			curId: 0, // 非0时为当前课程的linkerId
+			searchWord: '',
+			searchState: false,
+			coursesSearched: [],
 		},
 		watch: {
 			curId: function(i) {
 				if (i > 0 && !this.courses["c_"+i].news.length) this.getInternetList();
+			},
+		},
+		computed: {
+			showCourses: function() {
+				return this.searchState ? this.coursesSearched : this.courses['c_'+this.curId].news;
 			}
 		},
 		methods: {
+			// 搜索课程 
+			searchCourses: function(evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+				var sw = _trim(this.searchWord),
+					self = this;
+				if (sw == '') {
+					this.searchState = false;
+				}
+				if (evt.code != "Enter") return;
+				if (!sw) mui.toast("请输入搜索标题");
+				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and title like '%"+sw+"%'"
+				if (this.curId > 0) {
+					sql: "select id, title, newsdate, img from courses where linkerId = "+self.curId+" and title like '%"+sw+"%'"
+				}
+				_callAjax({
+					cmd: "fetch",
+					sql: sql
+				}, function(d) {
+					if (d.success && d.data && d.data.length) {
+						self.coursesSearched = d.data;
+					} else {
+						self.coursesSearched = [];
+					}
+					self.searchState = true;
+				});
+			},
 			//跳转到网络课堂详情
 			openCourse: function(i) {
 //				_set("newsId", "");

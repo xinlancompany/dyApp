@@ -5,8 +5,9 @@ function plusReady() {
             aid: null, // 编辑模式
             lid: 0,
             title: "",
-            organizer: "",
-            recorder: "",
+            organizer: null,
+            recorder: null,
+            MC: null,
             superAttenders:"",
             location: "",
             starttime: "",
@@ -19,10 +20,14 @@ function plusReady() {
             },
             users: [],
             tag: null,
-            selectUserNames: '请选择与会人员',
-            selectTagName: '请选择积分量化标签',
+//          selectUserNames: '请选择与会人员',
+//          selectTagName: '请选择积分量化标签',
             starttime: '请选择开始时间',
-            endtime: '请选择结束时间'
+            endtime: '请选择结束时间',
+            userInfo: _load(_get("userInfo")),
+            categories: [],
+            absents: [],
+            invalids: [],
         },
         watch: {
             aid: function(i) {
@@ -36,11 +41,15 @@ function plusReady() {
                     multi: _dump([
                         {
                             key: "info",
-                            sql: "select title,img,content,organizer,recorder,superAttenders,unattendReason,address,strftime('%Y-%m-%d %H:%M:%S', starttime) as starttime,strftime('%Y-%m-%d %H:%M:%S', endtime) as endtime, tags from activitys where id = "+self.aid
+                            sql: "select notOnDuties, absents,title,img,content,organizer,recorder,superAttenders,unattendReason,address,strftime('%Y-%m-%d %H:%M:%S', starttime) as starttime,strftime('%Y-%m-%d %H:%M:%S', endtime) as endtime, tags from activitys where id = "+self.aid
                         },
                         {
                             key: "enroll",
                             sql: "select u.id, u.name from activityEnroll a, user u where a.activityId = "+self.aid+" and a.userId = u.id"
+                        },
+                        {
+                        		key: "categories",
+                        		sql: "select ae.id, l.name, linkerId from activityCategories ae, linkers l where activityId = "+self.aid+" and l.id = ae.linkerId"
                         }
                     ])
                 }, function(d) {
@@ -48,7 +57,7 @@ function plusReady() {
                     if ("info" in d.data) {
                         var inf = d.data["info"][0];
                         self.title = inf.title;
-                        self.organizer = inf.organizer;
+                        self.MC = _load(inf.organizer);
                         self.location = inf.address;
                         self.starttime = inf.starttime;
                         self.endtime = inf.endtime;
@@ -56,9 +65,11 @@ function plusReady() {
                         self.img = inf.img;
                         self.imgStyle.backgroundImage = "url("+inf.img+")";
                         self.tag = _load(inf.tags);
-                        self.recorder = inf.recorder;
+                        self.recorder = _load(inf.recorder);
                         self.superAttenders = inf.superAttenders;
                         self.unattendReason = inf.unattendReason;
+                        if (inf.absents) self.absents = _load(inf.absents);
+                        if (inf.notOnDuties) self.invalids = _load(inf.notOnDuties);
                     }
                     if ("enroll" in d.data && d.data["enroll"].length) {
                         d.data["enroll"].forEach(function(i) {
@@ -66,11 +77,15 @@ function plusReady() {
                             self.users.push(i);
                         });
                     }
+                    if ("categories" in d.data &&d.data["categories"].length) {
+						self.categories = d.data["categories"];
+                    }
                 });
-            }
+            },
         },
         computed: {
             selectUserNames: function() {
+            		if (!this.users.length) return "请选择与会人员";
                 var self = this;
                 return _map(function(i) {
                     return i.name;
@@ -79,8 +94,45 @@ function plusReady() {
                 }, self.users)).join(", ");
             },
             selectTagName: function() {
-            	if (this.tag) return this.tag.name;
-            	return "";
+            		if (!this.tag) return "请选择积分量化标签";
+            		return this.tag.name;
+            },
+            selectCategoryName: function() {
+            		if (!this.categories.length) return "请选择活动分类";
+            		return _map(function(i) {
+            			return i.name
+            		}, this.categories).join(",");
+            },
+            absentNames: function() {
+            		if (!this.absents.length) return "请选择缺席人员";
+            		var ret = {};
+            		this.absents.forEach(function(i) {
+            			if (i.reason in ret) {
+            				ret[i.reason].push(i.name);
+            			} else {
+            				ret[i.reason] = [i.name];
+            			}
+            		});
+            		var retStr = "";
+            		Object.keys(ret).forEach(function(k) {
+            			retStr += k+":"+ret[k].join(",")+"\n";
+            		});
+            		return retStr;
+            },
+            selectRecorder: function(i) {
+            		if (!this.recorder) return "记录人";
+            		return this.recorder.name;
+            },
+            selectMC: function(i) {
+            		if (!this.MC) return "主持人";
+            		return this.MC.name;
+            },
+            invalidNames: function() {
+            		if (!this.invalids.length) return "请选择因公不参与人员";
+                var self = this;
+                return _map(function(i) {
+                    return i.name;
+                }, self.invalids).join(",");
             }
         },
         methods: {
@@ -94,6 +146,19 @@ function plusReady() {
                     self.imgStyle.backgroundImage = "url("+self.img+")";
 				});
             },
+            chooseMC: function() {
+                var self = this;
+                openWindow("selectMC.html", "selectMC", {
+                    MC: self.MC,
+                });
+            },
+            chooseRecorder:function() {
+                var self = this;
+                openWindow("selectRecorder.html", "selectRecorder", {
+                    recorder: self.recorder,
+                });
+            },
+            // 最早选择一个月前
             chooseStarttime: function(e) {
                 e.preventDefault();
                 var self = this;
@@ -104,6 +169,8 @@ function plusReady() {
                     }, function(e) {
                         // 不做什么
                     });
+                }, function() {}, {
+                		"minDate": _oneMonthAgoDateObj()
                 });
             },
             chooseEndtime: function(e) {
@@ -116,13 +183,34 @@ function plusReady() {
                     }, function(e) {
                         // 不做什么
                     });
+                }, function() {}, {
+                		"minDate": _oneMonthAgoDateObj()
                 });
             },
             chooseUsers: function() {
                 var self = this;
                 openWindow("selectUsers.html", "selectUsers", {
+                		notIn: self.absents.concat(self.invalids),
                     users: self.users,
                     aid: self.aid
+                });
+            },
+            chooseAbsents: function() {
+                var self = this;
+                openWindow("absents.html", "absents", {
+                		notIn: _filter(function(i) {
+                			return i.ifSelect;
+                		}, self.users).concat(self.invalids),
+                    absents: self.absents,
+                });
+            },
+            chooseInvalid: function() {
+                var self = this;
+                openWindow("selectInvalids.html", "selectInvalids", {
+                		notIn: _filter(function(i) {
+                			return i.ifSelect;
+                		}, self.users).concat(self.absents),
+                    invalids: self.invalids,
                 });
             },
             chooseTopics: function() {
@@ -131,32 +219,41 @@ function plusReady() {
                     tags: self.tags
                 });
             },
+            chooseCategories: function() {
+                var self = this;
+                openWindow("activityCategories.html", "activityCategories", {
+					lids: _map(function(i) {
+						return i.id;
+					}, self.categories)
+                });
+            },
             newActivity: function() {
                 var title = _trim(this.title),
-                    organizer = _trim(this.organizer),
+//                  organizer = _trim(this.organizer),
                     location = _trim(this.location),
                     starttime = _trim(this.starttime),
                     endtime = _trim(this.endtime),
                     content = _trim(this.content),
-                    recorder = _trim(this.recorder),
-                    superAttenders = _trim(this.superAttenders),
-                    unattendReason = _trim(this.unattendReason);
+//                  recorder = _trim(this.recorder),
+                    superAttenders = _trim(this.superAttenders);
+//                  unattendReason = _trim(this.unattendReason);
 
                 if (!title) return mui.toast("请填写标题");
-                if (!organizer) return mui.toast("请填写组织者");
+                if (!this.MC) return mui.toast("请选择组织者");
+                if (!this.recorder) return mui.toast("请选择记录着");
                 if (!location) return mui.toast("请填写地点");
                 if (!starttime) return mui.toast("请填写开始时间");
                 if (!endtime) return mui.toast("请填写结束时间");
                 if (!content) return mui.toast("请填写内容");
-                if (!this.img) return mui.toast("请上传头图");
+//              if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
-                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags, orgId,recorder,superAttenders,unattendReason) values(?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    vals = _dump([title, content, self.img, organizer, location, starttime, endtime, self.lid, _dump(self.tag), _load(_get("userInfo")).id,recorder,superAttenders,unattendReason])
+                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags, orgId,recorder,superAttenders,absents,notOnDuties) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    vals = _dump([title, content, self.img, _dump(self.MC), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump(self.recorder),superAttenders,_dump(self.absents), _dump([self.invalids])])
 
                 if (!!self.aid) {
-                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=?,recorder=?,superAttenders=?,unattendReason=? where id = ?";
-                    vals = _dump([title,content,self.img,organizer,location,starttime,endtime,_dump(self.tag),recorder,superAttenders,unattendReason,self.aid]);
+                    sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=?,recorder=?,superAttenders=?,absents=?,notOnDuties=? where id = ?";
+                    vals = _dump([title,content,self.img,_dump(self.MC),location,starttime,endtime,_dump(self.tag),_dump(self.recorder),superAttenders,_dump(self.absents),_dump(self.invalids),self.aid]);
                 }
                 
                 _callAjax({
@@ -166,7 +263,21 @@ function plusReady() {
                 }, function(d) {
                     // 返回并刷
                     var aid = d.data;
-                    if (!!self.aid) aid = self.aid;
+                    if (!!self.aid) {
+						aid = self.aid;
+					} else {
+						_callAjax({
+							cmd: "multiFetch",
+							multi: _dump(
+								_map(function(i) {
+									return {
+										key: "key"+parseInt(Math.random()*10e6),
+										sql: "insert into activityCategories(activityId, linkerId) values("+aid+", "+i.id+")"
+									};
+								}, self.categories)
+							)
+						}, function(_d) {});
+					}
                     if (d.success) {
                         // 更新参加人员表activityEnroll
                         if (self.users.length) {
@@ -176,7 +287,10 @@ function plusReady() {
                                 cmd: "multiFetch",
                                 multi: _dump([{
                                             key: "del",
-                                            sql: "delete from activityEnroll where activityId = "+aid
+                                            sql: "delete from activityEnroll where activityId = "+aid,
+                                        }, {
+                                        		key: "notice",
+                                        		sql: "insert into articles(title, content, reporter, linkerId, newsdate) values('"+title+"', '"+content+"', '"+self.userInfo.no+"', "+linkerId.Notice+", '"+_now().split(' ')[0]+"')"
                                         }].concat(
                                             _map(function(i) {
                                                 return {
@@ -186,16 +300,17 @@ function plusReady() {
                                             }, _filter(function(i) {
                                                 return i.ifSelect;
                                             }, self.users))
-                                        ).concat(
-												_map(function(i) {
-													return {
-														key: "key"+parseInt(Math.random()*10e6),
-														sql: "insert into notices(userId, msg, tp) values("+i.id+", '参加"+title+"', 'info')"
-													}
-												}, _filter(function(i) {
-													return i.ifSelect;
-												}, self.users))
                                         ))
+//                                      .concat(
+//												_map(function(i) {
+//													return {
+//														key: "key"+parseInt(Math.random()*10e6),
+//														sql: "insert into notices(userId, msg, tp) values("+i.id+", '参加"+title+"', 'info')"
+//													}
+//												}, _filter(function(i) {
+//													return i.ifSelect;
+//												}, self.users))
+//                                      ))
                             }, function(_d) {
                             });
 
@@ -225,6 +340,35 @@ function plusReady() {
     // 返回标签
     window.addEventListener("selectTags", function(event) {
         upload.tag = event.detail.tag;
+    });
+
+    // 返回分类
+    window.addEventListener("selectCategories", function(event) {
+        upload.categories = event.detail.categories;
+    });
+
+	// 选择缺席人员
+    window.addEventListener("selectAbsents", function(event) {
+        upload.absents = event.detail.absents;
+    });
+
+	// 选择因公不记录人员
+    window.addEventListener("selectInvalids", function(event) {
+        upload.invalids = event.detail.invalids;
+    });
+
+	// 选择主持人
+    window.addEventListener("selectMC", function(event) {
+    		if (event.detail.MC.length) {
+    			upload.MC = event.detail.MC[0];
+    		}
+    });
+
+	// 选择记录人
+    window.addEventListener("selectRecorder", function(event) {
+    		if (event.detail.recorder.length) {
+    			upload.recorder = event.detail.recorder[0];
+    		}
     });
 
     var wb = plus.webview.currentWebview();

@@ -2,7 +2,7 @@
     var plusReady = function() {
         mui.init({
             beforeback: function() {
-            	var tag = null;
+            		var tag = null;
 				if (vm.selectTagIndex >= 0) tag = vm.tags[vm.selectTagIndex];
                 mui.fire(plus.webview.getWebviewById("activityUpload"), "selectTags", {
                     // tags: vm.tags

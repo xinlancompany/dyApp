@@ -60,7 +60,7 @@ function plusReady() {
 				if(self.type == "personal"){
 					_callAjax({
 						cmd: "fetch",
-						sql: "select u.id,u.name,u.img,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no",
+						sql: "select u.id,u.name,u.img,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1",
 						vals: _dump([name, name, pswd])
 					}, function(d) {
 						if(d.success && d.data && d.data.length) {

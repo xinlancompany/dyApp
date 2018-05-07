@@ -19,6 +19,9 @@
 		</header>
 		
 		<div id="searchCourse" class="news-list internet-list have-header have-footer" v-cloak>
+			<form action="" class="search-bar">
+				<input type="search" maxlength="8" v-model="searchWord" placeholder="请输入党员姓名搜索"/>
+			</form>
 			<ul class="mui-table-view">
 				<li v-for="i in courses['c_'+curId].news" @click="openCourse(i)">
 					<a>

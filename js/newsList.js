@@ -19,11 +19,17 @@ function plusReady() {
 		methods: {
 			//跳转到新闻详情
 			gotoDetail: function(i) {
-				_set("newsId", i.id);
-				//触发详情页面的newsId事件
-				mui.fire(plus.webview.getWebviewById("newsDetail"), 'newsId', {});
-	
-				openWindow("newsDetail.html", "newsDetail");
+				if (this.isAdmin && lid == linkerId.Notice) {
+					// 书记打开看未读人数
+					openWindow("orgNoticeDetail.html", "orgNoticeDetail", {
+						aid: i.id,
+					});
+				} else {
+					_set("newsId", i.id);
+					//触发详情页面的newsId事件
+					mui.fire(plus.webview.getWebviewById("newsDetail"), 'newsId', {});
+					openWindow("newsDetail.html", "newsDetail");
+				}
 			},
 	
 			getMoreNews: function() {

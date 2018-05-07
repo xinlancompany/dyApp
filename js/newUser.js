@@ -12,7 +12,8 @@
     				imgStyle: {
     					backgroundImage: ""
     				},
-    				reason: "党员发展"
+    				reason: "党员发展",
+    				otherReason: ""
     			},
     			watch: {
     				id: function(i) {
@@ -73,12 +74,16 @@
 					if (!idNo || idNo.length != 18) return mui.toast("请正确填写身份证");
 					if (!phone || phone.length != 11) return mui.toast("请正确填写手机号码");
 
+					var rs = self.reason;
+					if (rs == "其他") rs = _trim(self.otherReason);
+					if (rs == "") rs = "其他";
+
 //					ifvalid为－1时,为待上级审核
 					var sql = "insert into user(name, idNo, sex, phone, img, orgNo, orgName, reason, ifValid) values(?,?,?,?,?,?,?,?,?)",
-						vals = _dump([name,idNo,self.sex,phone,self.img, self.userInfo.no,self.userInfo.name,self.reason,-1]);
+						vals = _dump([name,idNo,self.sex,phone,self.img, self.userInfo.no,self.userInfo.name,rs,-1]);
 					if (self.id) {
 						sql = "update user set name = ?, idNo = ?, sex = ?, phone = ?, img = ?, reason = ? where id = ?";
-						vals = _dump([name,idNo,self.sex,phone,self.img,self.reason,self.id]);
+						vals = _dump([name,idNo,self.sex,phone,self.img,rs,self.id]);
 					}
 					_callAjax({
 						cmd: "exec",

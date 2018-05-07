@@ -17,11 +17,10 @@
 				bHaveMore_live: true,
             },
             computed:{
-            	s2: function() {
-				var r = this.activityScore/20.0;
-				return r;
-				// return 2;
-           	},
+//          	s2: function() {
+//				var r = this.activityScore/20.0;
+//				return r;
+//         	},
             	courseLiveList: function() {
             		var l = this.courseList.concat(this.liveList);
             		l.sort(function(a, b) {
@@ -148,8 +147,8 @@
 					
 						_callAjax({
 							cmd: "fetch",
-							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId in (select id from linkers where refId = ?) order by a.id desc limit 10",
-							vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform])
+							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by a.id desc limit 10",
+							vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform, linkerId.HandCourse])
 						}, function(d) {
 							if(d.success && d.data) {
 								d.data.forEach(function(r) {
@@ -215,13 +214,13 @@
                     sql: "select sum(score) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid > 0)"
                 },
                 {
-                    sql: "select sum(credit) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id",
+                    sql: "select sum(e.credit) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id and c.ifValid > 0",
                     key: "course"
                 },
-                {
-                    key: "live",
-                    sql: "select liveId, count(id) as cnt from liveEnroll where userId ="+userInfo.id+" group by liveId"
-                }
+//              {
+//                  key: "live",
+//                  sql: "select liveId, count(id) as cnt from liveEnroll where userId ="+userInfo.id+" group by liveId"
+//              }
             ])
         }, function(d) {
             if (!d.success) return;
@@ -241,11 +240,9 @@
                     vm.studyScore = Math.round(vm.studyScore*100)/100.0;
                 });
             }
-            if (vm.studyScore > 20) {
-                vm.studyScore = 20;
-            }
             // 党员先锋指数要包含学习分数时，需要加上学习积分，目前暂时不加上
             // vm.activityScore += vm.studyScore;
+            vm.studyScore = Math.round(vm.studyScore/60); // 转换为分钟
             if (vm.activeTab) {
                 vm.totalScore = vm.studyScore;
             } else {

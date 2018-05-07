@@ -2,20 +2,24 @@
     var plusReady = function() {
         mui.init({
             beforeback: function() {
-                mui.fire(plus.webview.getWebviewById("activityUpload"), "selectUsers", {
-                    users: vm.users
+                mui.fire(plus.webview.getWebviewById("activityUpload"), "selectInvalids", {
+                    invalids: _filter(function(i) {
+                    		return i.ifSelect;
+                    }, vm.users)
                 });
             }
         });
 
-        var userInfo = _load(_get("userInfo"));
+        var userInfo = _load(_get("userInfo")),
+			wb = plus.webview.currentWebview();
 
         var vm = new Vue({
-            el: "#selectUsers",
+            el: "#selectInvalids",
             data: {
                 users: [],
                 groups: [],
                 curGroupid: 0,
+                otherReason: '',
             },
             computed: {
 				filterUsers: function() {
@@ -34,6 +38,32 @@
                         return i.ifSelect;
                     }, self.users)));
                     */
+                },
+                getUsers: function() {
+					_callAjax({
+						cmd: "fetch",
+						sql: "select id, name, groupId from User where ifValid > 0 and orgNo = ?",
+						vals: _dump([userInfo["no"],])
+					}, function(d) {
+						if (!d.success || !d.data) return;
+						d.data.forEach(function(i) {
+							i.isIn = false;
+							wb.notIn.forEach(function(j) {
+								if (j.id == i.id) {
+									i.isIn = true;
+								}
+							});
+							i.ifSelect = false;
+							if (!i.isIn) {
+								vm.users.push(i);
+								wb.invalids.forEach(function(j) {
+									if (j.id == i.id) {
+										i.ifSelect = true;
+									}
+								});
+							}
+						});
+					});
                 }
             },
             created: function() {
@@ -53,47 +83,13 @@
 							id: -1,
 							name: "未分组"
 						});
+						self.getUsers();
 					}
 				});
             }
         });
 
-        // 全选
-        $("#selectAll").click(function() {
-            vm.filterUsers.forEach(function(i) {
-                i.ifSelect = true;
-            });
-        });
 
-        var wb = plus.webview.currentWebview();
-        if (!wb.aid) vm.users = wb.users;
-
-        if (!vm.users.length || !!wb.aid) {
-            _callAjax({
-                cmd: "fetch",
-                sql: "select id, name, groupId from User where ifValid = 1 and orgNo = ?",
-                vals: _dump([userInfo["no"],])
-            }, function(d) {
-                if (!d.success || !d.data) return;
-                d.data.forEach(function(i) {
-                    i.ifSelect = false;
-                    if (!!wb.aid) {
-                        wb.users.forEach(function(j) {
-                            if (j.id == i.id && j.ifSelect) {
-                                i.ifSelect = true;
-                            }
-                        });
-                    }
-					i.isIn = false;
-					wb.notIn.forEach(function(j) {
-						if (j.id == i.id) {
-							i.isIn = true;
-						}
-					});
-					if (!i.isIn) vm.users.push(i);
-                });
-            });
-        }
     };
 
     if(window.plus) {

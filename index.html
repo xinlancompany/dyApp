@@ -103,14 +103,15 @@
 			
 			<header class="org-info">
 				<h1 v-cloak>{{curOrgName}}</h1>
-				<!--<div class="stars">
-					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummary" :class="{'icon-star': i[0] && [1], 'icon-starhalfempty': i[0] ^ i[1], 'icon-staro': !i[0] && !i[1]}"></i>
-				</div>-->
 				<div class="check">
+					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummary" :class="{'icon-circle': i[0] && [1], 'icon-chart12': i[0] ^ i[1], 'icon-jindu3': !i[0] && !i[1]}" v-bind:data-progress="idx+1"></i>
+				</div>
+				<!--<div class="check">
 					<i class="iconfont icon-jindu3" data-progress="10%"></i>
 					<i class="iconfont icon-circle" data-progress="33%"></i>
 					<i class="iconfont icon-chart12" data-progress="67%"></i>
-				</div>
+					<i class="iconfont icon-chart12" data-progress="67%"></i>
+				</div>-->
 			</header>
 			
 			<div class="notice">
@@ -231,7 +232,7 @@
 				<li class="mui-table-view-cell" @click="goPost">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-xiaoxi"></i>消息
-						<span class="mui-badge mui-badge-danger">3</span>
+						<!--<span class="mui-badge mui-badge-danger"></span>-->
 					</a>
 				</li>
 				<li class="mui-table-view-cell" @click="goMyStudy">

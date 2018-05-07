@@ -30,10 +30,10 @@
 					支部: {{orgName}}
 				</li>
 				<li class="mui-table-view-cell">
-					主持人: {{detailData.organizer}}
+					主持人: {{detailData.organizer.name}}
 				</li>
 				<li class="mui-table-view-cell">
-					记录人: {{detailData.recorder}}
+					记录人: {{detailData.recorder.name}}
 				</li>
 				<li class="mui-table-view-cell">
 					列席人员: {{detailData.superAttenders}}
@@ -41,15 +41,30 @@
 				<li class="mui-table-view-cell">
 					报名人数: {{detailData.applicant}}人
 				</li>
-				<li class="mui-table-view-cell">
+				<!--<li class="mui-table-view-cell">
 					与会人员: {{attenders.join(",")}}
-				</li>
-				<li class="mui-table-view-cell">
-					缺席人员: {{unattenders.join(",")}}
-				</li>
-				<li class="mui-table-view-cell">
-					缺席原因: {{detailData.unattendReason}}
-				</li>
+				</li>-->
+				<article>
+					<header><i class="iconfont icon-jianjie"></i>与会人员：</header>
+					<!--<textarea v-text="detailData.content" disabled></textarea>-->
+					<p v-text="attenders.join(',')"></p>
+				</article>
+				<li class="mui-table-view-cell"></li>
+				<!--<li class="mui-table-view-cell">
+					缺席人员: {{absentNames}}
+				</li>-->
+				<article>
+					<header><i class="iconfont icon-jianjie"></i>缺席人员：</header>
+					<!--<textarea v-text="detailData.content" disabled></textarea>-->
+					<p v-text="absentNames"></p>
+				</article>
+				<li class="mui-table-view-cell"></li>
+				<article>
+					<header><i class="iconfont icon-jianjie"></i>因公不记录人员：</header>
+					<!--<textarea v-text="detailData.content" disabled></textarea>-->
+					<p v-text="invalidNames"></p>
+				</article>
+				<li class="mui-table-view-cell"></li>
 				<li class="mui-table-view-cell">
 					开始时间: {{detailData.starttime}}
 				</li>

@@ -36,6 +36,30 @@
 					}
             },
             methods: {
+                operateOnUser: function() {
+					var self = this,
+						buttons = [
+							{
+								title: "新增党员"
+							},
+							{
+								title: "删除党员"
+							},
+						];
+					plus.nativeUI.actionSheet({
+						title: "党员增减操作",
+						cancel: "取消",
+						buttons: buttons
+					}, function(e) {
+						if (e.index == 0) return;
+						var btnTitle = buttons[e.index-1].title;
+						if (btnTitle == "新增党员") {
+							self.newUser();
+						} else {
+							openWindow("delUsers.html", "delUsers");
+						}
+					});
+               },
                 openMember: function(i) {
                     if (isAdmin) {
                         openWindow("memberActivityRecord.html", "memberActivityRecord", {
@@ -60,7 +84,7 @@
                 },
                 newUser: function() {
                     	openWindow("newUser.html", "newUser");
-                }
+                },
             }
         });
 
@@ -97,7 +121,8 @@
 //          sql: "select u.id as id, u.name as name, pinyin, py, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id, e.scoreType order by score desc",
 //          sql: "select u.id as id, u.name as name, pinyin, py, sum(e.score) as score, e.scoreType as scoreType from user u left join activityEnroll e, activitys a on e.userId = u.id and e.scoreType = '百分制' and e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id order by score desc",
 //			sql: "select u.id as id, u.name as name, pinyin, py, ifnull(sum(e.score), 0) as score, ifnull(e.scoreType, '百分制') as scoreType from user u left join activityEnroll e on e.userId = u.id and e.scoreType = '百分制' left join activitys a on e.activityId = a.id and a.ifValid > 0 where u.orgNo = ? group by u.id, e.scoreType order by score desc",
-			sql: "select u.id, u.name, pinyin, py, ifnull(sum(t.score), 0) as score, ifnull(t.scoreType, '百分制') as scoreType from user u left join activityEnrollList t on u.id = t.userId and t.scoreType = '百分制' where u.orgNo = ? and u.ifValid = 1 group by u.id, t.scoreType order by score desc",
+			// 删除的党员，活动记录应保存
+			sql: "select u.id, u.name, u.ifValid, pinyin, py, ifnull(sum(t.score), 0) as score, ifnull(t.scoreType, '百分制') as scoreType from user u left join activityEnrollList t on u.id = t.userId and t.scoreType = '百分制' where u.orgNo = ? and u.ifValid >= 0 group by u.id, t.scoreType order by score desc",
             vals: _dump([wb.orgNo,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {
@@ -107,6 +132,7 @@
                     i.score = parseInt(i.score);
                     if (!i.scoreType) i.scoreType = "百分制";
                     i.tag = i.score+"分";
+                    if (!parseInt(i.ifValid)) i.name += "(已删除)";
                     vm.members.push(i);
                 });
             }

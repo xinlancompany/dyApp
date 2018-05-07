@@ -26,11 +26,13 @@
 			    </div>
 			    <div class="mui-input-row">
 			        <label>主持人</label>
-			        <input type="text" class="mui-input-clear" placeholder="主持人" v-model="organizer">
+			        <!--<input type="text" class="mui-input-clear" placeholder="主持人" v-model="organizer" @click="chooseMC">-->
+			        <p @click="chooseMC" v-text="selectMC"></p>
 			    </div>
 			    <div class="mui-input-row">
 			        <label>记录人</label>
-			        <input type="text" class="mui-input-clear" placeholder="记录人" v-model="recorder">
+			        <!--<input type="text" class="mui-input-clear" placeholder="记录人" v-model="recorder" @click="chooseRecorder" disabled>-->
+			        <p @click="chooseRecorder" v-text="selectRecorder"></p>
 			    </div>
 			    <div class="mui-input-row">
 			        <label>列席人员</label>
@@ -58,23 +60,27 @@
 			        <label>积分量化</label>
                     <p v-text="selectTagName"></p>
 			    </div>
-			    <div class="mui-input-row" @click="chooseTopics">
+			    <div class="mui-input-row" @click="chooseCategories">
 			        <label>活动分类</label>
-			        <p>默认分类名称</p>
+			        <p v-text="selectCategoryName">默认分类名称</p>
 			    </div>
 			    <div class="mui-input-row mui-input-textarea">
 			        <label>内容</label>
 			        <textarea rows="10" placeholder="内容" v-model="content"></textarea>
 			    </div>
-			    <div class="mui-input-row" @click="chooseUsers">
+			    <div class="mui-input-row mui-input-textarea" @click="chooseUsers">
 			        <label>与会人员</label>
-                    <p v-text="selectUserNames"></p>
+                    <textarea v-text="selectUserNames" disabled rows="10"></textarea>
 			    </div>
-			    <div class="mui-input-row">
-			        <label>五类人员</label>
-			        <p>请选择缺席的五类人员</p>
+			    <div class="mui-input-row mui-input-textarea" @click="chooseAbsents">
+			        <label>缺席人员</label>
+                    <textarea v-text="absentNames" disabled rows="10"></textarea>
 			    </div>
-			    <div class="mui-input-row">
+			    <div class="mui-input-row mui-input-textarea" @click="chooseInvalid">
+			        <label>因公不记录人员</label>
+                    <textarea v-text="invalidNames" disabled rows="10"></textarea>
+			    </div>
+			    <!--<div class="mui-input-row">
 			        <label>出差人员</label>
 			        <p>请选择缺席的出差人员</p>
 			    </div>
@@ -85,9 +91,9 @@
 			    <div class="mui-input-row">
 			        <label>其他人员</label>
 			        <p>请选择缺席的其他人员</p>
-			    </div>
+			    </div>-->
 			</form>		
-		 	<footer @click="newActivity" class="block-button">添加</footer>
+		 	<footer @click="newActivity" class="block-button" v-text="aid?'更新':'添加'"></footer>
 		</div>
 	</body>
 </html>
