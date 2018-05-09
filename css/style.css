@@ -2393,6 +2393,12 @@ body {
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
 }
+.rule-rows .mui-row .mui-switch:before {
+  content: '停用';
+}
+.rule-rows .mui-row .mui-switch.mui-active:before {
+  content: '启用';
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);

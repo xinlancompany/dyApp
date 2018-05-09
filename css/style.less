@@ -2141,6 +2141,14 @@ body {
                 .lineBottom(0)
             }
         }   
+        .mui-switch {
+            &:before {
+                content: '停用';
+            }
+            &.mui-active:before {
+                content: '启用';
+            }
+        }
     }
 }
 
