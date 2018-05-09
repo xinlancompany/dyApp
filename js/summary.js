@@ -11,25 +11,7 @@
 				isDaq: false
 			},
 			watch: {
-				season: function(i) {
-					var self = this;
-					_summaryAjax({
-						cmd: "season",
-						orgNo: self.userInfo.no,
-						season: self.season
-					}, function(d) {
-						self.info[0] = d.data[0];
-						self.showInfo = d.data[0];
-					});
-					$(".mui-title").text(i+"季度");
-					_summaryAjax({
-						cmd: "year",
-						orgNo: self.userInfo.no,
-						year: _get("year")
-					}, function(d) {
-						self.info[4] = d.data[0];
-					});
-				},
+				season: "updateOnSeason",
 				curIdx: function(i) {
 					var self = this;
 					if (!this.info[i]) {
@@ -54,6 +36,27 @@
 					}
 				}
 			},
+			methods: {
+				updateOnSeason: function(i) {
+					var self = this;
+					_summaryAjax({
+						cmd: "season",
+						orgNo: self.userInfo.no,
+						season: self.season
+					}, function(d) {
+						self.info[0] = d.data[0];
+						self.showInfo = d.data[0];
+					});
+					$(".mui-title").text(i+"季度");
+					_summaryAjax({
+						cmd: "year",
+						orgNo: self.userInfo.no,
+						year: _get("year")
+					}, function(d) {
+						self.info[4] = d.data[0];
+					});
+				},
+			},
 			created: function() {
 				this.userInfo = _load(_get("userInfo"));
 			}
@@ -63,7 +66,13 @@
 		
 		$('.rule-btn').on('click', function() {
             openWindow("newRule.html", "newRule");
-		})
+		});
+
+		window.addEventListener("updateOnRuleChange", function() {
+			vm.curIdx = 0;
+			vm.inf = [null,null,null,null,null];
+			vm.updateOnSeason(wb.season);
+		});
 	};
 
 	if(window.plus) {

@@ -190,7 +190,7 @@ function plusReady() {
             chooseUsers: function() {
                 var self = this;
                 openWindow("selectUsers.html", "selectUsers", {
-                		notIn: self.absents.concat(self.invalids),
+                		notIn: self.invalids,
                     users: self.users,
                     aid: self.aid
                 });
@@ -198,9 +198,9 @@ function plusReady() {
             chooseAbsents: function() {
                 var self = this;
                 openWindow("absents.html", "absents", {
-                		notIn: _filter(function(i) {
+                		users: _filter(function(i) {
                 			return i.ifSelect;
-                		}, self.users).concat(self.invalids),
+                		}, self.users),
                     absents: self.absents,
                 });
             },
@@ -209,7 +209,7 @@ function plusReady() {
                 openWindow("selectInvalids.html", "selectInvalids", {
                 		notIn: _filter(function(i) {
                 			return i.ifSelect;
-                		}, self.users).concat(self.absents),
+                		}, self.users),
                     invalids: self.invalids,
                 });
             },
