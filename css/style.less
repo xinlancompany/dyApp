@@ -1778,18 +1778,16 @@ body {
 
 .gallery {
     display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
     .thumb {
-        flex: 1;
-        height: 120px;
-        width: 100%;
-
-        background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        background-size: cover;
-        background-position: 50%;
-        &:nth-child(2) {
-            margin: 0 10px;
-        }
+			height: 120px;
+      width: 32%;
+			margin-bottom: 10px;
+			background-repeat: no-repeat;
+			-webkit-background-size: cover;
+			background-size: cover;
+			background-position: 50%;
     }
 }
 

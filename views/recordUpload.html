@@ -43,13 +43,13 @@
 			        </div>
 			    </div>
 		        <textarea rows="15" placeholder="请输入内容" v-model="record"></textarea>
-		        <span class="tape-btn" @touchstart="startTape" @touchend="endTape" v-text="isTape ? '松开结束' : '按住说话'" v-show="!tapeComplete"></span>
+		        <!--<span class="tape-btn" @touchstart="startTape" @touchend="endTape" v-text="isTape ? '松开结束' : '按住说话'" v-show="!tapeComplete"></span>
 		        <span class="audio-btn" @click="audioPicker" v-show="tapeComplete" :class="{active:isAudioPlay}">
 		        	<i class="line1 line"></i>
 		        	<i class="line2 line"></i>
 		        	<i class="line3 line"></i>
 		        	<u v-text="audioTime"></u>
-		        </span>
+		        </span>-->
 		        <span class="recog-btn" @click="audioRecog">语音识别</span>
 			</form>
 			<footer @click="uploadRecord" class="block-button">上传记录</footer>

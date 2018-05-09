@@ -1999,18 +1999,17 @@ body {
 }
 .gallery {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 .gallery .thumb {
-  flex: 1;
   height: 120px;
-  width: 100%;
+  width: 32%;
+  margin-bottom: 10px;
   background-repeat: no-repeat;
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 50%;
-}
-.gallery .thumb:nth-child(2) {
-  margin: 0 10px;
 }
 #notice .mui-media-object i {
   font-size: 30px;
