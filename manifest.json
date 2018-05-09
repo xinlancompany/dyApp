@@ -334,6 +334,13 @@
 					"views/forget.html"
 				],
 				"priority": 0
+			},
+			"views/summary.html": {
+				"resources": [],
+				"refer": [
+					"views/newRule.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

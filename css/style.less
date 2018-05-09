@@ -2037,25 +2037,23 @@ body {
 .summary-li{
     height:40px;
     font-size: 16px;
-    .mui-slider-handle {
-        display: flex;
-        flex-flow: row nowrap;
-        .title{
-            flex: 1;
-        }
-        .times{
-            width: 60px;
-            text-align: center;
-        }
-        .state{
-            width: 60px;
-            text-align: right;
-            i{
-                color: deepskyblue;
-                font-size: 20px;
-                &.icon-71shibai{
-                    color: red;
-                }
+    display: flex;
+    flex-flow: row nowrap;
+    .title{
+        flex: 1;
+    }
+    .times{
+        width: 60px;
+        text-align: center;
+    }
+    .state{
+        width: 60px;
+        text-align: right;
+        i{
+            color: deepskyblue;
+            font-size: 20px;
+            &.icon-71shibai{
+                color: red;
             }
         }
     }
@@ -2124,6 +2122,25 @@ body {
         .position();
         bottom: 61px;
         z-index: 103;
+    }
+}
+
+.rule-rows {
+    background-color: #fff;
+    .mui-row{
+        &>div {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:first-child {
+            font-weight: 700;
+            position: relative;
+            &:after {
+                .lineBottom(0)
+            }
+        }   
     }
 }
 

@@ -50,7 +50,7 @@
 						$(".rule-btn").show();
 						this.isDaq = true;
 					} else {
-						$(".rule-btn").hide();
+//						$(".rule-btn").hide();
 					}
 				}
 			},

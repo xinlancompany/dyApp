@@ -2264,27 +2264,25 @@ body {
 .summary-li {
   height: 40px;
   font-size: 16px;
-}
-.summary-li .mui-slider-handle {
   display: flex;
   flex-flow: row nowrap;
 }
-.summary-li .mui-slider-handle .title {
+.summary-li .title {
   flex: 1;
 }
-.summary-li .mui-slider-handle .times {
+.summary-li .times {
   width: 60px;
   text-align: center;
 }
-.summary-li .mui-slider-handle .state {
+.summary-li .state {
   width: 60px;
   text-align: right;
 }
-.summary-li .mui-slider-handle .state i {
+.summary-li .state i {
   color: deepskyblue;
   font-size: 20px;
 }
-.summary-li .mui-slider-handle .state i.icon-71shibai {
+.summary-li .state i.icon-71shibai {
   color: red;
 }
 .clipper-container {
@@ -2368,6 +2366,32 @@ body {
   z-index: 100;
   bottom: 61px;
   z-index: 103;
+}
+.rule-rows {
+  background-color: #fff;
+}
+.rule-rows .mui-row > div {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rule-rows .mui-row:first-child {
+  font-weight: 700;
+  position: relative;
+}
+.rule-rows .mui-row:first-child:after {
+  content: '';
+  display: block;
+  height: 1px;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  background-color: #c8c7cc;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
 }
 @keyframes spin {
   0% {

@@ -1,134 +1,139 @@
 {
-  "boot.html": {
-    "refer": [
-      "index.html",
-      "views/login.html"
-    ],
-    "resources": []
-  },
-  "index.html": {
-    "refer": [
-      "views/newsDetail.html",
-      "views/regulationDetail.html",
-      "views/score.html",
-      "views/newsList.html",
-      "views/login.html",
-      "views/topicList.html",
-      "views/tree.html",
-      "views/articleUpload.html",
-      "views/memberManage.html",
-      "views/ucenter.html",
-      "views/myStudy.html",
-      "views/myActivity.html",
-      "views/liveList.html",
-      "views/internetCourseList.html",
-      "views/activityList.html",
-      "views/topicUpload.html",
-      "views/subOrg.html",
-      "views/notice.html",
-      "views/application.html",
-      "views/studyRank.html",
-      "views/approve.html",
-      "views/recommendList.html",
-      "views/activeDetail.html",
-      "views/summary.html"
-    ],
-    "resources": [
-      "img/organization.jpg"
-    ]
-  },
-  "views/newsList.html": {
-    "refer": [
-      "views/newsDetail.html",
-      "views/articleUpload.html"
-    ],
-    "resources": []
-  },
-  "views/topicList.html": {
-    "refer": [
-      "views/activityList.html",
-      "views/topicUpload.html"
-    ],
-    "resources": []
-  },
-  "views/activityList.html": {
-    "refer": [
-      "views/activeDetail.html",
-      "views/activityUpload.html"
-    ],
-    "resources": []
-  },
-  "views/tree.html": {
-    "refer": [
-      "views/subOrg.html"
-    ],
-    "resources": []
-  },
-  "views/memberManage.html": {
-    "refer": [
-      "views/memberActivityRecord.html",
-      "views/newUser.html"
-    ],
-    "resources": []
-  },
-  "views/memberActivityRecord.html": {
-    "refer": [
-      "views/grade.html",
-      "views/application.html"
-    ],
-    "resources": []
-  },
-  "views/activeDetail.html": {
-    "refer": [
-      "views/activityExperiences.html",
-      "views/memberRanks.html",
-      "views/recordUpload.html",
-      "views/experienceUpload.html"
-    ],
-    "resources": []
-  },
-  "views/activityExperiences.html": {
-    "refer": [
-      "views/reviewDetail.html"
-    ],
-    "resources": []
-  },
-  "views/memberRanks.html": {
-    "refer": [
-      "views/grade.html"
-    ],
-    "resources": []
-  },
-  "views/myStudy.html": {
-    "refer": [
-      "views/internetCourseware.html"
-    ],
-    "resources": []
-  },
-  "views/internetCourseList.html": {
-    "refer": [
-      "views/internetCourseware.html",
-      "views/newsDetail.html"
-    ],
-    "resources": []
-  },
-  "views/liveList.html": {
-    "refer": [
-      "views/liveDetail.html"
-    ],
-    "resources": []
-  },
-  "views/activityUpload.html": {
-    "refer": [
-      "views/selectTags.html"
-    ],
-    "resources": []
-  },
-  "views/login.html": {
-    "refer": [
-      "index.html",
-      "views/forget.html"
-    ],
-    "resources": []
-  }
+	"boot.html": {
+		"refer": [
+			"index.html",
+			"views/login.html"
+		],
+		"resources": []
+	},
+	"index.html": {
+		"refer": [
+			"views/newsDetail.html",
+			"views/regulationDetail.html",
+			"views/score.html",
+			"views/newsList.html",
+			"views/login.html",
+			"views/topicList.html",
+			"views/tree.html",
+			"views/articleUpload.html",
+			"views/memberManage.html",
+			"views/ucenter.html",
+			"views/myStudy.html",
+			"views/myActivity.html",
+			"views/liveList.html",
+			"views/internetCourseList.html",
+			"views/activityList.html",
+			"views/topicUpload.html",
+			"views/subOrg.html",
+			"views/notice.html",
+			"views/application.html",
+			"views/studyRank.html",
+			"views/approve.html",
+			"views/recommendList.html",
+			"views/activeDetail.html",
+			"views/summary.html"
+		],
+		"resources": [
+			"img/organization.jpg"
+		]
+	},
+	"views/newsList.html": {
+		"refer": [
+			"views/newsDetail.html",
+			"views/articleUpload.html"
+		],
+		"resources": []
+	},
+	"views/topicList.html": {
+		"refer": [
+			"views/activityList.html",
+			"views/topicUpload.html"
+		],
+		"resources": []
+	},
+	"views/activityList.html": {
+		"refer": [
+			"views/activeDetail.html",
+			"views/activityUpload.html"
+		],
+		"resources": []
+	},
+	"views/tree.html": {
+		"refer": [
+			"views/subOrg.html"
+		],
+		"resources": []
+	},
+	"views/memberManage.html": {
+		"refer": [
+			"views/memberActivityRecord.html",
+			"views/newUser.html"
+		],
+		"resources": []
+	},
+	"views/memberActivityRecord.html": {
+		"refer": [
+			"views/grade.html",
+			"views/application.html"
+		],
+		"resources": []
+	},
+	"views/activeDetail.html": {
+		"refer": [
+			"views/activityExperiences.html",
+			"views/memberRanks.html",
+			"views/recordUpload.html",
+			"views/experienceUpload.html"
+		],
+		"resources": []
+	},
+	"views/activityExperiences.html": {
+		"refer": [
+			"views/reviewDetail.html"
+		],
+		"resources": []
+	},
+	"views/memberRanks.html": {
+		"refer": [
+			"views/grade.html"
+		],
+		"resources": []
+	},
+	"views/myStudy.html": {
+		"refer": [
+			"views/internetCourseware.html"
+		],
+		"resources": []
+	},
+	"views/internetCourseList.html": {
+		"refer": [
+			"views/internetCourseware.html",
+			"views/newsDetail.html"
+		],
+		"resources": []
+	},
+	"views/liveList.html": {
+		"refer": [
+			"views/liveDetail.html"
+		],
+		"resources": []
+	},
+	"views/activityUpload.html": {
+		"refer": [
+			"views/selectTags.html"
+		],
+		"resources": []
+	},
+	"views/login.html": {
+		"refer": [
+			"index.html",
+			"views/forget.html"
+		],
+		"resources": []
+	},
+	"views/summary.html": {
+		"refer": [
+			"views/newRule.html"
+		]
+	}
 }

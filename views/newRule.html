@@ -15,37 +15,35 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">新增考核</h1>
+			<h1 class="mui-title">考核规则</h1>
 		</header>
 		
 		<div id="newRule" class="have-header have-footer">
-			<form class="mui-input-group">
-				<div class="mui-input-row">
-					<label>考核标准</label>
-					<select>
-						<option value="会议">会议</option>
-					</select>
-				</div>
-				<div class="mui-input-row">
-					<label>考核月</label>
-					<select>
-						<option value="月度">月度</option>
-						<option value="季度">季度</option>
-						<option value="年度">年度</option>
-					</select>
-				</div>
-				<div class="mui-input-row">
-					<label>考核次数</label>
-					<select>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-					</select>
-				</div>
-			</form>
-			<footer class="block-button">新增</footer>
+			<div class="scroll-tabs summary-tabs">
+				<span class="active">年度</span>
+				<span>季度</span>
+				<span>月度</span>
+			</div>
+			<div class="mui-rows rule-rows">
+				<div class="mui-row clearfix">
+			        <div class="mui-col-sm-4 mui-col-xs-4">名称</div>
+			        <div class="mui-col-sm-4 mui-col-xs-4">次数</div>
+			        <div class="mui-col-sm-4 mui-col-xs-4">操作</div>
+			    </div>
+				<div class="mui-row">
+			        <div class="mui-col-sm-4 mui-col-xs-4">
+			                    Item 1    
+			        </div>
+			        <div class="mui-col-sm-4 mui-col-xs-4">
+			                    Item 1
+			        </div>
+			        <div class="mui-col-sm-4 mui-col-xs-4">
+			            <div class="mui-switch mui-switch-blue">
+						  	<div class="mui-switch-handle"></div>
+						</div>
+			        </div>
+			    </div>
+		    </div>
 		</div>
 	</body>
 </html>

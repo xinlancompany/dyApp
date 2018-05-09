@@ -16,7 +16,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title"></h1>
-            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right rule-btn">新增</button>
+            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right rule-btn">规则</button>
 		</header>
 		
 		<div id="summary" class="have-header have-footer">
@@ -29,22 +29,10 @@
 				<span :class="{active: curIdx == 4}" v-cloak @click="curIdx = 4">年度</span>
 			</div>
 			<ul class="mui-table-view">
-				<!--<li class="mui-table-view-cell summary-li mui-left" v-for="i in showInfo">
-					<div class="mui-slider-handle">
-						<div class="title" v-text="i.name"></div>
-						<div class="times" v-cloak>{{i.cnt}}次</div>
-						<div class="state"><i class="iconfont" :class="{'icon-70chenggong': i.code, 'icon-71shibai': !i.code}"></i></div>
-					</div>
-				</li>-->
-				<li class="mui-table-view-cell mui-transitioning summary-li" v-for="i in showInfo" :class="{'mui-transitioning': isDaq, 'mui-left': !isDaq}">
-					<div class="mui-slider-right mui-disabled" v-if="isDaq">
-						<a class="mui-btn mui-btn-red">屏蔽</a>
-					</div>
-					<div class="mui-slider-handle">
-						<div class="title" v-text="i.name"></div>
-	                    <div class="times" v-cloak>{{i.cnt}}次</div>
-	                    <div class="state"><i class="iconfont" :class="{'icon-70chenggong': i.code, 'icon-71shibai': !i.code}"></i></div>
-					</div>
+				<li class="mui-table-view-cell summary-li" v-for="i in showInfo">
+					<div class="title" v-text="i.name"></div>
+                    <div class="times" v-cloak>{{i.cnt}}次</div>
+                    <div class="state"><i class="iconfont" :class="{'icon-70chenggong': i.code, 'icon-71shibai': !i.code}"></i></div>
 				</li>
 			</ul>
 		</div>
