@@ -113,10 +113,14 @@
 			mounted: function() {
 				this.userInfo = _load(_get("userInfo"));
 				var self = this;
-				_callAjax({
-					cmd: "fetch",
-					sql: "select * from orgCheckRules where orgNo = ?",
-					vals: _dump([self.userInfo.no,])
+//				_callAjax({
+//					cmd: "fetch",
+//					sql: "select * from orgCheckRules where orgNo = ?",
+//					vals: _dump([self.userInfo.no,])
+//				}, function(d) {
+				_summaryAjax({
+					cmd: "rules",
+					orgNo: self.userInfo.no
 				}, function(d) {
 					if (d.success && d.data && d.data.length) {
 						d.data.forEach(function(i) {
