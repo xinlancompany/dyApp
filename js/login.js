@@ -69,6 +69,7 @@ function plusReady() {
 							var userInfo = d.data[0];
 							userInfo.userType = 0; // 个人登陆
 							_set('userInfo',_dump(userInfo));
+							_set('year', self.year)
 						
 							mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
                                 tp: "person"
@@ -97,6 +98,7 @@ function plusReady() {
 							var userInfo = d.data[0];
 							userInfo.userType = 1; // 组织登陆
 							_set('userInfo', _dump(userInfo));
+							_set('year', self.year)
 					
 							mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
                                 tp: "organization"

@@ -27,7 +27,7 @@
         // 获取tags
         _callAjax({
             cmd: "fetch",
-            sql: "select name, credits from activityTags where ifValid = 1"
+            sql: "select id, name, credits from activityTags where ifValid = 1"
         }, function(d) {
             if (!d.success || !d.data || !d.data.length) return;
             vm.tags = d.data;

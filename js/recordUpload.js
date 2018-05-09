@@ -138,7 +138,6 @@
                     });
                 },
                 startTape: function() {
-                	alert("rth");
                 	var self = this;
 					recorder = plus.audio.getRecorder();	//获取设备录音对象
 					if(recorder == null)  return mui.toast('录音对象未获取');

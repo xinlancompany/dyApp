@@ -7,7 +7,8 @@
 				curIdx: 0,
 				userInfo: null,
 				info: [null,null,null,null,null],
-				showInfo: null
+				showInfo: null,
+				isDaq: false
 			},
 			watch: {
 				season: function(i) {
@@ -24,6 +25,7 @@
 					_summaryAjax({
 						cmd: "year",
 						orgNo: self.userInfo.no,
+						year: _get("year")
 					}, function(d) {
 						self.info[4] = d.data[0];
 					});
@@ -41,6 +43,14 @@
 						});
 					} else {
 						self.showInfo = self.info[i];
+					}
+				},
+				userInfo: function(u) {
+					if (u.type == "党委" || u.type.indexOf("委员会") > 0) {
+						$(".rule-btn").show();
+						this.isDaq = true;
+					} else {
+						$(".rule-btn").hide();
 					}
 				}
 			},
