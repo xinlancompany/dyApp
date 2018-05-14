@@ -67,7 +67,9 @@
 	"views/memberManage.html": {
 		"refer": [
 			"views/memberActivityRecord.html",
-			"views/newUser.html"
+			"views/newUser.html",
+			"views/group.html",
+			"views/delUsers.html"
 		],
 		"resources": []
 	},
@@ -120,7 +122,10 @@
 	},
 	"views/activityUpload.html": {
 		"refer": [
-			"views/selectTags.html"
+			"views/selectTags.html",
+			"views/absents.html",
+			"views/selectUsers.html",
+			"views/activityCategories.html"
 		],
 		"resources": []
 	},

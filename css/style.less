@@ -669,6 +669,9 @@ body {
             min-height: 300px;
             border: none;
         }
+        p {
+            color: #333;
+        }
     }
     footer {
         background-color: @base;
@@ -1758,6 +1761,19 @@ body {
     align-items: center;
     .thumb-upload {
         flex: 1;
+        position: relative;
+        p {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,.5);
+            font-size: 12px;
+            padding: 2px 5px;
+            margin: 0;
+            color: #fff;
+            .ell;
+        }
         &.img-1:before {
             content: '签到表'
         }

@@ -21,25 +21,31 @@
 		<div id="recordUpload" class="article-upload have-header have-footer">
 			<form class="mui-input-group clearfix">
 			    <div class="mui-input-row mui-input-image record-upload-imgs">
-			        <div class="thumb-upload img-1" :style="imgStyle1">
+			        <div class="thumb-upload img-1" :style="imgStyle1" :class="{active: imgStyle1.backgroundImage != ''}">
 			        	<input type="file" accept="image/*" @change="uploadImg1($event)">
+			        	<p>123</p>
 			        </div>
-			        <div class="thumb-upload img-2" :style="imgStyle2">
+			        <div class="thumb-upload img-2" :style="imgStyle2" :class="{active: imgStyle2.backgroundImage != ''}">
 			        	<input type="file" accept="image/*" @change="uploadImg2($event)">
+			        	<p></p>
 			        </div>
-			        <div class="thumb-upload img-3" :style="imgStyle3">
+			        <div class="thumb-upload img-3" :style="imgStyle3" :class="{active: imgStyle3.backgroundImage != ''}">
 			        	<input type="file" accept="image/*" @change="uploadImg3($event)">
+			        	<p></p>
 			        </div>
 			    </div>
 			    <div class="mui-input-row mui-input-image record-upload-imgs">
-			        <div class="thumb-upload img-4" :style="imgStyle4">
+			        <div class="thumb-upload img-4" :style="imgStyle4" :class="{active: imgStyle4.backgroundImage != ''}">
 			        	<input type="file" accept="image/*" @change="uploadImg4($event)">
+			        	<p></p>
 			        </div>
-			        <div class="thumb-upload img-5" :style="imgStyle5">
+			        <div class="thumb-upload img-5" :style="imgStyle5" :class="{active: imgStyle5.backgroundImage != ''}">
 			        	<input type="file" accept="image/*" @change="uploadImg5($event)">
+			        	<p></p>
 			        </div>
-			        <div class="thumb-upload img-6" :style="imgStyle6">
+			        <div class="thumb-upload img-6" :style="imgStyle6" :class="{active: imgStyle6.backgroundImage != ''}">
 			        	<input type="file" accept="image/*" @change="uploadImg6($event)">
+			        	<p></p>
 			        </div>
 			    </div>
 		        <textarea rows="15" placeholder="请输入内容" v-model="record"></textarea>

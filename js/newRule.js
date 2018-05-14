@@ -75,6 +75,7 @@
 					}
 				},
 				toggle: function(i) {
+					console.log(i)
 					i.ifValid = !i.ifValid;
 					this.changes[i.id] = '';
 					this.ifChanged = true;

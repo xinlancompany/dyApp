@@ -262,7 +262,9 @@
 				"resources": [],
 				"refer": [
 					"views/memberActivityRecord.html",
-					"views/newUser.html"
+					"views/newUser.html",
+					"views/group.html",
+					"views/delUsers.html"
 				],
 				"priority": 0
 			},
@@ -323,7 +325,10 @@
 			"views/activityUpload.html": {
 				"resources": [],
 				"refer": [
-					"views/selectTags.html"
+					"views/selectTags.html",
+					"views/absents.html",
+					"views/selectUsers.html",
+					"views/activityCategories.html"
 				],
 				"priority": 0
 			},
