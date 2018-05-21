@@ -148,5 +148,12 @@
 		"refer": [
 			"views/newRule.html"
 		]
+	},
+	"views/subOrg.html": {
+		"refer": [
+			"views/activityList.html",
+			"views/memberManage.html",
+			"views/newsList.html"
+		]
 	}
 }

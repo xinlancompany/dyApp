@@ -79,9 +79,9 @@
 			<ul class="mui-table-view">
 			    <li class="mui-table-view-cell" @click="openExperiences"><a class="mui-navigate-right">活动心得</a></li>
                 <!--仅管理员可以上传记录-->
-			    <li class="mui-table-view-cell" v-show="isAdmin"><a class="mui-navigate-right" @click="uploadRecord">记录上传</a></li>
+			    <li class="mui-table-view-cell" v-show="isAdmin &&!isSub"><a class="mui-navigate-right" @click="uploadRecord">记录上传</a></li>
 			    <li class="mui-table-view-cell" v-show="!isAdmin && !isSub" @click="uploadExperience"><a class="mui-navigate-right">心得上传</a></li>
-			    <li class="mui-table-view-cell" v-show="isAdmin" @click="openRanks"><a class="mui-navigate-right">活动打分</a></li>
+			    <li class="mui-table-view-cell" v-show="isAdmin && !isSub" @click="openRanks"><a class="mui-navigate-right">活动打分</a></li>
 			</ul>
 
 			<article v-show="isAdmin && detailData.ifValid == 2">

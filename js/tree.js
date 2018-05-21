@@ -28,7 +28,8 @@
                     openWindow("subOrg.html", "subOrg", {
                       	orgId: i.id,
                         orgNo: i.no,
-                        orgName: i.name
+                        orgName: i.name,
+                        orgType: i.type,
                     });
                 },
                 openNext: function(i) {
@@ -69,7 +70,7 @@
         // 初始化
         _callAjax({
             cmd: "fetch",
-            sql: "select name, no from organization where no = ?",
+            sql: "select id, name, no, type from organization where no = ?",
             vals: _dump([orgNo,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {
@@ -81,7 +82,7 @@
         var getOrgs = function(no, cb) {
             _callAjax({
                 cmd: "fetch",
-                sql: "select id, name, no, superOrgNo from organization where superOrgNo = ?",
+                sql: "select id, name, no, type superOrgNo from organization where superOrgNo = ?",
                 vals: _dump([no,])
             }, function(d) {
                 cb(d);

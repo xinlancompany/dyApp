@@ -55,6 +55,32 @@
                     });
                 },
                 openActivityChoices: function() {
+					// 打开活动分类选择
+					var self = this,
+                        buttons = _map(function(i) {
+                            return {
+                                title: i.title
+                            };
+                        }, self.activityCategories);
+					plus.nativeUI.actionSheet({
+						title: "活动分类",
+						cancel: "取消",
+						buttons: buttons
+					}, function(e) {
+						if (0 === e.index) return;
+						var r = buttons[e.index-1],
+							sName = r.title,
+							topicId = self.categoryDict[sName];
+						openWindow("activityList.html", "activityList", {
+							lid: topicId,
+							title: sName,
+							isAdmin: true,
+							isSub: true,
+							orgId: wb.orgId
+						});
+					});
+                },
+                _openActivityChoices: function() {
                     var self = this,
                         buttons = _map(function(i) {
                             return {
@@ -115,14 +141,16 @@
             },
             mounted: function() {
                 var self = this;
+				var cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where (orgNo = '"+wb.orgNo+"' or orgNo = '') and refId = "+linkerId.Activity+" and l.ifValid = 1 group by l.id order by l.id";
+				// 党支部以上均自行设置规则
+				if ("党支部" !== wb.orgType) cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where orgNo = '"+wb.orgNo+"' and refId = "+linkerId.Activity+" and l.ifValid = 1 group by l.id order by l.id";
                 _callAjax({
                     cmd: "fetch",
-                    sql: "select id, name from linkers where refid = ?",
-                    vals: _dump([linkerId.Activity,])
+                    sql: cateSql
                 }, function(d) {
                     if (d.success && d.data && d.data.length) {
                         d.data.forEach(function(i) {
-                            self.categoryDict[i.name] = i.id;
+                            self.categoryDict[i.title] = i.topicId;
                             self.activityCategories.push(i);
                         });
                     } 

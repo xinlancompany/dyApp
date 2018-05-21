@@ -17,12 +17,19 @@ function plusReady() {
 
     $(".mui-title").text(wb.title);
 
+	var isSub = false;
+	if ("isSub" in wb) isSub = wb.isSub;
+	if (!wb.isAdmin || isSub) {
+		$("#operate").hide();
+	}
+
 	var activityList = new Vue({
 		el: '#activityList',
 		data: {
 			activityList:[],
 			bHaveMore: false,
-            isAdmin: wb.isAdmin
+            isAdmin: wb.isAdmin,
+            isSub: wb.isSub
 		},
 		methods: {
             // 删除操作
@@ -68,7 +75,8 @@ function plusReady() {
 				// mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
 				openWindow('activeDetail.html', 'activeDetail', {
                     activityId: i.id,
-                    isAdmin: wb.isAdmin
+                    isAdmin: wb.isAdmin,
+                    isSub: isSub
                 });
 				
 			},
@@ -132,7 +140,6 @@ function plusReady() {
 				var self = this;
 				
 				activitySortId = _get('activitySortId');
-				console.log("111=" + activitySortId);
 				self.activityList = [];
 				self.getActivityList(lid);
 				self.bHaveMore = false;
@@ -173,11 +180,11 @@ function plusReady() {
         });
     });
 
-    if (wb.isAdmin) {
-        $("#operate").show();
-    } else {
-        $("#operate").hide();
-    }
+//  if (wb.isAdmin) {
+//      $("#operate").show();
+//  } else {
+//      $("#operate").hide();
+//  }
 
     /*
     $("#operate").click(function() {

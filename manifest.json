@@ -354,6 +354,15 @@
 					"views/newRule.html"
 				],
 				"priority": 0
+			},
+			"views/subOrg.html": {
+				"resources": [],
+				"refer": [
+					"views/activityList.html",
+					"views/memberManage.html",
+					"views/newsList.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

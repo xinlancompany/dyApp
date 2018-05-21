@@ -7,6 +7,9 @@
             isAdmin = "no" in userInfo;
         if ("isAdmin" in wb) {
             isAdmin = wb.isAdmin;
+            if (!isAdmin) {
+            	$(".group-manage").hide();
+            }
         }
         
         var vm = new Vue({
@@ -15,6 +18,7 @@
                 members: [],
                 searchWord:"",
                 sortBy: "down",
+                isAdmin: isAdmin,
             },
             computed: {
 					filterMembers: function() {
