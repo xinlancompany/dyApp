@@ -33,13 +33,29 @@ class Index {
 				_androidClose(this);
 			};
 		}
+
+		// 关闭login
+		let loginPage = plus.webview.getWebviewById("login");
+		if (loginPage) plus.webview.close(loginPage, "none");
 	}
 
 	updateInfo() {
 		let userStr: string = _get("userInfo", true);
 		let orgStr: string = _get("orgInfo");
-		if (userStr) this.userInfo = _load(userStr);
-		if (orgStr) this.orgInfo = _load(orgStr);
+
+//		alert(userStr);
+//		alert(orgStr);
+
+		if (userStr) {
+			this.userInfo = _load(userStr);
+			this.orgInfo = null
+		}
+		if (orgStr) {
+			this.orgInfo = _load(orgStr);
+			this.userInfo = null;
+		}
+//		alert(!!this.userInfo);
+//		alert(!!this.orgInfo);
 
 		// 设置右上角登陆或退出
 		$(".logout").text(!this.userInfo && !this.orgInfo ? "登陆" : " 退出");
@@ -75,11 +91,14 @@ class Index {
 					$("#"+tag).show();
 				},
 				updateState: function() {
+//					alert("rth-updateState");
 					if (idxObj.userInfo) {
+//						alert("rth-updateState-userInfo");
 						this.isPersonal = true;
 						this.isOrganization = false;
 					}
 					if (idxObj.orgInfo) {
+//						alert("rth-updateState-orgInfo");
 						this.isPersonal = false;
 						this.isOrganization = true;
 					}
@@ -99,21 +118,27 @@ class Index {
 
 		// 退出按钮
 		$(".logout").click(() => {
-			openWindow("views/login.html", "login", {
-				closePage: plus.webview.currentWebview()
-			});
+			openWindow("views/login.html", "login");
 		});
 
 		// 用于登陆后刷新页面底部标签
 		document.addEventListener('updateFooterInfo', () => {
 			idxObj.updateInfo();
 			idxObj.footer.updateState();
+
 			// 初始化学习平台与个人中心或者组织生活
-			if (this.userInfo) this.startUserInterface();
-			if (this.orgInfo) this.startOrgInterface();
+			if (this.userInfo) {
+				this.startUserInterface();
+			}
+			if (this.orgInfo) {
+				this.startOrgInterface();
+			}
 
 			let loginPage = plus.webview.getWebviewById("login");
 			if (loginPage) plus.webview.close(loginPage);
+
+			// 必须返回首页
+			this.footer.switchTo('舟山共产党员', 'index');
 		});
 	}
 

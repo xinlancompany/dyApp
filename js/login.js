@@ -5,11 +5,6 @@ var Login = (function () {
         // 清空localstorage中的用户信息
         _set("userInfo", "");
         _set("orgInfo", "");
-        // 关闭前级页面
-        var wb = plus.webview.currentWebview();
-        if ("closePage" in wb) {
-            plus.webview.close(wb.closePage);
-        }
         // 重载安卓系统的返回, 双击间隔小于1秒则退出
         if ('Android' == plus.os.name) {
             mui.back = function () {
@@ -26,6 +21,9 @@ var Login = (function () {
         // 获取当前webview页面对象，其中包含登陆类型信息
         this.wb = plus.webview.currentWebview();
         //预加载页面
+        var indexPage = plus.webview.getWebviewById("index");
+        if (indexPage)
+            plus.webview.close(indexPage, "none");
         mui.preload({
             url: '../index.html',
             id: 'index'
@@ -54,7 +52,6 @@ var Login = (function () {
                     // 打开index.html
                     openWindow("../index.html", "index");
                     mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
-                    plus.webview.close(plus.webview.currentWebview());
                 },
                 chooseYear: function () {
                     var _this = this;

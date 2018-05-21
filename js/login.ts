@@ -29,12 +29,6 @@ class Login{
 		_set("userInfo", "");
 		_set("orgInfo", "");
 
-		// 关闭前级页面
-		let wb = plus.webview.currentWebview();
-		if ("closePage" in wb) {
-			plus.webview.close(wb.closePage);
-		}
-
 		// 重载安卓系统的返回, 双击间隔小于1秒则退出
 		if ('Android' == plus.os.name) {
 			mui.back = () => {
@@ -54,6 +48,8 @@ class Login{
 		this.wb = plus.webview.currentWebview();
 
 		//预加载页面
+		let indexPage = plus.webview.getWebviewById("index");
+		if (indexPage) plus.webview.close(indexPage, "none");
 		mui.preload({
 			url: '../index.html',
 			id: 'index'
@@ -83,7 +79,6 @@ class Login{
 					// 打开index.html
 					openWindow("../index.html", "index");
 					mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
-					plus.webview.close(plus.webview.currentWebview());
 				},
 				chooseYear: function() {
 					// 选择登陆年度

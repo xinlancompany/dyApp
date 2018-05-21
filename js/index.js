@@ -9,14 +9,26 @@ var Index = (function () {
                 _androidClose(_this);
             };
         }
+        // 关闭login
+        var loginPage = plus.webview.getWebviewById("login");
+        if (loginPage)
+            plus.webview.close(loginPage, "none");
     }
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
         var orgStr = _get("orgInfo");
-        if (userStr)
+        //		alert(userStr);
+        //		alert(orgStr);
+        if (userStr) {
             this.userInfo = _load(userStr);
-        if (orgStr)
+            this.orgInfo = null;
+        }
+        if (orgStr) {
             this.orgInfo = _load(orgStr);
+            this.userInfo = null;
+        }
+        //		alert(!!this.userInfo);
+        //		alert(!!this.orgInfo);
         // 设置右上角登陆或退出
         $(".logout").text(!this.userInfo && !this.orgInfo ? "登陆" : " 退出");
     };
@@ -51,11 +63,14 @@ var Index = (function () {
                     $("#" + tag).show();
                 },
                 updateState: function () {
+                    //					alert("rth-updateState");
                     if (idxObj.userInfo) {
+                        //						alert("rth-updateState-userInfo");
                         this.isPersonal = true;
                         this.isOrganization = false;
                     }
                     if (idxObj.orgInfo) {
+                        //						alert("rth-updateState-orgInfo");
                         this.isPersonal = false;
                         this.isOrganization = true;
                     }
@@ -75,22 +90,24 @@ var Index = (function () {
             this.startOrgInterface();
         // 退出按钮
         $(".logout").click(function () {
-            openWindow("views/login.html", "login", {
-                closePage: plus.webview.currentWebview()
-            });
+            openWindow("views/login.html", "login");
         });
         // 用于登陆后刷新页面底部标签
         document.addEventListener('updateFooterInfo', function () {
             idxObj.updateInfo();
             idxObj.footer.updateState();
             // 初始化学习平台与个人中心或者组织生活
-            if (_this.userInfo)
+            if (_this.userInfo) {
                 _this.startUserInterface();
-            if (_this.orgInfo)
+            }
+            if (_this.orgInfo) {
                 _this.startOrgInterface();
+            }
             var loginPage = plus.webview.getWebviewById("login");
             if (loginPage)
                 plus.webview.close(loginPage);
+            // 必须返回首页
+            _this.footer.switchTo('舟山共产党员', 'index');
         });
     };
     Index.prototype.startIndexNews = function () {
