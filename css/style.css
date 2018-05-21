@@ -2021,6 +2021,7 @@ body {
   justify-content: space-between;
 }
 .gallery .thumb {
+  position: relative;
   height: 120px;
   width: 32%;
   margin-bottom: 10px;
@@ -2028,6 +2029,21 @@ body {
   -webkit-background-size: cover;
   background-size: cover;
   background-position: 50%;
+}
+.gallery .thumb p {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px 5px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 12px;
+  margin-bottom: 0;
 }
 #notice .mui-media-object i {
   font-size: 30px;

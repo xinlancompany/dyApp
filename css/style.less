@@ -1796,15 +1796,29 @@ body {
     display: flex;
 		flex-wrap: wrap;
 		justify-content: space-between;
-    .thumb {
+		.thumb {
+			position: relative;
 			height: 120px;
-      width: 32%;
+			width: 32%;
 			margin-bottom: 10px;
 			background-repeat: no-repeat;
 			-webkit-background-size: cover;
 			background-size: cover;
 			background-position: 50%;
-    }
+			p {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				padding: 3px 5px;
+				color: #fff;
+				background-color: rgba(0,0,0,.5);
+				box-sizing: border-box;
+				.ell;
+				font-size: 12px;
+				margin-bottom: 0;
+			}
+		}
 }
 
 #notice {
