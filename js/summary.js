@@ -59,6 +59,15 @@
 			},
 			created: function() {
 				this.userInfo = _load(_get("userInfo"));
+				var self = this;
+				_summaryAjax({
+					cmd: "getFirstPC",
+					no: self.userInfo.orgNo
+				}, function(d) {
+					if (d.success && d.data.no == self.userInfo.orgNo) {
+						$(".rule-btn").show();
+					}
+				});
 			}
 		});
 		var wb = plus.webview.currentWebview();

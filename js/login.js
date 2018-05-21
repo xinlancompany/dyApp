@@ -1,173 +1,153 @@
-//预加载页面
-mui.init({
-});
-
-// 扩展API加载完毕，现在可以正常调用扩展API
-function plusReady() {
-	var login = new Vue({
-		el: '#login',
-		data: {
-            type: 'personal',
-            usernameTag: "手机号或身份证号登录",
-			username: '',  //账号
-			password: '',  //密码
-			year: _now().split("-")[0], // 年份
-			yearId: 0,
-			years: []
-		},
-		watch: {
-			type: function(i) {
-				this.usernameTag = i == "personal" ? "手机号或身份证号登录" : "组织代码";
-			}
-		},
-		methods: {
-			openIndex: function() {
-				mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
-					tp: ""
-				});
-			
-				setTimeout(function() {
-					openWindow("../index.html", "index");
-				}, 1500);
-			},
-			// 选择年份
-			chooseYear: function() {
-                var self = this,
-                    buttons = _map(function(i) {
-                        return {
-                            title: i.year,
-                        };
-                    }, self.years);
-                plus.nativeUI.actionSheet({
-                    title: "年份选择",
-                    cancel: "取消",
-                    buttons: buttons
-                }, function(e) {
-                    if (e.index == 0) return;
-                    self.year = self.years[e.index-1].year;
-                    self.yearId = e.index-1;
-                });
-			},
-			//登录
-			login:function(){
-                // alert(this.type);
-				var self = this,
-                    name = _trim(self.username),
-                    pswd = _trim(self.password);
-                if (!name || !pswd) return mui.toast("请填写登陆信息");
-			
-				//如果是党员
-				if(self.type == "personal"){
-					_callAjax({
-						cmd: "fetch",
-						sql: "select u.id,u.name,u.img,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1",
-						vals: _dump([name, name, pswd])
-					}, function(d) {
-						if(d.success && d.data && d.data.length) {
-							mui.toast(d.data[0].name + "，欢迎登陆!");
-							
-							var userInfo = d.data[0];
-							userInfo.userType = 0; // 个人登陆
-							_set('userInfo',_dump(userInfo));
-							_set('year', self.year)
-						
-							mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
-                                tp: "person"
-                            });
-						
-							setTimeout(function() {
-								openWindow("../index.html", "index");
-							}, 1500);
-
-							// 重置服务器
-							var _callAjax = _genCallAjax(self.years[self.yearId].server + "/db4web");
-						} else {
-							mui.toast("个人账号登录失败")
-                        }
-					});
-				} else {
-					//如果是组织
-					_callAjax({
-						cmd: "fetch",
-						sql: "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ?",
-						vals: _dump([name, pswd])
-					}, function(d) {
-						if (d.success && d.data && d.data.length) {
-							mui.toast(d.data[0].name+"，欢迎登陆");
-					
-							var userInfo = d.data[0];
-							userInfo.userType = 1; // 组织登陆
-							_set('userInfo', _dump(userInfo));
-							_set('year', self.year)
-					
-							mui.fire(plus.webview.getWebviewById('index'), 'loginBack', {
-                                tp: "organization"
-                            });
-					
-							setTimeout(function() {
-								openWindow("../index.html", "index");
-							}, 1500);
-						} else {
-							mui.toast("组织账号登录失败");
-						}
-					});
-				}
-			},
-			forgetPswd: function() {
-				openWindow("forget.html", "forget");
-			},
-			userTypeChange: function(t) {
-				this.type = t;
-			}
-		},
-		mounted: function() {
-			var self = this;
-		}
-	});
-
-	_callAjax({
-		cmd: "fetch",
-		sql: "select year, server from yearServerConfig"
-	}, function(d) {
-		if (d.success && d.data) {
-			login.years = d.data;
-		}
-	});
-
-    var wb = plus.webview.currentWebview();
-    if ("type" in wb) {
-        login.type = wb.type;
+// login.html
+var Login = (function () {
+    function Login() {
+        // 清空localstorage中的用户信息
+        _set("userInfo", "");
+        _set("orgInfo", "");
+        // 重载安卓系统的返回, 双击间隔小于1秒则退出
+        if ('Android' == plus.os.name) {
+            var firstClickTimestamp_1;
+            mui.back = function () {
+                if (!firstClickTimestamp_1) {
+                    firstClickTimestamp_1 = (new Date()).getTime();
+                    mui.toast("再按一次退出应用");
+                    setTimeout(function () {
+                        firstClickTimestamp_1 = null;
+                    }, 1000);
+                }
+                else {
+                    if ((new Date()).getTime() - firstClickTimestamp_1 < 1000) {
+                        plus.runtime.quir();
+                    }
+                }
+            };
+        }
+        // 关闭前一页面，防止滑动页面退回
+        window.addEventListener("closeBoot", function () {
+            // 关闭boot页面
+            plus.webview.close(plus.webview.getLaunchWebview());
+            // 关闭index页面
+            plus.webview.close(plus.webview.getWebviewById("index"));
+        });
+        // 获取当前webview页面对象，其中包含登陆类型信息
+        this.wb = plus.webview.currentWebview();
+        //预加载页面
+        mui.init({
+            preloadPages: [{
+                    url: '../index.html',
+                    id: 'index'
+                }],
+        });
     }
-
-    // 关闭boot
-    window.addEventListener("closeBoot", function() {
-        plus.webview.close(plus.webview.getLaunchWebview());
-        plus.webview.close(plus.webview.getWebviewById("index"));
-    });
-
-	// 重载安卓返回
-	if('Android' == plus.os.name) {
-		var first = null;
-		mui.back = function() {
-			if(!first) {
-				first = new Date().getTime();
-				mui.toast('再按一次退出应用');
-				setTimeout(function() {
-					first = null;
-				}, 1000);
-			} else {
-				if(new Date().getTime() - first < 1000) {
-					plus.runtime.quit();
-				}
-			}
-		}
-	}
-
+    Login.prototype.start = function () {
+        var vm = new Vue({
+            el: "#login",
+            data: {
+                loginType: 'personal',
+                nameTag: "手机或身份证登录",
+                name: '',
+                pswd: '',
+                year: _now().split('-')[0],
+                years: [],
+                loginAtOnce: true,
+            },
+            watch: {
+                loginType: function (i) {
+                    // 切换登陆类型时，提示文字也相应改变
+                    this.nameTag = "personal" === i ? "手机或身份证登录" : "组织代码";
+                },
+            },
+            methods: {
+                openIndex: function () {
+                    // 打开index.html
+                    mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
+                    openWindow("../index.html", "index");
+                    plus.webview.close(plus.webview.currentWebview());
+                },
+                chooseYear: function () {
+                    var _this = this;
+                    // 选择登陆年度
+                    plus.nativeUI.actionSheet({
+                        title: "年度选择",
+                        cancel: "取消",
+                        buttons: _map(function (i) {
+                            return {
+                                title: i.year,
+                                server: i.server
+                            };
+                        }, this.years)
+                    }, function (e) {
+                        if (0 === e.index)
+                            return;
+                        _this.year = _this.years[e.index - 1].year;
+                        // 年份存储到本地
+                        _set("year", _this.year);
+                        // 设置年度数据服务接口
+                        _callAjax = _genCallAjax(_this.years[e.index - 1].server + "/db4web");
+                    });
+                },
+                login: function () {
+                    var _this = this;
+                    // 防止重复点击
+                    if (!this.loginAtOnce)
+                        return;
+                    // 去掉登录名与密码的空格
+                    var name = _trim(this.name), pswd = _trim(this.pswd);
+                    if (!name || !pswd)
+                        return mui.toast("请完整填写登陆信息");
+                    // 防止重点击
+                    this.loginAtOnce = false;
+                    // 个人登陆
+                    var sql = "select u.id,u.name,u.img,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1", vals = _dump([name, name, pswd]);
+                    // 组织登陆
+                    if ("organization" === this.loginType) {
+                        sql = "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ?";
+                        vals = _dump([name, pswd]);
+                    }
+                    // 登陆
+                    _callAjax({
+                        cmd: "fetch",
+                        sql: sql,
+                        vals: vals
+                    }, function (d) {
+                        if (d.success && d.data && d.data.length) {
+                            _set("personal" === _this.loginType ? "userInfo" : "orgInfo", _dump(d.data[0]));
+                            setTimeout(function () {
+                                _this.openIndex();
+                            }, 500);
+                        }
+                        else {
+                            // 恢复按钮可点击
+                            _this.loginAtOnce = true;
+                            mui.toast("登录失败");
+                        }
+                    });
+                },
+                forgetPswd: function () {
+                    openWindow("forget.html", "forget");
+                }
+            },
+            mounted: function () {
+                var _this = this;
+                // 获取年度服务接口
+                _callAjax({
+                    cmd: "fetch",
+                    sql: "select year, server from yearServerConfig"
+                }, function (d) {
+                    if (d.success && d.data && d.data.length) {
+                        _this.years = d.data;
+                    }
+                });
+            }
+        });
+    };
+    return Login;
+}());
+if (window.plus) {
+    (new Login).start();
 }
-// 判断扩展API是否准备，否则监听'plusready'事件
-if(window.plus) {
-	plusReady();
-} else {
-	document.addEventListener('plusready', plusReady, false);
+else {
+    document.addEventListener('plusready', function () {
+        (new Login).start();
+    }, false);
 }
-

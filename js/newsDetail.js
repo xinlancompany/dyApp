@@ -35,7 +35,6 @@ function plusReady() {
 					sql: "select id, title, img, brief, content, linkerId, reporter, readcnt, newsdate, subtitle from "+(!!table?table:"articles")+" where ifValid =1 and id = ?",
 					vals: _dump([newsId])
 				}, function(d) {
-					_tell(d.data);
 					if(d.success && d.data) {
 						self.newsData = d.data[0];
 					}

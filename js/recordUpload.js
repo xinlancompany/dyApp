@@ -30,6 +30,12 @@
                 img4: "",
                 img5: "",
                 img6: "",
+                txt1: "签到表",
+                txt2: "会场全景图",
+                txt3: "其他",
+                txt4: "其他",
+                txt5: "其他",
+                txt6: "其他",
                 imgStyle1: {
                     backgroundImage: ""
                 },
@@ -55,6 +61,19 @@
                 isAudioPlay: false	//是否在播放录音
             },
             methods: {
+            		changeTxt: function(n) {
+            			var self = this;
+            			mui.prompt("请输入图片简述", self["txt"+n], "提示", ["取消", "确定"], function(e) {
+            				if (e.index == 1) {
+            					var intro = _trim(e.value);
+            					if (!intro) {
+            						mui.toast("请填写内容");
+            						return false;
+            					}
+            					self["txt"+n] = intro;
+            				}
+            			});
+            		},
                 uploadImg1: function(evt) {
 //			         plus.gallery.pick( function(path){
 //				    	openWindow('imageClipper.html', 'imageClipper', {path})
@@ -118,13 +137,21 @@
                 uploadRecord: function() {
                     var record = _trim(this.record);
                     if (!record) return mui.toast("请填写记录内容");
-                    if (!this.img1 && !this.img2 && !this.img3) return mui.toast("请上传至少一张照片");
+                    if (!this.img1 && !this.img2) return mui.toast("请上传至少一张照片");
+                    var self = this,
+                    		imgs = [
+						{img: self.img1, txt: self.txt1},
+						{img: self.img2, txt: self.txt2},
+						{img: self.img3, txt: self.txt3},
+						{img: self.img4, txt: self.txt4},
+						{img: self.img5, txt: self.txt5},
+						{img: self.img6, txt: self.txt6},
+                    ];
 
-                    var self = this;
                     _callAjax({
                         cmd: "exec",
                         sql: "update activitys set record = ?, recordImgs = ?, recordTime = ? where id = ?",
-                        vals: _dump([record, _dump([self.img1, self.img2, self.img3, self.img4, self.img5, self.img6]), _now(), wb.aid])
+                        vals: _dump([record, _dump(imgs), _now(), wb.aid])
                     }, function(d) {
                         if (d.success) {
                             mui.toast("上传成功");
@@ -235,8 +262,9 @@
             	console.log(d.data[0].recordImgs)
                 var imgs = _load(d.data[0].recordImgs);
                 [1,2,3,4,5,6].forEach(function(i) {
-                    vm["img"+i] = imgs[i-1];
-                    vm["imgStyle"+i].backgroundImage = "url("+imgs[i-1]+")";
+                    vm["img"+i] = imgs[i-1].img;
+                    if (!!imgs[i-1].txt) vm["txt"+i] = imgs[i-1].txt;
+                    vm["imgStyle"+i].backgroundImage = "url("+imgs[i-1].img+")";
                 });
                 vm.record = d.data[0].record;
             }

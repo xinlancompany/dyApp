@@ -14,6 +14,7 @@ var activitySortId = 0;
 function plusReady() {
     var wb = plus.webview.currentWebview(),
         lid = wb.lid;
+
     $(".mui-title").text(wb.title);
 
 	var activityList = new Vue({
@@ -168,6 +169,7 @@ function plusReady() {
     $("#operate").click(function() {
         openWindow("activityUpload.html", "activityUpload", {
             lid: lid,
+            lname: wb.title
         });
     });
 
@@ -214,6 +216,3 @@ if(window.plus) {
 } else {
 	document.addEventListener('plusready', plusReady, false);
 }
-
-
-	

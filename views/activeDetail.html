@@ -104,7 +104,10 @@
 			<article v-show="detailData.recordImgs">
 				<header><i class="iconfont icon-jianjie"></i>活动照片：</header>
 				<div class="gallery" @click="openGallery">
-					<div class="thumb" v-for="img in detailData.recordImgs" :style="{'backgroundImage': 'url('+img+')'}"></div>
+					<template v-for="img in detailData.recordImgs">
+						<div class="thumb" :style="{'backgroundImage': 'url('+img.img+')'}"></div>
+						<p v-text="img.txt"></p>
+					</template>
 				</div>
 			</article>
 			

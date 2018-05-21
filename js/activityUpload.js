@@ -19,6 +19,7 @@ function plusReady() {
                 backgroundImage: ""
             },
             users: [],
+            participants: [],
             tag: null,
 //          selectUserNames: '请选择与会人员',
 //          selectTagName: '请选择积分量化标签',
@@ -82,16 +83,28 @@ function plusReady() {
                     }
                 });
             },
+            participants: function(l) {
+            		var self = this,
+            			absents = [],
+            			invalids = [];
+            		self.absents.forEach(function(i) {
+            			if (i.id in self.participantIds) absents.push(i);
+            		});
+            		self.absents = absents;
+            }
         },
         computed: {
-            selectUserNames: function() {
-            		if (!this.users.length) return "请选择与会人员";
+        		participantIds: function() {
+        			return _map(function(i) {
+					return i.id;
+        			}, this.participants);
+        		},
+            selectParticipantNames: function() {
+            		if (!this.participants.length) return "请选择与会人员";
                 var self = this;
                 return _map(function(i) {
                     return i.name;
-                }, _filter(function(i) {
-                    return i.ifSelect;
-                }, self.users)).join(", ");
+                }, self.participants).join(", ");
             },
             selectTagName: function() {
             		if (!this.tag) return "请选择积分量化标签";
@@ -187,29 +200,32 @@ function plusReady() {
                 		"minDate": _oneMonthAgoDateObj()
                 });
             },
-            chooseUsers: function() {
+            chooseParticipants: function() {
                 var self = this;
                 openWindow("selectUsers.html", "selectUsers", {
                 		notIn: self.invalids,
-                    users: self.users,
+                    participants: self.participants,
                     aid: self.aid
                 });
             },
             chooseAbsents: function() {
                 var self = this;
+                if (!self.participants || !self.participants.length) return mui.toast("请先选择与会人员");
+//              var users = _filter(function(i) {
+//					return i.ifSelect;
+//				}, self.participants);
                 openWindow("absents.html", "absents", {
-                		users: _filter(function(i) {
-                			return i.ifSelect;
-                		}, self.users),
+                		users: self.participants,
                     absents: self.absents,
                 });
             },
             chooseInvalid: function() {
                 var self = this;
                 openWindow("selectInvalids.html", "selectInvalids", {
-                		notIn: _filter(function(i) {
-                			return i.ifSelect;
-                		}, self.users),
+//              		notIn: _filter(function(i) {
+//              			return i.ifSelect;
+//              		}, self.users),
+					notIn: self.participants,
                     invalids: self.invalids,
                 });
             },
@@ -333,8 +349,8 @@ function plusReady() {
     });
 
     // 返回选择学员
-    window.addEventListener("selectUsers", function(event) {
-        upload.users  = event.detail.users;
+    window.addEventListener("selectParticipants", function(event) {
+		upload.participants = event.detail.participants;
     });
 
     // 返回标签
@@ -373,12 +389,14 @@ function plusReady() {
 
     var wb = plus.webview.currentWebview();
     upload.lid = wb.lid;
-    if ("title" in wb) {
-        $(".mui-title").text(wb.title);
-    }
     // 编辑模式
     if ("aid" in wb) {
         upload.aid = wb.aid;
+    } else {
+		upload.categories.push({
+				id: wb.lid,
+				name: wb.lname.split("(")[0]
+		});
     }
     // $("#ruleDate").val(_now().split(" ")[0]);
 };

@@ -59,7 +59,8 @@ function plusReady() {
                 if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
-                    sql = "insert into linkers(name, img, brief, refid, orgid) values(?,?,?,?,?)",
+                		// 该用orgNo替代int类型的orgId
+                    sql = "insert into linkers(name, img, brief, refid, orgNo) values(?,?,?,?,?)",
                     vals = _dump([title, self.img, content, self.lid, self.orgNo]);
                 if (self.tid) {
                     sql = "update linkers set name = ?, img = ?, brief = ? where id = ?";

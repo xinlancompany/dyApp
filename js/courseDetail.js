@@ -4,7 +4,9 @@
 			el: "#courseDetail",
 			data: {
 				cid: 0,
-				newsData: null,
+				newsData: {
+					title: ''
+				},
 				userInfo: null,
 				noNeedToUpdate: false
 			},
@@ -59,6 +61,11 @@
 
 		var wb = plus.webview.currentWebview()
 		if ("cid" in wb) vm.cid = wb.cid;
+
+		// 用于预加载时的事件触发
+		window.addEventListener("courseId", function(e) {
+			vm.cid = e.detail.cid;
+		});
 	};
 	
 	if(window.plus) {

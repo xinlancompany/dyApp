@@ -16,10 +16,23 @@
 			data: {
 				lid: 0,
 				categories: [],
+				mutex: {},
 				userInfo: _load(_get("userInfo"))
 			},
 			methods:{
-				
+				mutexOther: function(i) {
+					var self = this,
+						ifShow = !i.ifSelect,	
+						thisMutex = self.mutex[i.id];
+					self.categories.forEach(function(r) {
+						for(var j = 0; j < thisMutex.length; j += 1) {
+							if (thisMutex[j] == r.id) {
+								r.ifShow = ifShow;
+								break;
+							}
+						}
+					});
+				}
 			},
 			mounted: function() {
 				var self = this,
@@ -33,10 +46,27 @@
 					if (d.success && d.data && d.data.length) {
 						d.data.forEach(function(i) {
 							i.id = parseInt(i.id);
+							i.ifShow = true;
 							self.lids.forEach(function(j) {
 								if (j == i.id) i.ifSelect = true;
 							});
 							self.categories.push(i);
+						});
+					}
+				});
+
+				// 获取互斥条件
+				_callAjax({
+					cmd: "fetch",
+					sql: "select linkerId, mutexId from linkerMutex where status = 1"
+				}, function(d) {
+					if (d.success && d.data && d.data.length) {
+						d.data.forEach(function(i) {
+							if (i.linkerId in self.mutex) {
+								self.mutex[i.linkerId].push(parseInt(i.mutexId));
+							} else {
+								self.mutex[i.linkerId] = [parseInt(i.mutexId)];
+							}
 						});
 					}
 				});
