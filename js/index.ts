@@ -537,7 +537,7 @@ class Index {
 				}
 			},
 			mounted: function() {
-				let cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where (orgNo = '"+idxObj.orgInfo.no+"' or orgId = 0) and refId = "+linkerId.Activity+" and l.ifValid = 1 group by l.id order by l.id";
+				let cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where (orgNo = '"+idxObj.orgInfo.no+"' or orgNo = '') and refId = "+linkerId.Activity+" and l.ifValid = 1 group by l.id order by l.id";
 				// 党支部以上均自行设置规则
 				if ("党支部" !== idxObj.orgInfo.type) cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where orgNo = '"+idxObj.orgInfo.no+"' and refId = "+linkerId.Activity+" and l.ifValid = 1 group by l.id order by l.id";
 

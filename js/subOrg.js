@@ -88,7 +88,7 @@
 					var self = this;
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id as topicId, name as title from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id",
+						sql: "select id as topicId, name as title from linkers where (orgNo = ? or orgNo = '') and refId = ? and ifValid = 1 order by id",
 						vals: _dump([wb.orgNo, lid])
 					}, function(d) {
 						var buttons = [];
@@ -150,7 +150,7 @@
                         },
                         {
                             key: "member",
-                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where linkerId in (select id from linkers where orgId = "+parseInt(wb.orgNo)+"))"
+                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where linkerId in (select id from linkers where orgNo = "+wb.orgNo+"))"
                         }
                     ])
                 }, function(d) {

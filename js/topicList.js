@@ -78,7 +78,7 @@ function plusReady() {
             cmd: "fetch",
             // orgId为0的是分发型专题
 //          sql: "select id, name, img from linkers where (orgId = ? or orgId = 0) and refId = ? and ifValid = 1 order by id desc",
-            sql: "select id, name, img from linkers where orgId = ? and refId = ? and ifValid = 1 order by id desc",
+            sql: "select id, name, img from linkers where orgNo = ? and refId = ? and ifValid = 1 order by id desc",
             vals: _dump([orgNo, lid])
         }, function(d) {
             if (d.success && d.data && d.data.length) {

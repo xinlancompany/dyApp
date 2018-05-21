@@ -40,7 +40,7 @@
 				self.lids = wb.lids;
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name from linkers where refId = 131 and (orgId = 0 or orgId = ?) and ifValid = 1",
+					sql: "select id, name from linkers where refId = 131 and (orgNo = 0 or orgNo = ?) and ifValid = 1",
 					vals: _dump([self.userInfo.no,])
 				}, function(d) {
 					if (d.success && d.data && d.data.length) {
