@@ -7,6 +7,7 @@ declare function openWindow(f: string, n: string, params: any): void;
 declare function _callAjax(params: any, f: (d: any) => void): void;
 declare function _summaryAjax(params: any, f: (d: any) => void): void;
 declare function _hotAjax(params: any, f: (d: any) => void): void;
+declare function _tell(s: any): void;
 
 declare var plus: any;
 declare var mui: any;
@@ -21,9 +22,17 @@ class Index {
 	userInfo: any;
 	orgInfo: any;
 	footer: any;
+	firstClickTimestamp: number;
 	
 	constructor() {
 		this.updateInfo();
+
+		// 重载安卓系统的返回, 双击间隔小于1秒则退出
+		if ('Android' == plus.os.name) {
+			mui.back = () => {
+				_androidClose(this);
+			};
+		}
 	}
 
 	updateInfo() {
@@ -90,8 +99,9 @@ class Index {
 
 		// 退出按钮
 		$(".logout").click(() => {
-			openWindow("views/login.html", "login");
-			plus.webview.close(plus.webview.currentWebview());
+			openWindow("views/login.html", "login", {
+				closePage: plus.webview.currentWebview()
+			});
 		});
 
 		// 用于登陆后刷新页面底部标签
@@ -101,6 +111,9 @@ class Index {
 			// 初始化学习平台与个人中心或者组织生活
 			if (this.userInfo) this.startUserInterface();
 			if (this.orgInfo) this.startOrgInterface();
+
+			let loginPage = plus.webview.getWebviewById("login");
+			if (loginPage) plus.webview.close(loginPage);
 		});
 	}
 
@@ -162,6 +175,7 @@ class Index {
 							}
 						])
 					}, (d) => {
+						_tell(d);
 						if (!d.success) return;
 						if ("banners" in d.data && d.data.banners.length) {
 							banner.scrollNews = d.data.banners;

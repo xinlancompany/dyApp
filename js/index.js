@@ -1,7 +1,14 @@
 // 首页index.html
 var Index = (function () {
     function Index() {
+        var _this = this;
         this.updateInfo();
+        // 重载安卓系统的返回, 双击间隔小于1秒则退出
+        if ('Android' == plus.os.name) {
+            mui.back = function () {
+                _androidClose(_this);
+            };
+        }
     }
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
@@ -68,8 +75,9 @@ var Index = (function () {
             this.startOrgInterface();
         // 退出按钮
         $(".logout").click(function () {
-            openWindow("views/login.html", "login");
-            plus.webview.close(plus.webview.currentWebview());
+            openWindow("views/login.html", "login", {
+                closePage: plus.webview.currentWebview()
+            });
         });
         // 用于登陆后刷新页面底部标签
         document.addEventListener('updateFooterInfo', function () {
@@ -80,6 +88,9 @@ var Index = (function () {
                 _this.startUserInterface();
             if (_this.orgInfo)
                 _this.startOrgInterface();
+            var loginPage = plus.webview.getWebviewById("login");
+            if (loginPage)
+                plus.webview.close(loginPage);
         });
     };
     Index.prototype.startIndexNews = function () {
@@ -139,6 +150,7 @@ var Index = (function () {
                             }
                         ])
                     }, function (d) {
+                        _tell(d);
                         if (!d.success)
                             return;
                         if ("banners" in d.data && d.data.banners.length) {

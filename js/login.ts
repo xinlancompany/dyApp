@@ -11,6 +11,7 @@ declare function _now(): string;
 declare function openWindow(f: string, n: string): void;
 declare function _callAjax(params: any, f: (d: any) => void): void;
 declare function _genCallAjax(addr: string): any;
+declare function _androidClose(s: any): void;
 
 declare var plus: any;
 declare var mui: any;
@@ -20,27 +21,24 @@ class Login{
 	userInfo: any;
 	orgInfo: any;
 	wb: any;
+	firstClickTimestamp: number;
+
 	
 	constructor() {
 		// 清空localstorage中的用户信息
 		_set("userInfo", "");
 		_set("orgInfo", "");
 
+		// 关闭前级页面
+		let wb = plus.webview.currentWebview();
+		if ("closePage" in wb) {
+			plus.webview.close(wb.closePage);
+		}
+
 		// 重载安卓系统的返回, 双击间隔小于1秒则退出
 		if ('Android' == plus.os.name) {
-			let firstClickTimestamp;
 			mui.back = () => {
-				if (!firstClickTimestamp) {
-					firstClickTimestamp = (new Date()).getTime();
-					mui.toast("再按一次退出应用");
-					setTimeout(() => {
-						firstClickTimestamp = null;
-					}, 1000)
-				} else {
-					if ((new Date()).getTime() - firstClickTimestamp < 1000) {
-						plus.runtime.quir();
-					}
-				}
+				_androidClose(this);
 			}
 		}
 
@@ -56,11 +54,9 @@ class Login{
 		this.wb = plus.webview.currentWebview();
 
 		//预加载页面
-		mui.init({
-			preloadPages: [{
-				url: '../index.html',
-				id: 'index'
-			}],
+		mui.preload({
+			url: '../index.html',
+			id: 'index'
 		});
 	}
 
@@ -85,8 +81,8 @@ class Login{
 			methods: {
 				openIndex: function() {
 					// 打开index.html
+					openWindow("../index.html", "index");
 					mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
-					openWindow("../index.html", "index")
 					plus.webview.close(plus.webview.currentWebview());
 				},
 				chooseYear: function() {

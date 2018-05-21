@@ -1,25 +1,19 @@
 // login.html
 var Login = (function () {
     function Login() {
+        var _this = this;
         // 清空localstorage中的用户信息
         _set("userInfo", "");
         _set("orgInfo", "");
+        // 关闭前级页面
+        var wb = plus.webview.currentWebview();
+        if ("closePage" in wb) {
+            plus.webview.close(wb.closePage);
+        }
         // 重载安卓系统的返回, 双击间隔小于1秒则退出
         if ('Android' == plus.os.name) {
-            var firstClickTimestamp_1;
             mui.back = function () {
-                if (!firstClickTimestamp_1) {
-                    firstClickTimestamp_1 = (new Date()).getTime();
-                    mui.toast("再按一次退出应用");
-                    setTimeout(function () {
-                        firstClickTimestamp_1 = null;
-                    }, 1000);
-                }
-                else {
-                    if ((new Date()).getTime() - firstClickTimestamp_1 < 1000) {
-                        plus.runtime.quir();
-                    }
-                }
+                _androidClose(_this);
             };
         }
         // 关闭前一页面，防止滑动页面退回
@@ -32,11 +26,9 @@ var Login = (function () {
         // 获取当前webview页面对象，其中包含登陆类型信息
         this.wb = plus.webview.currentWebview();
         //预加载页面
-        mui.init({
-            preloadPages: [{
-                    url: '../index.html',
-                    id: 'index'
-                }],
+        mui.preload({
+            url: '../index.html',
+            id: 'index'
         });
     }
     Login.prototype.start = function () {
@@ -60,8 +52,8 @@ var Login = (function () {
             methods: {
                 openIndex: function () {
                     // 打开index.html
-                    mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
                     openWindow("../index.html", "index");
+                    mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
                     plus.webview.close(plus.webview.currentWebview());
                 },
                 chooseYear: function () {

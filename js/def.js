@@ -1,3 +1,1 @@
-define(["require", "exports"], function (require, exports) {
-    "use strict";
-});
+"use strict";

@@ -58,8 +58,10 @@ var Boot = (function () {
                         // 跳转至登陆页面
                         openWindow("views/login.html", "login");
                     }
-                    // 关闭本身
-                    plus.webview.close(plus.webview.currentWebview());
+                    // 延时关闭本身，防止整个退出
+                    setTimeout(function () {
+                        plus.webview.close(plus.webview.currentWebview());
+                    }, 500);
                     if (this.timeoutCb) {
                         // 停止倒计时
                         clearInterval(this.timeoutCb);

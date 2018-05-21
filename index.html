@@ -85,7 +85,6 @@
             
 		</div> 
 		
-		<!--<div id="activity" class="have-footer main activity-panel" v-show="activity.length>0">-->
 		<div id="activity" class="have-footer main activity-panel">
 			
 			<header class="org-info"j>
@@ -93,12 +92,6 @@
 				<div class="check" v-show="ifPartyBranch">
 					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummaries" :class="{'icon-circle': i[0] && [1], 'icon-chart12': i[0] ^ i[1], 'icon-jindu3': !i[0] && !i[1]}" v-bind:data-progress="idx+1"></i>
 				</div>
-				<!--<div class="check">
-					<i class="iconfont icon-jindu3" data-progress="10%"></i>
-					<i class="iconfont icon-circle" data-progress="33%"></i>
-					<i class="iconfont icon-chart12" data-progress="67%"></i>
-					<i class="iconfont icon-chart12" data-progress="67%"></i>
-				</div>-->
 			</header>
 			
 			<div class="notice">
@@ -159,30 +152,6 @@
 				</div>
 			</div>
 			
-			<!--<div class="study-live">
-				<header>
-                    <span :class="{active:tabid==1}" @click="switchToLive(1)">今日直播</span>
-					<span :class="{active:tabid==2}" @click="switchToLive(2)">明日预告</span>
-					<span :class="{active:tabid==3}" @click="switchToLive(3)">最新录像</span>
-				</header>
-
-				<div class="live-program" v-show="!tabLive">暂无内容</div>
-
-				<div class="live-program" v-show="!!tabLive">
-                    <div class="thumb" :style="{backgroundImage: 'url('+ (tabLive?tabLive.img:'') +')'}"></div>
-					<div class="detail">
-                        <h1>{{tabLive?tabLive.title:''}}</h1>
-						<footer>
-                            <p><i class="iconfont icon-shijian"></i> {{tabLive?tabLive.starttime:''}}</p>
-                            <p><i class="iconfont icon-men"></i> {{tabLive?tabLive.cnt:''}}</p>
-						</footer>
-						<span class="open" @click="openTabLive">
-							<i class="iconfont icon-bofang"></i>
-						</span>
-					</div>
-				</div>
-			</div>-->
-			
 			<div class="study-internet">
 				<header class="global-header"><h1 class="title">推荐</h1></header>
 				<div class="lists">
@@ -196,20 +165,14 @@
 						</div>
 					</div>
 				</div>
-				<!--<footer @click="randomTwoCourses"><span>更多课件</span></footer>-->
 			</div>
 		</div>
 
 		<div id="ucenter" class="have-footer have-header main ucenter">
-			<!--<div class="user" @click="goLogin">-->
 			<div class="user">
 				<div class="user-img" @click="openUcenter">
-					<!--<img :src="userInfo.img?userInfo.img:'img/organization.jpg'" v-show="isLogin" v-if="userInfo != null"/>-->
 					<img :src="userInfo.img?userInfo.img:'img/organization.jpg'"/>
-					<!--<i class="iconfont icon-gerenzhongxinxia" v-show="!isLogin"></i>-->
 				</div>
-				<!--<p v-text="isLogin ? userInfo.name : '立即登录'"></p>-->
-				<!--<p v-text="isLogin ? userInfo.orgName: ''" v-show="isLogin"></p>-->
 				<p v-text="userInfo.orgName"></p>
 			</div>
 			
@@ -217,13 +180,10 @@
 				<span @click="checkPoints"><i class="iconfont icon-icon1"></i>先锋指数</span>	
 				<span @click="checkCredit"><i class="iconfont icon-jifen"></i>平台学时</span>	
 			</div>
-			<!--党员登录-->
-			<!--<ul class="mui-table-view" v-show="userType != 1">-->
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" @click="openPost">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-xiaoxi"></i>消息
-						<!--<span class="mui-badge mui-badge-danger"></span>-->
 					</a>
 				</li>
 				<li class="mui-table-view-cell" @click="openMyStudy">
@@ -242,32 +202,7 @@
 					</a>
 				</li>
 			</ul>
-			<!--组织登录-->
-			<!--<ul class="mui-table-view" v-show="userType == 1">
-				<li class="mui-table-view-cell" @click="goOrgStudy">
-					<a class="mui-navigate-right">
-						<i class="iconfont icon-wodesk"></i>组织学习
-					</a>
-				</li>
-				<li class="mui-table-view-cell" @click="goOrgActivity">
-					<a class="mui-navigate-right">
-						<i class="iconfont icon-huodong"></i>组织活动
-					</a>
-				</li>
-			</ul>-->
-			<!--<ul class="mui-table-view" v-show="isLogin || androidUpdate">-->
 			<ul class="mui-table-view" v-if="isAndroid">
-				<!--<li class="mui-table-view-cell" @click="goRecommend">
-					<a class="mui-navigate-right">
-						<i class="iconfont icon-tuijian"></i>推荐
-					</a>
-				</li>-->
-				<!--<li class="mui-table-view-cell" v-show="isLogin" @click="logout">-->
-				<!--<li class="mui-table-view-cell" @click="logout">
-					<a class="mui-navigate-right">
-						<i class="iconfont icon-fill108"></i>退出登录
-					</a>
-				</li>-->
 				<li class="mui-table-view-cell" @click="clearCache">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-Clear"></i>清除缓存

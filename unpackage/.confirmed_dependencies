@@ -31,10 +31,18 @@
 			"views/approve.html",
 			"views/recommendList.html",
 			"views/activeDetail.html",
-			"views/summary.html"
+			"views/summary.html",
+			"views/courseDetail.html",
+			"views/courseList.html"
 		],
 		"resources": [
-			"img/organization.jpg"
+			"img/organization.jpg",
+			"img/studyIcon5.png",
+			"img/studyIcon3.png",
+			"img/studyIcon4.png",
+			"img/studyIcon1.png",
+			"img/studyIcon2.png",
+			"img/studyIcon6.png"
 		]
 	},
 	"views/newsList.html": {
