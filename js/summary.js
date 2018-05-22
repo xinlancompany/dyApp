@@ -62,9 +62,9 @@
 				var self = this;
 				_summaryAjax({
 					cmd: "getFirstPC",
-					no: self.userInfo.orgNo
+					no: self.userInfo.no
 				}, function(d) {
-					if (d.success && d.data.no == self.userInfo.orgNo) {
+					if (d.success && d.data.no == self.userInfo.no) {
 						$(".rule-btn").show();
 					}
 				});
