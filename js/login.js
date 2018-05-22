@@ -21,9 +21,9 @@ var Login = (function () {
         // 获取当前webview页面对象，其中包含登陆类型信息
         this.wb = plus.webview.currentWebview();
         //预加载页面
-        var indexPage = plus.webview.getWebviewById("index");
-        if (indexPage)
-            plus.webview.close(indexPage, "none");
+        //		let indexPage = plus.webview.getWebviewById("index");
+        //		if (indexPage) plus.webview.close(indexPage, "none");
+        _delayClose(plus.webview.getWebviewById("index"));
         mui.preload({
             url: '../index.html',
             id: 'index'

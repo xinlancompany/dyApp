@@ -8,6 +8,7 @@ declare function _callAjax(params: any, f: (d: any) => void): void;
 declare function _summaryAjax(params: any, f: (d: any) => void): void;
 declare function _hotAjax(params: any, f: (d: any) => void): void;
 declare function _tell(s: any): void;
+declare function _delayClose(p: any, tm?: number): void;
 
 declare var plus: any;
 declare var mui: any;
@@ -35,8 +36,9 @@ class Index {
 		}
 
 		// 关闭login
-		let loginPage = plus.webview.getWebviewById("login");
-		if (loginPage) plus.webview.close(loginPage, "none");
+//		let loginPage = plus.webview.getWebviewById("login");
+//		if (loginPage) plus.webview.close(loginPage, "none");
+		_delayClose(plus.webview.getWebviewById("login"));
 	}
 
 	updateInfo() {
@@ -134,8 +136,9 @@ class Index {
 				this.startOrgInterface();
 			}
 
-			let loginPage = plus.webview.getWebviewById("login");
-			if (loginPage) plus.webview.close(loginPage);
+//			let loginPage = plus.webview.getWebviewById("login");
+//			if (loginPage) plus.webview.close(loginPage, "none");
+			_delayClose(plus.webview.getWebviewById("login"));
 
 			// 必须返回首页
 			this.footer.switchTo('舟山共产党员', 'index');

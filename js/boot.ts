@@ -6,6 +6,7 @@ declare function _load(n: string): any;
 declare function openWindow(f: string, n: string): void;
 declare function _callAjax(params: any, f: (d: any) => void): void;
 declare function _tell(s: any): void;
+declare function _delayClose(p: any, tm?: number): void;
 
 declare var plus: any;
 declare var mui: any;
@@ -73,9 +74,10 @@ class Boot {
 						openWindow("views/login.html", "login");
 					}
 					// 延时关闭本身，防止整个退出
-					setTimeout(() => {
-						plus.webview.close(plus.webview.currentWebview());
-					}, 500);
+//					setTimeout(() => {
+//						plus.webview.close(plus.webview.currentWebview());
+//					}, 500);
+					_delayClose(plus.webview.currentWebview());
 					if (this.timeoutCb) {
 						// 停止倒计时
 						clearInterval(this.timeoutCb);

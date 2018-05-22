@@ -10,9 +10,9 @@ var Index = (function () {
             };
         }
         // 关闭login
-        var loginPage = plus.webview.getWebviewById("login");
-        if (loginPage)
-            plus.webview.close(loginPage, "none");
+        //		let loginPage = plus.webview.getWebviewById("login");
+        //		if (loginPage) plus.webview.close(loginPage, "none");
+        _delayClose(plus.webview.getWebviewById("login"));
     }
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
@@ -103,9 +103,9 @@ var Index = (function () {
             if (_this.orgInfo) {
                 _this.startOrgInterface();
             }
-            var loginPage = plus.webview.getWebviewById("login");
-            if (loginPage)
-                plus.webview.close(loginPage);
+            //			let loginPage = plus.webview.getWebviewById("login");
+            //			if (loginPage) plus.webview.close(loginPage, "none");
+            _delayClose(plus.webview.getWebviewById("login"));
             // 必须返回首页
             _this.footer.switchTo('舟山共产党员', 'index');
         });
