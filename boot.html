@@ -14,7 +14,7 @@
 	<body>
 		<div class="boot" :style="{backgroundImage: startImg}">
 		<!--<div class="boot" style="background-image: url(img/start.jpg);">-->
-			<span @click="openIndex">{{time}} 秒后关闭</span>
+			<span @click="openIndex" v-cloak>{{time}} 秒后关闭</span>
 		</div>
 	</body>
 </html>

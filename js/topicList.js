@@ -3,7 +3,7 @@ function plusReady() {
         el: "#topicList",
         data: {
             topics: [],
-            isAdmin: false
+            isAdmin: true
         },
         methods: {
             goToActivity: function(i) {
@@ -53,13 +53,12 @@ function plusReady() {
 
     var userInfoStr = _get("userInfo"),
         userInfo = _load(userInfoStr),
-        orgNo = userInfo.userType?userInfo.no:userInfo.orgNo,
+        orgNo = "no" in userInfo?userInfo.no:userInfo.orgNo,
         wb = plus.webview.currentWebview(),
         lid = wb.lid,
         mname = wb.name;
     $(".mui-title").text(mname);
     // 设置编辑、删除按钮是否显示
-    vm.isAdmin = !!parseInt(userInfo.userType);
 
     // 子组织打开模式
     if ("isSub" in wb) {

@@ -10,15 +10,11 @@ var Index = (function () {
             };
         }
         // 关闭login
-        //		let loginPage = plus.webview.getWebviewById("login");
-        //		if (loginPage) plus.webview.close(loginPage, "none");
         _delayClose(plus.webview.getWebviewById("login"));
     }
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
         var orgStr = _get("orgInfo");
-        //		alert(userStr);
-        //		alert(orgStr);
         if (userStr) {
             this.userInfo = _load(userStr);
             this.orgInfo = null;
@@ -27,8 +23,6 @@ var Index = (function () {
             this.orgInfo = _load(orgStr);
             this.userInfo = null;
         }
-        //		alert(!!this.userInfo);
-        //		alert(!!this.orgInfo);
         // 设置右上角登陆或退出
         $(".logout").text(!this.userInfo && !this.orgInfo ? "登陆" : " 退出");
     };
@@ -63,14 +57,11 @@ var Index = (function () {
                     $("#" + tag).show();
                 },
                 updateState: function () {
-                    //					alert("rth-updateState");
                     if (idxObj.userInfo) {
-                        //						alert("rth-updateState-userInfo");
                         this.isPersonal = true;
                         this.isOrganization = false;
                     }
                     if (idxObj.orgInfo) {
-                        //						alert("rth-updateState-orgInfo");
                         this.isPersonal = false;
                         this.isOrganization = true;
                     }
@@ -103,8 +94,6 @@ var Index = (function () {
             if (_this.orgInfo) {
                 _this.startOrgInterface();
             }
-            //			let loginPage = plus.webview.getWebviewById("login");
-            //			if (loginPage) plus.webview.close(loginPage, "none");
             _delayClose(plus.webview.getWebviewById("login"));
             // 必须返回首页
             _this.footer.switchTo('舟山共产党员', 'index');
@@ -445,16 +434,17 @@ var Index = (function () {
                         }
                         else if ("自定义编辑" === sName) {
                             // CHECK
-                            openWindow("views/topicList.html", "activityList", {
+                            openWindow("views/topicList.html", "topicList", {
                                 lid: linkerId.Activity,
-                                name: "组织生活"
+                                name: "组织生活",
+                                isAdmin: true,
                             });
                         }
                         else {
                             openWindow("views/activityList.html", "activityList", {
                                 lid: s.topicId,
                                 title: s.title,
-                                isAdmin: true
+                                isAdmin: true,
                             });
                         }
                     });

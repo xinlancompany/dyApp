@@ -59,9 +59,6 @@ var Boot = (function () {
                         openWindow("views/login.html", "login");
                     }
                     // 延时关闭本身，防止整个退出
-                    //					setTimeout(() => {
-                    //						plus.webview.close(plus.webview.currentWebview());
-                    //					}, 500);
                     _delayClose(plus.webview.currentWebview());
                     if (this.timeoutCb) {
                         // 停止倒计时
