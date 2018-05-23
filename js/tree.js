@@ -26,7 +26,7 @@
                 openDetail: function(i) {
                     if (!isAdmin) return mui.toast("仅书记可以查看子组织详情");
                     openWindow("subOrg.html", "subOrg", {
-                      	orgId: i.id,
+						orgId: i.id,
                         orgNo: i.no,
                         orgName: i.name,
                         orgType: i.type,
@@ -82,7 +82,7 @@
         var getOrgs = function(no, cb) {
             _callAjax({
                 cmd: "fetch",
-                sql: "select id, name, no, type superOrgNo from organization where superOrgNo = ?",
+                sql: "select id, name, no, type, superOrgNo from organization where superOrgNo = ?",
                 vals: _dump([no,])
             }, function(d) {
                 cb(d);
