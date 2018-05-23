@@ -443,6 +443,10 @@ class Index {
 				},
 			},
 			methods: {
+				openCheckRules: function() {
+					// 打开考核规则制定
+					openWindow("views/newRule.html", "newRule");
+				},
 				openNoticeList: function() {
 					// 打开通知列表
 					openWindow("views/newsList.html", "newsList", {

@@ -193,7 +193,8 @@
 					"img/studyIcon4.png",
 					"img/studyIcon1.png",
 					"img/studyIcon2.png",
-					"img/studyIcon6.png"
+					"img/studyIcon6.png",
+					"img/navbarbg.jpg"
 				],
 				"refer": [
 					"views/score.html",
@@ -223,7 +224,8 @@
 					"views/activeDetail.html",
 					"views/summary.html",
 					"views/courseDetail.html",
-					"views/courseList.html"
+					"views/courseList.html",
+					"views/newRule.html"
 				],
 				"priority": 0
 			},
@@ -239,7 +241,8 @@
 				"resources": [],
 				"refer": [
 					"views/newsDetail.html",
-					"views/articleUpload.html"
+					"views/articleUpload.html",
+					"views/orgNoticeDetail.html"
 				],
 				"priority": 0
 			},
@@ -336,7 +339,8 @@
 					"views/selectTags.html",
 					"views/absents.html",
 					"views/selectUsers.html",
-					"views/activityCategories.html"
+					"views/activityCategories.html",
+					"views/selectInvalids.html"
 				],
 				"priority": 0
 			},
@@ -363,6 +367,13 @@
 					"views/newsList.html"
 				],
 				"priority": 0
+			},
+			"views/myActivity.html": {
+				"resources": [],
+				"refer": [
+					"views/activeDetail.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {
@@ -370,7 +381,6 @@
 				"lib/swiper.min.css",
 				"js/ucenter.js",
 				"js/activeDetail.js",
-				"img/navbarbg.jpg",
 				"lib/mui.picker.min.js",
 				"fonts/iconfont.woff",
 				"css/less-components/_mixin.css",

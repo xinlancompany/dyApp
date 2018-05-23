@@ -75,7 +75,7 @@ function plusReady() {
                     if ("enroll" in d.data && d.data["enroll"].length) {
                         d.data["enroll"].forEach(function(i) {
                             i.ifSelect = true;
-                            self.users.push(i);
+                            self.participants.push(i);
                         });
                     }
                     if ("categories" in d.data &&d.data["categories"].length) {
@@ -296,7 +296,7 @@ function plusReady() {
 					}
                     if (d.success) {
                         // 更新参加人员表activityEnroll
-                        if (self.users.length) {
+                        if (self.participants.length) {
                         	var credits = 3;
                         	if ("credits" in self.tag && self.tag.credits) credits = self.tag.credits;
                             _callAjax({
@@ -313,9 +313,7 @@ function plusReady() {
                                                     key: "key"+parseInt(Math.random()*10e6),
                                                     sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+credits+")"
                                                 }
-                                            }, _filter(function(i) {
-                                                return i.ifSelect;
-                                            }, self.users))
+                                            }, self.participants)
                                         ))
 //                                      .concat(
 //												_map(function(i) {

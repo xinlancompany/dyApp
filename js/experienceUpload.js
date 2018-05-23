@@ -79,12 +79,15 @@
             sql: "select experienceTitle, experience, imgs, experiencePermitted from activityEnroll where userId = ? and activityId = ?",
             vals: _dump([userInfo.id, wb.aid,])
         }, function(d) {
+        	alert(_dump(d));
             if (d.success && d.data && d.data.length) {
-                var imgs = _load(d.data[0].imgs);
-                [1,2,3].forEach(function(i) {
-                    vm["img"+i] = imgs[i-1];
-                    vm["imgStyle"+i].backgroundImage = "url("+imgs[i-1]+")";
-                });
+            	if (d.data[0].imgs) {
+            		var imgs = _load(d.data[0].imgs);
+					[1,2,3].forEach(function(i) {
+						vm["img"+i] = imgs[i-1];
+						vm["imgStyle"+i].backgroundImage = "url("+imgs[i-1]+")";
+					});
+				}
                 vm.experience = d.data[0].experience;
                 vm.title = d.data[0].experienceTitle;
             }

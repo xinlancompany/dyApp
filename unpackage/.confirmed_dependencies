@@ -33,7 +33,8 @@
 			"views/activeDetail.html",
 			"views/summary.html",
 			"views/courseDetail.html",
-			"views/courseList.html"
+			"views/courseList.html",
+			"views/newRule.html"
 		],
 		"resources": [
 			"img/organization.jpg",
@@ -42,13 +43,15 @@
 			"img/studyIcon4.png",
 			"img/studyIcon1.png",
 			"img/studyIcon2.png",
-			"img/studyIcon6.png"
+			"img/studyIcon6.png",
+			"img/navbarbg.jpg"
 		]
 	},
 	"views/newsList.html": {
 		"refer": [
 			"views/newsDetail.html",
-			"views/articleUpload.html"
+			"views/articleUpload.html",
+			"views/orgNoticeDetail.html"
 		],
 		"resources": []
 	},
@@ -133,7 +136,8 @@
 			"views/selectTags.html",
 			"views/absents.html",
 			"views/selectUsers.html",
-			"views/activityCategories.html"
+			"views/activityCategories.html",
+			"views/selectInvalids.html"
 		],
 		"resources": []
 	},
@@ -154,6 +158,11 @@
 			"views/activityList.html",
 			"views/memberManage.html",
 			"views/newsList.html"
+		]
+	},
+	"views/myActivity.html": {
+		"refer": [
+			"views/activeDetail.html"
 		]
 	}
 }
