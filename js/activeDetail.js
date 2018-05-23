@@ -113,7 +113,8 @@ function plusReady() {
                 var self = this;
                 openWindow("activityExperiences.html", "activityExperiences", {
                     aid: activityId,
-                    isAdmin: self.isAdmin
+                    isAdmin: self.isAdmin,
+                    isSub: isSub,
                 });
             },
 			//获取活动详情

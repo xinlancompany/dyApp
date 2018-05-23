@@ -1,6 +1,9 @@
 (function() {
     var plusReady = function() {
-        var wb = plus.webview.currentWebview();
+        var wb = plus.webview.currentWebview(),
+        		isSub = false;
+        	// 兼容上级打开模式
+        if ("isSub" in wb) isSub = wb.isSub;
         
         var vm = new Vue({
             el: "#activityExperiences",
@@ -26,7 +29,7 @@
         var init = function() {
             _callAjax({
                 cmd: "fetch",
-                sql: "select e.id, u.name, e.imgs, e.experience, e.experienceTitle, e.experiencePermitted, e.experienceTime from activityEnroll e, user u where e.activityId = ? and e.userId = u.id and e.experience != '' "+(wb.isAdmin?"":" and e.experiencePermitted = 1"),
+                sql: "select e.id, u.name, e.imgs, e.experience, e.experienceTitle, e.experiencePermitted, e.experienceTime from activityEnroll e, user u where e.activityId = ? and e.userId = u.id and e.experience != '' "+((wb.isAdmin && !isSub) ?"":" and e.experiencePermitted = 1"),
                 vals: _dump([wb.aid,])
             }, function(d) {
                 if (d.success && d.data && d.data.length) {
