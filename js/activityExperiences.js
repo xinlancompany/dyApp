@@ -19,7 +19,7 @@
                         title: i.experienceTitle,
                         content: i.experience,
                         imgs: imgs,
-                        isAdmin: wb.isAdmin,
+                        isAdmin: wb.isAdmin && !isSub,
                         permitted: parseInt(i.experiencePermitted)
                     });
                 }
