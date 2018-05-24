@@ -422,6 +422,7 @@ class Index {
 					activitiesCnt: 0,
 					membersCnt: 0
 				},
+				ifFirstPC: false,
 			},
 			computed: {
 				ifPartyBranch: function() {
@@ -602,6 +603,16 @@ class Index {
 						if (d.success) this.seasonSummaries = d.data;
 					});
 				}
+
+				// 判断是否是一级党委
+				_summaryAjax({
+					cmd: "getFirstPC",
+					no: idxObj.orgInfo.no
+				}, (d) => {
+					if (d.success && d.data) {
+						this.ifFirstPC = d.data.no === idxObj.orgInfo.no;
+					}
+				});
 			}
 		});
 	}

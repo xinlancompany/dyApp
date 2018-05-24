@@ -380,6 +380,7 @@ var Index = (function () {
                     activitiesCnt: 0,
                     membersCnt: 0
                 },
+                ifFirstPC: false,
             },
             computed: {
                 ifPartyBranch: function () {
@@ -566,6 +567,15 @@ var Index = (function () {
                             _this.seasonSummaries = d.data;
                     });
                 }
+                // 判断是否是一级党委
+                _summaryAjax({
+                    cmd: "getFirstPC",
+                    no: idxObj.orgInfo.no
+                }, function (d) {
+                    if (d.success && d.data) {
+                        _this.ifFirstPC = d.data.no === idxObj.orgInfo.no;
+                    }
+                });
             }
         });
     };
