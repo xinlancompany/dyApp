@@ -36,6 +36,7 @@ function plusReady() {
                     // 设置头部等信息
                     return;
                 }
+                $(".mui-title").text("更新活动");
                 var self = this;
                 _callAjax({
                     cmd: "multiFetch",
@@ -72,13 +73,13 @@ function plusReady() {
                         if (inf.absents) self.absents = _load(inf.absents);
                         if (inf.notOnDuties) self.invalids = _load(inf.notOnDuties);
                     }
-                    if ("enroll" in d.data && d.data["enroll"].length) {
+                    if ("enroll" in d.data && d.data.enroll && d.data["enroll"].length) {
                         d.data["enroll"].forEach(function(i) {
                             i.ifSelect = true;
                             self.participants.push(i);
                         });
                     }
-                    if ("categories" in d.data &&d.data["categories"].length) {
+                    if ("categories" in d.data && d.data["categories"].length) {
 						self.categories = d.data["categories"];
                     }
                 });
@@ -261,6 +262,8 @@ function plusReady() {
                 if (!starttime) return mui.toast("请填写开始时间");
                 if (!endtime) return mui.toast("请填写结束时间");
                 if (!content) return mui.toast("请填写内容");
+                if (!this.tag) return mui.toast("请选择积分量化标签");
+                if (!this.participants.length) return mui.toast("请选择参会人员");
 //              if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
@@ -330,7 +333,8 @@ function plusReady() {
 
                         }
                         
-                        mui.toast("添加成功");
+                        // 有aid时是更新状态
+                        mui.toast((self.aid?"更新":"添加")+"成功");
                         mui.fire(plus.webview.getWebviewById("activityList"), "refresh", {
                             lid: self.lid
                         });
