@@ -24,7 +24,7 @@
 					if (!sw) mui.toast("请输入搜索标题");
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, title, newsdate, img from courses where linkerId = "+self.lid+" and title like '%"+sw+"%'"
+						sql: "select id, title, newsdate, img from courses where linkerId = "+self.lid+" and title like '%"+sw+"%' and ifValid > 0"
 					}, function(d) {
 						if (d.success && d.data && d.data.length) {
 							self.showNews = d.data;
@@ -35,6 +35,10 @@
 					});
 				},
 				openCourseDetail: function(i) {
+					// 如果预加载了，则触发事件
+					mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
+						cid: i.id
+					});
 					openWindow("courseDetail.html", "courseDetail", {
 						cid: i.id
 					});
@@ -50,7 +54,7 @@
 					}
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, title, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) order by newsdate desc limit 10",
+						sql: "select id, title, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and ifValid > 0 order by newsdate desc limit 10",
 						vals: _dump([self.lid, fn, fn, fi])
 					}, function(d) {
 						if (d.success && d.data) {

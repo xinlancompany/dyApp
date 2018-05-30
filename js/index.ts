@@ -37,6 +37,11 @@ class Index {
 
 		// 关闭login
 		_delayClose(plus.webview.getWebviewById("login"));
+
+		// 打开舟山党建网
+		$('.goZSDJ').on('click', function() {
+			plus.runtime.openURL('http://www.zsdj.gov.cn/');
+		});
 	}
 
 	updateInfo() {
@@ -321,7 +326,14 @@ class Index {
 					hotn: 7
 				}, (d) => {
                     if (d.success && d.data && d.data.length) {
-                        this.coursesRecommended = d.data;
+                    		// 过滤重复的文章，因为最新和手动推荐的可能会重复
+                    		let ids = [];
+                    		d.data.forEach((i) => {
+                    			if (ids.indexOf(i.id) == -1) {
+                    				ids.push(i.id);
+                    				this.coursesRecommended.push(i);
+                    			}
+                    		});
                     }
 				});
 			}
