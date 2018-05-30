@@ -11,7 +11,7 @@
                 if (score > 0) {
                     _callAjax({
                         cmd: "exec",
-                        sql: "update activityEnroll set score = ?, scoreType = ? where id = ?",
+                        sql: "update activityEnroll set preScore = ?, scoreType = ? where id = ?",
                         vals: _dump([score, vm.gradeType, wb.idx])
                     }, function(d) {
                         if (d.success) {

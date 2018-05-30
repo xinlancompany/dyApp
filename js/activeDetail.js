@@ -80,16 +80,21 @@ function plusReady() {
             openRanks: function() {
                 var self = this;
                 if (!self.finishState.ifFinished) return mui.toast(self.finishState.tag);
-                _callAjax({
-                	cmd: "exec",
-                	sql: "update activityEnroll set score = preScore, preScore = 0 where activityId = ? and preScore > 0",
-                	vals: _dump([activityId,])
-                }, function(_d) {
+//              _callAjax({
+//              	cmd: "exec",
+//              	sql: "update activityEnroll set score = preScore, preScore = 0 where activityId = ? and preScore > 0",
+//              	vals: _dump([activityId,])
+//              }, function(_d) {
+//					openWindow("memberRanks.html", "memberRanks", {
+//						aid: activityId,
+//						title: self.detailData.title
+//					});
+//              });
+
 					openWindow("memberRanks.html", "memberRanks", {
 						aid: activityId,
-						title: self.detailData.title
+						title: self.detailData.title,
 					});
-                });
             },
             // 上传心得
             uploadExperience: function() {
