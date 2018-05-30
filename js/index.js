@@ -100,7 +100,7 @@ var Index = (function () {
             }
             _delayClose(plus.webview.getWebviewById("login"));
             // 必须返回首页
-            _this.footer.switchTo('舟山共产党员', 'index');
+            _this.footer.switchTo('舟山共产党员E家', 'index');
         });
     };
     Index.prototype.startIndexNews = function () {
