@@ -32,7 +32,7 @@
         var init = function() {
             _callAjax({
                 cmd: "fetch",
-                sql: "select e.id, u.name, e.score, e.scoreType from activityEnroll e left join user u on e.userId = u.id where e.activityId = ?",
+                sql: "select e.id, u.name, e.preScore as score, e.scoreType from activityEnroll e left join user u on e.userId = u.id where e.activityId = ?",
                 vals: _dump([wb.aid,])
             }, function(d) {
                 if (d.success && d.data && d.data.length) {

@@ -241,9 +241,17 @@
 							mui.confirm("确定通过？", "提示", ["确定", "取消"], function(e) {
 								if (e.index == 0) {
 									_callAjax({
-										cmd: "exec",
-										sql: "update activitys set ifValid = 4 where id = ?",
-										vals: _dump([i.id,])
+										cmd: "multiFetch",
+										multi: _dump([
+											{
+												key: "activity",
+												sql: "update activitys set ifValid = 4 where id = "+i.id
+											},
+											{
+												key: "score",
+												sql: "update activityEnroll set score = preScore where activityId = "+i.id
+											}
+										])
 									}, function(d) {
 										mui.toast("通过"+(d.success?"成功":"失败"));
 										if (d.success) self.examines = _del_ele(self.examines, idx);

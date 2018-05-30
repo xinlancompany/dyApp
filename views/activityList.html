@@ -33,10 +33,10 @@
                             <i class="iconfont icon-zhuanfa"></i>
                         </span>
                         -->
-                        <span class="activitySort" v-show="isAdmin && !isSub" @click="delActivity(a, idx)">
+                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 4" @click="delActivity(a, idx)">
                             <i class="iconfont icon-shanchu"></i>
                         </span>
-                        <span class="activitySort" v-show="isAdmin && !isSub" @click="editActivity(a, idx)">
+                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 4" @click="editActivity(a, idx)">
                             <i class="iconfont icon-bianji"></i>
                         </span>
                     </p>
