@@ -210,7 +210,7 @@ class Index {
 						if ("news" in d.data && d.data.news.length) {
 							this.news = d.data.news;
 						}
-						if ("activities" in d.data && d.data.activities.length) {
+						if ("activities" in d.data && d.data.activities && d.data.activities.length) {
 							this.activities = d.data.activities;
 						}
 					});
@@ -229,6 +229,14 @@ class Index {
 				openActivities: function() {
 					// 打开推荐活动
 					openWindow("views/recommendList.html", "recommendList");
+				},
+				openActivity: function(i) {
+					// 打开推荐活动
+					openWindow('views/activeDetail.html', 'activeDetail', {
+						activityId: i.id,
+						isAdmin: false,
+						isSub: false
+					});
 				}
 			},
 			mounted: function() {

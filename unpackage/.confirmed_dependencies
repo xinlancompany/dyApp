@@ -164,5 +164,10 @@
 		"refer": [
 			"views/activeDetail.html"
 		]
+	},
+	"views/recommendList.html": {
+		"refer": [
+			"views/activeDetail.html"
+		]
 	}
 }
