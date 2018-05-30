@@ -169,5 +169,10 @@
 		"refer": [
 			"views/activeDetail.html"
 		]
+	},
+	"views/approve.html": {
+		"refer": [
+			"views/activeDetail.html"
+		]
 	}
 }
