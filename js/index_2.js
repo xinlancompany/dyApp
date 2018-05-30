@@ -1233,7 +1233,7 @@ function plusReady() {
             $(".mui-title").text("学习平台");
         }
         if (page == "index") {
-            $(".mui-title").text("舟山共产党员");
+            $(".mui-title").text("舟山共产党员E家");
         }
 		header.showOrgTitle = false;
 

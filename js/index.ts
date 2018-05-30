@@ -134,7 +134,7 @@ class Index {
 			_delayClose(plus.webview.getWebviewById("login"));
 
 			// 必须返回首页
-			this.footer.switchTo('舟山共产党员', 'index');
+			this.footer.switchTo('舟山共产党员E家', 'index');
 		});
 	}
 
