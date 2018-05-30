@@ -195,6 +195,14 @@ var Index = (function () {
                 openActivities: function () {
                     // 打开推荐活动
                     openWindow("views/recommendList.html", "recommendList");
+                },
+                openActivity: function (i) {
+                    // 打开推荐活动
+                    openWindow('views/activeDetail.html', 'activeDetail', {
+                        activityId: i.id,
+                        isAdmin: false,
+                        isSub: false
+                    });
                 }
             },
             mounted: function () {

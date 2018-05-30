@@ -374,6 +374,20 @@
 					"views/activeDetail.html"
 				],
 				"priority": 0
+			},
+			"views/recommendList.html": {
+				"resources": [],
+				"refer": [
+					"views/activeDetail.html"
+				],
+				"priority": 0
+			},
+			"views/approve.html": {
+				"resources": [],
+				"refer": [
+					"views/activeDetail.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

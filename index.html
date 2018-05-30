@@ -69,7 +69,7 @@
 			<div class="activity news-list" v-show="activities.length">
 				<header class="global-header"><h1 class="title">推荐活动</h1></header>
 				<ul class="mui-table-view">
-					<li v-for="i in activities" @click="goActivity(i)">
+					<li v-for="i in activities" @click="openActivity(i)">
 						<a>
 							<!--<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="i.img"></div>-->
 							<div class="mui-media-body">
@@ -92,9 +92,9 @@
 				<div class="check" v-if="ifPartyBranch">
 					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummaries" :class="{'icon-circle': i[0] && [1], 'icon-chart12': i[0] ^ i[1], 'icon-jindu3': !i[0] && !i[1]}" v-bind:data-progress="idx+1"></i>
 				</div>
-				<div @click="openCheckRules" class="check" v-if="ifFirstPC">
+				<span @click="openCheckRules" class="check-ctrl" v-if="ifFirstPC">
 					考核规则制定
-				</div>
+				</span>
 			</header>
 			
 			<div class="notice">

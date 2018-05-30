@@ -757,6 +757,7 @@ body {
 }
 .activity-panel .org-info {
   padding: 20px;
+  text-align: center;
 }
 .activity-panel .org-info h1 {
   font-size: 18px;
@@ -797,6 +798,12 @@ body {
   transform: translate(-50%, -50%);
   font-size: 12px;
   text-shadow: 0 0 1px #000000;
+}
+.activity-panel .org-info .check-ctrl {
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: #e14937;
+  border: 1px solid #e14937;
 }
 .activity-detail {
   margin-bottom: 10px;
