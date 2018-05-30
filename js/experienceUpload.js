@@ -79,7 +79,6 @@
             sql: "select experienceTitle, experience, imgs, experiencePermitted from activityEnroll where userId = ? and activityId = ?",
             vals: _dump([userInfo.id, wb.aid,])
         }, function(d) {
-        	alert(_dump(d));
             if (d.success && d.data && d.data.length) {
             	if (d.data[0].imgs) {
             		var imgs = _load(d.data[0].imgs);

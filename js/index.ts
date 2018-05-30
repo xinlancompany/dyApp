@@ -37,6 +37,11 @@ class Index {
 
 		// 关闭login
 		_delayClose(plus.webview.getWebviewById("login"));
+
+		// 打开舟山党建网
+		$('.goZSDJ').on('click', function() {
+			plus.runtime.openURL('http://www.zsdj.gov.cn/');
+		});
 	}
 
 	updateInfo() {
@@ -210,7 +215,7 @@ class Index {
 						if ("news" in d.data && d.data.news.length) {
 							this.news = d.data.news;
 						}
-						if ("activities" in d.data && d.data.activities.length) {
+						if ("activities" in d.data && d.data.activities && d.data.activities.length) {
 							this.activities = d.data.activities;
 						}
 					});
@@ -229,6 +234,14 @@ class Index {
 				openActivities: function() {
 					// 打开推荐活动
 					openWindow("views/recommendList.html", "recommendList");
+				},
+				openActivity: function(i) {
+					// 打开推荐活动
+					openWindow('views/activeDetail.html', 'activeDetail', {
+						activityId: i.id,
+						isAdmin: false,
+						isSub: false
+					});
 				}
 			},
 			mounted: function() {
@@ -313,7 +326,14 @@ class Index {
 					hotn: 7
 				}, (d) => {
                     if (d.success && d.data && d.data.length) {
-                        this.coursesRecommended = d.data;
+                    		// 过滤重复的文章，因为最新和手动推荐的可能会重复
+                    		let ids = [];
+                    		d.data.forEach((i) => {
+                    			if (ids.indexOf(i.id) == -1) {
+                    				ids.push(i.id);
+                    				this.coursesRecommended.push(i);
+                    			}
+                    		});
                     }
 				});
 			}

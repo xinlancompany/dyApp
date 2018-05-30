@@ -191,6 +191,10 @@
 					}
 				},
 				openCourse: function(i) {
+					// 如果预加载，需要触发事件
+					mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
+						cid: i.id
+					});
 					openWindow("courseDetail.html", "courseDetail", {
 						cid: i.id
 					});

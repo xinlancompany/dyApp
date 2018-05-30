@@ -65,6 +65,10 @@
 		// 用于预加载时的事件触发
 		window.addEventListener("courseId", function(e) {
 			vm.cid = e.detail.cid;
+			vm.newsData.title = "";
+			vm.newsData.reporter = "";
+			vm.newsData.readcnt = "";
+			vm.newsData.content = "";
 		});
 	};
 	

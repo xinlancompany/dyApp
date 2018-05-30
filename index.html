@@ -69,7 +69,7 @@
 			<div class="activity news-list" v-show="activities.length">
 				<header class="global-header"><h1 class="title">推荐活动</h1></header>
 				<ul class="mui-table-view">
-					<li v-for="i in activities" @click="goActivity(i)">
+					<li v-for="i in activities" @click="openActivity(i)">
 						<a>
 							<!--<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="i.img"></div>-->
 							<div class="mui-media-body">
