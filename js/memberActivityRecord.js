@@ -49,6 +49,7 @@
                             });
                         }
                         if (e.index == 2) {
+							if (parseInt(i.ifValid) == 4) return mui.toast("活动已审定");
                             openWindow("grade.html", "grade", {
                                 idx: i.id,
                                 score: i.score,
@@ -72,7 +73,7 @@
                 multi: _dump([
                     {
                         key: "activity",
-                        sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType from activityEnroll e, activitys a where e.userId = "+wb.idx+" and e.activityId = a.id and a.ifValid > 0",
+                        sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType, a.ifValid from activityEnroll e, activitys a where e.userId = "+wb.idx+" and e.activityId = a.id and a.ifValid > 0",
                     },
                     /*
                     {
@@ -110,14 +111,13 @@
             });
 
             // 活动积分
-            _callAjax({
-                cmd: "fetch",
-                sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType from activityEnroll e, activitys a where e.userId = ? and e.activityId = a.id and a.ifValid = 1",
-                vals: _dump([,])
-            }, function(d) {
-                // alert(_dump(d.data));
-                if (d.success && d.data && d.data.length) vm.activities = d.data;
-            });
+//          _callAjax({
+//              cmd: "fetch",
+//              sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType, a.ifValid from activityEnroll e, activitys a where e.userId = ? and e.activityId = a.id and a.ifValid = 1",
+//              vals: _dump([,])
+//          }, function(d) {
+//              if (d.success && d.data && d.data.length) vm.activities = d.data;
+//          });
         };
         init();
 
