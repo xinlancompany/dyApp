@@ -23,7 +23,7 @@ function plusReady() {
 		el: '#newsDetail',
 		data: {
 			newsData: [],  //新闻内容
-            userInfo: _load(_get("userInfo"))
+            userInfo: null, // _load(_get("userInfo"))
 		},
 		methods: {
 			//获取新闻内容
@@ -78,6 +78,10 @@ function plusReady() {
             if (!!newsId) {
                 self.getNewsData();
             }
+
+			//  获取userInfo
+			var userInfoStr = _get("userInfo");
+			if (userInfoStr) this.userInfo = _load(userInfoStr);
 		}
 	});
 	

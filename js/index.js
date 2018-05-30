@@ -176,7 +176,7 @@ var Index = (function () {
                         if ("news" in d.data && d.data.news.length) {
                             _this.news = d.data.news;
                         }
-                        if ("activities" in d.data && d.data.activities.length) {
+                        if ("activities" in d.data && d.data.activities && d.data.activities.length) {
                             _this.activities = d.data.activities;
                         }
                     });
