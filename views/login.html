@@ -16,14 +16,14 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<h1 class="mui-title">登录</h1>
-            <!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right goZSDJ">舟山党建网</button>-->
+            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right guestLogin">游客登录</button>
 		</header>
 		
 		<div id="login" class="have-header login">
 			<img src="../img/default.png" alt="" />
 			
 			<div class="input-frame">
-				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="12" :placeholder="nameTag" v-model="name"/>
+				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="18" :placeholder="nameTag" v-model="name"/>
 			</div>
 			<div class="input-frame">
 				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入您的密码" v-model="pswd"/>
@@ -44,7 +44,10 @@
 			<div class="login-btns" @click="login">
 				<span>登录</span>
 			</div>
-			<div class="footer"><a @click="openIndex">没有账号?游客浏览</a><a @click="forgetPswd" v-show="loginType === 'personal'">忘记密码</a></div>
+			<div class="footer">
+				<!--<a @click="openIndex">没有账号?游客浏览</a>-->
+				<a @click="forgetPswd" v-show="loginType === 'personal'">忘记密码</a>
+			</div>
 		</div>
 	</body>
 </html>

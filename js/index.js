@@ -15,6 +15,8 @@ var Index = (function () {
         $('.goZSDJ').on('click', function () {
             plus.runtime.openURL('http://www.zsdj.gov.cn/');
         });
+        // 下拉刷新
+        pullToRefresh();
     }
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
@@ -28,7 +30,7 @@ var Index = (function () {
             this.userInfo = null;
         }
         // 设置右上角登陆或退出
-        $(".logout").text(!this.userInfo && !this.orgInfo ? "登陆" : " 退出");
+        $(".logout").text(!this.userInfo && !this.orgInfo ? "登录" : " 退出");
     };
     Index.prototype.start = function () {
         var _this = this;
@@ -244,7 +246,7 @@ var Index = (function () {
                 openBranchAct: function () {
                     openWindow("views/courseList.html", "courseList", {
                         lid: linkerId.BranchActNews,
-                        name: "支部活动"
+                        name: "活动案例"
                     });
                 },
                 openPublicNotice: function () {
@@ -257,9 +259,25 @@ var Index = (function () {
                     openWindow('views/internetCourseList.html', 'internetList');
                 },
                 openBooks: function () {
-                    openWindow("views/courseList.html", "courseList", {
-                        lid: linkerId.Books,
-                        name: "党建书屋"
+                    //					openOutlink("https://wk3.bookan.com.cn/?id=27089&token=!&from=groupmessage#/book/50400", "党建书屋");
+                    //					openWindow("views/courseList.html", "courseList", {
+                    //						lid: linkerId.Books,
+                    //						name: "党建书屋"
+                    //					});
+                    _replaceAjax({
+                        cmd: "book",
+                    }, function (d) {
+                        if (d.success && d.data) {
+                            if (d.data.indexOf("http") == 0) {
+                                openOutlink(d.data, "党建书屋");
+                            }
+                            else {
+                                openWindow("views/courseList.html", "courseList", {
+                                    lid: linkerId.Books,
+                                    name: "党建书屋"
+                                });
+                            }
+                        }
                     });
                 },
                 openZhoushanNews: function () {
@@ -307,6 +325,7 @@ var Index = (function () {
         var vm = new Vue({
             el: "#ucenter",
             data: {
+                apk: "",
                 userInfo: idxObj.userInfo,
                 isAndroid: "Android" === plus.os.name,
                 systemVersion: '',
@@ -314,7 +333,7 @@ var Index = (function () {
             },
             computed: {
                 isNew: function () {
-                    return '' !== this.systemVersion && this.systemVersion === this.appVersion;
+                    return '' !== this.systemVersion && this.appVersion < this.systemVersion;
                 }
             },
             methods: {
@@ -352,13 +371,14 @@ var Index = (function () {
                     });
                 },
                 checkNewVersion: function () {
+                    var _this = this;
                     if (!this.isNew) {
                         mui.confirm('发现新版本v' + this.systemVersion + '，是否更新?', '', ['更新', '取消'], function (e) {
                             if (0 === e.index) {
                                 mui.toast('请使用浏览器打开');
                                 plus.runtime.openURL(
                                 // 地址需要改变
-                                'http://a.app.qq.com/o/simple.jsp?pkgname=com.xinlan.PTtele', function () {
+                                _this.apk, function () {
                                     mui.toast('浏览器调用失败，请前往应用中心更新');
                                 });
                             }
@@ -378,6 +398,7 @@ var Index = (function () {
                 }, function (d) {
                     if (d.success && d.data && d.data.length) {
                         _this.systemVersion = d.data[0].version;
+                        _this.apk = d.data[0].downloadUrl;
                     }
                 });
             }

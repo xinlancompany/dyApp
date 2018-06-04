@@ -60,6 +60,8 @@
 						if (d.success && d.data) {
 							if (d.data.length == 10) self.bHaveMore = true;
 							d.data.forEach(function(i) {
+								// 通知公告去头图
+								if (self.lid == linkerId.PublicNotice) i.img = "";
 								self.news.push(i);
 							});
 							self.showNews = self.news;
@@ -71,6 +73,10 @@
 				lid: function(i) {
 					if (!!i) this.getNews();
 				}
+			},
+			mounted: function() {
+				// 下拉刷新
+				pullToRefresh();
 			}
 		});
 

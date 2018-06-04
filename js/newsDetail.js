@@ -24,6 +24,7 @@ function plusReady() {
 		data: {
 			newsData: [],  //新闻内容
             userInfo: null, // _load(_get("userInfo"))
+            mediaRoot: ""
 		},
 		methods: {
 			//获取新闻内容
@@ -32,11 +33,23 @@ function plusReady() {
 
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, title, img, brief, content, linkerId, reporter, readcnt, newsdate, subtitle from "+(!!table?table:"articles")+" where ifValid =1 and id = ?",
+					sql: "select id, title, img, url, brief, content, linkerId, reporter, readcnt, newsdate, subtitle, url from "+(!!table?table:"articles")+" where ifValid =1 and id = ?",
 					vals: _dump([newsId])
 				}, function(d) {
 					if(d.success && d.data) {
+						if (d.data[0].url.indexOf('http') == 0) {
+							openOutlink(d.data[0].url, d.data[0].title, "newsDetail");
+							return;
+						}
 						self.newsData = d.data[0];
+
+						// 文件页面内部图片为相对路径，需要拼接
+						self.$nextTick(function() {
+							$("img,video").each(function() {
+								var im = $(this).attr("src");
+								if (!!im && im.indexOf("http") == -1) $(this).attr("src", self.mediaRoot+im);
+							});
+						});
 					}
 				});
 			},
@@ -82,6 +95,13 @@ function plusReady() {
 			//  获取userInfo
 			var userInfoStr = _get("userInfo");
 			if (userInfoStr) this.userInfo = _load(userInfoStr);
+
+			// 获取媒体根路径
+			_replaceAjax({
+				cmd: "imgRoot",
+			}, function(d) {
+				if (d.success && d.data) self.mediaRoot = d.data;
+			});
 		}
 	});
 	

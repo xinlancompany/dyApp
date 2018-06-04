@@ -81,7 +81,7 @@ var Login = (function () {
                     // 去掉登录名与密码的空格
                     var name = _trim(this.name), pswd = _trim(this.pswd);
                     if (!name || !pswd)
-                        return mui.toast("请完整填写登陆信息");
+                        return mui.toast("请完整填写登录信息");
                     // 防止重点击
                     this.loginAtOnce = false;
                     // 个人登陆
@@ -124,6 +124,10 @@ var Login = (function () {
                     if (d.success && d.data && d.data.length) {
                         _this.years = d.data;
                     }
+                });
+                // 游客登录
+                $(".guestLogin").click(function () {
+                    _this.openIndex();
                 });
             }
         });

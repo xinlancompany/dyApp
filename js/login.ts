@@ -106,7 +106,7 @@ class Login{
 					// 去掉登录名与密码的空格
 					let name = _trim(this.name),
 						pswd = _trim(this.pswd);
-					if (!name || !pswd) return mui.toast("请完整填写登陆信息");
+					if (!name || !pswd) return mui.toast("请完整填写登录信息");
 
 					// 防止重点击
 					this.loginAtOnce = false;
@@ -152,6 +152,11 @@ class Login{
 					if (d.success && d.data && d.data.length) {
 						this.years = d.data;
 					}
+				});
+
+				// 游客登录
+				$(".guestLogin").click(() => {
+					this.openIndex();
 				});
 			}
 		});

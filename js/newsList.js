@@ -171,6 +171,9 @@ function plusReady() {
 			var self = this;
 			// 获取动态新闻
 			// self.getNews();
+
+			// 下拉刷新
+			pullToRefresh();
 		}
 	});
 

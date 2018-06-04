@@ -40,9 +40,9 @@ function plusReady() {
 				}
 				if (evt.code != "Enter") return;
 				if (!sw) mui.toast("请输入搜索标题");
-				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and title like '%"+sw+"%'"
+				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and title like '%"+sw+"%' and ifValid = 1"
 				if (this.curId > 0) {
-					sql: "select id, title, newsdate, img from courses where linkerId = "+self.curId+" and title like '%"+sw+"%'"
+					sql: "select id, title, newsdate, img from courses where linkerId = "+self.curId+" and title like '%"+sw+"%' and ifValid = 1"
 				}
 				_callAjax({
 					cmd: "fetch",
@@ -63,6 +63,9 @@ function plusReady() {
 //					aid: i.id,
 //					table: "courses"
 //				});
+				mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
+					cid: i.id
+				});
 				openWindow("courseDetail.html", "courseDetail", {
 					cid: i.id
 				});
@@ -78,9 +81,9 @@ function plusReady() {
 					fi = i.id;
 					fn = i.newsdate;
 				}
-				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) order by newsdate desc, id desc limit 10";
+				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10";
 				if (this.curId > 0) {
-					sql = "select id, title, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) order by newsdate desc, id desc limit 10"
+					sql = "select id, title, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10"
 				}
 				_callAjax({
 					cmd: "fetch",
@@ -106,6 +109,9 @@ function plusReady() {
 			
 		},
 		created: function() {
+			// 下拉刷新
+			pullToRefresh();
+
 			var self = this;
 			_callAjax({
 				cmd: "fetch",

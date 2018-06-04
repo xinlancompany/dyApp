@@ -42,6 +42,9 @@ class Index {
 		$('.goZSDJ').on('click', function() {
 			plus.runtime.openURL('http://www.zsdj.gov.cn/');
 		});
+
+		// 下拉刷新
+		pullToRefresh();
 	}
 
 	updateInfo() {
@@ -58,7 +61,7 @@ class Index {
 		}
 
 		// 设置右上角登陆或退出
-		$(".logout").text(!this.userInfo && !this.orgInfo ? "登陆" : " 退出");
+		$(".logout").text(!this.userInfo && !this.orgInfo ? "登录" : " 退出");
 	}
 
 	start() {
@@ -283,7 +286,7 @@ class Index {
 				openBranchAct: function() {
 					openWindow("views/courseList.html", "courseList", {
 						lid: linkerId.BranchActNews,
-						name: "支部活动"
+						name: "活动案例"
 					});
 				},
 				openPublicNotice: function() {
@@ -296,9 +299,24 @@ class Index {
 					openWindow('views/internetCourseList.html','internetList');
 				},
 				openBooks: function() {
-					openWindow("views/courseList.html", "courseList", {
-						lid: linkerId.Books,
-						name: "党建书屋"
+//					openOutlink("https://wk3.bookan.com.cn/?id=27089&token=!&from=groupmessage#/book/50400", "党建书屋");
+//					openWindow("views/courseList.html", "courseList", {
+//						lid: linkerId.Books,
+//						name: "党建书屋"
+//					});
+					_replaceAjax({
+						cmd: "book",
+					}, function(d) {
+						if (d.success && d.data) {
+							if (d.data.indexOf("http") == 0) {
+								openOutlink(d.data, "党建书屋");
+							} else {
+								openWindow("views/courseList.html", "courseList", {
+									lid: linkerId.Books,
+									name: "党建书屋"
+								});
+							}
+						}
 					});
 				},
 				openZhoushanNews: function() {
@@ -347,6 +365,7 @@ class Index {
 		var vm = new Vue({
 			el: "#ucenter",
 			data: {
+				apk: "",
 				userInfo: idxObj.userInfo,
 				isAndroid: "Android" === plus.os.name, // 是否处于安卓系统
 				systemVersion: '',
@@ -354,7 +373,7 @@ class Index {
 			},
 			computed: {
 				isNew: function() {
-					return '' !== this.systemVersion && this.systemVersion === this.appVersion;
+					return '' !== this.systemVersion && this.appVersion < this.systemVersion;
 				}
 			},
 			methods: {
@@ -393,13 +412,13 @@ class Index {
 				},
 				checkNewVersion: function() {
 					if(!this.isNew) {
-						mui.confirm('发现新版本v' + this.systemVersion + '，是否更新?', '', ['更新', '取消'], function(e) {
+						mui.confirm('发现新版本v' + this.systemVersion + '，是否更新?', '', ['更新', '取消'], (e) => {
 							if(0 === e.index) {
 								mui.toast('请使用浏览器打开');
 								
 								plus.runtime.openURL(
 									// 地址需要改变
-									'http://a.app.qq.com/o/simple.jsp?pkgname=com.xinlan.PTtele',
+									this.apk,
 									function() {
 										mui.toast('浏览器调用失败，请前往应用中心更新');
 									}
@@ -419,6 +438,7 @@ class Index {
 				}, (d) => {
 					if(d.success && d.data && d.data.length) {
 						this.systemVersion = d.data[0].version;
+						this.apk = d.data[0].downloadUrl;
 					}
 				});
 			}
