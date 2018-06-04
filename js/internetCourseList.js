@@ -38,7 +38,7 @@ function plusReady() {
 				if (sw == '') {
 					this.searchState = false;
 				}
-				if (evt.code != "Enter") return;
+				if (evt.keyCode != 13) return;
 				if (!sw) mui.toast("请输入搜索标题");
 				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and title like '%"+sw+"%' and ifValid = 1"
 				if (this.curId > 0) {

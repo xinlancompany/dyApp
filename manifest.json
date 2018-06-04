@@ -355,7 +355,9 @@
 				"priority": 0
 			},
 			"views/login.html": {
-				"resources": [],
+				"resources": [
+					"lib/jquery.min.js"
+				],
 				"refer": [
 					"index.html",
 					"views/forget.html"
@@ -417,7 +419,6 @@
 				"css/less-components/_reset.less",
 				"css/less-components/_var.less",
 				"css/less-components/_mixin.less",
-				"lib/jquery.min.js",
 				"css/style.less",
 				"lib/mui.min.css",
 				"lib/vue.min.js",

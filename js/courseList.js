@@ -20,7 +20,7 @@
 						this.showNews = this.news;
 						this.searchState = false;
 					}
-					if (evt.code != "Enter") return;
+					if (evt.keyCode != 13) return;
 					if (!sw) mui.toast("请输入搜索标题");
 					_callAjax({
 						cmd: "fetch",
