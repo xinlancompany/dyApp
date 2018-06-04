@@ -116,6 +116,8 @@ var Index = (function () {
             methods: {
                 openNews: function (i) {
                     // 打开文章页详情
+                    if (i.url.indexOf("http") === 0)
+                        return openOutlink(i.url, i.title);
                     _set("newsId", i.id);
                     openWindow("views/newsDetail.html", "newsDetail");
                 }
@@ -149,11 +151,11 @@ var Index = (function () {
                         multi: _dump([
                             {
                                 key: "banners",
-                                sql: "select id, title, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews + " and credit > 0 order by newsdate desc limit " + bannersLimit
+                                sql: "select id, title, url, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews + " and credit > 0 order by newsdate desc limit " + bannersLimit
                             },
                             {
                                 key: "news",
-                                sql: "select id, title, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews + " and credit = 0 order by newsdate desc limit " + newsLimit
+                                sql: "select id, title, url, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews + " and credit = 0 order by newsdate desc limit " + newsLimit
                             },
                             {
                                 key: "activities",
@@ -189,6 +191,8 @@ var Index = (function () {
                 },
                 openNews: function (i) {
                     // 打开文章页详情
+                    if (i.url.indexOf("http") === 0)
+                        return openOutlink(i.url, i.title);
                     _set("newsId", i.id);
                     openWindow("views/newsDetail.html", "newsDetail");
                 },
@@ -287,6 +291,9 @@ var Index = (function () {
                     });
                 },
                 openCourse: function (i) {
+                    // 打开外链
+                    if (i.url.indexOf("http") === 0)
+                        return openOutlink(i.url, i.title);
                     // 预加载时发送事件
                     mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
                         cid: i.id

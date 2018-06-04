@@ -63,6 +63,8 @@ function plusReady() {
 //					aid: i.id,
 //					table: "courses"
 //				});
+				// 打开外链
+				if (i.url.indexOf("http") === 0) return openOutlink(i.url, i.title);
 				mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
 					cid: i.id
 				});
@@ -81,9 +83,9 @@ function plusReady() {
 					fi = i.id;
 					fn = i.newsdate;
 				}
-				var sql = "select id, title, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10";
+				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10";
 				if (this.curId > 0) {
-					sql = "select id, title, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10"
+					sql = "select id, title, url, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10"
 				}
 				_callAjax({
 					cmd: "fetch",

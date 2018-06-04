@@ -35,6 +35,9 @@
 					});
 				},
 				openCourseDetail: function(i) {
+					// 打开外链
+					if (i.url.indexOf("http") === 0) return openOutlink(i.url, i.title);
+
 					// 如果预加载了，则触发事件
 					mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
 						cid: i.id
@@ -54,7 +57,7 @@
 					}
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, title, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and ifValid > 0 order by newsdate desc limit 10",
+						sql: "select id, title, url, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and ifValid > 0 order by newsdate desc limit 10",
 						vals: _dump([self.lid, fn, fn, fi])
 					}, function(d) {
 						if (d.success && d.data) {

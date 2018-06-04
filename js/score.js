@@ -147,7 +147,7 @@
 					
 						_callAjax({
 							cmd: "fetch",
-							sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by a.id desc limit 10",
+							sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by a.id desc limit 10",
 							vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform, linkerId.HandCourse])
 						}, function(d) {
 							if(d.success && d.data) {
@@ -191,6 +191,8 @@
 					}
 				},
 				openCourse: function(i) {
+					// 打开外链
+					if (i.url.indexOf("http") === 0) return openOutlink(i.url, i.title);
 					// 如果预加载，需要触发事件
 					mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
 						cid: i.id

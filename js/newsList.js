@@ -25,6 +25,7 @@ function plusReady() {
 						aid: i.id,
 					});
 				} else {
+					if (i.url.indexOf("http") === 0) return openOutlink(i.url, i.title);
 					_set("newsId", i.id);
 					//触发详情页面的newsId事件
 					mui.fire(plus.webview.getWebviewById("newsDetail"), 'newsId', {});
@@ -49,7 +50,7 @@ function plusReady() {
 					ndate = ii.newsdate;
 				}
 
-                var sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) order by newsdate desc, id desc limit 10",
+                var sql = "select id, title, url, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) order by newsdate desc, id desc limit 10",
                     vals =  _dump([lid, ndate, ndate, f]);
 
                 if (!!orgNo) {
