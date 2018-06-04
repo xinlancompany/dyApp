@@ -38,11 +38,20 @@ var Login = (function () {
                 year: _now().split('-')[0],
                 years: [],
                 loginAtOnce: true,
+                userName: "",
+                orgName: "",
             },
             watch: {
                 loginType: function (i) {
                     // 切换登陆类型时，提示文字也相应改变
-                    this.nameTag = "personal" === i ? "手机或身份证登录" : "组织代码";
+                    if ("personal" === i) {
+                        this.nameTag = "手机或身份证登录";
+                        this.name = this.userName;
+                    }
+                    else {
+                        this.nameTag = "组织代码";
+                        this.name = this.orgName;
+                    }
                 },
             },
             methods: {
@@ -99,6 +108,8 @@ var Login = (function () {
                     }, function (d) {
                         if (d.success && d.data && d.data.length) {
                             _set("personal" === _this.loginType ? "userInfo" : "orgInfo", _dump(d.data[0]));
+                            // 保存登录名
+                            _set("personal" === _this.loginType ? "userName" : "orgName", name);
                             setTimeout(function () {
                                 _this.openIndex();
                             }, 500);
@@ -129,6 +140,16 @@ var Login = (function () {
                 $(".guestLogin").click(function () {
                     _this.openIndex();
                 });
+                // 用户名
+                this.userName = _get("userName");
+                this.orgName = _get("orgName");
+                // 设置用户名
+                if (this.loginType === "personal") {
+                    this.name = this.userName;
+                }
+                else {
+                    this.name = this.orgName;
+                }
             }
         });
     };
