@@ -1,5 +1,11 @@
 (function() {
 	var plusReady = function() {
+        mui.init({
+            beforeback: function() {
+            		$("#content").empty();
+            },
+	    });
+
 		var vm = new Vue({
 			el: "#courseDetail",
 			data: {
@@ -88,6 +94,7 @@
 
 		// 用于预加载时的事件触发
 		window.addEventListener("courseId", function(e) {
+			$("#content").empty();
 			vm.newsData.title = "";
 			vm.newsData.reporter = "";
 			vm.newsData.readcnt = "";
