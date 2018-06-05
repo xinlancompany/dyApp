@@ -217,7 +217,7 @@
             multi: _dump([
                 {
                     key: "score",
-                    sql: "select sum(score) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid > 0)"
+                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid > 0)"
                 },
                 {
                     sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id and c.ifValid > 0",
