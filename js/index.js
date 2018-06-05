@@ -377,6 +377,7 @@ var Index = (function () {
                 apk: "",
                 userInfo: idxObj.userInfo,
                 isAndroid: "Android" === plus.os.name,
+                isNew: idxObj.isNewestVersion,
             },
             methods: {
                 checkPoints: function () {

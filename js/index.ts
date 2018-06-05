@@ -27,7 +27,7 @@ class Index {
 	appVersion: number; // 当前app版本
 	systemVersion: number; // 当前系统最新版本
 	apkUrl: string; // 安卓下载路径
-	isNewestVersion: bool; // 是否为最新的版本
+	isNewestVersion: boolean; // 是否为最新的版本
 	
 	constructor() {
 		this.updateInfo();
@@ -423,6 +423,7 @@ class Index {
 				apk: "",
 				userInfo: idxObj.userInfo,
 				isAndroid: "Android" === plus.os.name, // 是否处于安卓系统
+				isNew: idxObj.isNewestVersion,
 			},
 			methods: {
 				checkPoints: function() {
