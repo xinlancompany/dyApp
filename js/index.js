@@ -17,7 +17,49 @@ var Index = (function () {
         });
         // 下拉刷新
         pullToRefresh();
+        // 如是安卓版本，则开始版本的检测
+        if ("Android" !== plus.os.name)
+            return;
+        // 获取app当前版本
+        this.appVersion = plus.runtime.version;
+        // 获取系统最新版本
+        _callAjax({
+            cmd: "fetch",
+            sql: "select version, downloadUrl from system order by id desc limit 1"
+        }, function (d) {
+            if (d.success && d.data) {
+                _this.systemVersion = d.data[0].version;
+                _this.apkUrl = d.data[0].downloadUrl;
+                // 判断当前是否为最新的版本
+                _this.isNewestVersion = _this.appVersion >= _this.systemVersion;
+            }
+            else {
+                // 若获取失败，当前即为最新版本
+                _this.isNewestVersion = true;
+            }
+            // 提示下载新版本
+            _this.updateAndroid();
+        });
     }
+    // 下载新版本
+    Index.prototype.updateAndroid = function () {
+        var _this = this;
+        if (!this.isNewestVersion) {
+            mui.confirm('发现新版本v' + this.systemVersion + '，是否更新?', '', ['更新', '取消'], function (e) {
+                if (0 === e.index) {
+                    mui.toast('请使用浏览器打开');
+                    plus.runtime.openURL(
+                    // 地址需要改变
+                    _this.apkUrl, function () {
+                        mui.toast('浏览器调用失败，请前往应用中心更新');
+                    });
+                }
+            });
+        }
+        else {
+            mui.toast("已是最新版本");
+        }
+    };
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
         var orgStr = _get("orgInfo");
@@ -335,13 +377,6 @@ var Index = (function () {
                 apk: "",
                 userInfo: idxObj.userInfo,
                 isAndroid: "Android" === plus.os.name,
-                systemVersion: '',
-                appVersion: plus.runtime.version,
-            },
-            computed: {
-                isNew: function () {
-                    return '' !== this.systemVersion && this.appVersion >= this.systemVersion;
-                }
             },
             methods: {
                 checkPoints: function () {
@@ -378,37 +413,9 @@ var Index = (function () {
                     });
                 },
                 checkNewVersion: function () {
-                    var _this = this;
-                    if (!this.isNew) {
-                        mui.confirm('发现新版本v' + this.systemVersion + '，是否更新?', '', ['更新', '取消'], function (e) {
-                            if (0 === e.index) {
-                                mui.toast('请使用浏览器打开');
-                                plus.runtime.openURL(
-                                // 地址需要改变
-                                _this.apk, function () {
-                                    mui.toast('浏览器调用失败，请前往应用中心更新');
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        mui.toast("已是最新版本");
-                    }
+                    idxObj.updateAndroid();
                 },
             },
-            mounted: function () {
-                var _this = this;
-                //获取版本号
-                _callAjax({
-                    cmd: "fetch",
-                    sql: "select version, downloadUrl from system"
-                }, function (d) {
-                    if (d.success && d.data && d.data.length) {
-                        _this.systemVersion = d.data[0].version;
-                        _this.apk = d.data[0].downloadUrl;
-                    }
-                });
-            }
         });
     };
     Index.prototype.startOrgInterface = function () {
