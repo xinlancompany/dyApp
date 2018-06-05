@@ -24,7 +24,7 @@
 					if (!sw) mui.toast("请输入搜索标题");
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, title, newsdate, img from courses where linkerId = "+self.lid+" and title like '%"+sw+"%' and ifValid > 0"
+						sql: "select id, title, url, newsdate, img from courses where linkerId = "+self.lid+" and title like '%"+sw+"%' and ifValid > 0"
 					}, function(d) {
 						if (d.success && d.data && d.data.length) {
 							self.showNews = d.data;

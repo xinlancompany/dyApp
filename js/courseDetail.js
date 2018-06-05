@@ -2,7 +2,8 @@
 	var plusReady = function() {
         mui.init({
             beforeback: function() {
-            		$("#content").empty();
+				$("#content").empty();
+				if (!!vm.intervalCb) clearInterval(vm.intervalCb);
             },
 	    });
 
@@ -16,6 +17,7 @@
 				userInfo: null,
 				noNeedToUpdate: false,
 				mediaRoot: "",
+				intervalCb: null
 			},
 			methods: {
 				courseEnroll: function() {
@@ -26,6 +28,7 @@
 						self.newsData.ecredit = self.newsData.credit;
 						self.noNeedToUpdate = true;
 					}
+
 					_callAjax({
 						cmd: "exec",
 						sql: "replace into courseEnroll(credit, courseId, userId) values(?, ?, ?)",
@@ -42,6 +45,8 @@
 					}, function(d) {
 						if (d.success && d.data) {
 							self.newsData = d.data[0];
+							self.newsData.ecredit = parseInt(self.newsData.ecredit);
+							self.newsData.credit = parseInt(self.newsData.credit);
 							if (self.newsData.url.indexOf("http") == 0) {
 								openOutlink(self.newsData.url, self.newsData.title, "courseDetail");
 								return;
@@ -56,6 +61,11 @@
 									if (!!im && im.indexOf("http") == -1) $(this).attr("src", self.mediaRoot+im);
 								});
 							});
+
+							// 半分钟以上，算学习一次
+							self.intervalCb = setInterval(function() {
+								self.courseEnroll();
+							}, 30000);
 						}
 					});
 
@@ -65,10 +75,6 @@
 						sql: "update courses set readcnt = readcnt + 1 where id = "+self.cid
 					}, function(_d) {});
 
-					// 半分钟以上，算学习一次
-					setInterval(function() {
-						self.courseEnroll();
-					}, 30000);
 				}
 			},
 			watch: {

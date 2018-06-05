@@ -377,7 +377,7 @@ class Index {
 			},
 			computed: {
 				isNew: function() {
-					return '' !== this.systemVersion && this.appVersion < this.systemVersion;
+					return '' !== this.systemVersion && this.appVersion >= this.systemVersion;
 				}
 			},
 			methods: {
