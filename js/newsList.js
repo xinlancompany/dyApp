@@ -212,7 +212,8 @@ function plusReady() {
     var wb = plus.webview.currentWebview(),
         lid = wb.linkerId;
     var userInfoStr = _get("userInfo"),
-        userInfo = _load(userInfoStr);
+    	// localstorage中的userInfo为空的情况下 userInfo设置成空的对象
+        userInfo = userInfoStr == '' ? {} : _load(userInfoStr);
     var no = null;
     if ("isAdmin" in wb) {
         newsList.isAdmin = wb.isAdmin;

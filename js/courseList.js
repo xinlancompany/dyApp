@@ -51,7 +51,7 @@
 						fi = 10e6,
 						fn = "3000-12-31 23:59:59";
 					if (this.news.length) {
-						var i = _at(this.news, -1)["id"];
+						var i = _at(this.news, -1);
 						fi = i.id;
 						fn = i.newsdate;
 					}
