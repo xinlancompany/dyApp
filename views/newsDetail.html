@@ -32,6 +32,13 @@
 			<article>
 				<p id="content" v-html="newsData.content"></p>
 			</article>
+			<div class="share">
+				<div class="line"></div>
+				<div class="share-item">
+					<i class="iconfont icon-weixin" @click="shareSystem('news', newsData, 'WXSceneSession')"></i>
+					<i class="iconfont icon-pengyouquan" @click="shareSystem('news', newsData, 'WXSceneTimeline')"></i>
+				</div>
+			</div>
 		</div>
 		
 		<!--<div id="comment" class="have-footer">
