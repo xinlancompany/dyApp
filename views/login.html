@@ -16,7 +16,7 @@
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav">
 			<h1 class="mui-title">登录</h1>
-            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right guestLogin">游客登录</button>
+            <!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right guestLogin">游客登录</button>-->
 		</header>
 		
 		<div id="login" class="have-header login">
@@ -45,8 +45,8 @@
 				<span>登录</span>
 			</div>
 			<div class="footer">
-				<!--<a @click="openIndex">没有账号?游客浏览</a>-->
 				<a @click="forgetPswd" v-show="loginType === 'personal'">忘记密码</a>
+				<a @click="openIndex">没有账号?游客浏览</a>
 			</div>
 		</div>
 	</body>

@@ -164,11 +164,6 @@ class Login{
 					}
 				});
 
-				// 游客登录
-				$(".guestLogin").click(() => {
-					this.openIndex();
-				});
-
 				// 用户名
 				this.userName = _get("userName");
 				this.orgName = _get("orgName");

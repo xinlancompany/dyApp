@@ -136,10 +136,6 @@ var Login = (function () {
                         _this.years = d.data;
                     }
                 });
-                // 游客登录
-                $(".guestLogin").click(function () {
-                    _this.openIndex();
-                });
                 // 用户名
                 this.userName = _get("userName");
                 this.orgName = _get("orgName");
