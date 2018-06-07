@@ -1326,11 +1326,14 @@ body {
   display: -webkit-flex;
   justify-content: space-between;
   -webkit-justify-content: space-between;
-  font-size: 14px;
+  font-size: 18px;
   width: 100%;
 }
 .login .footer a {
   color: #333;
+}
+.login .footer a:last-child {
+  color: green;
 }
 .score .content {
   padding: 120px 0;
