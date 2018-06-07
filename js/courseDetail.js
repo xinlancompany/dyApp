@@ -40,7 +40,7 @@
 					var self = this;
 					_callAjax({
 						cmd: "fetch",
-						sql: "select c.id, title, url, content, readcnt, reporter, newsdate, c.credit, e.credit as ecredit from courses c left join courseEnroll e on e.courseId = c.id and e.userId = ? where c.id = ?",
+						sql: "select c.id, title, url, img, content, readcnt, reporter, newsdate, c.credit, e.credit as ecredit from courses c left join courseEnroll e on e.courseId = c.id and e.userId = ? where c.id = ?",
 						vals: _dump([self.userInfo.id, i])
 					}, function(d) {
 						if (d.success && d.data) {
@@ -75,6 +75,11 @@
 						sql: "update courses set readcnt = readcnt + 1 where id = "+self.cid
 					}, function(_d) {});
 
+				},
+				shareSystem: function(type, i, e) {
+					// 用于logo
+					if (!i.img) i.img = "http://develop.wifizs.cn/static/zsdyPR/img/logo.jpg";
+					share(type, i.id, i.title, i.img, e);
 				}
 			},
 			watch: {

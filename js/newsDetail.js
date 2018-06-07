@@ -80,7 +80,12 @@ function plusReady() {
                 }, function(d) {
                     // alert(_dump(d));
                 });
-            }
+            },
+			shareSystem: function(type, i, e) {
+				// 用于logo
+				if (!i.img) i.img = "http://develop.wifizs.cn/static/zsdyPR/img/logo.jpg";
+				share(type, i.id, i.title, i.img, e);
+			}
 		},
 		mounted: function() {
 			var self = this;
