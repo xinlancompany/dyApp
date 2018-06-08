@@ -7,6 +7,10 @@
             },
 	    });
 
+		// 获取详情页id
+		var wb = plus.webview.currentWebview()
+		if ("cid" in wb) vm.cid = wb.cid;
+
 		var vm = new Vue({
 			el: "#courseDetail",
 			data: {
@@ -40,10 +44,11 @@
 					var self = this;
 					_callAjax({
 						cmd: "fetch",
-						sql: "select c.id, title, url, img, content, readcnt, reporter, newsdate, c.credit, e.credit as ecredit from courses c left join courseEnroll e on e.courseId = c.id and e.userId = ? where c.id = ?",
+						sql: "select c.id, title, c.url, c.img, content, readcnt, reporter, newsdate, c.credit, e.credit as ecredit, l.name as lname from linkers l, courses c left join courseEnroll e on e.courseId = c.id and e.userId = ? where c.id = ? and c.linkerId = l.id",
 						vals: _dump([self.userInfo.id, i])
 					}, function(d) {
 						if (d.success && d.data) {
+							$(".mui-title").text(d.data[0].lname);
 							self.newsData = d.data[0];
 							self.newsData.ecredit = parseInt(self.newsData.ecredit);
 							self.newsData.credit = parseInt(self.newsData.credit);
@@ -60,6 +65,17 @@
 									var im = $(this).attr("src");
 									if (!!im && im.indexOf("http") == -1) $(this).attr("src", self.mediaRoot+im);
 								});
+
+								// IOS下设置video横屏
+								if ("Android" != plus.os.name) {
+									var v = $("video")[0];
+									v.addEventListener("webkitbeginfullscreen", function() {
+										plus.screen.lockOrientation('landscape');
+									});
+									v.addEventListener('webkitendfullscreen', function() {
+										plus.screen.lockOrientation('portrait');
+									});
+								}
 							});
 
 							// 半分钟以上，算学习一次
@@ -97,11 +113,17 @@
 				}, function(d) {
 					if (d.success && d.data) self.mediaRoot = d.data;
 				});
+
+				// 视频全屏幕时的横屏播放
+				// 安卓
+				if ("Android" === plus.os.name) {
+					wb.setStyle({
+						videoFullscreen: "landscape"
+					});
+				}
+				// IOS需要在页面加载后绑定
 			}
 		});
-
-		var wb = plus.webview.currentWebview()
-		if ("cid" in wb) vm.cid = wb.cid;
 
 		// 用于预加载时的事件触发
 		window.addEventListener("courseId", function(e) {
