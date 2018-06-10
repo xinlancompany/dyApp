@@ -48,7 +48,17 @@ class Login{
 		this.wb = plus.webview.currentWebview();
 
 		//预加载页面
-		_delayClose(plus.webview.getWebviewById("index"));
+		let idxPage = plus.webview.getWebviewById("index");
+		if (!!idxPage) {
+			_delayClose(idxPage, 500, () => {
+				this.preloadIndex()
+			});
+		} else {
+			this.preloadIndex()
+		}
+	}
+
+	preloadIndex() {
 		mui.preload({
 			url: '../index.html',
 			id: 'index'

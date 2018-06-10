@@ -21,12 +21,22 @@ var Login = (function () {
         // 获取当前webview页面对象，其中包含登陆类型信息
         this.wb = plus.webview.currentWebview();
         //预加载页面
-        _delayClose(plus.webview.getWebviewById("index"));
+        var idxPage = plus.webview.getWebviewById("index");
+        if (!!idxPage) {
+            _delayClose(idxPage, 500, function () {
+                _this.preloadIndex();
+            });
+        }
+        else {
+            this.preloadIndex();
+        }
+    }
+    Login.prototype.preloadIndex = function () {
         mui.preload({
             url: '../index.html',
             id: 'index'
         });
-    }
+    };
     Login.prototype.start = function () {
         var vm = new Vue({
             el: "#login",
