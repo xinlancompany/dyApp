@@ -49,6 +49,17 @@ function plusReady() {
 								var im = $(this).attr("src");
 								if (!!im && im.indexOf("http") == -1) $(this).attr("src", self.mediaRoot+im);
 							});
+
+							// IOS下设置video横屏
+							if ("Android" != plus.os.name) {
+								var v = $("video")[0];
+								v.addEventListener("webkitbeginfullscreen", function() {
+									plus.screen.lockOrientation('landscape');
+								});
+								v.addEventListener('webkitendfullscreen', function() {
+									plus.screen.lockOrientation('portrait');
+								});
+							}
 						});
 					}
 				});
@@ -107,6 +118,15 @@ function plusReady() {
 			}, function(d) {
 				if (d.success && d.data) self.mediaRoot = d.data;
 			});
+
+			// 视频全屏幕时的横屏播放
+			// 安卓
+			if ("Android" === plus.os.name) {
+				wb.setStyle({
+					videoFullscreen: "landscape"
+				});
+			}
+			// IOS需要在页面加载后绑定
 		}
 	});
 	
