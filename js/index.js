@@ -9,8 +9,6 @@ var Index = (function () {
                 _androidClose(_this);
             };
         }
-        // 关闭login
-        _delayClose(plus.webview.getWebviewById("login"));
         // 打开舟山党建网
         $('.goZSDJ').on('click', function () {
             plus.runtime.openURL('http://www.zsdj.gov.cn/');
