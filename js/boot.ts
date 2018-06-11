@@ -51,7 +51,7 @@ class Boot {
 			el: ".boot",
 			data: {
 				link: self.homeImg,
-				time: 7,
+				time: 3,
 				timeoutCb: null
 			},
 			computed: {
@@ -73,8 +73,8 @@ class Boot {
 						// 跳转至登陆页面
 						openWindow("views/login.html", "login");
 					}
-					// 延时关闭本身，防止整个退出
-					_delayClose(plus.webview.currentWebview());
+					// 延时关闭本身，防止整个退出，似乎新版本的hbuilder自动关闭boot页面，不需要再手动关闭了
+					// _delayClose(plus.webview.currentWebview());
 					if (this.timeoutCb) {
 						// 停止倒计时
 						clearInterval(this.timeoutCb);
