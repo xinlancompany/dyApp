@@ -34,7 +34,7 @@ var Boot = (function () {
             el: ".boot",
             data: {
                 link: self.homeImg,
-                time: 7,
+                time: 3,
                 timeoutCb: null
             },
             computed: {
