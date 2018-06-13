@@ -69,6 +69,7 @@
 								// IOS下设置video横屏
 								if ("Android" != plus.os.name) {
 									var v = $("video")[0];
+									if (!v) return;
 									v.addEventListener("webkitbeginfullscreen", function() {
 										plus.screen.lockOrientation('landscape');
 									});
@@ -92,10 +93,10 @@
 					}, function(_d) {});
 
 				},
-				shareSystem: function(type, i, e) {
+				shareSystem: function(type, i, sid, e) {
 					// 用于logo
 					if (!i.img) i.img = "http://develop.wifizs.cn/static/zsdyPR/img/logo.jpg";
-					share(type, i.id, i.title, i.img, e);
+					share(type, i.id, i.title, i.img, sid, e);
 				}
 			},
 			watch: {

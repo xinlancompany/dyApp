@@ -36,8 +36,10 @@
 			<div class="share">
 				<div class="line"></div>
 				<div class="share-item">
-					<i class="iconfont icon-weixin" @click="shareSystem('courses', newsData, 'WXSceneSession')"></i>
-					<i class="iconfont icon-pengyouquan" @click="shareSystem('courses', newsData, 'WXSceneTimeline')"></i>
+					<i class="iconfont icon-weixin" @click="shareSystem('courses', newsData, 'weixin', 'WXSceneSession')"></i>
+					<i class="iconfont icon-pengyouquan" @click="shareSystem('courses', newsData, 'weixin', 'WXSceneTimeline')"></i>
+					<!--qq分享-->
+					<i class="iconfont icon-pengyouquan" @click="shareSystem('courses', newsData, 'qq', null)"></i>
 				</div>
 			</div>
 		</div>
