@@ -97,7 +97,7 @@ function plusReady() {
 				// 用于logo
 				if (!i.img) i.img = "http://develop.wifizs.cn/static/zsdyPR/img/logo.jpg";
 				share(type, i.id, i.title, i.img, sid, e);
-			}
+			},
 		},
 		mounted: function() {
 			var self = this;
@@ -162,6 +162,18 @@ function plusReady() {
     } else {
         newsDetail.updateReadcnt();
     }
+    
+    $('#navbarShareBtn').click(function() {
+    	plus.nativeUI.actionSheet({
+            title: "分享到",
+            cancel: "取消",
+            buttons: [{title:"微信好友"},{title:"微信朋友圈"},{title:"QQ好友"}]
+        }, function(e){
+        	if(e.index == 1) return newsDetail.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneSession');
+        	if(e.index == 2) return newsDetail.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneTimeline');
+        	if(e.index == 3) return newsDetail.shareSystem('courses', newsDetail.newsData, 'qq', null);
+        })
+    })
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

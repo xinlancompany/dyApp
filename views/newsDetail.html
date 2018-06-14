@@ -17,6 +17,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">新闻</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" id="navbarShareBtn">分享</button>
 		</header>
 		
 		<div id="newsDetail" class="have-header have-footer news-detail">
@@ -37,8 +38,7 @@
 				<div class="share-item">
 					<i class="iconfont icon-weixin" @click="shareSystem('articles', newsData, 'weixin', 'WXSceneSession')"></i>
 					<i class="iconfont icon-pengyouquan" @click="shareSystem('articles', newsData, 'weixin', 'WXSceneTimeline')"></i>
-					<!--qq分享-->
-					<i class="iconfont icon-pengyouquan" @click="shareSystem('courses', newsData, 'qq', null)"></i>
+					<i class="iconfont icon-qq" @click="shareSystem('courses', newsData, 'qq', null)"></i>
 				</div>
 			</div>
 		</div>

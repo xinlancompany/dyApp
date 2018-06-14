@@ -137,6 +137,18 @@
 			if (vm.cid == e.detail.cid) vm.getNewsData(e.detail.cid);
 			vm.cid = e.detail.cid;
 		});
+		
+		$('#navbarShareBtn').click(function() {
+	    	plus.nativeUI.actionSheet({
+	            title: "分享到",
+	            cancel: "取消",
+	            buttons: [{title:"微信好友"},{title:"微信朋友圈"},{title:"QQ好友"}]
+	        }, function(e){
+	        	if(e.index == 1) return vm.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneSession');
+	        	if(e.index == 2) return vm.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneTimeline');
+	        	if(e.index == 3) return vm.shareSystem('courses', newsDetail.newsData, 'qq', null);
+	        })
+	    })
 	};
 	
 	if(window.plus) {
