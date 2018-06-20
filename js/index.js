@@ -3,6 +3,8 @@ var Index = (function () {
     function Index() {
         var _this = this;
         this.updateInfo();
+        // 打开参数页面
+        this.openArgs();
         // 重载安卓系统的返回, 双击间隔小于1秒则退出
         if ('Android' == plus.os.name) {
             mui.back = function () {
@@ -39,6 +41,33 @@ var Index = (function () {
             _this.updateAndroid();
         });
     }
+    Index.prototype.openArgs = function () {
+        var args = plus.runtime.arguments;
+        if (!args)
+            return;
+        var newsInfo = args.split("://")[1];
+        if (!newsInfo)
+            return;
+        // 获取news的url，并打开
+        var infos = newsInfo.split("/"), table = infos[0], nid = infos[1];
+        _callAjax({
+            cmd: "fetch",
+            sql: "select title, url from " + table + " where id = ?",
+            vals: _dump([nid,])
+        }, function (d) {
+            if (d.success && d.data) {
+                var url = d.data[0].url, title = d.data[0].title;
+                if ("articles" === table) {
+                    if (url.indexOf("http") === 0)
+                        return openOutlink(url, title);
+                    _set("newsId", nid);
+                    openWindow("views/newsDetail.html", "newsDetail");
+                }
+                else if ("courses" === table) {
+                }
+            }
+        });
+    };
     // 下载新版本
     Index.prototype.updateAndroid = function () {
         var _this = this;
@@ -61,6 +90,7 @@ var Index = (function () {
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
         var orgStr = _get("orgInfo");
+        console.log(userStr);
         if (userStr) {
             this.userInfo = _load(userStr);
             this.orgInfo = null;

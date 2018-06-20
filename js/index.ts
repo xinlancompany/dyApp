@@ -9,6 +9,7 @@ declare function _summaryAjax(params: any, f: (d: any) => void): void;
 declare function _hotAjax(params: any, f: (d: any) => void): void;
 declare function _tell(s: any): void;
 declare function _delayClose(p: any, tm?: number): void;
+declare function openOutlink(url: string, title: string): void;
 
 declare var plus: any;
 declare var mui: any;
@@ -31,6 +32,9 @@ class Index {
 	
 	constructor() {
 		this.updateInfo();
+
+		// 打开参数页面
+		this.openArgs();
 
 		// 重载安卓系统的返回, 双击间隔小于1秒则退出
 		if ('Android' == plus.os.name) {
@@ -74,6 +78,36 @@ class Index {
 		});		
 	}
 
+	openArgs() {
+		let args = plus.runtime.arguments;
+		if (!args) return;
+		let newsInfo = args.split("://")[1];
+		if (!newsInfo) return;
+
+		// 获取news的url，并打开
+		let infos = newsInfo.split("/"),
+			table = infos[0],
+			nid = infos[1];
+		_callAjax({
+			cmd: "fetch",
+			sql: "select title, url from "+table+" where id = ?",
+			vals: _dump([nid,])
+		}, (d) => {
+			if (d.success && d.data) {
+				let url = d.data[0].url,
+					title = d.data[0].title;
+
+				if ("articles" === table) {
+					if (url.indexOf("http") === 0) return openOutlink(url, title);
+					_set("newsId", nid);
+					openWindow("views/newsDetail.html", "newsDetail");
+				} else if ("courses" === table) {
+					
+				}
+			}
+		});
+	}
+
 	// 下载新版本
 	updateAndroid() {
 		if(!this.isNewestVersion) {
@@ -98,6 +132,7 @@ class Index {
 	updateInfo() {
 		let userStr: string = _get("userInfo", true);
 		let orgStr: string = _get("orgInfo");
+		console.log(userStr);
 
 		if (userStr) {
 			this.userInfo = _load(userStr);
