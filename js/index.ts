@@ -270,7 +270,7 @@ class Index {
 						multi: _dump([
 							{
 								key: "banners",
-								sql: "select id, title, url, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews +" and credit > 0 order by newsdate desc limit "+bannersLimit
+								sql: "select id, title, url, img, bannerimg, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews +" and credit > 0 order by newsdate desc limit "+bannersLimit
 							},
 							{
 								key: "news",
@@ -286,6 +286,9 @@ class Index {
 						_tell(d);
 						if (!d.success) return;
 						if ("banners" in d.data && d.data.banners.length) {
+							d.data.banners.forEach(function(i) {
+								if (i.bannerimg) i.img = i.bannerimg;
+							});
 							banner.scrollNews = d.data.banners;
 							banner.activeSlideText = banner.scrollNews[0].title;
 							banner.$nextTick(function() {

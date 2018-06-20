@@ -74,7 +74,9 @@ class Boot {
 						openWindow("views/login.html", "login");
 					}
 					// 延时关闭本身，防止整个退出，似乎新版本的hbuilder自动关闭boot页面，不需要再手动关闭了
-					// _delayClose(plus.webview.currentWebview());
+					if ("iOS" === plus.os.name) {
+						_delayClose(plus.webview.currentWebview());
+					}
 					if (this.timeoutCb) {
 						// 停止倒计时
 						clearInterval(this.timeoutCb);
