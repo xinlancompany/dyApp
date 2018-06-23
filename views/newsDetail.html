@@ -22,7 +22,9 @@
 		
 		<div id="newsDetail" class="have-header have-footer news-detail">
 			<header v-cloak>
-				{{newsData.title}}
+				<h1>
+					{{newsData.title}}
+				</h1>
 				<p v-cloak>
 					<span v-show="newsData.reporter != ''">{{newsData.reporter}} &nbsp;&nbsp;&nbsp;&nbsp; </span>
 					<span>{{newsData.newsdate}} &nbsp;&nbsp;&nbsp;&nbsp; </span>
@@ -30,7 +32,7 @@
 				</p>
 				<div class="desc" v-text="newsData.brief" v-show="newsData.brief!=''" v-cloak></div>
 			</header>
-			<article>
+			<article id="article">
 				<p id="content" v-html="newsData.content"></p>
 			</article>
 			<div class="share">

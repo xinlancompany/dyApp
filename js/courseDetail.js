@@ -5,6 +5,9 @@
 				$("#content").empty();
 				if (!!vm.intervalCb) clearInterval(vm.intervalCb);
             },
+            gestureConfig:{
+			   longtap: true, //默认为false
+		  	}
 	    });
 
 		// 获取详情页id
@@ -147,6 +150,22 @@
 	        	if(e.index == 1) return vm.shareSystem('articles', vm.newsData, 'weixin', 'WXSceneSession');
 	        	if(e.index == 2) return vm.shareSystem('articles', vm.newsData, 'weixin', 'WXSceneTimeline');
 	        	if(e.index == 3) return vm.shareSystem('courses', vm.newsData, 'qq', null);
+	        })
+	    })
+		
+		mui('#article').on('longtap', 'img', function() {
+	    	var src = $(this).attr('src');
+	    	plus.nativeUI.actionSheet({
+	            title: "操作",
+	            cancel: "取消",
+	            buttons: [{title:"保存到相册"}]
+	        }, function (e) {
+	        	if(e.index == 0) return false;
+	        	plus.gallery.save( src, function(){
+	        		mui.toast('保存成功');
+	        	}, function() {
+	        		mui.toast('保存失败');
+	        	} );
 	        })
 	    })
 	};

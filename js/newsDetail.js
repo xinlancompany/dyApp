@@ -13,7 +13,10 @@ function plusReady() {
 			})
 			$('body').animate({scrollTop:0})
 			newsDetail.newsData = []
-		}
+		},
+		gestureConfig:{
+		   longtap: true, //默认为false
+	  	}
 	});
 	
 	var newsId = 0,
@@ -172,6 +175,22 @@ function plusReady() {
         	if(e.index == 1) return newsDetail.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneSession');
         	if(e.index == 2) return newsDetail.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneTimeline');
         	if(e.index == 3) return newsDetail.shareSystem('courses', newsDetail.newsData, 'qq', null);
+        })
+    })
+    
+    mui('#article').on('longtap', 'img', function() {
+    	var src = $(this).attr('src');
+    	plus.nativeUI.actionSheet({
+            title: "操作",
+            cancel: "取消",
+            buttons: [{title:"保存到相册"}]
+        }, function (e) {
+        	if(e.index == 0) return false;
+        	plus.gallery.save( src, function(){
+        		mui.toast('保存成功');
+        	}, function() {
+        		mui.toast('保存失败');
+        	} );
         })
     })
 }
