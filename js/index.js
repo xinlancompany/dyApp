@@ -609,10 +609,10 @@ var Index = (function () {
             },
             mounted: function () {
                 var _this = this;
-                var cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where (orgNo = '" + idxObj.orgInfo.no + "' or orgNo = '') and refId = " + linkerId.Activity + " and l.ifValid = 1 group by l.id order by l.id";
+                var cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l, activitys a left join activityCategories ac on ac.linkerId = l.id and a.id = ac.activityId where a.orgId = " + idxObj.orgInfo.id + " and (orgNo = '" + idxObj.orgInfo.no + "' or orgNo = '') and refId = " + linkerId.Activity + " and l.ifValid = 1 group by l.id order by l.id";
                 // 党支部以上均自行设置规则
                 if ("党支部" !== idxObj.orgInfo.type)
-                    cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l left join activityCategories ac on ac.linkerId = l.id  where orgNo = '" + idxObj.orgInfo.no + "' and refId = " + linkerId.Activity + " and l.ifValid = 1 group by l.id order by l.id";
+                    cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l, activitys a left join activityCategories ac on ac.linkerId = l.id and a.id = ac.activityId where a.orgId = " + idxObj.orgInfo.id + " and orgNo = '" + idxObj.orgInfo.no + "' and refId = " + linkerId.Activity + " and l.ifValid = 1 group by l.id order by l.id";
                 _callAjax({
                     cmd: "multiFetch",
                     multi: _dump([

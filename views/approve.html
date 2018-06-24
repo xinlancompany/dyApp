@@ -30,10 +30,12 @@
 						增减分审批
 					</a>
 					<a class="mui-control-item" href="#item3">
-						新增党员
+						<!--新增党员-->
+						增减党员
 					</a>
 					<a class="mui-control-item" href="#item4">
-						删除党员
+						<!--删除党员-->
+						过审活动
 					</a>
 				</div>
 			</div>
@@ -71,6 +73,38 @@
 				</div>
 				<div id="item3" class="mui-control-content">
 					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+						<li class="mui-table-view-cell" v-for="i, idx in usersToBeOperated" @click="openUser(i)">
+				            <div class="mui-table">
+				                <div class="mui-table-cell mui-col-xs-10">
+				                    <h4 class="mui-ellipsis" v-text="i.vText"></h4>
+				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>
+				                    <!--删除理由直接显示-->
+				                    <p class="mui-h6 mui-ellipsis" v-text="'理由:'+i.reason" v-show="i.ifValid == 2"></p>
+				                </div>
+				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+									<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateUser(i, idx)">操作</button>
+				                </div>
+				            </div>
+				        </li>
+				   	</ul>
+				</div>
+				<div id="item4" class="mui-control-content">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+						<li class="mui-table-view-cell" v-for="i, idx in approved" @click="openActivity(i)">
+							<div class="mui-table">
+				                <div class="mui-table-cell mui-col-xs-10">
+				                    <h4 class="mui-ellipsis" v-text="i.title"></h4>
+				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>
+				                </div>
+				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+									<button type="button" class="mui-btn mui-btn-primary" @click.stop="withdrawActivity(i, idx)">退回</button>
+				                </div>
+				            </div>
+						</li>
+					</ul>
+				</div>
+				<!--<div id="item3" class="mui-control-content">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 						<li class="mui-table-view-cell" v-for="i, idx in users" @click="openUser(i)">
 				            <div class="mui-table">
 				                <div class="mui-table-cell mui-col-xs-10">
@@ -99,7 +133,7 @@
 				            </div>
 				        </li>
 				   	</ul>
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</body>

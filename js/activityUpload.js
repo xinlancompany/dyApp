@@ -184,7 +184,9 @@ function plusReady() {
                         // 不做什么
                     });
                 }, function() {}, {
-                		"minDate": _oneMonthAgoDateObj()
+//              		"minDate": _oneMonthAgoDateObj()
+					// 提交只能是当前时间的前20天内的活动
+                		"minDate": _nDaysBefore(20)
                 });
             },
             chooseEndtime: function(e) {
@@ -198,7 +200,9 @@ function plusReady() {
                         // 不做什么
                     });
                 }, function() {}, {
-                		"minDate": _oneMonthAgoDateObj()
+//              		"minDate": _oneMonthAgoDateObj()
+					// 提交只能是当前时间的前20天内的活动
+                		"minDate": _nDaysBefore(20)
                 });
             },
             chooseParticipants: function() {

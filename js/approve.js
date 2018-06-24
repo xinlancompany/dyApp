@@ -6,14 +6,25 @@
 				userInfo: null,
 				examines: [],
 				appraises: [],
-				users: [],
-				toBeDel: []
+				usersToBeOperated: [],
+				approved: [],
 			},
 			methods: {
 				openUser: function(i) {
-					openWindow('newUser.html', 'newUser', {
-						uid: i.id
-					});
+					// 仅新增党员可以打开详情
+					if (i.ifValid == -1) {
+						openWindow('newUser.html', 'newUser', {
+							uid: i.id
+						});
+					}
+				},
+				operateUser: function(i, idx) {
+					// 分别处理新增与删除党员
+					if (i.ifValid == -1) {
+						this.addUser(i, idx);
+					} else if(i.ifValid == 2) {
+						this.delUser(i, idx);
+					}
 				},
 				delUser: function(i, idx) {
 					var self = this,
@@ -41,7 +52,7 @@
 										vals: _dump([i.id,])
 									}, function(d) {
 										mui.toast("通过"+(d.success?"成功":"失败"));
-										if (d.success) self.toBeDel = _del_ele(self.toBeDel, idx);
+										if (d.success) self.usersToBeOperated = _del_ele(self.usersToBeOperated, idx);
 									});
 								}
 							});
@@ -54,14 +65,14 @@
 										vals: _dump([i.id,])
 									}, function(d) {
 										mui.toast("退回"+(d.success?"成功":"失败"));
-										if (d.success) self.toBeDel = _del_ele(self.toBeDel, idx);
+										if (d.success) self.usersToBeOperated = _del_ele(self.usersToBeOperated, idx);
 									});
 								}
 							});
 						}
 					});
 				},
-				operateUser: function(i, idx) {
+				addUser: function(i, idx) {
 					var self = this,
 						buttons = [
 							{
@@ -87,7 +98,7 @@
 										vals: _dump([i.id,])
 									}, function(d) {
 										mui.toast("通过"+(d.success?"成功":"失败"));
-										if (d.success) self.users = _del_ele(self.users, idx);
+											if (d.success) self.usersToBeOperated = _del_ele(self.usersToBeOperated, idx);
 									});
 								}
 							});
@@ -100,7 +111,7 @@
 										vals: _dump([i.id,])
 									}, function(d) {
 										mui.toast("删除"+(d.success?"成功":"失败"));
-										if (d.success) self.users = _del_ele(self.users, idx);
+										if (d.success) self.usersToBeOperated = _del_ele(self.usersToBeOperated, idx);
 									});
 								}
 							});
@@ -254,7 +265,10 @@
 										])
 									}, function(d) {
 										mui.toast("通过"+(d.success?"成功":"失败"));
-										if (d.success) self.examines = _del_ele(self.examines, idx);
+										if (d.success) {
+											self.examines = _del_ele(self.examines, idx);
+											self.approved.push(i);
+										}
 									});
 								}
 							});
@@ -285,11 +299,15 @@
 					// 党员转正
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, name, orgName, strftime('%m-%d', logtime) as logtime from user where ifValid = -1 and orgNo in (select no from organization where superorgNo = ?)",
+						sql: "select id, name, orgName, strftime('%m-%d', logtime) as logtime, ifValid from user where (ifValid = -1 or ifValid = 2) and orgNo in (select no from organization where superorgNo = ?)",
 						vals: _dump([self.userInfo.no,])
 					}, function(d) {
 						if (d.success && d.data) {
-							self.users = d.data;
+							d.data.forEach(function(i) {
+								i.ifValid = parseInt(i.ifValid);
+								i.vText = (i.ifValid==-1?"新增":"删除")+i.name+"的请求";
+								self.usersToBeOperated.push(i);
+							});
 						}
 					});
                 },
@@ -334,26 +352,55 @@
 						}
 					});
                },
-               getToBeoDel: function() {
-					var self = this;
-					// 党员删除
-					_callAjax({
-						cmd: "fetch",
-						sql: "select id, name, reason, orgName, strftime('%m-%d', logtime) as logtime from user where ifValid = 2 and orgNo in (select no from organization where superorgNo = ?)",
-						vals: _dump([self.userInfo.no,])
-					}, function(d) {
-						if (d.success && d.data) {
-							self.toBeDel = d.data;
+              // 获取30天内过审(ifValid == 4)的项目
+              getApproved: function() {
+              	var self = this;
+				_callAjax({
+					cmd: "fetch",
+					sql: "select a.id, a.title, o.name as orgName from activitys a, organization o where a.orgId = o.id and a.ifValid = 4 and (julianday('now','localtime')-julianday(starttime) < 30.0) and a.orgId in (select id from organization where superOrgNo = ?)",
+					vals: _dump([self.userInfo.no,])
+				}, function(d) {
+					if (d.success && d.data && d.data.length) {
+						self.approved = d.data;
+					}
+				});
+             },
+             withdrawActivity: function(i, idx) {
+             	var self = this;
+				mui.confirm('<input type="text" id="withdraw" />', "退回", ["确定", "取消"], function(e) {
+					if (e.index == 0) {
+						var txt = _trim(document.getElementById("withdraw").value);
+						if (!txt) {
+							mui.toast("请输入理由");
+							return false;
 						}
-					});
-               }
+
+						_callAjax({
+							cmd: "multiFetch",
+							multi: _dump([
+								{
+									key: "updateState",
+									sql: "update activitys set ifValid = 2, withdrawTxt = '"+txt+"' where id = "+i.id
+								},
+								{
+									key: "updateScore",
+									sql: "update activityEnroll set score = 0 where activityId = "+i.id
+								}
+							])
+						}, function(d) {
+							mui.toast("打回"+(d.success?"成功":"失败"));
+							if (d.success) self.approved = _del_ele(self.approved, idx);
+						});
+					}
+				}, 'div');
+             }
 			},
 			created: function() {
 				this.userInfo = _load(_get("userInfo"));
 				this.getActivities();
 				this.getAppraises();
 				this.getUsers();
-				this.getToBeoDel();
+				this.getApproved();
 			}
 		});
 	};
