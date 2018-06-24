@@ -280,7 +280,9 @@
 				"priority": 0
 			},
 			"views/memberManage.html": {
-				"resources": [],
+				"resources": [
+					"lib/jquery.min.js"
+				],
 				"refer": [
 					"views/memberActivityRecord.html",
 					"views/newUser.html",
@@ -398,6 +400,13 @@
 				"resources": [],
 				"refer": [
 					"views/activeDetail.html"
+				],
+				"priority": 0
+			},
+			"views/group.html": {
+				"resources": [],
+				"refer": [
+					"views/groupDetail.html"
 				],
 				"priority": 0
 			}

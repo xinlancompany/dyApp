@@ -21,6 +21,9 @@
 				}
 			},
 			methods: {
+				updateIfSelect: function(i, e) {
+					if ("Android" === plus.os.name) i.ifSelect = ($(e.target).is(":checked"));
+				}
 			},
 			created: function() {
 				this.userInfo = _load(_get("userInfo"));

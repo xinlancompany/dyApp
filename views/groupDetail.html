@@ -35,7 +35,7 @@
 
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell mui-checkbox mui-left" v-for="i in filterUsers">
-                    <input name="checkbox" type="checkbox" v-model="i.ifSelected" > {{i.name}}
+                    <input name="checkbox" type="checkbox" v-model="i.ifSelected" @change="updateIfSelect(i, $event)"> {{i.name}}
 				</li>
 			</ul>
 		</div>

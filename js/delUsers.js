@@ -69,7 +69,8 @@
                     }, self.users)));
                     */
                 },
-                updateAbsentReason: function(i) {
+                updateAbsentReason: function(i, e) {
+                		if ("Android" == plus.os.name) i.ifSelect = ($(e.target).is(":checked"));
                 		var orn = this.otherReason == ""?'其他':this.otherReason;
                 		if (i.ifSelect) {
                 			i.reason = this.curReasonId == this.reasons.length ? orn : i.reason = this.reasons[this.curReasonId];
