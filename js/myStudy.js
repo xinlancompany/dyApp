@@ -62,7 +62,7 @@ function plusReady() {
 						} else {
 							self.bHaveMore_live = false;
 							if(f != 10e5) {
-								mui.toast("没有更多课件了")
+								mui.toast("已全部加载完毕")
 							}
 						}
 					})
@@ -96,7 +96,7 @@ function plusReady() {
 						} else {
 							self.bHaveMore = false;
 							if(f != 10e5) {
-								mui.toast("没有更多课件了")
+								mui.toast("已全部加载完毕")
 							}
 						}
 					})

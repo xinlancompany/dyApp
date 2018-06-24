@@ -74,7 +74,7 @@ function plusReady() {
 					} else {
 						self.bHaveMore = false;
 						if(f != 10e5) {
-							mui.toast("没有更多新闻了");
+							mui.toast("已全部加载完毕");
 						}
 					}
 				})

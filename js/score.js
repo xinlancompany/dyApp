@@ -86,7 +86,7 @@
 							} else {
 								self.bHaveMore_activity = false;
 								if(f != 10e5) {
-									mui.toast("没有更多活动了")
+									mui.toast("已全部加载完毕")
 								}
 							}
 						})
@@ -128,7 +128,7 @@
 							} else {
 								self.bHaveMore_live = false;
 								if(f != 10e5) {
-									mui.toast("没有更多课件了")
+									mui.toast("已全部加载完毕")
 								}
 							}
 						})
@@ -167,7 +167,7 @@
 							} else {
 								self.bHaveMore_course = false;
 								if(f != 10e5) {
-									mui.toast("没有更多课件了")
+									mui.toast("已全部加载完毕")
 								}
 							}
 						})
