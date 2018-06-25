@@ -618,6 +618,7 @@ var Index = (function () {
                 // 党支部以上均自行设置规则
                 if ("党支部" !== idxObj.orgInfo.type)
                     cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l, activitys a left join activityCategories ac on ac.linkerId = l.id and a.id = ac.activityId where a.orgId = " + idxObj.orgInfo.id + " and orgNo = '" + idxObj.orgInfo.no + "' and refId = " + linkerId.Activity + " and l.ifValid = 1 group by l.id order by l.id";
+                console.log(cateSql);
                 _callAjax({
                     cmd: "multiFetch",
                     multi: _dump([
@@ -625,10 +626,6 @@ var Index = (function () {
                             key: "notices",
                             sql: "select id, title, strftime('%Y-%m-%d', logtime) as logtime from articles where reporter = '" + idxObj.orgInfo.no + "' and linkerId = " + linkerId.Notice + " and ifValid = 1 order by logtime desc limit 3",
                         },
-                        {
-                            key: "activityCategories",
-                            sql: cateSql
-                        }
                     ])
                 }, function (d) {
                     if (!d.success || !d.data)
@@ -648,6 +645,14 @@ var Index = (function () {
                     if ("activityCategories" in d.data && d.data.activityCategories) {
                         _this.activityCategories = d.data.activityCategories;
                     }
+                });
+                // 获取支部活动类型
+                _replaceAjax({
+                    cmd: "orgActivityCategories",
+                    orgId: idxObj.orgInfo.id,
+                    orgNo: idxObj.orgInfo.no
+                }, function (d) {
+                    _this.activityCategories = d.data;
                 });
                 // 获取支部考核统计信息
                 if (this.ifPartyBranch) {
