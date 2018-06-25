@@ -101,6 +101,9 @@ var Index = (function () {
         }
         // 设置右上角登陆或退出
         $(".logout").text(!this.userInfo && !this.orgInfo ? "登录" : " 退出");
+        var loginObj = plus.webview.getWebviewById("login");
+        if (loginObj)
+            _delayClose(loginObj);
     };
     Index.prototype.start = function () {
         var _this = this;
@@ -170,7 +173,9 @@ var Index = (function () {
             if (_this.orgInfo) {
                 _this.startOrgInterface();
             }
-            _delayClose(plus.webview.getWebviewById("login"));
+            var loginObj = plus.webview.getWebviewById("login");
+            if (loginObj)
+                _delayClose(loginObj);
             // 必须返回首页
             _this.footer.switchTo('舟山共产党员E家', 'index');
         });

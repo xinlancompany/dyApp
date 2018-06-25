@@ -145,6 +145,9 @@ class Index {
 
 		// 设置右上角登陆或退出
 		$(".logout").text(!this.userInfo && !this.orgInfo ? "登录" : " 退出");
+
+		var loginObj = plus.webview.getWebviewById("login");
+		if (loginObj) _delayClose(loginObj);
 	}
 
 	start() {
@@ -217,7 +220,8 @@ class Index {
 				this.startOrgInterface();
 			}
 
-			_delayClose(plus.webview.getWebviewById("login"));
+			var loginObj = plus.webview.getWebviewById("login");
+			if (loginObj) _delayClose(loginObj);
 
 			// 必须返回首页
 			this.footer.switchTo('舟山共产党员E家', 'index');

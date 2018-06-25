@@ -299,7 +299,7 @@
 					// 党员转正
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, name, orgName, strftime('%m-%d', logtime) as logtime, ifValid from user where (ifValid = -1 or ifValid = 2) and orgNo in (select no from organization where superorgNo = ?)",
+						sql: "select id, name, orgName, strftime('%m-%d', logtime) as logtime, reason, ifValid from user where (ifValid = -1 or ifValid = 2) and orgNo in (select no from organization where superorgNo = ?)",
 						vals: _dump([self.userInfo.no,])
 					}, function(d) {
 						if (d.success && d.data) {
