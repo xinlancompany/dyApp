@@ -26,7 +26,7 @@
 		        		<!--ifValid = 1 为默认的未提交-->
 		        		<!--4-6均为完成，其中5、6为上级不得修改-->
 		        		<!--7为失效，且上级无权修改-->
-					<div class="img" :class="{'invalid': a.ifValid == 7, 'active': a.ifValid >= 4 && a.ifVlid <= 6, 'waiting': a.ifValid == 3, 'withdraw': a.ifValid == 2}" :style="{backgroundImage: 'url('+ a.img +')'}" @click="goActivityDetail(a)"><span>{{a.applicant}}人已报名</span></div>
+					<div class="img" :class="{'invalid': a.ifValid == 7, 'active': a.ifValid >= 4 && a.ifValid <= 6, 'waiting': a.ifValid == 3, 'withdraw': a.ifValid == 2}" :style="{backgroundImage: 'url('+ a.img +')'}" @click="goActivityDetail(a)"><span>{{a.applicant}}人已报名</span></div>
 					<h1 v-text="a.title"></h1>
 					<p>活动时间: {{a.starttime}} - {{a.endtime}}</p>
 					<p><span class="status">{{a.status}} 进入></span></p>

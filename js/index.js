@@ -673,6 +673,23 @@ var Index = (function () {
                         _this.ifFirstPC = d.data.no === idxObj.orgInfo.no;
                     }
                 });
+                // 获取统计数据
+                _callAjax({
+                    cmd: "multiFetch",
+                    multi: _dump([
+                        {
+                            key: "activity",
+                            sql: "select count(*) as cnt from activitys where orgId = " + idxObj.orgInfo.id
+                        },
+                        {
+                            key: "member",
+                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where orgId =" + idxObj.orgInfo.id + ")"
+                        }
+                    ])
+                }, function (d) {
+                    _this.branchSummary.activitiesCnt = d.data.activity[0].cnt;
+                    _this.branchSummary.membersCnt = d.data.member[0].cnt;
+                });
             }
         });
     };

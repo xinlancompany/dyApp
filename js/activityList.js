@@ -104,7 +104,7 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, a.ifValid, count(e.id) as applicant from activitys a, activityCategories ae left join activityEnroll e on e.activityId = a.id where a.id = ae.activityId and a.ifValid > 0 and orgId = ? and ae.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, a.ifValid, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime)as endtime, a.address, a.status, a.ifValid, count(e.id) as applicant from activitys a, activityCategories ae left join activityEnroll e on e.activityId = a.id where a.id = ae.activityId and a.ifValid > 0 and orgId = ? and ae.linkerId = ? and a.id < ? group by a.id order by a.id desc limit 10",
 					vals:_dump([orgId, lid, f])
 				}, function(d) {
 					if (d.success && d.data) {
@@ -125,7 +125,7 @@ function plusReady() {
                                 r.status = "已结束";
                             }
                             r.ifValid = parseInt(r.ifValid);
-							self.activityList.push(r);
+                            self.activityList.push(r);
 						});
 					} else {
 						self.bHaveMore = false;

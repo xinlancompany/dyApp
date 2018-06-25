@@ -698,6 +698,16 @@ body {
   color: #fff;
   font-size: 14px;
 }
+.activity ul.activity-list li .img.invalid:after {
+  content: '失效';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #bbb;
+  color: #fff;
+  font-size: 14px;
+}
 .activity ul.activity-list li .img.withdraw:after {
   content: '打回';
   background-color: #b6976b;
@@ -848,6 +858,16 @@ body {
 }
 .activity-detail .banner:after {
   content: '未提交';
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2px 5px;
+  background-color: #bbb;
+  color: #fff;
+  font-size: 14px;
+}
+.activity-detail .banner.invalid:after {
+  content: '失效';
   position: absolute;
   right: 0;
   top: 0;
