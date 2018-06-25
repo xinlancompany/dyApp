@@ -51,8 +51,9 @@ class Index {
 		// 下拉刷新
 		pullToRefresh();
 
-		// 如是安卓版本，则开始版本的检测
-		if ("Android" !== plus.os.name) return;
+		// 如是安卓版本，则开始版本的检测，
+		// 目前iOS也需要弹出
+//		if ("Android" !== plus.os.name) return;
 
 		// 获取app当前版本
 		this.appVersion = plus.runtime.version;
