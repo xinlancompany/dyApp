@@ -179,6 +179,7 @@ class Index {
 					this.tag = tag;
 					$(".main").hide();
 					$("#"+tag).show();
+                    $('body').scrollTop(0);
 				},
 				updateState: function() {
 					if (idxObj.userInfo) {

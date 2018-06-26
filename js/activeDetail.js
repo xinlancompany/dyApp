@@ -74,7 +74,12 @@ function plusReady() {
 		},
 		methods: {
 			openGallery: function() {
-				plus.nativeUI.previewImage(this.detailData.recordImgs,{'current': 0, 'loop': true})
+				var arr = [];
+				var self = this;
+				this.detailData.recordImgs.forEach(function(img,i) {
+					arr.push(img.img);
+					if(self.detailData.recordImgs.length == i + 1) return plus.nativeUI.previewImage(arr,{'current': 0, 'loop': true})
+				})
 			},
             // 活动打分
             openRanks: function() {
@@ -222,7 +227,6 @@ function plusReady() {
 					//未登录，跳转到登录页面
 					openWindow("login.html","login");
 				}
-				
 			},
 			//当前登录用户是否已报名
 			checkEnroll: function(){
@@ -246,15 +250,11 @@ function plusReady() {
 			//修改开始时间
 			changeStartTime: function(){
 				var self = this;
-				console.log('修改开始时间');
-				
-				
 				//修改完后需要保存
 			},
 			//修改结束时间
 			changeEndTime: function(){
 				var self = this;
-				
 				//修改完后需要保存
 			},
 			//修改活动地址
@@ -273,7 +273,6 @@ function plusReady() {
 				}, 'div');
 				
 				//修改完后需要保存
-
 			},
 			//初始化
 			init: function(){
@@ -311,7 +310,6 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
-			
 			self.init();
 		}
 	})

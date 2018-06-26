@@ -193,6 +193,11 @@ function plusReady() {
         	} );
         })
     })
+    
+    mui('#article').on('tap', 'img', function() {
+    	var src = $(this).attr('src');
+		plus.nativeUI.previewImage([src])
+    })
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {

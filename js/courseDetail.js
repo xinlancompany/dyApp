@@ -168,6 +168,11 @@
 	        	} );
 	        })
 	    })
+		
+		mui('#article').on('tap', 'img', function() {
+	    	var src = $(this).attr('src');
+			plus.nativeUI.previewImage([src])
+	    })
 	};
 	
 	if(window.plus) {
