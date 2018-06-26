@@ -169,3 +169,8 @@ else {
         (new Login).start();
     }, false);
 }
+// 添加清理缓存的事件，备用
+//document.addEventListener("clearCache", () => {
+//	_set("userInfo", "");
+//	_set("orgInfo", "");
+//}); 

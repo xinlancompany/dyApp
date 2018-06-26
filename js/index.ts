@@ -206,6 +206,9 @@ class Index {
 
 		// 退出按钮
 		$(".logout").click(() => {
+			// 备用
+//			var loginPage = plus.webview.getWebviewById("login");
+//			if (loginPage) mui.fire(loginPage, "clearCache");
 			openWindow("views/login.html", "login");
 		});
 

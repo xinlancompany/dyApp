@@ -161,6 +161,9 @@ var Index = (function () {
             this.startOrgInterface();
         // 退出按钮
         $(".logout").click(function () {
+            // 备用
+            //			var loginPage = plus.webview.getWebviewById("login");
+            //			if (loginPage) mui.fire(loginPage, "clearCache");
             openWindow("views/login.html", "login");
         });
         // 用于登陆后刷新页面底部标签
