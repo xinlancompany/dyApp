@@ -241,12 +241,12 @@ function plusReady() {
                 });
             },
             chooseCategories: function() {
-                var self = this;
-                openWindow("activityCategories.html", "activityCategories", {
-					lids: _map(function(i) {
-						return i.id;
+            		var self = this;
+				openWindow("activityCategories.html", "activityCategories", {
+					lids: lids = _map(function(i) {
+						return parseInt(i.linkerId);
 					}, self.categories)
-                });
+				});
             },
             newActivity: function() {
                 var title = _trim(this.title),
