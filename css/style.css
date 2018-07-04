@@ -2575,6 +2575,12 @@ body {
 .rule-rows .mui-row .mui-switch.mui-active:before {
   content: '启用';
 }
+.select-list i.iconfont {
+  margin-right: 15px;
+}
+.select-list i.iconfont.icon-xuanzhong {
+  color: #e14937;
+}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
