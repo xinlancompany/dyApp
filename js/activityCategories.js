@@ -36,7 +36,7 @@
 						}
 					});
 				},
-				mutexOnCheck: function() {
+				mutexOnCheck: function(i, evt) {
 					var self = this,
 						ret = {};
 					self.categories.forEach(function(i) {

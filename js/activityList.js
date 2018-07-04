@@ -110,6 +110,7 @@ function plusReady() {
 					if (d.success && d.data) {
 						self.bHaveMore = true;
 						d.data.forEach(function(r) {
+							r.ifValid = parseInt(r.ifValid);
 							if (r.img) {
 								var arrImg = r.img.split('/upload');
 								r.img = serverAddr + '/upload' + arrImg[1];
