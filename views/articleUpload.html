@@ -43,10 +43,8 @@
 			        <label>内容</label>
 			        <textarea rows="15" placeholder="内容" v-model="content"></textarea>
 			    </div>
-			    <div class="mui-button-row">
-			        <button type="button" class="mui-btn mui-btn-primary" @click="newArticle" v-text="submitTag"></button>
-			    </div>
 			</form>			
+			<footer class="block-button" @click="newArticle" v-text="submitTag"></footer>
 		</div>
 	</body>
 </html>

@@ -6,6 +6,12 @@ if(window.plus) {
 }
 
 function plusReady() {
+	mui.init({
+  		gestureConfig:{
+    		longtap: true, 
+   		}
+	});
+	
 	var group = new Vue({
 		el: '#group',
 		data: {
@@ -48,6 +54,10 @@ function plusReady() {
 			groups: group.groups
 		});
 	});
+	
+	mui("#group").on('longtap',".group-li",function(){
+	  alert('触发长按');
+	})
 
 	window.addEventListener('refresh', function(event) {
 		group.getGroups();

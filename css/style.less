@@ -1592,9 +1592,9 @@ body {
                 -webkit-flex: 1;
                 margin: 0;
                 margin-left: 20px;
-                .ell;
                 font-size: 16px;
                 color: #333;
+                .line-clamp(2);
             }
         }
     }
@@ -2329,6 +2329,15 @@ body {
             &.mui-active:before {
                 content: '启用';
             }
+        }
+    }
+}
+
+.select-list {
+    i.iconfont {
+        margin-right: 15px;
+        &.icon-xuanzhong {
+            color: @base;
         }
     }
 }

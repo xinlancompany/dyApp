@@ -105,14 +105,14 @@
 				<header><i class="iconfont icon-jianjie"></i>活动照片：</header>
 				<div class="gallery" @click="openGallery">
 					<template v-for="img in detailData.recordImgs">
-						<div class="thumb" :style="{'backgroundImage': 'url('+img.img+')'}">
+						<div class="thumb" :style="{'backgroundImage': 'url('+img.img+')'}" v-show="img.img != ''">
 							<p v-text="img.txt"></p>
 						</div>
 					</template>
 				</div>
 			</article>
 			
-			<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'" v-show="!isAdmin && !isSub"></footer>
+			<!--<footer :class="{'active': !bClick}" class="block-button" @click="enroll" v-text="bClick? '我要报名':'已报名'" v-show="!isAdmin && !isSub"></footer>-->
 			<footer v-show="isAdmin && detailData.ifValid < 3 && !isSub" class="active block-button" @click="submitActivity">提交</footer>
 		</div>
 	</body>

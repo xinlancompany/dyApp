@@ -1824,11 +1824,13 @@ body {
   -webkit-flex: 1;
   margin: 0;
   margin-left: 20px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
   font-size: 16px;
   color: #333;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
 }
 .comment-list {
   background-color: #fff;
@@ -2574,6 +2576,12 @@ body {
 }
 .rule-rows .mui-row .mui-switch.mui-active:before {
   content: '启用';
+}
+.select-list i.iconfont {
+  margin-right: 15px;
+}
+.select-list i.iconfont.icon-xuanzhong {
+  color: #e14937;
 }
 @keyframes spin {
   0% {

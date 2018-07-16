@@ -25,9 +25,9 @@
 				<span :class="{active: curGroupid == 0}" @click="curGroupid = 0">全部</span>
 				<span :class="{active: curGroupid == i.id}" v-for="i in groups" v-text="i.name" @click="changeGroup(i)"></span>
 			</div>
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-checkbox mui-left" v-for="i in filterUsers" @click="showSelects">
-                    <input name="checkbox" type="checkbox" v-model="i.ifSelect" >{{i.name}}
+			<ul class="mui-table-view select-list">
+				<li class="mui-table-view-cell" v-for="i in filterUsers" @click="showSelects(i)">
+                    <i class="iconfont" :class="{'icon-weixuanzhong':!i.ifSelect, 'icon-xuanzhong':i.ifSelect}"></i>{{i.name}}
 				</li>
 			</ul>
 		</div>

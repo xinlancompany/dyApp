@@ -31,18 +31,14 @@
 					<p>活动时间: {{a.starttime}} - {{a.endtime}}</p>
 					<p @click="goActivityDetail(a)"><span class="status">{{a.status}} 进入></span></p>
 					<p>
-                        <!-- 暂时不提供向下级推送的服务
-                        <span class="activitySort" v-show="isAdmin">
-                            <i class="iconfont icon-zhuanfa"></i>
-                        </span>
-                        -->
-                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="delActivity(a, idx)">
+						<!--<span class="status">{{a.status}} 进入></span>-->
+						<span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="delActivity(a, idx)">
                             <i class="iconfont icon-shanchu"></i>
                         </span>
                         <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="editActivity(a, idx)">
                             <i class="iconfont icon-bianji"></i>
                         </span>
-                    </p>
+					</p>
 				</li>
 			</ul>
 			<!--<footer @click="getActivityList" class="block-button" v-show="bHaveMore">查看更多</footer>-->

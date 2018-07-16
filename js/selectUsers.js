@@ -37,6 +37,7 @@
                         return i.ifSelect;
                     }, self.users)));
                     */
+                   i.ifSelect = !i.ifSelect;
                    if (!i.ifSelect) $("#selectAll").text("全选");
                 },
                 changeGroup: function(i) {
