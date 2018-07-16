@@ -33,9 +33,15 @@
 					<p>
 						<!--<span class="status">{{a.status}} 进入></span>-->
 						<span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="delActivity(a, idx)">
+                        <!-- 暂时不提供向下级推送的服务
+                        <span class="activitySort" v-show="isAdmin">
+                            <i class="iconfont icon-zhuanfa"></i>
+                        </span>
+                        -->
+                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 4" @click="delActivity(a, idx)">
                             <i class="iconfont icon-shanchu"></i>
                         </span>
-                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="editActivity(a, idx)">
+                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 4" @click="editActivity(a, idx)">
                             <i class="iconfont icon-bianji"></i>
                         </span>
 					</p>

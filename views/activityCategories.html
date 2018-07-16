@@ -23,8 +23,8 @@
 				<input type="search" class="mui-input-clear" placeholder="搜索">
 			</div>
 			<ul class="mui-table-view select-tags">
-				<li class="mui-table-view-cell mui-checkbox mui-left mui-transitioning" v-for="i, idx in categories" @click.prevent.stop="mutexOnCheck(i, $event)">
-					<input name="checkbox" type="checkbox" v-model="i.ifSelect" :disabled="!i.ifShow" @click.prevent.stop="mutexOnCheck(i, $event)">{{i.name}}
+				<li class="mui-table-view-cell mui-checkbox mui-left mui-transitioning" v-for="i, idx in categories" @click.prevent.stop="mutexOnCheck(i)">
+					<input name="checkbox" type="checkbox" v-model="i.ifSelect" :disabled="!i.ifShow" @click.prevent.stop="mutexOnCheck(i)">{{i.name}}
 				</li>
 			</ul>
 		</div>
