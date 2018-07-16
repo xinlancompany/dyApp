@@ -27,6 +27,7 @@ function plusReady() {
             endtime: '请选择结束时间',
             userInfo: _load(_get("userInfo")),
             categories: [],
+            originCategories: [],
             absents: [],
             invalids: [],
             ifSubmit: false,
@@ -84,6 +85,7 @@ function plusReady() {
                     }
                     if ("categories" in d.data && d.data["categories"].length) {
 						self.categories = d.data["categories"];
+						self.originCategories = self.categories;
                     }
                 });
             },
@@ -291,6 +293,7 @@ function plusReady() {
                 if (!content) return mui.toast("请填写内容");
                 if (!this.tag) return mui.toast("请选择积分量化标签");
                 if (!this.participants.length) return mui.toast("请选择参会人员");
+                if (!this.categories.length) return mui.toast("请选择活动分类");
 //              if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
@@ -312,18 +315,12 @@ function plusReady() {
                     var aid = d.data;
                     if (!!self.aid) {
 						aid = self.aid;
-					} else {
 						_callAjax({
-							cmd: "multiFetch",
-							multi: _dump(
-								_map(function(i) {
-									return {
-										key: "key"+parseInt(Math.random()*10e6),
-										sql: "insert into activityCategories(activityId, linkerId) values("+aid+", "+i.id+")"
-									};
-								}, self.categories)
-							)
-						}, function(_d) {});
+							cmd: "exec",
+							sql: "delete from activityCategories where id in ("+(_map(function(i) {
+								return i.id;
+							}, self.originCategories).join(","))+")"
+						});
 					}
 					_callAjax({
 						cmd: "multiFetch",
