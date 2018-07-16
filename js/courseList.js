@@ -57,7 +57,7 @@
 					}
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, title, url, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and ifValid > 0 order by newsdate desc limit 10",
+						sql: "select id, title, url, newsdate, img from courses where linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and ifValid > 0 order by newsdate desc, id desc limit 10",
 						vals: _dump([self.lid, fn, fn, fi])
 					}, function(d) {
 						if (d.success && d.data) {

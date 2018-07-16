@@ -234,7 +234,7 @@ var Index = (function () {
                             },
                             {
                                 key: "news",
-                                sql: "select id, title, url, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews + " and credit = 0 order by newsdate desc limit " + newsLimit
+                                sql: "select id, title, url, img, linkerId, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = " + linkerId.IndexNews + " and credit = 0 order by newsdate desc, id desc limit " + newsLimit
                             },
                             {
                                 key: "activities",

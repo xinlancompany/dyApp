@@ -30,6 +30,7 @@ function plusReady() {
             originCategories: [],
             absents: [],
             invalids: [],
+            ifSubmit: false,
         },
         watch: {
             aid: function(i) {
@@ -60,7 +61,8 @@ function plusReady() {
                     if ("info" in d.data) {
                         var inf = d.data["info"][0];
                         self.title = inf.title;
-                        self.MC = _load(inf.organizer);
+//                      self.MC = _load(inf.organizer);
+					   self.organizer = _load(inf.organizer)["name"];
                         self.location = inf.address;
                         self.starttime = inf.starttime;
                         self.endtime = inf.endtime;
@@ -68,7 +70,8 @@ function plusReady() {
                         self.img = inf.img;
                         self.imgStyle.backgroundImage = "url("+inf.img+")";
                         self.tag = _load(inf.tags);
-                        self.recorder = _load(inf.recorder);
+//                      self.recorder = _load(inf.recorder);
+                        self.recorder = _load(inf.recorder)["name"];
                         self.superAttenders = inf.superAttenders;
                         self.unattendReason = inf.unattendReason;
                         if (inf.absents) self.absents = _load(inf.absents);
@@ -91,7 +94,7 @@ function plusReady() {
             			absents = [],
             			invalids = [];
             		self.absents.forEach(function(i) {
-            			if (i.id in self.participantIds) absents.push(i);
+            			if (self.participantIds.indexOf(i.id) >= 0) absents.push(i);
             		});
             		self.absents = absents;
             }
@@ -108,6 +111,21 @@ function plusReady() {
                 return _map(function(i) {
                     return i.name;
                 }, self.participants).join(", ");
+            },
+            realParticipants: function() {
+            		var self = this;
+				var credits = 3;
+				if ("credits" in self.tag && self.tag.credits) credits = self.tag.credits;
+            		return _map(function(j) {
+            			for(var i=0; i<self.absents.length; i++) {
+            				if (parseInt(self.absents[i].id) == parseInt(j.id)) {
+            					j.credits = 0;
+            					return j;
+            				}
+            			}
+            			j.credits = credits;
+            			return j;
+            		}, self.participants);
             },
             selectTagName: function() {
             		if (!this.tag) return "请选择积分量化标签";
@@ -251,19 +269,24 @@ function plusReady() {
 				});
             },
             newActivity: function() {
+            		if (this.ifSubmit) return;
+            		this.ifSubmit = true;
                 var title = _trim(this.title),
-//                  organizer = _trim(this.organizer),
+                    organizer = _trim(this.organizer),
                     location = _trim(this.location),
                     starttime = _trim(this.starttime),
                     endtime = _trim(this.endtime),
                     content = _trim(this.content),
-//                  recorder = _trim(this.recorder),
+                    recorder = _trim(this.recorder),
                     superAttenders = _trim(this.superAttenders);
 //                  unattendReason = _trim(this.unattendReason);
 
                 if (!title) return mui.toast("请填写标题");
-                if (!this.MC) return mui.toast("请选择组织者");
-                if (!this.recorder) return mui.toast("请选择记录着");
+//              if (!this.MC) return mui.toast("请选择组织者");
+				// 手动输入组织者
+				if (!organizer) return mui.toast("请选择组织者");
+				// 手动输入记录者
+                if (!recorder) return mui.toast("请选择记录者");
                 if (!location) return mui.toast("请填写地点");
                 if (!starttime) return mui.toast("请填写开始时间");
                 if (!endtime) return mui.toast("请填写结束时间");
@@ -275,11 +298,12 @@ function plusReady() {
                 
                 var self = this,
                     sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags, orgId,recorder,superAttenders,absents,notOnDuties) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                    vals = _dump([title, content, self.img, _dump(self.MC), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump(self.recorder),superAttenders,_dump(self.absents), _dump([self.invalids])])
+//                  vals = _dump([title, content, self.img, _dump(self.MC), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump(self.recorder),superAttenders,_dump(self.absents), _dump([self.invalids])])
+                    vals = _dump([title, content, self.img, _dump({"groupId":"0","id":"0","name":organizer}), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump({"groupId":"0","id":"0","name":recorder}),superAttenders,_dump(self.absents), _dump([self.invalids])])
 
                 if (!!self.aid) {
                     sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=?,recorder=?,superAttenders=?,absents=?,notOnDuties=? where id = ?";
-                    vals = _dump([title,content,self.img,_dump(self.MC),location,starttime,endtime,_dump(self.tag),_dump(self.recorder),superAttenders,_dump(self.absents),_dump(self.invalids),self.aid]);
+                    vals = _dump([title,content,self.img,_dump({"groupId":"0","id":"0","name":organizer}),location,starttime,endtime,_dump(self.tag),_dump({"groupId":"0","id":"0","name":recorder}),superAttenders,_dump(self.absents),_dump(self.invalids),self.aid]);
                 }
                 
                 _callAjax({
@@ -304,7 +328,7 @@ function plusReady() {
 							_map(function(i) {
 								return {
 									key: "key"+parseInt(Math.random()*10e6),
-									sql: "insert into activityCategories(activityId, linkerId) values("+aid+", "+i.id+")"
+									sql: "insert into activityCategories(activityId, linkerId) values("+aid+", "+i.linkerId+")"
 								};
 							}, self.categories)
 						)
@@ -326,9 +350,11 @@ function plusReady() {
                                             _map(function(i) {
                                                 return {
                                                     key: "key"+parseInt(Math.random()*10e6),
-                                                    sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+credits+")"
+//                                                  sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+credits+")"
+                                                    sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+i.credits+")"
                                                 }
-                                            }, self.participants)
+//                                          }, self.participants)
+                                            }, self.realParticipants)
                                         ))
 //                                      .concat(
 //												_map(function(i) {
@@ -347,12 +373,15 @@ function plusReady() {
                         
                         // 有aid时是更新状态
                         mui.toast((self.aid?"更新":"添加")+"成功");
-                        mui.fire(plus.webview.getWebviewById("activityList"), "refresh", {
-                            lid: self.lid
-                        });
-                        mui.back();
+                        setTimeout(function() {
+							mui.fire(plus.webview.getWebviewById("activityList"), "refresh", {
+								lid: self.lid
+							});
+							mui.back();
+                        }, 1000);
                     } else {
                         mui.toast("添加失败");
+                        self.ifSubmit = false;
                     }
                 });
             },

@@ -14,10 +14,17 @@
 				season: "updateOnSeason",
 				curIdx: function(i) {
 					var self = this;
+
+					// 月份为201806这样的类型
+					var m = '' + ((self.season-1)*3+i);
+					if (m.length == 1) m = "0"+m;
+					var y = _get("year");
+					if (!y) y = _now().split("-")[0];
+
 					if (!this.info[i]) {
 						_summaryAjax({
 							cmd: "month",
-							month: (self.season-1)*3+i,
+							month: y+"-"+m,
 							orgNo: self.userInfo.no
 						}, function(d) {
 							self.info[i] = d.data[0];
@@ -48,10 +55,12 @@
 						self.showInfo = d.data[0];
 					});
 					$(".mui-title").text(i+"季度");
+					let y = parseInt(_get("year"));
+					if (!y) y = parseInt(_now().split("-")[0]);
 					_summaryAjax({
 						cmd: "year",
 						orgNo: self.userInfo.no,
-						year: _get("year")
+						year: y
 					}, function(d) {
 						self.info[4] = d.data[0];
 					});

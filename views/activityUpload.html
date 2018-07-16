@@ -26,13 +26,13 @@
 			    </div>
 			    <div class="mui-input-row">
 			        <label>主持人</label>
-			        <!--<input type="text" class="mui-input-clear" placeholder="主持人" v-model="organizer" @click="chooseMC">-->
-			        <p @click="chooseMC" v-text="selectMC"></p>
+			        <input type="text" class="mui-input-clear" placeholder="主持人" v-model="organizer">
+			        <!--<p @click="chooseMC" v-text="selectMC"></p>-->
 			    </div>
 			    <div class="mui-input-row">
 			        <label>记录人</label>
-			        <!--<input type="text" class="mui-input-clear" placeholder="记录人" v-model="recorder" @click="chooseRecorder" disabled>-->
-			        <p @click="chooseRecorder" v-text="selectRecorder"></p>
+			        <input type="text" class="mui-input-clear" placeholder="记录人" v-model="recorder">
+			        <!--<p @click="chooseRecorder" v-text="selectRecorder"></p>-->
 			    </div>
 			    <div class="mui-input-row">
 			        <label>列席人员</label>
@@ -69,7 +69,7 @@
 			        <textarea rows="10" placeholder="内容" v-model="content"></textarea>
 			    </div>
 			    <div class="mui-input-row mui-input-textarea" @click="chooseParticipants">
-			        <label>与会人员</label>
+			        <label>应到人员</label>
                     <textarea v-text="selectParticipantNames" disabled rows="10"></textarea>
 			    </div>
 			    <div class="mui-input-row mui-input-textarea" @click="chooseAbsents">

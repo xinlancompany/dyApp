@@ -107,7 +107,7 @@ var Login = (function () {
                     var sql = "select u.id,u.name,u.img,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1", vals = _dump([name, name, pswd]);
                     // 组织登陆
                     if ("organization" === this.loginType) {
-                        sql = "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ?";
+                        sql = "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ? and ifValid >= 1";
                         vals = _dump([name, pswd]);
                     }
                     // 登陆
@@ -120,6 +120,7 @@ var Login = (function () {
                             _set("personal" === _this.loginType ? "userInfo" : "orgInfo", _dump(d.data[0]));
                             // 保存登录名
                             _set("personal" === _this.loginType ? "userName" : "orgName", name);
+                            _set("year", _this.year);
                             setTimeout(function () {
                                 _this.openIndex();
                             }, 500);

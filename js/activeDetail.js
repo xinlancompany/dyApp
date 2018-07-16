@@ -114,9 +114,13 @@ function plusReady() {
             },
             // 上传记录
             uploadRecord: function() {
-                openWindow("recordUpload.html", "recordUpload", {
-                    aid: activityId
-                });
+                if (this.detailData.ifValid < 3) {
+					openWindow("recordUpload.html", "recordUpload", {
+						aid: activityId
+					});
+                } else {
+                		mui.toast("当前状态不得修改记录");
+                }
             },
             // 打开心得
             openExperiences: function() {
