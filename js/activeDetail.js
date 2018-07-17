@@ -14,6 +14,9 @@ function plusReady() {
 	var isSub = false;
 	if ("isSub" in wb) isSub = wb.isSub;
 
+	// lid用于提交之后的刷新
+	var lid = wb.lid;
+
 	var activityDetail = new Vue({
 		el: '#activeDetail',
 		data: {
@@ -306,7 +309,14 @@ function plusReady() {
                     			vals:_dump([activityId,])
                     		}, function(d) {
                     			mui.toast("提交"+(d.success?"成功":"失败"));
-                    			if (d.success) self.detailData.ifValid = 3;
+                    			if (d.success) {
+                    				self.detailData.ifValid = 3;
+                    				setTimeout(function() {
+									mui.fire(plus.webview.getWebviewById("activityList"), "refresh", {
+										lid: lid
+									});
+                    				}, 1000);
+                    			}
                     		});
                     }
                 });

@@ -75,6 +75,7 @@ function plusReady() {
 				// mui.fire(plus.webview.getWebviewById("activeDetail"), 'activityId', {});
 				openWindow('activeDetail.html', 'activeDetail', {
                     activityId: i.id,
+                    lid: lid, // 用于提交之后的刷新
                     isAdmin: wb.isAdmin,
                     isSub: isSub
                 });
