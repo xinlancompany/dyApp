@@ -174,7 +174,7 @@ function plusReady() {
         }, function(e){
         	if(e.index == 1) return newsDetail.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneSession');
         	if(e.index == 2) return newsDetail.shareSystem('articles', newsDetail.newsData, 'weixin', 'WXSceneTimeline');
-        	if(e.index == 3) return newsDetail.shareSystem('courses', newsDetail.newsData, 'qq', null);
+        	if(e.index == 3) return newsDetail.shareSystem('articles', newsDetail.newsData, 'qq', null);
         })
     })
     

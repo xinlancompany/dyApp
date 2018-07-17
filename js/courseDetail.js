@@ -147,8 +147,8 @@
 	            cancel: "取消",
 	            buttons: [{title:"微信好友"},{title:"微信朋友圈"},{title:"QQ好友"}]
 	        }, function(e){
-	        	if(e.index == 1) return vm.shareSystem('articles', vm.newsData, 'weixin', 'WXSceneSession');
-	        	if(e.index == 2) return vm.shareSystem('articles', vm.newsData, 'weixin', 'WXSceneTimeline');
+	        	if(e.index == 1) return vm.shareSystem('courses', vm.newsData, 'weixin', 'WXSceneSession');
+	        	if(e.index == 2) return vm.shareSystem('courses', vm.newsData, 'weixin', 'WXSceneTimeline');
 	        	if(e.index == 3) return vm.shareSystem('courses', vm.newsData, 'qq', null);
 	        })
 	    })
