@@ -27,9 +27,10 @@
 			<form action="" class="search-bar" v-show="curReasonId == reasons.length" onsubmit="return false;">
 				<input type="search" maxlength="8" v-model="otherReason" placeholder="请输入其他理由"/>
 			</form>
-			<ul class="mui-table-view">
-				<li class="mui-table-view-cell mui-checkbox mui-left" v-for="i in users" >
-                    <input name="checkbox" type="checkbox" v-model="i.ifSelect" @change="updateAbsentReason(i)">{{i.name}}
+			<ul class="mui-table-view select-list">
+				<li class="mui-table-view-cell" v-for="i in users" @click="updateAbsentReason(i)">
+                    <!--<input name="checkbox" type="checkbox" v-model="i.ifSelect" @change="updateAbsentReason(i)">{{i.name}}-->
+                    <i class="iconfont" :class="{'icon-weixuanzhong':!i.ifSelect, 'icon-xuanzhong':i.ifSelect}"></i>{{i.name}}
 				</li>
 			</ul>
 		</div>

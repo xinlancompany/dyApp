@@ -6,11 +6,11 @@ if(window.plus) {
 }
 
 function plusReady() {
-	mui.init({
-  		gestureConfig:{
-    		longtap: true, 
-   		}
-	});
+//	mui.init({
+//		gestureConfig:{
+//  		longtap: true, 
+// 		}
+//	});
 	
 	var group = new Vue({
 		el: '#group',
@@ -31,7 +31,7 @@ function plusReady() {
 				var self = this;
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name from groups where orgNo = ?",
+					sql: "select id, name from groups where orgNo = ? and ifValid >= 1",
 					vals: _dump([self.userInfo.no,])
 				}, function(d) {
 					if (d.success && d.data) {
@@ -42,6 +42,23 @@ function plusReady() {
 						});
 					}
 				});
+			},
+			delGroup: function(i, idx) {
+				var self = this;
+                mui.confirm("确定删除该党小组？", "提示", ["确定", "取消"], function(e) {
+                    if (e.index == 0) {
+						_callAjax({
+							cmd: "exec",
+							sql: "update groups set ifValid = 0 where id = ?",
+							vals: _dump([i.id,])
+						}, function(d) {
+							mui.toast("删除"+(d.success?"成功":"失败"));
+							if (d.success) {
+								self.groups = _del_ele(self.groups, idx);
+							}
+						});
+                    }
+                });
 			}
 		},
 		created: function() {
@@ -55,9 +72,9 @@ function plusReady() {
 		});
 	});
 	
-	mui("#group").on('longtap',".group-li",function(){
-	  alert('触发长按');
-	})
+//	mui("#group").on('longtap',".group-li",function(){
+//	  alert('触发长按');
+//	});
 
 	window.addEventListener('refresh', function(event) {
 		group.getGroups();

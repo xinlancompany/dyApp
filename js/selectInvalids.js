@@ -30,7 +30,7 @@
 				}
             },
             methods: {
-                showSelects: function() {
+                showSelects: function(i) {
                     /*
                      * 测试用
                     var self = this;
@@ -38,6 +38,7 @@
                         return i.ifSelect;
                     }, self.users)));
                     */
+                   i.ifSelect = !i.ifSelect;
                 },
                 getUsers: function() {
 					_callAjax({

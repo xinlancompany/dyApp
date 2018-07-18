@@ -34,6 +34,7 @@
             },
             methods: {
                 updateAbsentReason: function(i) {
+                    i.ifSelect = !i.ifSelect;
                 		var orn = this.otherReason == ""?'其他':this.otherReason;
                 		if (i.ifSelect) {
                 			i.reason = this.curReasonId == this.reasons.length ? orn : i.reason = this.reasons[this.curReasonId];
