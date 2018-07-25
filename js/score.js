@@ -135,7 +135,7 @@
 					}
 				},
 				//获取学习列表
-				getCourseList: function(){
+				getCourseList: function() {
 					var self = this;
 					
 					if(self.userInfo && self.bHaveMore_course) {
@@ -160,7 +160,7 @@
 									self.bHaveMore_course = false;
 								} else {
 									self.bHaveMore_course = true;
-								}
+								}									
 
 								if(self.activeTab == 1){
 									self.contentList = self.courseLiveList;

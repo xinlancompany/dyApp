@@ -37,10 +37,11 @@ function plusReady() {
 				
 					_callAjax({
 						cmd: "fetch",
-//						sql: "select l.id, l.title, l.img, strftime('%Y-%m-%d', e.logtime)as time, count(e.id) as points from lives l, liveEnroll e where l.ifValid > 0 and e.liveId = l.id and e.userId = ? and l.id < ? group by l.id order by l.id desc",
-						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%m-%d', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId in (select id from linkers where refId = ?) order by a.id desc limit 10",
-//						vals: _dump([self.userInfo.id, f])
-						vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform])
+//						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%m-%d', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId in (select id from linkers where refId = ?) order by a.id desc limit 10",
+//						vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform])
+
+						sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, strftime('%Y-%m-%d', e.logtime) as time, ifnull(e.credit, 0) as points from courses a, courseEnroll e where e.courseId = a.id and a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by e.logtime desc limit 10",
+						vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform, linkerId.HandCourse])
 					}, function(d) {
 						// alert(_dump(d.data));
 						if(d.success && d.data) {
@@ -55,6 +56,10 @@ function plusReady() {
 							} else {
 								self.bHaveMore_live = true;
 							}
+
+							_tell("--------------");
+							_tell(self.bHaveMore_live);
+							_tell("--------------");
 
 							if(self.activeTab == 1){
 								self.contentList = self.courseLiveList;
@@ -104,10 +109,20 @@ function plusReady() {
 			},
 			//跳转到详情
 			gotoNetCourseDetail: function(i) {
-				_set("netcourseId", i.id);
-				mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
-				
-				openWindow("internetCourseware.html", "internetCourseware");
+//				_set("netcourseId", i.id);
+//				mui.fire(plus.webview.getWebviewById("internetCourseware"), 'netcourseId', {});
+//				
+//				openWindow("internetCourseware.html", "internetCourseware");
+
+				// 打开外链
+				if (i.url.indexOf("http") === 0) return openOutlink(i.url, i.title);
+				// 如果预加载，需要触发事件
+				mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
+					cid: i.id
+				});
+				openWindow("courseDetail.html", "courseDetail", {
+					cid: i.id
+				});
 			},
 		},
 		mounted: function() {

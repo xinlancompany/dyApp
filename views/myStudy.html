@@ -26,13 +26,13 @@
 						<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}"></div>
 						<div class="mui-media-body">
 							<p class="title" v-text="i.title"></p>
-							<p class="desc" v-text='i.brief'></p>
+							<!--<p class="desc" v-text='i.brief'></p>-->
 							<span class="btn" v-cloak>{{i.time}}</span>
 						</div>
 					</a>
 				</li>
 			</ul>
-			<footer @click="getMyStudy" class="block-button" v-show="bHaveMore">查看更多</footer>
+			<footer @click="getLiveList" class="block-button" v-show="bHaveMore_live">查看更多</footer>
 		</div>
 	</body>
 </html>
