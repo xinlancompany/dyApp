@@ -282,6 +282,9 @@ body {
   background-repeat: no-repeat;
   background-position: 50%;
 }
+#index .ad-swiper {
+  height: auto;
+}
 .news-list {
   margin-bottom: 8px;
 }
