@@ -24,9 +24,11 @@
 			</div>
 			<ul class="mui-table-view select-tags">
 				<li class="mui-table-view-cell mui-radio checkbox mui-left mui-transitioning" v-for="i, idx in tags" @click="showSelects(idx)">
+					<!--
 					<div class="mui-slider-right mui-disabled">
 						<a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);">删除</a>
 					</div>
+					-->
 					<div class="mui-slider-handle">
 	                    <!--<input name="checkbox" type="checkbox" :value="i.id" v-model="i.ifSelect" >{{i.name}}-->
 	                    <input name="radio" type="radio" :value="idx" v-model="selectTagIndex" >{{i.name+"("+i.credits+"分)"}}

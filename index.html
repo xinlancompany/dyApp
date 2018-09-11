@@ -49,22 +49,17 @@
 		</div>
 
 		<div id="index" class="have-footer main" style="display:block">
-			<!--
-			<div class="news-list">
-				<header class="global-header"><h1 class="title">季度主题宣传教育栏目</h1></header>
+			<div class="news-list" v-show="ads.length">
+				<header class="global-header"><h1 class="title" v-text="activeAdsText"></h1></header>
 				<div class="swiper-container ad-swiper">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide">
-							<img src="http://placeimg.com/640/130" width="100%" />
-						</div>
-						<div class="swiper-slide">
-							<img src="http://placeimg.com/640/130" width="100%" />
+						<div class="swiper-slide" v-for="i in ads" @click="openAd(i)">
+							<img :src="i.img" width="100%" />
 						</div>
 					</div>
 					<div class="swiper-pagination ad-pagination"></div>
 				</div>
 			</div>
-			-->
 			<div class="news-list">
 				<header class="global-header"><h1 class="title">新闻</h1></header>
 				<ul class="mui-table-view">
