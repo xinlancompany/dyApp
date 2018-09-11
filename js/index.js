@@ -683,11 +683,11 @@ var Index = (function () {
                     multi: _dump([
                         {
                             key: "activity",
-                            sql: "select count(*) as cnt from activitys where orgId = " + idxObj.orgInfo.id
+                            sql: "select count(*) as cnt from activitys where orgId = " + idxObj.orgInfo.id + " and ifValid > 0"
                         },
                         {
                             key: "member",
-                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where orgId =" + idxObj.orgInfo.id + ")"
+                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where orgId =" + idxObj.orgInfo.id + " and ifValid > 0)"
                         }
                     ])
                 }, function (d) {

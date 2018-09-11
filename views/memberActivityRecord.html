@@ -25,8 +25,8 @@
 		            <div class="mui-table">
 		                <div class="mui-table-cell mui-col-xs-9">
 		                    <h4 class="mui-ellipsis" v-text="i.title"></h4>
-                            <h5>{{i.experience?i.experience:"暂无心得"}}</h5>
-                            <p class="mui-h6 mui-ellipsis">{{i.score?(i.score+(i.scoreType=="百分制"?"分":"星")):"暂未打分"}}</p>
+                            <h5>{{i.isActivity?(i.experience?i.experience:"暂无心得"):"增减分申请项目"}}</h5>
+                            <p class="mui-h6 mui-ellipsis">{{i.points?(i.points+"分"):"暂未打分"}}</p>
 		                </div>
 		                <div class="mui-table-cell mui-col-xs-3 mui-text-right">
                             <span class="mui-h5">{{i.logtime}}</span>

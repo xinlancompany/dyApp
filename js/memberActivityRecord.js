@@ -20,6 +20,7 @@
 					});
             		},
                 actions: function(i) {
+                		if (!parseInt(i.isActivity)) return;
                     var buttons = [
                         {
                             title: "心得审核"
@@ -49,10 +50,10 @@
                             });
                         }
                         if (e.index == 2) {
-							if (parseInt(i.ifValid) == 4) return mui.toast("活动已审定");
+							if (parseInt(i.ifValid) >= 3) return mui.toast("活动已锁定");
                             openWindow("grade.html", "grade", {
-                                idx: i.id,
-                                score: i.score,
+                                idx: i.activityEnrollId,
+                                score: i.points,
                                 scoreType: i.scoreType,
                                 from: "member",
                             });
@@ -68,6 +69,7 @@
         $(".mui-title").text(wb.name+"的活动记录");
         var init = function() {
             // 学习积分
+            /*
             _callAjax({
                 cmd: "multiFetch",
                 multi: _dump([
@@ -75,22 +77,16 @@
                         key: "activity",
                         sql: "select e.id, a.title, strftime('%Y-%m-%d', a.starttime) as logtime, e.id, e.experience, e.experienceTitle, e.imgs, e.experienceTime, e.experiencePermitted, e.score, e.scoreType, a.ifValid from activityEnroll e, activitys a where e.userId = "+wb.idx+" and e.activityId = a.id and a.ifValid > 0",
                     },
-                    /*
-                    {
-                        sql: "select sum(credit) as total from courseEnroll e, courses c where e.userId = "+wb.idx+" and e.courseId = c.id",
-                        key: "course"
-                    },
-                    {
-                        key: "live",
-                        sql: "select liveId, count(id) as cnt from liveEnroll where userId ="+wb.idx+" group by liveId"
-                    }
-                    */
                 ])
+			*/
+			_summaryAjax({
+				cmd: "userScoreDetail",
+				id: wb.idx
             }, function(d) {
                 if (!d.success || !d.data) return;
-                if (d.data["activity"] && d.data["activity"].length) {
-                    vm.activities = d.data["activity"];
-                }
+//              if (d.data["activity"] && d.data["activity"].length) {
+				vm.activities = d.data;
+//              }
                 /*
                 if (d.data["course"] && d.data["course"].length) {
                     if (!d.data["course"][0].total) {

@@ -15,6 +15,7 @@
 				bHaveMore_activity: true,
 				bHaveMore_course: true,
 				bHaveMore_live: true,
+				easyScoreList: [],
             },
             computed:{
 //          	s2: function() {
@@ -23,6 +24,14 @@
 //         	},
             	courseLiveList: function() {
             		var l = this.courseList.concat(this.liveList);
+            		l.sort(function(a, b) {
+            			return a.time < b.time;
+            		});
+            		return l;
+            	},
+            	// 活动积分列表加上申请积分的列表
+            	scoreList: function() {
+            		var l = this.activityList.concat(this.easyScoreList);
             		l.sort(function(a, b) {
             			return a.time < b.time;
             		});
@@ -36,7 +45,8 @@
                         this.contentList = this.courseLiveList;
                     } else {
                         this.totalScore = this.activityScore;
-                        this.contentList = this.activityList;
+                        // this.contentList = this.activityList;
+                        this.contentList = this.scoreList;
                     }
                 }
             },
@@ -49,7 +59,18 @@
                         this.totalScore = this.activityScore;
                     }
                 },
-
+                // 获取申请加分项目
+                getEasyScoreList: function() {
+					var self = this;
+                		_callAjax({
+                			cmd: "fetch",
+                			sql: "select id, content as title, 0 as isActicvity, strftime('%Y-%m-%d %H:%M', logtime) as time, score as points, 0 as isActicvity from easyScore where ifValid = 2 and userId = "+userInfo.id+" order by id desc"
+                		}, function(d) {
+                			if (d.success && d.data && d.data.length) {
+                				self.easyScoreList = d.data;
+                			}
+                		});
+                },
 				//获取活动列表
 				getActivityList: function(){
 					var self = this;
@@ -61,11 +82,11 @@
 							f = _at(self.activityList, -1).id;
 						}
 					
-						console.log("f="+f);
+//						console.log("f="+f);
 						_callAjax({
 							cmd: "fetch",
-//							sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-							sql: "select a.id, a.title, e.score, strftime('%Y-%m-%d %H:%M', a.starttime)as time, e.score as points from activityEnroll e, activitys a where a.ifValid > 0 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
+							// sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
+							sql: "select a.id, a.title, e.score, 1 as isActivity, strftime('%Y-%m-%d %H:%M', a.starttime) as time, e.score as points from activityEnroll e, activitys a where a.ifValid > 0 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
 							vals: _dump([self.userInfo.id, f])
 						}, function(d) {
 							if(d.success && d.data) {
@@ -80,8 +101,9 @@
 									self.bHaveMore_activity = true;
 								}
 
-								if(self.activeTab == 0){
-									self.contentList = self.activityList;
+								if(self.activeTab == 0) {
+									// self.contentList = self.activityList;
+									self.contentList = self.scoreList;
 								}
 							} else {
 								self.bHaveMore_activity = false;
@@ -203,6 +225,7 @@
 					});
 				},
 				openActivity: function(i) {
+					if (!parseInt(i.isActivity)) return;
 					openWindow('activeDetail.html', 'activeDetail', {
 						activityId: i.id,
 						isAdmin: false
@@ -218,8 +241,12 @@
             multi: _dump([
                 {
                     key: "score",
-                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid > 0)"
+                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid = 4)"
                 },
+                {
+                    key: "easyScore",
+                    sql: "select ifnull(sum(score), 0) as total from easyScore where userId = "+userInfo.id+" and ifValid = 2"
+				},
                 {
                     sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id and c.ifValid > 0",
                     key: "course"
@@ -236,6 +263,10 @@
                     // 五星制取消
                     // if (i.scoreType == "五星制") vm.activityScore += i.total * 20;
             }
+            // 获取申请加分
+            if ("easyScore" in d.data && d.data.score && d.data.easyScore.length) {
+				vm.activityScore += parseInt(d.data.easyScore[0].total);
+			}
             if ("course" in d.data && d.data.course && d.data.course.length) {
                 vm.studyScore += parseInt(d.data.course[0].total);
             }
@@ -261,6 +292,7 @@
 		vm.courseList = [];
 		vm.getActivityList();
 		vm.getCourseList();
+		vm.getEasyScoreList();
 //		vm.getLiveList();
 
 

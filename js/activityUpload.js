@@ -1,4 +1,18 @@
 function plusReady() {
+    var wb = plus.webview.currentWebview();
+    var ifEditFinished = false;
+
+//	mui.init({
+//		beforeback: function() {
+//			if (!ifEditFinished) {
+//				upload.ifSubmit = false;
+//				_set("activityUploadData_"+wb.lid, JSON.stringify(upload.$data));
+//			} else {
+//				_set("activityUploadData_"+wb.lid, "");
+//			}
+//		},
+//	});
+
     var upload = new Vue({
         el: "#activityUpload",
         data: {
@@ -116,7 +130,7 @@ function plusReady() {
             		var self = this;
 				var credits = 3;
 				if ("credits" in self.tag && self.tag.credits) credits = self.tag.credits;
-            		return _map(function(j) {
+            		ret = _map(function(j) {
             			for(var i=0; i<self.absents.length; i++) {
             				if (parseInt(self.absents[i].id) == parseInt(j.id)) {
             					j.credits = 0;
@@ -125,7 +139,8 @@ function plusReady() {
             			}
             			j.credits = credits;
             			return j;
-            		}, self.participants);
+            		}, self.participants.concat(self.invalids)); // 因公需要给平均分
+            		return ret;
             },
             selectTagName: function() {
             		if (!this.tag) return "请选择积分量化标签";
@@ -373,6 +388,8 @@ function plusReady() {
                         
                         // 有aid时是更新状态
                         mui.toast((self.aid?"更新":"添加")+"成功");
+                        _set("activityUploadData_"+wb.lid, "");
+                        // 清空缓存
                         setTimeout(function() {
 							mui.fire(plus.webview.getWebviewById("activityList"), "refresh", {
 								lid: self.lid
@@ -387,9 +404,22 @@ function plusReady() {
             },
         },
         created: function() {
-
+        		// 编辑模式，不保存
+        		if ("aid" in wb) return;
+			var dataStr = _get("activityUploadData_"+wb.lid);
+			if (!dataStr) return;
+			var self = this,
+				data = JSON.parse(dataStr);
+			Object.keys(data).forEach(function(k) {
+				self[k] = data[k];
+			});
         }
     });
+
+	$(".info-save").click(function() {
+		_set("activityUploadData_"+wb.lid, JSON.stringify(upload.$data));
+		mui.toast("暂存成功");
+	});
 
     // 返回选择学员
     window.addEventListener("selectParticipants", function(event) {
@@ -430,16 +460,17 @@ function plusReady() {
     		}
     });
 
-    var wb = plus.webview.currentWebview();
     upload.lid = wb.lid;
     // 编辑模式
     if ("aid" in wb) {
         upload.aid = wb.aid;
     } else {
-		upload.categories.push({
-				id: wb.lid,
+    		if (!upload.categories.length) {
+			upload.categories.push({
+				linkerId: wb.lid,
 				name: wb.lname.split("(")[0]
-		});
+			});
+    		}
     }
     // $("#ruleDate").val(_now().split(" ")[0]);
 };

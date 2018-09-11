@@ -33,6 +33,11 @@ function plusReady() {
             // ifFinished: false, // 活动是否关闭
 		},
 		computed: {
+			applicantTxt: function() {
+				var allCnt = this.detailData.applicant,
+					absentCnt = this.detailData.absents.length;
+				return (allCnt-absentCnt)+"/"+allCnt;
+			},
 			invalidNames: function() {
 				if (!this.detailData.notOnDuties) return '';
 				var self = this;

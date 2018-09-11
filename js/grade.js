@@ -79,7 +79,7 @@
                 }
             },
             created: function() {
-                this.gradeType = wb.scoreType;
+                // this.gradeType = wb.scoreType;
                 if (this.gradeType == "百分制") {
                     this.s1 = wb.score;
                 } else {

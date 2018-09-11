@@ -118,6 +118,7 @@ var Login = (function () {
                     }, function (d) {
                         if (d.success && d.data && d.data.length) {
                             _set("personal" === _this.loginType ? "userInfo" : "orgInfo", _dump(d.data[0]));
+                            _tell(d.data[0]);
                             // 保存登录名
                             _set("personal" === _this.loginType ? "userName" : "orgName", name);
                             _set("year", _this.year);

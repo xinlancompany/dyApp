@@ -28,7 +28,9 @@
 			},
 			methods: {
 				courseEnroll: function() {
+					_tell("rth-1");
 					if (this.noNeedToUpdate) return;
+					_tell("rth-2");
 					var self = this;
 						self.newsData.ecredit += 30;
 					if (self.newsData.ecredit > self.newsData.credit) {
@@ -44,6 +46,8 @@
 				},
 				getNewsData: function(i) {
 					if (!i) return;
+					// 防止courseDetail未注销情况下，noNeedToUpdate依然为true，导致无法计时
+					this.noNeedToUpdate = false;
 					var self = this;
 					_callAjax({
 						cmd: "fetch",
@@ -59,6 +63,10 @@
 								openOutlink(self.newsData.url, self.newsData.title, "courseDetail");
 								return;
 							}
+							_tell("-----");
+							_tell(self.newsData.ecredit + ":" + self.newsData.credit);
+							_tell(self.noNeedToUpdate);
+							_tell("-----");
 							if (!self.newsData.ecredit) self.newsData.ecredit = 0;
 							if (self.newsData.ecredit == self.newsData.credit) self.noNeedToUpdate = true;
 
@@ -82,6 +90,8 @@
 								}
 							});
 
+							// 清理已存在的interval
+							if (!!self.intervalCb) clearInterval(self.intervalCb);
 							// 半分钟以上，算学习一次
 							self.intervalCb = setInterval(function() {
 								self.courseEnroll();

@@ -18,9 +18,9 @@ function plusReady() {
 		computed: {
             	courseLiveList: function() {
             		var l = this.internets.concat(this.liveList);
-            		l.sort(function(a, b) {
-            			return a.time < b.time;
-            		});
+//          		l.sort(function(a, b) {
+//          			return a.time < b.time;
+//          		});
             		return l;
             	}
 		},
