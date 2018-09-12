@@ -2,14 +2,12 @@ var timer = null;
 var liveDetail;
 
 function startTimeOut() {
-	console.log("startTimeOut");
 	timer = setInterval(function() {
 		liveDetail.studyTime++;
 	}, 1000);
 }
 
 function clearTimeOut() {
-	console.log("clearTimeOut");
 	clearInterval(timer);
 }
 
@@ -61,17 +59,14 @@ function plusReady() {
 						//视频新闻，取src
 						var content = d.data[0].content;
 						var url = d.data[0].url;
-						console.log("url=" + url);
 						if(url == '#' || url.length <= 0) {
 							var src = $(content).find('video').attr('src');
-							console.log("live src=" + src);
                             if (src.indexOf("m3u8") == -1) {
                                 var arrSrc = src.split('/upload');
                                 src = serverAddr + '/upload' + arrSrc[1];
                             }
 							self.liveData.url = src;
 						}
-						console.log("img="+self.liveData.img);
 						
 					}
 				})
@@ -126,7 +121,6 @@ function plusReady() {
 		watch: {
 			studyTime: function() {
 				var self = this;
-				console.log(self.studyTime);
 				if(self.studyTime > 0 && self.studyTime % 60 == 0) {
 					self.recordStudy();
 				}

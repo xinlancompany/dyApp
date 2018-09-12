@@ -82,7 +82,6 @@
 							f = _at(self.activityList, -1).id;
 						}
 					
-//						console.log("f="+f);
 						_callAjax({
 							cmd: "fetch",
 							// sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",

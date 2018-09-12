@@ -28,9 +28,7 @@
 			},
 			methods: {
 				courseEnroll: function() {
-					_tell("rth-1");
 					if (this.noNeedToUpdate) return;
-					_tell("rth-2");
 					var self = this;
 						self.newsData.ecredit += 30;
 					if (self.newsData.ecredit > self.newsData.credit) {
@@ -63,10 +61,6 @@
 								openOutlink(self.newsData.url, self.newsData.title, "courseDetail");
 								return;
 							}
-							_tell("-----");
-							_tell(self.newsData.ecredit + ":" + self.newsData.credit);
-							_tell(self.noNeedToUpdate);
-							_tell("-----");
 							if (!self.newsData.ecredit) self.newsData.ecredit = 0;
 							if (self.newsData.ecredit == self.newsData.credit) self.noNeedToUpdate = true;
 

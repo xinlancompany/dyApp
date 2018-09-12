@@ -14,10 +14,8 @@
 			}, function(dir) {
 				gentry = dir;
 			}, function(e) {
-				console.log('Get directory "audio" failed: ' + e.message);
 			});
 		}, function(e) {
-			console.log('Resolve "_doc/" failed: ' + e.message);
 		});
 
         var vm = new Vue({
@@ -78,7 +76,6 @@
 //			         plus.gallery.pick( function(path){
 //				    	openWindow('imageClipper.html', 'imageClipper', {path})
 //				    }, function ( e ) {
-//				    	console.log( "取消选择图片" );
 //				    }, {filter:"image"} );
 
                     var self = this;
@@ -259,7 +256,6 @@
             vals: _dump([wb.aid,])
         }, function(d) {
             if (d.success && d.data && d.data.length) {
-            	console.log(d.data[0].recordImgs)
                 var imgs = _load(d.data[0].recordImgs);
                 [1,2,3,4,5,6].forEach(function(i) {
                     vm["img"+i] = imgs[i-1].img;

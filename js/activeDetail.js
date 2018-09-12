@@ -274,7 +274,6 @@ function plusReady() {
 				var self = this;
 				
 				mui.prompt('修改活动地址', '', '', ['确认', '取消'], function(e) {
-					console.log(((e.index == 0) ? "确认: " : "取消") + e.value);
 					if(e.index == 0) {
 						if(e.value){
 							self.detailData.address = e.value;

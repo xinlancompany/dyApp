@@ -229,7 +229,6 @@ function plusReady() {
     // 添加newList自定义监听事件
     window.addEventListener('newList', function(event) {
         var lid = event.detail.linkerId;
-        // _tell(_get("userInfo"));
         // 修改标题
         if (lid) {
             updateNewsList(lid, no);

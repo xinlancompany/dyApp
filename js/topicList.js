@@ -7,7 +7,6 @@ function plusReady() {
         },
         methods: {
             goToActivity: function(i) {
-            	console.log(1)
                 var self = this;
                 openWindow("activityList.html", "activityList", {
                     lid: i.id,

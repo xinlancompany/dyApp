@@ -286,7 +286,6 @@ function plusReady() {
 			//组织信息管理
 			gotoOrganization: function(){
 				var userInfo = _load(_get('userInfo'));
-                _tell(userInfo);
 				if(userInfo){
 					if(userInfo.userType == 1) {
 						// ucenter.goLogin();
@@ -858,10 +857,8 @@ function plusReady() {
 					cmd: "fetch",
 					sql: "select id, title, img, content, brief, linkerId, reporter, readcnt, newsdate, url from courses where ifValid =1 and orgId = "+ orgId + " order by id desc limit 2"
 				},function(d){
-					_tell(d);
 					if(d.success && d.data){
 						self.internets = d.data;
-						_tell(self.internets);
 					}
 				})
 			},
@@ -958,9 +955,7 @@ function plusReady() {
 			//登录
 			goLogin: function() {
 				if(this.isLogin){
-					console.log('登录');
 					var userInfo = _load(_get('userInfo'));
-					_tell(userInfo);
 					if(userInfo.userType == 1){
 						openWindow('views/organization.html', 'organization');
 					}else {

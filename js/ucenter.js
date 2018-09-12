@@ -42,7 +42,6 @@ function plusReady() {
 				uploadImage("users", evt, function(r) {
 					plus.nativeUI.closeWaiting();
 					self.userInfo.img = serverAddr+'/upload/pic/users/'+r.thumb;
-                    _tell("img: ---> "+self.img);
                     _callAjax({
                     	cmd: "exec",
                     	sql: "update user set img = ? where id = ?",

@@ -90,7 +90,6 @@ var Index = (function () {
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
         var orgStr = _get("orgInfo");
-        console.log(userStr);
         if (userStr) {
             this.userInfo = _load(userStr);
             this.orgInfo = null;
@@ -243,7 +242,6 @@ var Index = (function () {
                             }
                         ])
                     }, function (d) {
-                        _tell(d);
                         if (!d.success)
                             return;
                         if ("banners" in d.data && d.data.banners.length) {
@@ -622,7 +620,6 @@ var Index = (function () {
                 // 党支部以上均自行设置规则
                 if ("党支部" !== idxObj.orgInfo.type)
                     cateSql = "select l.id as topicId, l.name as title, count(ac.id) as cnt from linkers l, activitys a left join activityCategories ac on ac.linkerId = l.id and a.id = ac.activityId where a.orgId = " + idxObj.orgInfo.id + " and orgNo = '" + idxObj.orgInfo.no + "' and refId = " + linkerId.Activity + " and l.ifValid = 1 group by l.id order by l.id";
-                console.log(cateSql);
                 _callAjax({
                     cmd: "multiFetch",
                     multi: _dump([

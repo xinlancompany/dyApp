@@ -55,10 +55,8 @@ function plusReady() {
 				cmd: "fetch",
 				sql: "select homepage from system"
 			}, function(d) {
-				_tell(d.data);
 				if(d.success && d.data) {
 					self.link = d.data[0].homepage;
-					console.log(self.link);
 				}	
 				
 				ck = setInterval(function() {

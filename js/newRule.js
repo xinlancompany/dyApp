@@ -38,14 +38,11 @@
 							});
 						});
 					});
-//					_tell(sqls);
 //					alert(_dump(_map(function(i) {
-//						_tell(i);
 //						var sql = "update orgCheckRules set minCnt = "+i.minCnt+", ifValid = "+i.ifValid+" where id = "+i.id;
 //						if (i.minCnt == "按党小组数") {
 //							sql = "update orgCheckRules set minCnt = 0, exeMinCnt = 'groupNum', ifValid = "+i.ifValid+" where id = "+i.id;
 //						}
-//						_tell(sql);
 //						return {
 //							key: "key"+parseInt(Math.random()*10e6),
 //							sql: sql
@@ -75,7 +72,6 @@
 					}
 				},
 				toggle: function(i) {
-					console.log(i)
 					i.ifValid = !i.ifValid;
 					this.changes[i.id] = '';
 					this.ifChanged = true;

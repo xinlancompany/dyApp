@@ -62,8 +62,6 @@ function plusReady() {
 							r.img = serverAddr + '/upload' + arrImg[1];
 							self.lives.push(r);
 						});
-						
-						_tell(self.lives);
 					}else {
 						self.bHaveMore = false;
 						if(f != 10e5){
@@ -84,7 +82,6 @@ function plusReady() {
 		},
 		mounted: function() {
 			var self = this;
-			console.log('999');
 			self.init();
 		}
 	})

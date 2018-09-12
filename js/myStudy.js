@@ -57,10 +57,6 @@ function plusReady() {
 								self.bHaveMore_live = true;
 							}
 
-							_tell("--------------");
-							_tell(self.bHaveMore_live);
-							_tell("--------------");
-
 							if(self.activeTab == 1){
 								self.contentList = self.courseLiveList;
 							}

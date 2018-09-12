@@ -241,19 +241,14 @@
 	                        this.imgLoaded = true;
 	                        this.imgLoading = false;
 	                        this._initImg($img.width, $img.height);
-	                        console.log('loadSuccess');
-	                        console.log('loadComplete');
 	                        this._loadImg();
 	                    },
 	                    onError = e => {
 	                        $img.removeEventListener('error', onError, false);
 	                        this.$img = $img = null;
 	                        this.imgLoading = false;
-	                        console.log('loadError');
-	                        console.log('loadComplete');
 	                        this._loadImg();
 	                    };
-	                console.log('beforeLoad');
 	                this.imgLoading = true;
 	                this.imgLoaded = false;
 	                $img.src = this.img;
@@ -329,13 +324,11 @@
 	            },
 	            _clipper:function() {
 	                let imgData = null;
-	                console.log(this.$refs.pCanvas.toDataURL())
 	                try {
 	                    imgData = this.$refs.pCanvas.toDataURL();
 	                } catch (e) {
 	                    console.error('请在response header加上Access-Control-Allow-Origin，否则canvas无法裁剪未经许可的跨域图片');
 	                }
-	                console.log('ok');
 	            },
 	            _cancel:function() {
 	            	mui.back();

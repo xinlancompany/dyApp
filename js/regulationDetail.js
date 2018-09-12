@@ -34,7 +34,6 @@ function plusReady() {
 					sql: "select id, title, img, content, newsdate from regulations where ifValid =1 and id = ?",
 					vals: _dump([newsId])
 				}, function(d) {
-					_tell(d.data);
 					if(d.success && d.data) {
 						self.newsData = d.data[0];
 					}
@@ -47,7 +46,6 @@ function plusReady() {
 			var self = this;
 	
 			newsId = _get('regulationId');
-			console.log("newsId111="+newsId);
 			//获取动态新闻
 			self.getNewsData();
 		}
@@ -57,7 +55,6 @@ function plusReady() {
 	window.addEventListener('regulationId', function(event) {
 		//获得事件参数
 		newsId = _get('regulationId');
-		console.log("newsId = "+newsId);
 		regulationDetail.getNewsData();
 	})
 }

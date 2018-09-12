@@ -46,7 +46,6 @@ function plusReady() {
 				uploadImage("activitySortAdd", evt, function(r) {
 					plus.nativeUI.closeWaiting();
 					self.img = serverAddr+'/upload/pic/activitySortAdd/'+r.thumb;
-                    // _tell("img: ---> "+self.img);
                     self.imgStyle.backgroundImage = "url("+self.img+")";
 				});
             },

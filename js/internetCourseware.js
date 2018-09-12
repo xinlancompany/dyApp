@@ -2,14 +2,12 @@ var internetCourseware;
 var timer = null;
 	
 function startTimeOut() {
-	console.log('startTimeOut');
 	timer = setInterval(function() {
 		internetCourseware.studyTime++;
 	}, 1000);
 }
 
 function clearTimeOut() {
-	console.log('clearTimeOut');
 	clearInterval(timer);
 }
 
@@ -45,24 +43,20 @@ function plusReady() {
 			getNetCourseDetail: function(){
 				var self = this;
 				
-				console.log("获取课件详情 courseId = " + netcourseId);
 				_callAjax({
 						cmd: "fetch",
 						sql: "select id, title, img, brief, content, url, linkerId, reporter, readcnt, newsdate, subtitle, credit from courses where ifValid =1 and id = ?",
 						vals: _dump([netcourseId])
 					}, function(d) {
 						
-						_tell(d.data);
 						if(d.success && d.data) {
 							self.courseData = d.data[0];
 							
 							//视频新闻，取src
 							var content = d.data[0].content;
 							var url = d.data[0].url;
-							console.log("url="+url);
 							if(url == '#' || url.length<=0){
 								var src = $(content).find('video').attr('src');
-								console.log("src="+src);
 								self.courseData.url = src;
 							}
 						} 
@@ -115,7 +109,6 @@ function plusReady() {
 							vals: _dump([userInfo.id, netcourseId])
 						}, function(d) {
 							if(d.success) {
-								console.log(self.courseData.credit);
 								mui.alert('恭喜您获得' + self.courseData.credit + '学分');
 							}
 						})
@@ -127,7 +120,6 @@ function plusReady() {
 				var self = this;
 	
 				netcourseId = _get('netcourseId');
-				console.log("netcourseId= "+ netcourseId);
 				self.getNetCourseDetail();
 				self.getOtherCourse();
 				
@@ -155,7 +147,6 @@ function plusReady() {
 		watch:{
 			studyTime:function() {
 				var self = this;
-				console.log(self.studyTime);
 				if(self.studyTime == 15*1){
 					self.recordStudy();
 				}

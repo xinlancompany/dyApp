@@ -106,7 +106,6 @@ function plusReady() {
 			var self = this;
 	
 			newsId = _get('newsId');
-			// console.log("newsId111="+newsId);
 			//获取动态新闻
             if (!!newsId) {
                 self.getNewsData();
