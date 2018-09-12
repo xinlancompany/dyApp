@@ -210,7 +210,9 @@ var Index = (function () {
             el: "#index",
             data: {
                 news: [],
-                activities: []
+                activities: [],
+                ads: [],
+                activeAdsText: "",
             },
             computed: {
                 hasMoreNews: function () {
@@ -253,7 +255,7 @@ var Index = (function () {
                             banner.activeSlideText = banner.scrollNews[0].title;
                             banner.$nextTick(function () {
                                 new Swiper('.index-swiper', {
-                                    pagination: '.swiper-pagination',
+                                    pagination: '.index-pagination',
                                     observer: true,
                                     observerParents: false,
                                     onSlideChangeEnd: function (swiper) {
@@ -294,11 +296,43 @@ var Index = (function () {
                         isAdmin: false,
                         isSub: false
                     });
+                },
+                openAd: function (i) {
+                    // 打开广告
+                    if (i.url.indexOf("http") === 0)
+                        return openOutlink(i.url, i.name);
+                    _set("newsId", i.articleId);
+                    openWindow("views/newsDetail.html", "newsDetail");
+                },
+                getAds: function () {
+                    var _this = this;
+                    // 获取广告
+                    _callAjax({
+                        cmd: "fetch",
+                        sql: "select id, name, img, articleId, url from ads where type = 'index' and status = 1 order by logtime desc limit 5"
+                    }, function (d) {
+                        if (d.success && d.data) {
+                            _this.ads = d.data;
+                            _this.activeAdsText = _this.ads[0].name;
+                            var self = _this;
+                            _this.$nextTick(function () {
+                                new Swiper('.ad-swiper', {
+                                    pagination: '.ad-pagination',
+                                    observer: true,
+                                    observerParents: false,
+                                    onSlideChangeStart: function (swiper) {
+                                        self.activeAdsText = self.ads[swiper.activeIndex].name;
+                                    }
+                                });
+                            });
+                        }
+                    });
                 }
             },
             mounted: function () {
                 // 获取新闻和推荐活动列表
                 this.getIndexContent();
+                this.getAds();
             }
         });
     };
