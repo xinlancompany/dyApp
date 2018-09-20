@@ -120,6 +120,7 @@ var Login = (function () {
                             _set("personal" === _this.loginType ? "userInfo" : "orgInfo", _dump(d.data[0]));
                             // 保存登录名
                             _set("personal" === _this.loginType ? "userName" : "orgName", name);
+                            _tell(d.data[0]);
                             _set("year", _this.year);
                             setTimeout(function () {
                                 _this.openIndex();

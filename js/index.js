@@ -40,6 +40,11 @@ var Index = (function () {
             // 提示下载新版本
             _this.updateAndroid();
         });
+        // 打开外链
+        var wb = plus.webview.currentWebview();
+        if ("outLink" in wb) {
+            openOutlink(wb.outLink, wb.outLinkName);
+        }
     }
     Index.prototype.openArgs = function () {
         var args = plus.runtime.arguments;
@@ -164,6 +169,10 @@ var Index = (function () {
             //			var loginPage = plus.webview.getWebviewById("login");
             //			if (loginPage) mui.fire(loginPage, "clearCache");
             openWindow("views/login.html", "login");
+        });
+        // 用于登陆后刷新页面底部标签
+        document.addEventListener('openOutLink', function (event) {
+            openOutlink(event.detail.outLink, event.detail.outLinkName);
         });
         // 用于登陆后刷新页面底部标签
         document.addEventListener('updateFooterInfo', function () {

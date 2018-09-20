@@ -34,6 +34,8 @@ var Boot = (function () {
             el: ".boot",
             data: {
                 link: self.homeImg,
+                outLink: "",
+                outLinkName: "",
                 time: 3,
                 timeoutCb: null
             },
@@ -48,6 +50,24 @@ var Boot = (function () {
                 }
             },
             methods: {
+                openAd: function () {
+                    if (!this.outLink)
+                        return;
+                    clearInterval(this.timeoutCb);
+                    var indexPage = plus.webview.getWebviewById("index");
+                    if (indexPage) {
+                        mui.fire(indexPage, "openOutLink", {
+                            outLink: this.outLink,
+                            outLinkName: this.outLinkName,
+                        });
+                        openWindow("index.html", "index");
+                    }
+                    else {
+                        openWindow("index.html", "index", {
+                            outLink: this.outLink,
+                            outLinkName: this.outLinkName, });
+                    }
+                },
                 openIndex: function () {
                     // 跳转后均需要注销boot.html页面
                     if (self.userInfo || self.orgInfo) {
@@ -78,11 +98,27 @@ var Boot = (function () {
                 }, 1000);
                 // 获取首页页面
                 _callAjax({
-                    cmd: "fetch",
-                    sql: "select homepage from system"
+                    cmd: "multiFetch",
+                    multi: _dump([
+                        {
+                            key: "ad",
+                            sql: "select name, img, url from ads where type = 'boot' and status = 1 order by id desc limit 1"
+                        },
+                        {
+                            key: "homepage",
+                            sql: "select homepage from system"
+                        }
+                    ])
                 }, function (d) {
                     if (d.success && d.data) {
-                        _set("homeImg", d.data[0].homepage);
+                        if (d.data.ad && d.data.ad.length) {
+                            _set("homeImg", d.data.ad[0].img);
+                            _this.outLink = d.data.ad[0].url;
+                            _this.outLinkName = d.data.ad[0].name;
+                        }
+                        else if (d.data.homepage && d.data.homepage.length) {
+                            _set("homeImg", d.data.homeImg[0].homepage);
+                        }
                     }
                 });
             }

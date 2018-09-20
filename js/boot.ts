@@ -7,6 +7,7 @@ declare function openWindow(f: string, n: string): void;
 declare function _callAjax(params: any, f: (d: any) => void): void;
 declare function _tell(s: any): void;
 declare function _delayClose(p: any, tm?: number): void;
+declare function openOutlink(p: string): void;
 
 declare var plus: any;
 declare var mui: any;
@@ -51,6 +52,8 @@ class Boot {
 			el: ".boot",
 			data: {
 				link: self.homeImg,
+				outLink: "",
+				outLinkName: "",
 				time: 3,
 				timeoutCb: null
 			},
@@ -64,6 +67,23 @@ class Boot {
 				}
 			},
 			methods: {
+				openAd: function() {
+					if (!this.outLink) return;
+					clearInterval(this.timeoutCb);
+					var indexPage = plus.webview.getWebviewById("index");
+					if (indexPage) {
+						mui.fire(indexPage, "openOutLink", {
+							outLink: this.outLink,
+							outLinkName: this.outLinkName,
+						});
+						openWindow("index.html", "index");
+					} else {
+						openWindow("index.html", "index", {
+							outLink: this.outLink,
+							outLinkName: this.outLinkName,
+						);
+					}
+				},
 				openIndex: function() {
 					// 跳转后均需要注销boot.html页面
 					if (self.userInfo || self.orgInfo) {
@@ -93,11 +113,26 @@ class Boot {
 
 				// 获取首页页面
 				_callAjax({
-					cmd: "fetch",
-					sql: "select homepage from system"
-				}, function(d) {
+					cmd: "multiFetch",
+					multi: _dump([
+						{
+							key: "ad",
+							sql: "select name, img, url from ads where type = 'boot' and status = 1 order by id desc limit 1"
+						},
+						{
+							key: "homepage",
+							sql: "select homepage from system"
+						}
+					])
+				}, (d) => {
 					if (d.success && d.data) {
-						_set("homeImg", d.data[0].homepage);
+						if (d.data.ad && d.data.ad.length) {
+							_set("homeImg", d.data.ad[0].img);
+							this.outLink = d.data.ad[0].url
+							this.outLinkName = d.data.ad[0].name
+						} else if (d.data.homepage && d.data.homepage.length){
+							_set("homeImg", d.data.homeImg[0].homepage);
+						}
 					}
 				});
 			}
