@@ -240,7 +240,7 @@
             multi: _dump([
                 {
                     key: "score",
-                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid = 4)"
+                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid >= 4)"
                 },
                 {
                     key: "easyScore",
