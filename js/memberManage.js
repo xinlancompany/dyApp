@@ -132,7 +132,8 @@
             "from user u ",
             "left join easyScore e on u.id = e.userId and e.ifValid = 2 ",
             "where u.orgNo = ? and u.ifValid >= 0 group by u.id) t1 ",
-            "left join activityEnroll a, activitys v on t1.id = a.userId and a.scoreType = '百分制' and a.activityId = v.id and v.ifValid = 4 ",
+            "left join activityEnroll a on t1.id = a.userId and a.scoreType = '百分制' ",
+            "left join activitys v on a.activityId = v.id and v.ifValid = 4 ",
             "group by t1.id order by (easyScore+activityScore) desc"].join(""),
             vals: _dump([wb.orgNo,])
         }, function(d) {
