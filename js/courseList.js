@@ -87,8 +87,15 @@
 		if ("lid" in wb) vm.lid = wb.lid;
 		if ("name" in wb) $(".mui-title").text(wb.name);
 
-		$(".search-btn").click(function() {
-			
+		
+	    $(window).scroll(function() {
+			var scrollTop = $(this).scrollTop();
+			var scrollHeight = $(document).height();
+			var windowHeight = $(this).height();
+			if (scrollTop + windowHeight == scrollHeight && vm.bHaveMore && !vm.searchState) {
+				// 底部自动加载
+				vm.getNews();	
+			}
 		});
 	};
 	

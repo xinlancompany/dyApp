@@ -242,7 +242,6 @@ function plusReady() {
         newsList.newsList = [];
         newsList.getNews(lid, no);
     });
-
 }
 // 判断扩展API是否准备，否则监听'plusready'事件
 if(window.plus) {
