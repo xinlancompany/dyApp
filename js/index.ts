@@ -261,6 +261,8 @@ class Index {
 			}
 		});
 
+        let idxObj = this;
+
 		// 获取新闻与推荐活动的最多数量
 		const bannersLimit = 5;
 		const newsLimit = 10;
@@ -417,6 +419,7 @@ class Index {
 
                 let self = this;
                 $(window).scroll(function() {
+                    if (idxObj.footer.tag != "index") return;
                     var scrollTop = $(this).scrollTop();
                     var scrollHeight = $(document).height();
                     var windowHeight = $(this).height();
