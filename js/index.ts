@@ -71,10 +71,16 @@ class Index {
 				let appVs = _map((i) => { return parseInt(i); }, this.appVersion.split(".")),
 				    sysVs = _map((i) => { return parseInt(i); }, this.systemVersion.split("."));
 				this.isNewestVersion = false;
-				for(var i = 0; i < 3; i += 1) {
-				    if (appVs[i] > sysVs[i]) {
-				        this.isNewestVersion = true;
-				    }
+				if (appVs[0] > sysVs[0]) {
+				    this.isNewestVersion = true;
+				} else if(appVs[0] == sysVs[0]) {
+				    if (appVs[1] > sysVs[1]) {
+                        this.isNewestVersion = true;
+				    } else if(appVs[1] == sysVs[1]) {
+                        if (appVs[2] > sysVs[2]) {
+                            this.isNewestVersion = true;
+                        }
+                    }
 				}
 				// this.isNewestVersion = this.appVersion >= this.systemVersion;
 			} else {

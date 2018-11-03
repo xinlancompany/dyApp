@@ -33,9 +33,17 @@ var Index = (function () {
                 // 判断当前是否为最新的版本
                 var appVs = _map(function (i) { return parseInt(i); }, _this.appVersion.split(".")), sysVs = _map(function (i) { return parseInt(i); }, _this.systemVersion.split("."));
                 _this.isNewestVersion = false;
-                for (var i = 0; i < 3; i += 1) {
-                    if (appVs[i] > sysVs[i]) {
+                if (appVs[0] > sysVs[0]) {
+                    _this.isNewestVersion = true;
+                }
+                else if (appVs[0] == sysVs[0]) {
+                    if (appVs[1] > sysVs[1]) {
                         _this.isNewestVersion = true;
+                    }
+                    else if (appVs[1] == sysVs[1]) {
+                        if (appVs[2] > sysVs[2]) {
+                            _this.isNewestVersion = true;
+                        }
                     }
                 }
             }
