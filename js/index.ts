@@ -82,7 +82,7 @@ class Index {
                         }
                     }
 				}
-				alert(_dump(appVs)+","+_dump(sysVs)+","+_dump(this.isNewestVersion));
+				// alert(_dump(appVs)+","+_dump(sysVs)+","+_dump(this.isNewestVersion));
 				// this.isNewestVersion = this.appVersion >= this.systemVersion;
 			} else {
 				// 若获取失败，当前即为最新版本

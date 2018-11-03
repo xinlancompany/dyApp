@@ -46,7 +46,6 @@ var Index = (function () {
                         }
                     }
                 }
-                alert(_dump(appVs) + "," + _dump(sysVs) + "," + _dump(_this.isNewestVersion));
             }
             else {
                 // 若获取失败，当前即为最新版本
