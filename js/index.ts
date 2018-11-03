@@ -77,11 +77,12 @@ class Index {
 				    if (appVs[1] > sysVs[1]) {
                         this.isNewestVersion = true;
 				    } else if(appVs[1] == sysVs[1]) {
-                        if (appVs[2] > sysVs[2]) {
+                        if (appVs[2] >= sysVs[2]) {
                             this.isNewestVersion = true;
                         }
                     }
 				}
+				alert(_dump(appVs)+","+_dump(sysVs)+","+_dump(this.isNewestVersion));
 				// this.isNewestVersion = this.appVersion >= this.systemVersion;
 			} else {
 				// 若获取失败，当前即为最新版本

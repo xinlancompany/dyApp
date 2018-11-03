@@ -41,11 +41,12 @@ var Index = (function () {
                         _this.isNewestVersion = true;
                     }
                     else if (appVs[1] == sysVs[1]) {
-                        if (appVs[2] > sysVs[2]) {
+                        if (appVs[2] >= sysVs[2]) {
                             _this.isNewestVersion = true;
                         }
                     }
                 }
+                alert(_dump(appVs) + "," + _dump(sysVs) + "," + _dump(_this.isNewestVersion));
             }
             else {
                 // 若获取失败，当前即为最新版本
