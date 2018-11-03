@@ -30,13 +30,13 @@
 							<p class="title" v-text="i.title"></p>
 							<span class="date" v-text="i.newsdate"></span>
 							<footer>
-		                        <span class="activitySort" v-show="isAdmin" @click.stop="askToPush(i)">
+		                        <span class="activitySort" v-show="isAdmin && !isNews" @click.stop="askToPush(i)">
 		                            <i class="iconfont icon-zhuanfa"></i>
 		                        </span>
-		                        <span class="activitySort" v-show="isAdmin" @click.stop="delArticle(i, idx)">
+		                        <span class="activitySort" v-show="isAdmin && !isNews" @click.stop="delArticle(i, idx)">
 		                            <i class="iconfont icon-shanchu"></i>
 		                        </span>
-		                        <span class="activitySort" v-show="isAdmin" @click.stop="editArticle(i)">
+		                        <span class="activitySort" v-show="isAdmin &&!isNews" @click.stop="editArticle(i)">
 		                            <i class="iconfont icon-bianji"></i>
 		                        </span>
 		                    </footer>
@@ -44,7 +44,7 @@
 					</a>
 				</li>
 			</ul>
-			<footer @click="getMoreNews" class="block-button" v-show="bHaveMore">查看更多</footer>
+			<!--<footer @click="getMoreNews" class="block-button" v-show="bHaveMore">查看更多</footer>-->
 		</div>
 	</body>
 </html>

@@ -14,6 +14,7 @@ function plusReady() {
 			newsList: [],
 			bHaveMore: false,
             isAdmin: false,
+            isNews: true,
             subOrgs: [],
 		},
 		methods: {
@@ -191,7 +192,7 @@ function plusReady() {
         // 新增文章列表
             // newsList.isAdmin = "no" in userInfo;
         // alert(lid+" -- "+linkerId.Rules);
-        if (newsList.isAdmin) {
+        if (newsList.isAdmin && !newsList.isNews) {
             $("#newArticle").show();
             $("#newArticle").click(function() {
                 var t;
@@ -217,6 +218,7 @@ function plusReady() {
     var no = null;
     if ("isAdmin" in wb) {
         newsList.isAdmin = wb.isAdmin;
+        newsList.isNews = wb.lid == linkerId.IndexNews;
     } else {
         newsList.isAdmin = "no" in userInfo;
     }
@@ -241,6 +243,16 @@ function plusReady() {
         var lid = event.detail.linkerId;
         newsList.newsList = [];
         newsList.getNews(lid, no);
+    });
+
+    $(window).scroll(function() {
+        var scrollTop = $(this).scrollTop();
+        var scrollHeight = $(document).height();
+        var windowHeight = $(this).height();
+        if (scrollTop + windowHeight == scrollHeight && newsList.bHaveMore) {
+            // 底部自动加载
+            newsList.getNews(lid, no);
+        }
     });
 }
 // 判断扩展API是否准备，否则监听'plusready'事件

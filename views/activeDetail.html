@@ -20,7 +20,7 @@
 		
 		<div id="activeDetail" class="activity-detail have-header have-footer">
         	<!-- img 上添加class active 即为已审核 -->
-			<div class="banner" :style="{backgroundImage: 'url('+detailData.img+')'}" :class="{'active': detailData.ifValid == 4, 'waiting': detailData.ifValid == 3, 'withdraw': detailData.ifValid == 2}"></div>
+			<div class="banner" :style="{backgroundImage: 'url('+detailData.img+')'}" :class="{'active': detailData.ifValid >= 4 && detailData.ifValid <= 6, 'waiting': detailData.ifValid == 3, 'withdraw': detailData.ifValid == 2}"></div>
 			
 			<ul class="mui-table-view" v-cloak>
 				<li class="mui-table-view-cell">

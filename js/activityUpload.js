@@ -120,7 +120,7 @@ function plusReady() {
         			}, this.participants);
         		},
             selectParticipantNames: function() {
-            		if (!this.participants.length) return "请选择与会人员";
+            		if (!this.participants.length) return "请选择应到人员";
                 var self = this;
                 return _map(function(i) {
                     return i.name;
@@ -177,7 +177,7 @@ function plusReady() {
             		return this.MC.name;
             },
             invalidNames: function() {
-            		if (!this.invalids.length) return "请选择因公不参与人员";
+            		if (!this.invalids.length) return "请选择因公不记录人员";
                 var self = this;
                 return _map(function(i) {
                     return i.name;
@@ -412,6 +412,7 @@ function plusReady() {
 			Object.keys(data).forEach(function(k) {
 				self[k] = data[k];
 			});
+			this.ifSubmit = false;
         }
     });
 

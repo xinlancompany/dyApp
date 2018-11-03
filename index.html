@@ -73,7 +73,7 @@
 						</a>
 					</li>
 				</ul>
-				<footer class="block-button" v-show="hasMoreNews" @click="openNewsList">查看更多</footer>
+				<!--<footer class="block-button" v-show="hasMoreNews" @click="openNewsList">查看更多</footer>-->
 			</div>
             
 			<div class="activity news-list" v-show="activities.length">
@@ -82,7 +82,7 @@
 					<li v-for="i in activities" @click="openActivity(i)">
 						<a>
 							<!--<div class="mui-media-object mui-pull-left" :style="{backgroundImage: 'url('+ i.img +')'}" v-show="i.img"></div>-->
-							<div class="mui-media-body">
+							<!--<div class="mui-media-body">-->
 								<p class="title" v-text="i.title"></p>
 								<span class="date" v-text="i.orgName"></span>
 								<span class="date" v-text="i.logtime"></span>

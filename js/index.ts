@@ -271,6 +271,7 @@ class Index {
 			el: "#index",
 			data: {
 				news: [],
+				newsHavMore: true,
 				activities: [],
 				ads: [],
 				activeAdsText: "",
@@ -342,6 +343,31 @@ class Index {
 						linkerId: linkerId.IndexNews
 					});
 				},
+				moreNews: function () {
+				    // 加载更多新闻
+                    var f = 10e6;
+                    var ndate = '3000-12-31 23:59:59';
+                    if(this.news.length) {
+                        var ii = _at(this.news, -1);
+                        f = ii.id;
+                        ndate = ii.newsdate;
+                    }
+
+                    _callAjax({
+                        cmd: "fetch",
+                        sql: "select id, title, url, img, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and credit = 0 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) order by newsdate desc, id desc limit 10",
+                        vals: _dump([linkerId.IndexNews, ndate, ndate, f])
+                    }, (d) => {
+                       if (d.success && d.data) {
+                           this.newsHavMore = true;
+                           d.data.forEach((i) => {
+                               this.news.push(i);
+                           });
+                       } else {
+                           this.newsHavMore = false;
+                       }
+                    });
+				},
 				openActivities: function() {
 					// 打开推荐活动
 					openWindow("views/recommendList.html", "recommendList");
@@ -388,6 +414,17 @@ class Index {
 				// 获取新闻和推荐活动列表
 				this.getIndexContent();
 				this.getAds();
+
+                let self = this;
+                $(window).scroll(function() {
+                    var scrollTop = $(this).scrollTop();
+                    var scrollHeight = $(document).height();
+                    var windowHeight = $(this).height();
+                    if (scrollTop + windowHeight == scrollHeight && self.newsHavMore) {
+                        // 底部自动加载
+                        self.moreNews();
+                    }
+                });
 			}
 		});
 	}

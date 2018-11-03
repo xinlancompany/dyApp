@@ -48,9 +48,19 @@ function plusReady() {
                 mui.confirm("确定删除该党小组？", "提示", ["确定", "取消"], function(e) {
                     if (e.index == 0) {
 						_callAjax({
-							cmd: "exec",
-							sql: "update groups set ifValid = 0 where id = ?",
-							vals: _dump([i.id,])
+							cmd: "multiFetch",
+							multi: _dump([
+							    {
+							        key: "delGroupMemners",
+							        sql: "update user set groupId = 0 where groupId = "+i.id
+							    },
+							    {
+							        key: "delGroup",
+							        sql: "update groups set ifValid = 0 where id = "+i.id
+							    }
+							])
+							// sql: "update groups set ifValid = 0 where id = ?",
+							// vals: _dump([i.id,])
 						}, function(d) {
 							mui.toast("删除"+(d.success?"成功":"失败"));
 							if (d.success) {
