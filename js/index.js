@@ -31,7 +31,13 @@ var Index = (function () {
                 _this.systemVersion = d.data[0].version;
                 _this.apkUrl = d.data[0].downloadUrl;
                 // 判断当前是否为最新的版本
-                _this.isNewestVersion = _this.appVersion >= _this.systemVersion;
+                var appVs = _map(function (i) { return parseInt(i); }, _this.appVersion.split(".")), sysVs = _map(function (i) { return parseInt(i); }, _this.systemVersion.split("."));
+                _this.isNewestVersion = false;
+                for (var i = 0; i < 3; i += 1) {
+                    if (appVs[i] > sysVs[i]) {
+                        _this.isNewestVersion = true;
+                    }
+                }
             }
             else {
                 // 若获取失败，当前即为最新版本

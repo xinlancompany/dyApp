@@ -68,7 +68,15 @@ class Index {
 				this.apkUrl = d.data[0].downloadUrl;
 
 				// 判断当前是否为最新的版本
-				this.isNewestVersion = this.appVersion >= this.systemVersion;
+				let appVs = _map((i) => { return parseInt(i); }, this.appVersion.split(".")),
+				    sysVs = _map((i) => { return parseInt(i); }, this.systemVersion.split("."));
+				this.isNewestVersion = false;
+				for(var i = 0; i < 3; i += 1) {
+				    if (appVs[i] > sysVs[i]) {
+				        this.isNewestVersion = true;
+				    }
+				}
+				// this.isNewestVersion = this.appVersion >= this.systemVersion;
 			} else {
 				// 若获取失败，当前即为最新版本
 				this.isNewestVersion = true;
