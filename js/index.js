@@ -541,6 +541,9 @@ var Index = (function () {
                 openApplication: function () {
                     openWindow("views/application.html", "application");
                 },
+                openBarcode:function() {
+                    openWindow("views/barcode.html", "barcode");
+                },
                 logout: function () {
                     openWindow("views/login.html", "logout");
                 },

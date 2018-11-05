@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+
+	<body style="background-color: #000000;">
+		<div id="barcode">
+			<div id="bcid">
+				<div style="height:40%"></div>
+				<p class="barcode_tip">...载入中...</p>
+			</div>
+			<footer class="barcode_footer">
+				<div class="fbt mui-action-back">取　 消</div>
+				<!--<div class="fbt" @click="scanPicture()">从相册选择二维码</div>-->
+			</footer>
+		</div>
+	</body>
+
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/barcode.js"></script>
