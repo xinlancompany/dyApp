@@ -71,13 +71,13 @@
 			    </div>
 			    <div class="mui-input-row mui-input-textarea" @click="chooseParticipants">
 			        <label>应到人员</label>
-                    <textarea v-text="selectParticipantNames" disabled rows="10"></textarea>
+                    <textarea v-text="selectParticipantNames" disabled :rows="isBranch?10:20"></textarea>
 			    </div>
-			    <div class="mui-input-row mui-input-textarea" @click="chooseAbsents">
+			    <div class="mui-input-row mui-input-textarea" @click="chooseAbsents" v-show="isBranch">
 			        <label>缺席人员</label>
                     <textarea v-text="absentNames" disabled rows="10"></textarea>
 			    </div>
-			    <div class="mui-input-row mui-input-textarea" @click="chooseInvalid">
+			    <div class="mui-input-row mui-input-textarea" @click="chooseInvalid" v-show="isBranch">
 			        <label>因公不记录人员</label>
                     <textarea v-text="invalidNames" disabled rows="10"></textarea>
 			    </div>
