@@ -153,6 +153,7 @@ class Index {
 
 	updateInfo() {
 		let userStr: string = _get("userInfo", true);
+		console.log(userStr);
 		let orgStr: string = _get("orgInfo");
 
 		if (userStr) {
@@ -536,7 +537,7 @@ class Index {
 				_hotAjax({
 					cmd: "hotest",
 					topn: 3,
-					hotn: 7
+					hotn: 7,
 				}, (d) => {
                     if (d.success && d.data && d.data.length) {
                     		// 过滤重复的文章，因为最新和手动推荐的可能会重复

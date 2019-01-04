@@ -108,6 +108,7 @@ var Index = (function () {
     };
     Index.prototype.updateInfo = function () {
         var userStr = _get("userInfo", true);
+        console.log(userStr);
         var orgStr = _get("orgInfo");
         if (userStr) {
             this.userInfo = _load(userStr);
@@ -488,7 +489,7 @@ var Index = (function () {
                 _hotAjax({
                     cmd: "hotest",
                     topn: 3,
-                    hotn: 7
+                    hotn: 7,
                 }, function (d) {
                     if (d.success && d.data && d.data.length) {
                         // 过滤重复的文章，因为最新和手动推荐的可能会重复
@@ -540,9 +541,6 @@ var Index = (function () {
                 },
                 openApplication: function () {
                     openWindow("views/application.html", "application");
-                },
-                openBarcode:function() {
-                    openWindow("views/barcode.html", "barcode");
                 },
                 logout: function () {
                     openWindow("views/login.html", "logout");

@@ -82,10 +82,11 @@
 							f = _at(self.activityList, -1).id;
 						}
 					
+					    // 现实已审核的活动
 						_callAjax({
 							cmd: "fetch",
 							// sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-							sql: "select a.id, a.title, e.score, 1 as isActivity, strftime('%Y-%m-%d %H:%M', a.starttime) as time, e.score as points from activityEnroll e, activitys a where a.ifValid > 0 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
+							sql: "select a.id, a.title, e.score, 1 as isActivity, strftime('%Y-%m-%d %H:%M', a.starttime) as time, e.score as points from activityEnroll e, activitys a where a.ifValid >= 4 and a.ifValid < 7 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
 							vals: _dump([self.userInfo.id, f])
 						}, function(d) {
 							if(d.success && d.data) {
@@ -240,7 +241,7 @@
             multi: _dump([
                 {
                     key: "score",
-                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid >= 4)"
+                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid >= 4 and ifValid < 7)"
                 },
                 {
                     key: "easyScore",
