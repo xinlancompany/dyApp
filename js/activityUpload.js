@@ -1,6 +1,7 @@
 function plusReady() {
     var wb = plus.webview.currentWebview();
     var ifEditFinished = false;
+    _set("participants", "");
 
 //	mui.init({
 //		beforeback: function() {
@@ -45,6 +46,8 @@ function plusReady() {
             absents: [],
             invalids: [],
             ifSubmit: false,
+            // 是否当前组织为支部，用于支部以上上传活动用
+            isBranch: true,
         },
         watch: {
             aid: function(i) {
@@ -63,11 +66,11 @@ function plusReady() {
                         },
                         {
                             key: "enroll",
-                            sql: "select u.id, u.name from activityEnroll a, user u where a.activityId = "+self.aid+" and a.userId = u.id"
+                            sql: "select u.id, u.name, u.orgName from activityEnroll a, user u where a.activityId = "+self.aid+" and a.userId = u.id"
                         },
                         {
-                        		key: "categories",
-                        		sql: "select ae.id, l.name, linkerId from activityCategories ae, linkers l where activityId = "+self.aid+" and l.id = ae.linkerId"
+                            key: "categories",
+                            sql: "select ae.id, l.name, linkerId from activityCategories ae, linkers l where activityId = "+self.aid+" and l.id = ae.linkerId"
                         }
                     ])
                 }, function(d) {
@@ -92,10 +95,19 @@ function plusReady() {
                         if (inf.notOnDuties) self.invalids = _load(inf.notOnDuties);
                     }
                     if ("enroll" in d.data && d.data.enroll && d.data["enroll"].length) {
+                        var p = {};
                         d.data["enroll"].forEach(function(i) {
                             i.ifSelect = true;
                             self.participants.push(i);
+                            if (!self.isBranch) {
+                                if (i.orgName in p) {
+                                    p[i.orgName].push(i);
+                                } else {
+                                    p[i.orgName] = [i,];
+                                }
+                            }
                         });
+                        _set("participants", _dump(p));
                     }
                     if ("categories" in d.data && d.data["categories"].length) {
 						self.categories = d.data["categories"];
@@ -240,12 +252,22 @@ function plusReady() {
                 });
             },
             chooseParticipants: function() {
-                var self = this;
-                openWindow("selectUsers.html", "selectUsers", {
-                		notIn: self.invalids,
-                    participants: self.participants,
-                    aid: self.aid
-                });
+                if (this.isBranch) {
+                    // 是支部的时候直接选人
+                    var self = this;
+                    openWindow("selectUsers.html", "selectUsers", {
+                            notIn: self.invalids,
+                        participants: self.participants,
+                        aid: self.aid
+                    });
+                } else {
+                    // 非支部需要先选择下级组织
+                    this.chooseBranchParticipants();
+                }
+            },
+            chooseBranchParticipants: function() {
+                // 非支部活动选人
+                openWindow("selectBranchUsers.html", "selectBranchUsers");
             },
             chooseAbsents: function() {
                 var self = this;
@@ -403,8 +425,11 @@ function plusReady() {
             },
         },
         created: function() {
-        		// 编辑模式，不保存
-        		if ("aid" in wb) return;
+            // 设置是否为支部
+            this.isBranch = this.userInfo.type == "党支部";
+
+            // 编辑模式，不保存
+            if ("aid" in wb) return;
 			var dataStr = _get("activityUploadData_"+wb.lid);
 			if (!dataStr) return;
 			var self = this,
@@ -424,6 +449,20 @@ function plusReady() {
     // 返回选择学员
     window.addEventListener("selectParticipants", function(event) {
 		upload.participants = event.detail.participants;
+    });
+
+    // 返回非支部选择成员
+    window.addEventListener("selectBranchUsers", function(event) {
+        var participantsStr = _get("participants");
+        if (!!participantsStr) {
+            upload.participants = [];
+            var p = _load(participantsStr);
+            Object.keys(p).forEach((k) => {
+                p[k].forEach((i) => {
+                    if (i.ifSelect) upload.participants.push(i);
+                });
+            });
+        }
     });
 
     // 返回标签
