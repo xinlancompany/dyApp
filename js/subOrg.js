@@ -51,6 +51,7 @@
                     var self = this;
                     openWindow("memberManage.html", "memberManage", {
                         orgNo: wb.orgNo,
+                        orgId: wb.orgId,
                         isAdmin: false
                     });
                 },

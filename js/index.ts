@@ -702,7 +702,8 @@ class Index {
 				},
 				openMembers: function() {
 					openWindow("views/memberManage.html", "memberManage", {
-						orgNo: idxObj.orgInfo.no
+						orgNo: idxObj.orgInfo.no,
+						orgId: idxObj.orgInfo.id
 					});
 				},
 				openRules: function() {
