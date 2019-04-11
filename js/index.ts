@@ -843,6 +843,17 @@ class Index {
                     this.branchSummary.activitiesCnt = d.data.activity[0].cnt;
                     this.branchSummary.membersCnt = d.data.member[0].cnt;
                 });
+
+                document.addEventListener("updateActivityCategories", () => {
+                    // 获取支部活动类型
+                    _replaceAjax({
+                        cmd: "orgActivityCategories",
+                        orgId: idxObj.orgInfo.id,
+                        orgNo: idxObj.orgInfo.no
+                    }, (d) => {
+                        this.activityCategories = d.data;
+                    });
+                });
 			}
 		});
 	}

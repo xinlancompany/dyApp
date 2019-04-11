@@ -790,6 +790,16 @@ var Index = (function () {
                     _this.branchSummary.activitiesCnt = d.data.activity[0].cnt;
                     _this.branchSummary.membersCnt = d.data.member[0].cnt;
                 });
+                document.addEventListener("updateActivityCategories", function () {
+                    // 获取支部活动类型
+                    _replaceAjax({
+                        cmd: "orgActivityCategories",
+                        orgId: idxObj.orgInfo.id,
+                        orgNo: idxObj.orgInfo.no
+                    }, function (d) {
+                        _this.activityCategories = d.data;
+                    });
+                });
             }
         });
     };

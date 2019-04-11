@@ -12,10 +12,16 @@ var activitySortId = 0;
 
 // 扩展API加载完毕，现在可以正常调用扩展API
 function plusReady() {
+    mui.init({
+        beforeback: function() {
+            mui.fire(plus.webview.getWebviewById("index"), "updateActivityCategories", {});
+        }
+    });
+
     var wb = plus.webview.currentWebview(),
         lid = wb.lid;
 
-    $(".mui-title").text(wb.title);
+    $(".mui-title").text(wb.title.split("(")[0]);
 
 	var isSub = false;
 	if ("isSub" in wb) isSub = wb.isSub;
@@ -158,6 +164,7 @@ function plusReady() {
 	//添加newId自定义事件监听
 	window.addEventListener('activitySortId', function(event) {
 		//获得事件参数
+		activitySortId.bHaveMore = true;
 		activityList.init();
 	});
 	window.addEventListener('refresh', function(event) {
