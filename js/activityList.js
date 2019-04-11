@@ -29,12 +29,13 @@ function plusReady() {
 			activityList:[],
 			bHaveMore: false,
             isAdmin: wb.isAdmin,
-            isSub: wb.isSub
+            isSub: wb.isSub,
+            isBranch: true,
 		},
 		methods: {
             // 删除操作
             delActivity: function(i, idx) {
-                if (i.status != "即将开始") {
+                if (i.status != "即将开始" && this.isBranch) {
                     mui.alert("活动"+i.status+"，无法删除");
                     return;
                 }
@@ -57,7 +58,7 @@ function plusReady() {
 //                  mui.alert("活动"+i.status+"，无法修改");
 //                  return;
 //              }
-				if (i.ifValid == 4) {
+				if (this.isBranch && i.ifValid == 4) {
 					mui.alert("活动已审定，无法修改");
 					return;
 				}
@@ -148,6 +149,8 @@ function plusReady() {
 		},
 		mounted: function() {
             this.activityList = [];
+            var userInfo = _load(_get("userInfo"));
+            this.isBranch = userInfo.type == "党支部";
 			this.init();
 		}
 	});

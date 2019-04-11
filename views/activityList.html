@@ -32,10 +32,10 @@
 					<p @click="goActivityDetail(a)"><span class="status">{{a.status}} 进入></span></p>
 					<p>
 						<!--<span class="status">{{a.status}} 进入></span>-->
-						<span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="delActivity(a, idx)">
+						<span class="activitySort" v-show="!isBranch || (isAdmin && !isSub && a.ifValid < 3)" @click="delActivity(a, idx)">
                             <i class="iconfont icon-shanchu"></i>
                         </span>
-                        <span class="activitySort" v-show="isAdmin && !isSub && a.ifValid < 3" @click="editActivity(a, idx)">
+                        <span class="activitySort" v-show="!isBranch || (isAdmin && !isSub && a.ifValid < 3)" @click="editActivity(a, idx)">
                             <i class="iconfont icon-bianji"></i>
                         </span>
 					</p>

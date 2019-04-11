@@ -79,7 +79,7 @@ function plusReady() {
                         var inf = d.data["info"][0];
                         self.title = inf.title;
 //                      self.MC = _load(inf.organizer);
-					   self.organizer = _load(inf.organizer)["name"];
+                        self.organizer = _load(inf.organizer)["name"];
                         self.location = inf.address;
                         self.starttime = inf.starttime;
                         self.endtime = inf.endtime;
@@ -299,7 +299,7 @@ function plusReady() {
             chooseCategories: function() {
             		var self = this;
 				openWindow("activityCategories.html", "activityCategories", {
-					lids: lids = _map(function(i) {
+					lids: _map(function(i) {
 						return parseInt(i.linkerId);
 					}, self.categories)
 				});
@@ -333,9 +333,9 @@ function plusReady() {
 //              if (!this.img) return mui.toast("请上传头图");
                 
                 var self = this,
-                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags, orgId,recorder,superAttenders,absents,notOnDuties) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    sql = "insert into activitys(title, content, img, organizer, address, starttime, endtime, linkerId, tags, orgId,recorder,superAttenders,absents,notOnDuties,ifValid) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
 //                  vals = _dump([title, content, self.img, _dump(self.MC), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump(self.recorder),superAttenders,_dump(self.absents), _dump([self.invalids])])
-                    vals = _dump([title, content, self.img, _dump({"groupId":"0","id":"0","name":organizer}), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump({"groupId":"0","id":"0","name":recorder}),superAttenders,_dump(self.absents), _dump([self.invalids])])
+                    vals = _dump([title, content, self.img, _dump({"groupId":"0","id":"0","name":organizer}), location, starttime, endtime, self.lid, _dump(self.tag), self.userInfo.id,_dump({"groupId":"0","id":"0","name":recorder}),superAttenders,_dump(self.absents), _dump([self.invalids]), this.isBranch ? 1 : 4])
 
                 if (!!self.aid) {
                     sql = "update activitys set title=?,content=?,img=?,organizer=?,address=?,starttime=?,endtime=?,tags=?,recorder=?,superAttenders=?,absents=?,notOnDuties=? where id = ?";
@@ -432,12 +432,16 @@ function plusReady() {
             if ("aid" in wb) return;
 			var dataStr = _get("activityUploadData_"+wb.lid);
 			if (!dataStr) return;
-			var self = this,
-				data = JSON.parse(dataStr);
-			Object.keys(data).forEach(function(k) {
-				self[k] = data[k];
-			});
-			this.ifSubmit = false;
+			var self = this;
+            mui.confirm("您有缓存，是否加载？", "提示", ["确定", "取消"], function(e) {
+                if (e.index == 0) {
+                    var data = JSON.parse(dataStr);
+                    Object.keys(data).forEach(function(k) {
+                        self[k] = data[k];
+                    });
+                    this.ifSubmit = false;
+                }
+            });
         }
     });
 
@@ -454,6 +458,7 @@ function plusReady() {
     // 返回非支部选择成员
     window.addEventListener("selectBranchUsers", function(event) {
         var participantsStr = _get("participants");
+        console.log(participantsStr);
         if (!!participantsStr) {
             upload.participants = [];
             var p = _load(participantsStr);

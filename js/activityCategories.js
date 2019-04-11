@@ -77,7 +77,7 @@
 				self.lids = wb.lids;
 				var sql = "select id, name from linkers where refId = 131 and (orgNo = '' or orgNo = '"+self.userInfo.no+"') and ifValid = 1";
 				// 非党支部，类型为自定义
-				if ("党支部" != this.userInfo.type) sql = "select id, name from linkers where refId = 131 and orgNo = '"+self.userInfo.no+"' and ifValid = 1";
+				// if ("党支部" != this.userInfo.type) sql = "select id, name from linkers where refId = 131 and orgNo = '"+self.userInfo.no+"' and ifValid = 1";
 				_callAjax({
 					cmd: "multiFetch",
 					multi: _dump([

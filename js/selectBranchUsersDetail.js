@@ -28,14 +28,19 @@
                 this.orgInfo = wb.orgInfo;
                 var participantsStr = _get("participants"),
                     participants = [];
-                if (participantsStr) {
-                    this.sysParticipants = _load(participantsStr);
-                    if (this.sysParticipants && (this.orgInfo.name in this.sysParticipants)) {
-                        this.users = this.sysParticipants[this.orgInfo.name];
+                if (participantsStr) this.sysParticipants = _load(participantsStr);
+//              console.log(participantsStr);
+//              if (participantsStr && (this.orgInfo.name in this.sysParticipants)) {
+//                  mui.alert("rth-2");
+//                  if (this.sysParticipants && (this.orgInfo.name in this.sysParticipants)) {
+//                      this.users = this.sysParticipants[this.orgInfo.name];
+//                  }
+//              } else {
+//                  mui.alert("rth-3");
+                    if (!this.sysParticipants) {
+                        this.sysParticipants = {};
+                        this.sysParticipants[this.orgInfo.name] = [];
                     }
-                } else {
-                    this.sysParticipants = {};
-                    this.sysParticipants[this.orgInfo.name] = [];
                     var self = this;
                     _callAjax({
                         cmd: "fetch",
@@ -45,10 +50,15 @@
                         if (!d.success || !d.data) return;
                         d.data.forEach((i) => {
                             i.ifSelect = 0;
+                            if (self.sysParticipants && (self.orgInfo.name in self.sysParticipants)) {
+                                self.sysParticipants[self.orgInfo.name].forEach((j) => {
+                                    if (parseInt(j.id) == parseInt(i.id)) i.ifSelect = j.ifSelect;
+                                });
+                            }
                         });
                         self.users = d.data;
                     });
-                }
+//              }
 
             }
         });
