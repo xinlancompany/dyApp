@@ -387,7 +387,7 @@ function plusReady() {
                                                 return {
                                                     key: "key"+parseInt(Math.random()*10e6),
 //                                                  sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+credits+")"
-                                                    sql: "insert into activityEnroll(userId, activityId, preScore) values("+i.id+", "+aid+", "+i.credits+")"
+                                                    sql: "insert into activityEnroll(userId, activityId, preScore"+(self.isBranch?"":",score")+") values("+i.id+", "+aid+", "+i.credits+(self.isBranch?")":(","+i.credits+")"))
                                                 }
 //                                          }, self.participants)
                                             }, self.realParticipants)
