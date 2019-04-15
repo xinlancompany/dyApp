@@ -82,7 +82,7 @@
         var getOrgs = function(no, cb) {
             _callAjax({
                 cmd: "fetch",
-                sql: "select id, name, no, type, superOrgNo from organization where superOrgNo = ?",
+                sql: "select id, name, no, type, superOrgNo from organization where superOrgNo = ? and ifvalid = 1",
                 vals: _dump([no,])
             }, function(d) {
                 cb(d);
