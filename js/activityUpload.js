@@ -305,8 +305,8 @@ function plusReady() {
 				});
             },
             newActivity: function() {
-            		if (this.ifSubmit) return;
-            		this.ifSubmit = true;
+                if (this.ifSubmit) return;
+                this.ifSubmit = true;
                 var title = _trim(this.title),
                     organizer = _trim(this.organizer),
                     location = _trim(this.location),
@@ -439,7 +439,7 @@ function plusReady() {
                     Object.keys(data).forEach(function(k) {
                         self[k] = data[k];
                     });
-                    this.ifSubmit = false;
+                    self.ifSubmit = false;
                 }
             });
         }
