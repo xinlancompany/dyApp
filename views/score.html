@@ -31,7 +31,7 @@
 			</div>
 			
 			<div class="content">
-				<span v-text="totalScore+'分钟'" v-show="activeTab == 1"></span>
+				<span v-text="totalScore" v-show="activeTab == 1"></span>
                 <div class="star-grade" v-show="activeTab == 0">
 					<i class="iconfont" :class="{'icon-star': activityScore>=20, 'icon-starhalfempty': activityScore<20 && activityScore>=10, 'icon-staro': activityScore<10}"></i>
 					<i class="iconfont" :class="{'icon-star': activityScore>=40, 'icon-starhalfempty': activityScore<40 && activityScore>=30, 'icon-staro': activityScore<30}"></i>

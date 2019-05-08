@@ -107,12 +107,53 @@ var Index = (function () {
         }
     };
     Index.prototype.updateInfo = function () {
+        var _this = this;
         var userStr = _get("userInfo", true);
-        console.log(userStr);
         var orgStr = _get("orgInfo");
         if (userStr) {
             this.userInfo = _load(userStr);
             this.orgInfo = null;
+            // 设置党员登陆今日登陆
+            _getTodayScore(this.userInfo.id, function (score) {
+                score += 60;
+                if (score > 120 * 60)
+                    score = 120 * 60;
+                _scoreAjax({
+                    cmd: "exec",
+                    sql: "insert into scoreDailyLogin(userId) values(?)",
+                    vals: _dump([_this.userInfo.id,]),
+                }, function (d) {
+                    if (d.success && d.data) {
+                        _set("score", _dump({
+                            score: score,
+                            date: _today()
+                        }));
+                    }
+                });
+            });
+            // 获取以前的登陆与分享
+            _scoreAjax({
+                cmd: "multiFetch",
+                multi: _dump([
+                    {
+                        key: "login",
+                        sql: "select count(*) as cnt from scoreDailyLogin where userId = " + this.userInfo.id + " and logtime < '" + (_today() + " 00:00:00") + "'"
+                    },
+                    {
+                        key: "share",
+                        sql: "select count(*)*2 as cnt from scoreShareCourse where userId = " + this.userInfo.id + " and logtime < '" + (_today() + " 00:00:00") + "'"
+                    }
+                ])
+            }, function (d) {
+                var prevScore = 0;
+                if (d.success && d.data) {
+                    if (d.data.login && d.data.login.length)
+                        prevScore += parseInt(d.data.login[0].cnt);
+                    if (d.data.share && d.data.share.length)
+                        prevScore += parseInt(d.data.share[0].cnt);
+                }
+                _set("prevScore", "" + prevScore);
+            });
         }
         if (orgStr) {
             this.orgInfo = _load(orgStr);

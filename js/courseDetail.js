@@ -28,19 +28,41 @@
 			},
 			methods: {
 				courseEnroll: function() {
+				    // 视频结束或者停止时，不记时
+				    if ($("video").length) {
+                        var v = $("video")[0];
+                        if (v.ended || v.paused) return;
+				    }
 					if (this.noNeedToUpdate) return;
-					var self = this;
-						self.newsData.ecredit += 30;
+					var self = this,
+					   aScore = 30;
+                    self.newsData.ecredit += aScore;
+					// 第一次直接给60秒，优惠
+//					if (self.newsData.ecredit == aScore) {
+//					    aScore += 30;
+//					    self.newsData.ecredit = aScore;
+//					}
 					if (self.newsData.ecredit > self.newsData.credit) {
 						self.newsData.ecredit = self.newsData.credit;
 						self.noNeedToUpdate = true;
 					}
 
-					_callAjax({
-						cmd: "exec",
-						sql: "replace into courseEnroll(credit, courseId, userId) values(?, ?, ?)",
-						vals: _dump([self.newsData.ecredit, self.newsData.id, self.userInfo.id])
-					}, function(_d) {});
+                    _getTodayScore(this.userInfo.id, function(score) {
+                        score += aScore;
+                        if (score > 120*60) score = 120*60;
+                        _callAjax({
+                            cmd: "exec",
+                            sql: "replace into courseEnroll(credit, courseId, userId) values(?, ?, ?)",
+                            vals: _dump([self.newsData.ecredit, self.newsData.id, self.userInfo.id])
+                        }, function(_d) {
+                            if (d.success) {
+                                _set("score", _dump({
+                                    score: score,
+                                    date: _today()
+                                }));
+                            }
+                        });
+                    });
 				},
 				getNewsData: function(i) {
 					if (!i) return;
@@ -56,7 +78,15 @@
 							$(".mui-title").text(d.data[0].lname);
 							self.newsData = d.data[0];
 							self.newsData.ecredit = parseInt(self.newsData.ecredit);
-							self.newsData.credit = parseInt(self.newsData.credit);
+							// 文章2分钟，视频20分钟
+							// 判断是否为视频
+                            if ($(d.data[0].content).find("video").length) {
+                                self.newsData.credit = 20*60;
+                            } else {
+                                self.newsData.credit = 2*60;
+                            }
+                            // 
+//							self.newsData.credit = parseInt(self.newsData.credit);
 							if (self.newsData.url.indexOf("http") == 0) {
 								openOutlink(self.newsData.url, self.newsData.title, "courseDetail");
 								return;

@@ -248,7 +248,8 @@
                     sql: "select ifnull(sum(score), 0) as total from easyScore where userId = "+userInfo.id+" and ifValid = 2"
 				},
                 {
-                    sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id and c.ifValid > 0",
+                    // 前一天的内容
+                    sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id and c.ifValid > 0 and e.logtime <= '"+(_today()+" 00:00:00")+"'",
                     key: "course"
                 },
 //              {
@@ -267,20 +268,31 @@
             if ("easyScore" in d.data && d.data.score && d.data.easyScore.length) {
 				vm.activityScore += parseInt(d.data.easyScore[0].total);
 			}
+            var studyScore = 0;
             if ("course" in d.data && d.data.course && d.data.course.length) {
-                vm.studyScore += parseInt(d.data.course[0].total);
+                studyScore += parseInt(d.data.course[0].total);
             }
             if ("live" in d.data && d.data.live && d.data.live.length) {
                 d.data.live.forEach(function(i) {
                     var score = i.cnt * studyScoreSetting.livePerMinute; // 每10分钟1分
                     if (score > 1) score = 1; // 最多能得到1分
-                    vm.studyScore += score;
-                    vm.studyScore = Math.round(vm.studyScore*100)/100.0;
+                    studyScore += score;
+                    studyScore = Math.round(studyScore*100)/100.0;
                 });
             }
             // 党员先锋指数要包含学习分数时，需要加上学习积分，目前暂时不加上
             // vm.activityScore += vm.studyScore;
-            vm.studyScore = Math.round(vm.studyScore/60); // 转换为分钟
+            _getTodayScore(userInfo.id, function(score) {
+                let prevScore = 0;
+                    prevScoreStr = _get("prevScore");
+                if (prevScoreStr && parseInt(prevScoreStr)) prevScore += parseInt(prevScoreStr);
+//              alert((parseInt(studyScore)/60)+","+(parseInt(score)/60)+","+prevScore);
+                vm.studyScore = (Math.round((parseInt(studyScore)+parseInt(score))/60)+prevScore)+"（"+Math.round(parseInt(score)/60.0)+"）分钟"; 
+                if (vm.activeTab) {
+                    vm.totalScore = vm.studyScore;
+                }
+            });
+//          vm.studyScore = Math.round(studyScore/60); // 转换为分钟
             if (vm.activeTab) {
                 vm.totalScore = vm.studyScore;
             } else {

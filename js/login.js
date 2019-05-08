@@ -125,6 +125,11 @@ var Login = (function () {
                             setTimeout(function () {
                                 _this.openIndex();
                             }, 500);
+                            // 设置分数
+                            _set("score", _dump({
+                                score: 0,
+                                date: "0000-00-00"
+                            }));
                         }
                         else {
                             // 恢复按钮可点击
