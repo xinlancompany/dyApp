@@ -165,6 +165,7 @@ class Index {
 
             // 设置党员登陆今日登陆
             _getTodayScore(this.userInfo.id, (score) => {
+                if (score >= 120*60) return;
                 score += 60;
                 if (score > 120*60) score = 120 * 60;
                 _scoreAjax({

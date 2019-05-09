@@ -1381,7 +1381,7 @@ body {
 .score .content span {
   text-align: center;
   color: #fff;
-  font-size: 50px;
+  font-size: 30px;
   position: relative;
 }
 .score .content span:before {
