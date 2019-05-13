@@ -130,6 +130,7 @@ var Index = (function () {
                             score: score,
                             date: _today()
                         }));
+                        mui.toast("增加1学分");
                     }
                 });
             });
@@ -144,7 +145,11 @@ var Index = (function () {
                     {
                         key: "share",
                         sql: "select count(*)*2 as cnt from scoreShareCourse where userId = " + this.userInfo.id + " and logtime < '" + (_today() + " 00:00:00") + "'"
-                    }
+                    },
+                    {
+                        key: "news",
+                        sql: "select count(*) as cnt from newsEnroll where userId = " + this.userInfo.id + " and logtime < '" + (_today() + " 00:00:00") + "'"
+                    },
                 ])
             }, function (d) {
                 var prevScore = 0;
@@ -153,8 +158,19 @@ var Index = (function () {
                         prevScore += parseInt(d.data.login[0].cnt);
                     if (d.data.share && d.data.share.length)
                         prevScore += parseInt(d.data.share[0].cnt);
+                    if (d.data.news && d.data.news.length)
+                        prevScore += parseInt(d.data.news[0].cnt);
                 }
                 _set("prevScore", "" + prevScore);
+            });
+            // 获取之前课程学时
+            _callAjax({
+                cmd: "fetch",
+                sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId = " + this.userInfo.id + " and e.courseId = c.id and c.ifValid > 0 and e.logtime <= '" + (_today() + " 00:00:00") + "'"
+            }, function (d) {
+                if (d.success && d.data && d.data.length) {
+                    _set("prevCourseScore", "" + d.data[0].total);
+                }
             });
         }
         if (orgStr) {
@@ -558,6 +574,7 @@ var Index = (function () {
                 userInfo: idxObj.userInfo,
                 isAndroid: "Android" === plus.os.name,
                 isNew: idxObj.isNewestVersion,
+                score: 0,
             },
             methods: {
                 checkPoints: function () {
@@ -597,6 +614,19 @@ var Index = (function () {
                     idxObj.updateAndroid();
                 },
             },
+            mounted: function () {
+                var _this = this;
+                document.addEventListener("updateScore", function (event) {
+                    setTimeout(function () {
+                        var prevScoreStr = _get("prevScore"), prevScore = 0, prevCourseScoreStr = _get("prevCourseScore"), prevCourseScore = 0;
+                        if (prevScoreStr)
+                            prevScore = parseInt(_load(prevScoreStr));
+                        if (prevCourseScoreStr)
+                            prevCourseScore = parseInt(_load(prevCourseScoreStr));
+                        _this.score = prevScore + Math.ceil(parseInt(event.detail.score) / 60) + Math.ceil(parseInt(prevCourseScore) / 60);
+                    }, 500);
+                });
+            }
         });
     };
     Index.prototype.startOrgInterface = function () {

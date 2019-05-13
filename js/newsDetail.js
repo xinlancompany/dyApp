@@ -30,6 +30,33 @@ function plusReady() {
             mediaRoot: ""
 		},
 		methods: {
+		    newsEnroll: function() {
+		        // 增加学分
+		        if (!this.userInfo || !!this.userInfo.no) return;
+                _getTodayScore(this.userInfo.id, (score) => {
+                    if (score >= 120*60) return;
+                    score += 60;
+                    if (score > 120*60) score = 120*60;
+                    _scoreAjax({
+                        cmd: "fetch",
+                        sql: "select id from newsEnroll where userId = ? and newsId = ?",
+                        vals: _dump([this.userInfo.id, this.newsData.id])
+                    }, (d) => {
+                        if (d.success && d.data && d.data.length) return;
+                        _scoreAjax({
+                            cmd: "exec",
+                            sql: "insert into newsEnroll(userId, newsId, credit) values(?,?,?)",
+                            vals: _dump([this.userInfo.id, this.newsData.id, 60])
+                        }, (d) => {
+                            _set("score", _dump({
+                                score: score,
+                                date: _today()
+                            }));
+                            mui.toast("增加1学分");
+                        });
+                    });
+                });
+		    },
 			//获取新闻内容
 			getNewsData: function() {
 				var self = this;
@@ -130,6 +157,11 @@ function plusReady() {
 				});
 			}
 			// IOS需要在页面加载后绑定
+
+
+            setTimeout(function() {
+                newsDetail.newsEnroll();
+            }, 10000);
 		}
 	});
 	

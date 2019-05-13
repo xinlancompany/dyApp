@@ -1035,17 +1035,18 @@ body {
     padding: 15px 0;
     background-color: #fff;
     margin-bottom: 20px;
-    span {
+    &>div {
         position: relative;
         display: flex;
         display: -webkit-flex;
         justify-content: center;
         -webkit-justify-content: center;
+        align-items: center;
         flex: 1;
         -webkit-flex: 1;
         color: @base;
         font-size: 18px;
-        padding: 15px 0;
+        padding: 5px 0;
         i {
             margin-right: 15px;
             font-size: 30px;
@@ -1053,6 +1054,14 @@ body {
         }
         &:first-child:after {
             .lineRight()
+        }
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            p {
+                margin: 0;
+            }    
         }
     }
 }

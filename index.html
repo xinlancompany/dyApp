@@ -189,8 +189,13 @@
 			</div>
 			
 			<div class="ucenter-flex">
-				<span @click="checkPoints"><i class="iconfont icon-icon1"></i>先锋指数</span>	
-				<span @click="checkCredit"><i class="iconfont icon-jifen"></i>平台学时</span>	
+				<div @click="checkPoints"><i class="iconfont icon-icon1"></i>先锋指数</div>	
+				<div @click="checkCredit"><i class="iconfont icon-jifen"></i>
+				    <div>
+        				    <span>平台学时</span>
+        				    <p v-text="score+'分钟'"></p>
+				    </div>
+				</div>	
 			</div>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell" @click="openPost">
