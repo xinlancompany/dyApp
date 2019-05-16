@@ -72,7 +72,7 @@
 						
 					if (!name) return mui.toast("请填写姓名");
 					if (!idNo || idNo.length != 18) return mui.toast("请正确填写身份证");
-					if (!phone || phone.length != 11) return mui.toast("请正确填写手机号码");
+//					if (!phone || phone.length != 11) return mui.toast("请正确填写手机号码");
 
 					var rs = self.reason;
 					if (rs == "其他") rs = _trim(self.otherReason);

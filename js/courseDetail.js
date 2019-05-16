@@ -44,7 +44,7 @@
 						self.noNeedToUpdate = true;
 					}
 
-                    _getTodayScore(this.userInfo.id, function(score) {
+                    _getTodayScore(this.userInfo, function(score) {
                         if (score >= 120*60) return;
                         score += aScore;
                         if (score > 120*60) score = 120*60;

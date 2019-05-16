@@ -410,6 +410,13 @@
 					"views/groupDetail.html"
 				],
 				"priority": 0
+			},
+			"views/score.html": {
+				"resources": [],
+				"refer": [
+					"views/activeDetail.html"
+				],
+				"priority": 0
 			}
 		},
 		"idle": {

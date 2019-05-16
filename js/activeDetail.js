@@ -145,10 +145,17 @@ function plusReady() {
 				
 				_callAjax({
 					cmd:"fetch",
-					sql:"select a.id, a.title, a.img, a.content, a.linkerId,a.absents,a.notOnDuties,a.unattendReason, a.organizer,a.recorder,a.superAttenders, a.ifValid, a.withdrawTxt, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, a.record, a.recordImgs, a.recordTime from activitys a left join activityEnroll e on e.activityId = a.id where a.id = ?",
+					sql:"select a.id, a.title, a.img, a.content, a.linkerId,a.absents," +
+					   "a.notOnDuties,a.unattendReason, a.organizer,a.recorder,a.superAttenders, o.name as orgName," +
+					   "a.ifValid, a.withdrawTxt, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime," +
+					   " strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, " +
+					   "a.status, count(e.id) as applicant, a.record, a.recordImgs, "+
+					   "a.recordTime from activitys a, organization o left join activityEnroll e " +
+					   "on e.activityId = a.id where a.id = ? and o.id = a.orgId",
 					vals:_dump([activityId])
 				}, function(d) {
 					if(d.success && d.data) {
+					    self.orgName = d.data[0].orgName;
 						if (d.data[0].img) {
 							var arrImg = d.data[0].img.split('/upload');
 							d.data[0].img = serverAddr + '/upload' + arrImg[1];

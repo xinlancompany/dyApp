@@ -29,8 +29,13 @@ function plusReady() {
 					// var orgId = _getOrgId();
 					_callAjax({
 						cmd: "fetch",
-						sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, a.address, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, count(e.id) as applicant, e.experience, e.score from activitys a, activityEnroll e where e.activityId = a.id and ifValid > 0 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-						vals: _dump([self.userInfo.id, f])
+						sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, a.address, " +
+                            "strftime('%Y-%m-%d %H:%M', a.starttime)as starttime, " +
+                            "strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, a.status, " +
+                            "count(e.id) as applicant, e.experience, e.score from activitys a, " +
+                            "activityEnroll e where e.activityId = a.id and ifValid > 0 and " +
+                            "e.userId in (select id from user where idno = ?) and a.id < ? group by a.id order by a.id desc limit 10",
+						vals: _dump([self.userInfo.idNo, f])
 					}, function(d) {
 						if(d.success && d.data) {
 							d.data.forEach(function(r) {

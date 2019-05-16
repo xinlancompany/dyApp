@@ -64,7 +64,7 @@
 				                    
 				                    <p class="mui-h6 mui-ellipsis" v-text="i.orgName"></p>
 				                </div>
-				                <div class="mui-table-cell mui-col-xs-2 mui-text-right">
+				                <div class="mui-table-cell mui-col-xs-2 mui-text-right" v-show="i.ifValid == 1">
 									<button type="button" class="mui-btn mui-btn-primary" @click.stop="operateAppraise(i, idx)">操作</button>
 				                </div>
 				            </div>

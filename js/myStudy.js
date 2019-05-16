@@ -34,14 +34,18 @@ function plusReady() {
 					if(self.liveList.length) {
 						f = _at(self.liveList, -1).id;
 					}
-				
+
 					_callAjax({
 						cmd: "fetch",
 //						sql: "select a.id, a.title, a.img, a.content, a.brief, strftime('%m-%d', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid =1 and e.userId = ? and a.id< ? and a.linkerId in (select id from linkers where refId = ?) order by a.id desc limit 10",
 //						vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform])
 
-						sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, strftime('%Y-%m-%d', e.logtime) as time, ifnull(e.credit, 0) as points from courses a, courseEnroll e where e.courseId = a.id and a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by e.logtime desc limit 10",
-						vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform, linkerId.HandCourse])
+						sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, " +
+						  "strftime('%Y-%m-%d', e.logtime) as time, ifnull(e.credit, 0) as points " +
+						  "from courses a, courseEnroll e where e.courseId = a.id and a.ifValid > 0 and " +
+						  "e.userId in (select id from user where idno = ?) and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) " + 
+						  "order by e.logtime desc limit 10",
+						vals: _dump([self.userInfo.idNo, f, linkerId.StudyPlatform, linkerId.HandCourse])
 					}, function(d) {
 						// alert(_dump(d.data));
 						if(d.success && d.data) {
@@ -86,7 +90,6 @@ function plusReady() {
 						if(d.success && d.data) {
 							d.data.forEach(function(r) {
 								self.internets.push(r);
-					
 							});
 							
 							if(self.internets.length<10){
@@ -126,7 +129,7 @@ function plusReady() {
 			
 			self.userInfo = _load(_get('userInfo'));
 			self.internets = [];
-			self.getMyStudy();
+//			self.getMyStudy();
 			self.getLiveList();
 		}
 	})
