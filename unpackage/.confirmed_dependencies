@@ -175,5 +175,10 @@
 		"refer": [
 			"views/groupDetail.html"
 		]
+	},
+	"views/score.html": {
+		"refer": [
+			"views/activeDetail.html"
+		]
 	}
 }
