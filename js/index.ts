@@ -165,6 +165,7 @@ class Index {
 
             // 设置党员登陆今日登陆
             _getTodayScore(this.userInfo, (score) => {
+                let oldScore = score;
                 if (score >= 120*60) {
                     _set("score", _dump({
                         score: 120*60,
@@ -185,6 +186,12 @@ class Index {
                             date: _today()
                         }));
                         mui.toast("增加1学分");
+                    } else {
+                        _set("score", _dump({
+                            score: oldScore,
+                            date: _today()
+                        }));
+                        
                     }
                 });
             });

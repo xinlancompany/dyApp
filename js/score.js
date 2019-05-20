@@ -302,7 +302,7 @@
                 let prevScore = 0;
                     prevScoreStr = _get("prevScore");
                 if (prevScoreStr && parseInt(prevScoreStr)) prevScore += parseInt(prevScoreStr);
-                vm.studyScore = (Math.round((parseInt(studyScore)+parseInt(score))/60)+prevScore)+"（"+Math.round(parseInt(score)/60.0)+"）分钟"; 
+                vm.studyScore = (Math.ceil(parseInt(studyScore)/60.0)+Math.ceil(parseInt(score)/60.0)+prevScore)+"（"+Math.round(parseInt(score)/60.0)+"）分钟"; 
                 if (vm.activeTab) {
                     vm.totalScore = vm.studyScore;
                 }

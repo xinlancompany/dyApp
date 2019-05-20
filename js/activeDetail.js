@@ -111,6 +111,7 @@ function plusReady() {
             },
             // 上传心得
             uploadExperience: function() {
+                if (this.userInfo.orgId != this.detailData.orgId) return mui.toast("非当前支部成员，无法上传");
                 if (this.bClick) return mui.toast("您未参加该活动，无法上传心得");
                 if (this.experiencePermitted) {
                     return mui.toast("您的心得已经审定，不能再修改");
@@ -147,7 +148,7 @@ function plusReady() {
 					cmd:"fetch",
 					sql:"select a.id, a.title, a.img, a.content, a.linkerId,a.absents," +
 					   "a.notOnDuties,a.unattendReason, a.organizer,a.recorder,a.superAttenders, o.name as orgName," +
-					   "a.ifValid, a.withdrawTxt, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime," +
+					   "a.ifValid, a.withdrawTxt, a.orgId, strftime('%Y-%m-%d %H:%M', a.starttime)as starttime," +
 					   " strftime('%Y-%m-%d %H:%M', a.endtime) as endtime, a.address, " +
 					   "a.status, count(e.id) as applicant, a.record, a.recordImgs, "+
 					   "a.recordTime from activitys a, organization o left join activityEnroll e " +

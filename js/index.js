@@ -115,6 +115,7 @@ var Index = (function () {
             this.orgInfo = null;
             // 设置党员登陆今日登陆
             _getTodayScore(this.userInfo, function (score) {
+                var oldScore = score;
                 if (score >= 120 * 60) {
                     _set("score", _dump({
                         score: 120 * 60,
@@ -136,6 +137,12 @@ var Index = (function () {
                             date: _today()
                         }));
                         mui.toast("增加1学分");
+                    }
+                    else {
+                        _set("score", _dump({
+                            score: oldScore,
+                            date: _today()
+                        }));
                     }
                 });
             });
