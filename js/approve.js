@@ -152,8 +152,10 @@
 										sql: "update easyScore set ifValid = 2 where id = ?",
 										vals: _dump([i.id,])
 									}, function(d) {
+									    i.ifValid = 2;
+									    i.stateTag = "已通过";
 										mui.toast("通过"+(d.success?"成功":"失败"));
-										if (d.success) self.appraises = _del_ele(self.appraises, idx);
+//										if (d.success) self.appraises = _del_ele(self.appraises, idx);
 									});
 
 									// 通过通知
@@ -195,7 +197,9 @@
 										vals: _dump([txt, i.id])
 									}, function(d) {
 										mui.toast("退回"+(d.success?"成功":"失败"));
-										if (d.success) self.appraises = _del_ele(self.appraises, idx);
+										i.ifValid = 0;
+										i.stateTag = "已退回";
+//										if (d.success) self.appraises = _del_ele(self.appraises, idx);
 									});
 
 									// 打回通知
@@ -318,7 +322,7 @@
 						cmd: "fetch",
 						// 二级审核的逻辑
 						// sql: "select e.id, userId, u.name, e.orgNo, o.name as orgName, content, e.img, e.reason, score, e.ifValid, strftime('%m-%d', e.logtime) as logtime from easyScore e, user u, organization o where userId = u.id and ((e.orgNo = ? and (e.ifValid = 0 or e.ifValid = 1)) or (e.ifValid = 2 and e.orgNo in (select no from organization where superOrgNo = ?))) and o.no = e.orgNo",
-						sql: "select e.id, userId, u.name, e.orgNo, o.name as orgName, content, e.img, e.reason, score, e.ifValid, strftime('%m-%d', e.logtime) as logtime from easyScore e, user u, organization o where userId = u.id and e.orgNo = ? and e.ifValid < 2 and o.no = e.orgNo",
+						sql: "select e.id, userId, u.name, e.orgNo, o.name as orgName, content, e.img, e.reason, score, e.ifValid, strftime('%m-%d', e.logtime) as logtime from easyScore e, user u, organization o where userId = u.id and e.orgNo = ? and o.no = e.orgNo",
 						vals: _dump([self.userInfo.no,self.userInfo.no,])
 					}, function(d) {
 						if (d.success && d.data) {

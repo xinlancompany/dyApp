@@ -36,18 +36,15 @@
 					if (this.noNeedToUpdate) return;
 					var self = this,
 					   aScore = 30;
+					// 图文信息一次性加分即可
+					if (!$("video").length) aScore = 60;
                     self.newsData.ecredit += aScore;
-					// 第一次直接给60秒，优惠
-//					if (self.newsData.ecredit == aScore) {
-//					    aScore += 30;
-//					    self.newsData.ecredit = aScore;
-//					}
-					if (self.newsData.ecredit > self.newsData.credit) {
+					if (self.newsData.ecredit >= self.newsData.credit) {
 						self.newsData.ecredit = self.newsData.credit;
 						self.noNeedToUpdate = true;
 					}
 
-                    _getTodayScore(this.userInfo.id, function(score) {
+                    _getTodayScore(this.userInfo, function(score) {
                         if (score >= 120*60) return;
                         score += aScore;
                         if (score > 120*60) score = 120*60;
@@ -61,6 +58,7 @@
                                     score: score,
                                     date: _today()
                                 }));
+                                mui.toast("增加"+parseFloat(aScore/60.0)+"学分");
                             }
                         });
                     });
@@ -76,6 +74,9 @@
 						vals: _dump([self.userInfo.id, i])
 					}, function(d) {
 						if (d.success && d.data) {
+							// 清理已存在的interval
+							if (!!self.intervalCb) clearInterval(self.intervalCb);
+
 							$(".mui-title").text(d.data[0].lname);
 							self.newsData = d.data[0];
 							self.newsData.ecredit = parseInt(self.newsData.ecredit);
@@ -83,8 +84,16 @@
 							// 判断是否为视频
                             if ($(d.data[0].content).find("video").length) {
                                 self.newsData.credit = 20*60;
+                                // 视频半分钟以上，算学习一次
+                                self.intervalCb = setInterval(function() {
+                                    self.courseEnroll();
+                                }, 30000);
                             } else {
-                                self.newsData.credit = 2*60;
+                                // 文章分数统一为1分钟
+                                self.newsData.credit = 60;
+                                self.intervalCb = setTimeout(function() {
+                                    self.courseEnroll();
+                                }, 10000);
                             }
                             // 
 //							self.newsData.credit = parseInt(self.newsData.credit);
@@ -114,13 +123,6 @@
 									});
 								}
 							});
-
-							// 清理已存在的interval
-							if (!!self.intervalCb) clearInterval(self.intervalCb);
-							// 半分钟以上，算学习一次
-							self.intervalCb = setInterval(function() {
-								self.courseEnroll();
-							}, 30000);
 						}
 					});
 

@@ -164,20 +164,27 @@ class Index {
 			this.orgInfo = null;
 
             // 设置党员登陆今日登陆
-            _getTodayScore(this.userInfo.id, (score) => {
-                if (score >= 120*60) return;
+            _getTodayScore(this.userInfo, (score) => {
+                if (score >= 120*60) {
+                    _set("score", _dump({
+                        score: 120*60,
+                        date: _today()
+                    }));
+                    return;
+                }
                 score += 60;
                 if (score > 120*60) score = 120 * 60;
                 _scoreAjax({
                     cmd: "exec",
-                    sql: "insert into scoreDailyLogin(userId) values(?)",
-                    vals: _dump([this.userInfo.id,]),
+                    sql: "insert into scoreDailyLogin(userId, idno) values(?,?)",
+                    vals: _dump([this.userInfo.id, this.userInfo.idNo,]),
                 }, (d) => {
                     if (d.success && d.data) {
                         _set("score", _dump({
                             score: score,
                             date: _today()
                         }));
+                        mui.toast("增加1学分");
                     }
                 });
             });
@@ -188,21 +195,42 @@ class Index {
                 multi: _dump([
                     {
                         key: "login",
-                        sql: "select count(*) as cnt from scoreDailyLogin where userId = "+this.userInfo.id+" and logtime < '"+(_today()+" 00:00:00")+"'"
+                        sql: "select count(*) as cnt from scoreDailyLogin where (userId = "+
+                            this.userInfo.id+
+                            " or idno = '"+this.userInfo.idNo+"' )" +
+                            " and logtime < '"+(_today()+" 00:00:00")+"'"
                     },
                     {
                         key: "share",
-                        sql: "select count(*)*2 as cnt from scoreShareCourse where userId = "+this.userInfo.id+" and logtime < '"+(_today()+" 00:00:00")+"'"
+                        sql: "select count(*)*2 as cnt from scoreShareCourse " +
+                            "where (userId = "+this.userInfo.id+" or idno = '"+this.userInfo.idNo+"') and logtime < '"+(_today()+" 00:00:00")+"'"
 
-                    }
+                    },
+                    {
+                        key: "news",
+                        sql: "select count(*) as cnt from newsEnroll " +
+                            "where (userId = "+this.userInfo.id+" or idno = '"+this.userInfo.idNo+"') and logtime < '"+(_today()+" 00:00:00")+"'"
+                    },
                 ])
             }, (d) => {
                 let prevScore = 0;
                 if (d.success && d.data) {
                     if (d.data.login && d.data.login.length) prevScore += parseInt(d.data.login[0].cnt);
                     if (d.data.share && d.data.share.length) prevScore += parseInt(d.data.share[0].cnt);
+                    if (d.data.news && d.data.news.length) prevScore += parseInt(d.data.news[0].cnt);
                 }
                 _set("prevScore", ""+prevScore);
+            });
+
+            // 获取之前课程学时
+            _callAjax({
+                cmd: "fetch",
+                sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId in (select id from user where idno = ?) and e.courseId = c.id and c.ifValid > 0 and e.logtime <= '"+(_today()+" 00:00:00")+"'",
+                vals: _dump([this.userInfo.idNo,])
+            }, (d) => {
+                if (d.success && d.data && d.data.length) {
+                    _set("prevCourseScore", ""+d.data[0].total);
+                }
             });
 		}
 		if (orgStr) {
@@ -610,6 +638,7 @@ class Index {
 				userInfo: idxObj.userInfo,
 				isAndroid: "Android" === plus.os.name, // 是否处于安卓系统
 				isNew: idxObj.isNewestVersion,
+				score: 0, // 学时
 			},
 			methods: {
 				checkPoints: function() {
@@ -649,6 +678,24 @@ class Index {
 					idxObj.updateAndroid();
 				},
 			},
+			mounted: function() {
+                document.addEventListener("updateScore", (event) => {
+                    setTimeout(() => {
+                        let prevScoreStr = _get("prevScore"),
+                            prevScore = 0,
+                            prevCourseScoreStr = _get("prevCourseScore"),
+                            prevCourseScore = 0,
+                            todayScore = 0;
+                        let scoreStr = _get("score");
+                        if (scoreStr) {
+                            todayScore = _load(scoreStr).score;
+                        }
+                        if (prevScoreStr) prevScore = parseInt(_load(prevScoreStr));
+                        if (prevCourseScoreStr) prevCourseScore = parseInt(_load(prevCourseScoreStr));
+                        this.score = prevScore+Math.ceil(parseInt(todayScore)/60)+Math.ceil(parseInt(prevCourseScore)/60);
+                    }, 1000);
+                });
+			}
 		});
 	}
 

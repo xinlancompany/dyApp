@@ -13,6 +13,8 @@ function plusReady() {
 			})
 			$('body').animate({scrollTop:0})
 			newsDetail.newsData = []
+
+            if (!!newsDetail.intervalCb) clearInterval(newsDetail.intervalCb);
 		},
 		gestureConfig:{
 		   longtap: true, //默认为false
@@ -20,16 +22,45 @@ function plusReady() {
 	});
 	
 	var newsId = 0,
-        table = '';
+        table = '',
+        wb = plus.webview.currentWebview();
 	
 	var newsDetail = new Vue({
 		el: '#newsDetail',
 		data: {
 			newsData: [],  //新闻内容
             userInfo: null, // _load(_get("userInfo"))
-            mediaRoot: ""
+            mediaRoot: "",
+            intervalCb: null,
 		},
 		methods: {
+		    newsEnroll: function() {
+		        // 增加学分
+		        if (!this.userInfo || !!this.userInfo.no) return;
+                _getTodayScore(this.userInfo, (score) => {
+                    if (score >= 120*60) return;
+                    score += 60;
+                    if (score > 120*60) score = 120*60;
+                    _scoreAjax({
+                        cmd: "fetch",
+                        sql: "select id from newsEnroll where (userId = ? or idno = ?) and newsId = ?",
+                        vals: _dump([this.userInfo.id, this.userInfo.idNo, this.newsData.id])
+                    }, (d) => {
+                        if (d.success && d.data && d.data.length) return;
+                        _scoreAjax({
+                            cmd: "exec",
+                            sql: "insert into newsEnroll(userId, idno, newsId, credit) values(?,?,?,?)",
+                            vals: _dump([this.userInfo.id, this.userInfo.idNo, this.newsData.id, 60])
+                        }, (d) => {
+                            _set("score", _dump({
+                                score: score,
+                                date: _today()
+                            }));
+                            mui.toast("增加1学分");
+                        });
+                    });
+                });
+		    },
 			//获取新闻内容
 			getNewsData: function() {
 				var self = this;
@@ -102,7 +133,7 @@ function plusReady() {
 				share(type, i.id, i.title, i.img, sid, e);
 			},
 		},
-		mounted: function() {
+		created: function() {
 			var self = this;
 	
 			newsId = _get('newsId');
@@ -130,6 +161,10 @@ function plusReady() {
 				});
 			}
 			// IOS需要在页面加载后绑定
+
+            this.intervalCb = setTimeout(function() {
+                newsDetail.newsEnroll();
+            }, 10000);
 		}
 	});
 	
@@ -150,8 +185,7 @@ function plusReady() {
 		newsDetail.getNewsData();
 	});
 
-    var wb = plus.webview.currentWebview(),
-        aid = wb.aid;
+    var aid = wb.aid;
     table = wb.table;
     // alert(aid+" "+table);
 	if (!!aid && !!table) {

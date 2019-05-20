@@ -64,7 +64,9 @@
                     }, function(d) {
                         if (d.success) {
                             mui.toast("上传成功");
-                            mui.back();
+                            setTimeout(function() {
+                                mui.back();
+                            }, 1000);
                         } else {
                             mui.toast("上传失败");
                         }

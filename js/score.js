@@ -64,7 +64,11 @@
 					var self = this;
                 		_callAjax({
                 			cmd: "fetch",
-                			sql: "select id, content as title, 0 as isActicvity, strftime('%Y-%m-%d %H:%M', logtime) as time, score as points, 0 as isActicvity from easyScore where ifValid = 2 and userId = "+userInfo.id+" order by id desc"
+                			sql: "select id, content as title, 0 as isActicvity, " +
+                			"strftime('%Y-%m-%d %H:%M', logtime) as time, score as points, " +
+                			"0 as isActicvity from easyScore where ifValid = 2 and userId in " +
+                			"(select id from user where idNo = ?) order by id desc",
+                			vals: _dump([self.userInfo.idNo,])
                 		}, function(d) {
                 			if (d.success && d.data && d.data.length) {
                 				self.easyScoreList = d.data;
@@ -86,8 +90,13 @@
 						_callAjax({
 							cmd: "fetch",
 							// sql: "select a.id, a.title, a.img, a.content, a.linkerId, a.organizer, strftime('%Y-%m-%d %H:%M', a.starttime)as time, a.address, a.status, a.points, count(e.id) as applicant from activitys a left join activityEnroll e on e.activityId = a.id where ifValid =1 and e.userId = ? and a.id < ? group by a.id order by a.id desc limit 10",
-							sql: "select a.id, a.title, e.score, 1 as isActivity, strftime('%Y-%m-%d %H:%M', a.starttime) as time, e.score as points from activityEnroll e, activitys a where a.ifValid >= 4 and a.ifValid < 7 and e.activityId = a.id and e.userId = ? and a.id < ? order by a.logtime desc",
-							vals: _dump([self.userInfo.id, f])
+							sql: "select a.id, a.title, e.score, 1 as isActivity, " +
+                                "strftime('%Y-%m-%d %H:%M', a.starttime) as time, " +
+                                "e.score as points from activityEnroll e, activitys a " +
+                                "where a.ifValid >= 4 and a.ifValid < 7 and " +
+                                "e.activityId = a.id and e.userId = (select id from user where idno = ?) and " +
+                                "a.id < ? order by a.logtime desc",
+							vals: _dump([self.userInfo.idNo, f])
 						}, function(d) {
 							if(d.success && d.data) {
 								d.data.forEach(function(r) {
@@ -170,8 +179,15 @@
 						_callAjax({
 							cmd: "fetch",
 //							sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime)as time, ifnull(e.credit, 0) as points from courses a left join courseEnroll e on e.courseId = a.id where a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by e.logtime desc limit 10",
-							sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, strftime('%Y-%m-%d %H:%M', e.logtime) as time, ifnull(e.credit, 0) as points from courses a, courseEnroll e where e.courseId = a.id and a.ifValid > 0 and e.userId = ? and a.id < ? and a.linkerId in (select id from linkers where refId = ? or refId = ?) order by e.logtime desc limit 10",
-							vals: _dump([self.userInfo.id, f, linkerId.StudyPlatform, linkerId.HandCourse])
+							sql: "select a.id, a.title, a.url, a.img, a.content, a.brief, " +
+                                "strftime('%Y-%m-%d %H:%M', e.logtime) as time, " +
+                                "ifnull(e.credit, 0) as points from courses a, courseEnroll e " +
+                                "where e.courseId = a.id and a.ifValid > 0 " +
+                                "and e.userId in (select id from user where idno = ?) and " +
+                                "a.id < ? and a.linkerId in " +
+                                "(select id from linkers where refId = ? or refId = ?) " +
+                                "order by e.logtime desc limit 10",
+							vals: _dump([self.userInfo.idNo, f, linkerId.StudyPlatform, linkerId.HandCourse])
 						}, function(d) {
 							if(d.success && d.data) {
 								d.data.forEach(function(r) {
@@ -241,15 +257,15 @@
             multi: _dump([
                 {
                     key: "score",
-                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId = "+userInfo.id+" and activityId in (select id from activitys where ifValid >= 4 and ifValid < 7)"
+                    sql: "select ifnull(sum(score), 0) as total, scoreType from activityEnroll where userId in (select id from user where idno = '"+userInfo.idNo+"') and activityId in (select id from activitys where ifValid >= 4 and ifValid < 7)"
                 },
                 {
                     key: "easyScore",
-                    sql: "select ifnull(sum(score), 0) as total from easyScore where userId = "+userInfo.id+" and ifValid = 2"
+                    sql: "select ifnull(sum(score), 0) as total from easyScore where userId in (select id from user where idNo = '"+userInfo.idNo+"') and ifValid = 2"
 				},
                 {
                     // 前一天的内容
-                    sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId = "+userInfo.id+" and e.courseId = c.id and c.ifValid > 0 and e.logtime <= '"+(_today()+" 00:00:00")+"'",
+                    sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId in (select id from user where idno = '"+userInfo.idNo+"') and e.courseId = c.id and c.ifValid > 0 and e.logtime <= '"+(_today()+" 00:00:00")+"'",
                     key: "course"
                 },
 //              {
@@ -282,7 +298,7 @@
             }
             // 党员先锋指数要包含学习分数时，需要加上学习积分，目前暂时不加上
             // vm.activityScore += vm.studyScore;
-            _getTodayScore(userInfo.id, function(score) {
+            _getTodayScore(userInfo, function(score) {
                 let prevScore = 0;
                     prevScoreStr = _get("prevScore");
                 if (prevScoreStr && parseInt(prevScoreStr)) prevScore += parseInt(prevScoreStr);
