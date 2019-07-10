@@ -488,7 +488,7 @@ class Index {
 					// 获取广告
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, name, img, articleId, url from ads where type = 'index' and status = 1 order by logtime desc limit 5"
+						sql: "select id, name, img, articleId, url from ads where (type = 'index' and status = 1) or id = 2 order by logtime desc limit 5"
 					}, (d) => {
 						if(d.success && d.data) {
 							this.ads = d.data;

@@ -18,13 +18,14 @@
 			<h1 class="mui-title">电视剧</h1>
 		</header>
 		<div id="serialVideo" class="serial-video have-header have-footer">
-			<video src="" controls poster=""></video>
-			<h1>长安十二时辰</h1>
-			<p>热度 9000 / 更新至16集</p>
+			<video src="" controls :poster="poster"></video>
+			<h1 v-text="sub_title"></h1>
+			<!--<p>热度 9000 / 更新至16集</p>-->
 			<div class="serials">
 				<header>选集</header>
 				<ul>
-					<li class="active">1</li>
+					<li @click="play(i)" :class="{'active': currentNum == i.num}" v-for="i in urls" v-text="i.num"></li>
+					<!--
 					<li>2</li>
 					<li>3</li>
 					<li>4</li>
@@ -33,6 +34,7 @@
 					<li>7</li>
 					<li>8</li>
 					<li>9</li>
+					-->
 				</ul>
 			</div>
 		</div>
@@ -40,3 +42,4 @@
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
+<script src="../js/serialVideo.js"></script>
