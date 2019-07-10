@@ -125,7 +125,8 @@
 	"views/internetCourseList.html": {
 		"refer": [
 			"views/internetCourseware.html",
-			"views/newsDetail.html"
+			"views/newsDetail.html",
+			"views/serialVideo.html"
 		],
 		"resources": []
 	},
