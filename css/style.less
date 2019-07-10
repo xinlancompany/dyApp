@@ -2433,3 +2433,60 @@ body {
         box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);    
     }
 }
+
+/* 
+ * DO: 新增连续剧页面
+ * TIME: 2019-07-10
+ * AUTHOR: TOM
+ */ 
+ 
+.serial-video {
+    background-color: #fff;
+    video {
+        display: block;
+        width: 100%;
+        height: 300px;
+        background-color: #000;
+    }
+    h1 {
+        margin: 10px;
+        font-weight: normal;
+        font-size: 18px;
+    }
+    p {
+        margin-left: 10px;
+        color: #666;
+        font-size: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7e7e7;
+    }
+    .serials {
+        padding: 10px;
+        header {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        ul {
+            white-space: nowrap;
+            overflow-x: scroll;
+            li {
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                background-color: #f7f7f7;
+                text-align: center;
+                line-height: 50px;
+                font-size: 14px;
+                color: #333;
+                margin-right: 5px;
+                -webkit-border-radius: 2px;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+                &.active {
+                    background-color: @base;
+                    color: #fff;
+                }
+            }
+        } 
+    }
+}

@@ -68,7 +68,7 @@ function plusReady() {
 				mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
 					cid: i.id
 				});
-				openWindow("courseDetail.html", "courseDetail", {
+				openWindow("serialVideo.html", "serialVideo", {
 					cid: i.id
 				});
 			},
