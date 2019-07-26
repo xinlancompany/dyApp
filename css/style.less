@@ -1225,6 +1225,7 @@ body {
         background-color: #fff;
         padding: 15px;
         margin-top: 40px;
+        border-bottom: 1px solid #e7e7e7;
         h3 {
             font-size: 18px;
         }
@@ -1240,6 +1241,76 @@ body {
         h4 {
             font-weight: normal;
             font-size: 14px;
+        }
+    }
+}
+
+.time-score_lists {
+    background-color: #fff;
+    .time-score_list {
+        padding: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &:after {
+            content: "";
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            bottom: 0;
+            height: 1px;
+            background-color: #e7e7e7;
+            transform: translateY(.5);
+        }
+        .time-score_list_left {
+            h3 {
+                font-weight: normal;
+                font-size: 16px;
+            }
+            p {
+                margin: 10px 0 5px;
+                color: #666;
+                font-size: 12px;
+            }
+            .time-score_list_progress {
+                color: #666;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                span {
+                    display: block;
+                    width: 50px;
+                    height: 3px;
+                    background-color: #e7e7e7;
+                    margin-right: 5px;
+                    -webkit-border-radius: 5px;
+                    -moz-border-radius: 5px;
+                    border-radius: 5px;
+                    position: relative;
+                    b {
+                        height: 3px;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        bottom: 0;
+                        -webkit-border-radius: 5px;
+                        -moz-border-radius: 5px;
+                        border-radius: 5px;
+                        background-color: rgb(225,73,55);
+                    }
+                }
+            }
+        }
+        .time-score_list_btn {
+            padding: 5px;
+            background-color: #f7f7f7;
+            color: #525252;
+            font-size: 14px;
+            &.end {
+                background-color: rgb(251,247,236);
+                color: rgb(181,169,152);
+            }
         }
     }
 }
