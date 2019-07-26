@@ -31,29 +31,23 @@
 			</div>
 			
 			<div class="content">
+				<span v-text="totalScore" v-show="activeTab == 1"></span>
                 <div class="star-grade" v-show="activeTab == 0">
 					<i class="iconfont" :class="{'icon-star': activityScore>=20, 'icon-starhalfempty': activityScore<20 && activityScore>=10, 'icon-staro': activityScore<10}"></i>
 					<i class="iconfont" :class="{'icon-star': activityScore>=40, 'icon-starhalfempty': activityScore<40 && activityScore>=30, 'icon-staro': activityScore<30}"></i>
 					<i class="iconfont" :class="{'icon-star': activityScore>=60, 'icon-starhalfempty': activityScore<60 && activityScore>=50, 'icon-staro': activityScore<50}"></i>
 					<i class="iconfont" :class="{'icon-star': activityScore>=80, 'icon-starhalfempty': activityScore<80 && activityScore>=70, 'icon-staro': activityScore<70}"></i>
 					<i class="iconfont" :class="{'icon-star': activityScore>=100, 'icon-starhalfempty': activityScore<100 && activityScore>=90, 'icon-staro': activityScore<90}"></i>
-                </div>
-                <div class="time-score" v-show="activeTab == 1">
-                	<p>总学时</p>
-                	<span v-text="totalScore"></span>
-                	<div class="time-score_explain" @click="openRule">学时规则 ></div>
+                    <!--<i class="iconfont" :class="{'icon-staro': s2 == 0, 'icon-star': s2 > 0}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 2, 'icon-star': s2 > 1}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 3, 'icon-star': s2 > 2}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 4, 'icon-star': s2 > 3}"></i>
+                    <i class="iconfont" :class="{'icon-staro': s2 < 5, 'icon-star': s2 > 4}"></i>-->
+                    <!--<p>(学习积分：{{studyScore}})</p>-->
                 </div>
 			</div>
 			
-			<div class="time-score_header" v-show="activeTab == 1">
-	    		<h3>学时明细</h3>
-	    		<div class="time-score_detail_total">
-	    			今日已累积
-	    			<span>1学时</span>
-	    		</div>
-		    </div>
-			
-			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed score-list">
+			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed">
 		        <li class="mui-table-view-cell" v-for="i in (activeTab==0?scoreList:courseList)" @click="openDetail(i)">
 		            <div class="mui-table">
 		                <div class="mui-table-cell mui-col-xs-10">
@@ -66,7 +60,7 @@
 		            </div>
 		        </li>
 		    </ul>
-		    
+			
 			<footer class="block-button" @click="getMoreList" v-show="activeTab == 0? bHaveMore_activity: bHaveMore_course">查看更多</footer>
 		</div>
 	</body>

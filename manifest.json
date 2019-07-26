@@ -415,7 +415,8 @@
 			"views/score.html": {
 				"resources": [],
 				"refer": [
-					"views/activeDetail.html"
+					"views/activeDetail.html",
+					"views/scoreRule.html"
 				],
 				"priority": 0
 			}

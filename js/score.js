@@ -246,8 +246,11 @@
 						activityId: i.id,
 						isAdmin: false
 					});
+				},
+				openRule: function() {
+					openWindow('scoreRule.html', 'scoreRule')
 				}
-            }
+           }
         });
 
         var userInfo = _load(_get("userInfo"));

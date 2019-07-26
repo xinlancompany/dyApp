@@ -179,7 +179,8 @@
 	},
 	"views/score.html": {
 		"refer": [
-			"views/activeDetail.html"
+			"views/activeDetail.html",
+			"views/scoreRule.html"
 		]
 	}
 }

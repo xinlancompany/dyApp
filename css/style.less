@@ -1151,7 +1151,7 @@ body {
 
 .score {
     .content {
-        padding: 120px 0;
+        padding: 60px 0;
         top: 40px;
         background-color: rgb(255, 158, 13);
         background-image: url(../img/trophy.png);
@@ -1192,9 +1192,69 @@ body {
                 font-size: 26px;
             }
         }
+        .time-score {
+            color: #fff;
+            text-align: center;
+            p {
+                font-size: 14px;
+                color: #fff;
+            }
+            span {
+                font-size: 24px;
+            }
+            .time-score_explain {
+                position: absolute;
+                right: 0;
+                top: 20px;
+                font-size: 14px;
+                color: #fff;
+                background-color: #EA413C;
+                padding: 5px 10px;
+                -webkit-border-top-left-radius: 15px;
+                -webkit-border-bottom-left-radius: 15px;
+            }
+        }
     }
     h4 {
         line-height: 24px;
+    }
+    .time-score_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        background-color: #fff;
+        padding: 15px;
+        margin-top: 40px;
+        h3 {
+            font-size: 18px;
+        }
+        .time-score_detail_total {
+            color: #525252;
+            font-size: 12px;
+            span {
+                color: #EA413C;
+            }
+        }
+    }
+    .score-list {
+        h4 {
+            font-weight: normal;
+            font-size: 14px;
+        }
+    }
+}
+
+.scoreRule {
+    article {
+        font-size: 14px;
+        color: #333;
+        line-height: 1.5;
+        background-color: #fff;
+        padding: 15px;
+    }
+    p {
+        text-align: center;
+        margin: 10px 0;
     }
 }
 
