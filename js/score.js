@@ -16,27 +16,34 @@
 				bHaveMore_course: true,
 				bHaveMore_live: true,
 				easyScoreList: [],
+				loginScore: 0,
+				loginLimit: 1,
+				shareScore: 0,
+				shareLimit: 10,
+				newsScore: 0,
+				newsLimit: 120,
+				todayScore: 0,
             },
             computed:{
 //          	s2: function() {
 //				var r = this.activityScore/20.0;
 //				return r;
 //         	},
-            	courseLiveList: function() {
-            		var l = this.courseList.concat(this.liveList);
-            		l.sort(function(a, b) {
-            			return a.time < b.time;
-            		});
-            		return l;
-            	},
-            	// 活动积分列表加上申请积分的列表
-            	scoreList: function() {
-            		var l = this.activityList.concat(this.easyScoreList);
-            		l.sort(function(a, b) {
-            			return a.time < b.time;
-            		});
-            		return l;
-            	}
+                    courseLiveList: function() {
+                        var l = this.courseList.concat(this.liveList);
+                        l.sort(function(a, b) {
+                            return a.time < b.time;
+                        });
+                        return l;
+                    },
+                    // 活动积分列表加上申请积分的列表
+                    scoreList: function() {
+                        var l = this.activityList.concat(this.easyScoreList);
+                        l.sort(function(a, b) {
+                            return a.time < b.time;
+                        });
+                        return l;
+                    }
             },
             watch: {
                 activeTab: function(i) {
@@ -51,6 +58,14 @@
                 }
             },
             methods: {
+                toIndex: function() {
+					mui.fire(plus.webview.getWebviewById("index"), "toIndex");
+					mui.back();
+                },
+                toStudyPlatform: function() {
+					mui.fire(plus.webview.getWebviewById("index"), "toStudyPlatform");
+					mui.back();
+                },
                 changeTab: function(i) {
                     this.activeTab = i;
                     if (i) {
@@ -248,12 +263,18 @@
 					});
 				},
 				openRule: function() {
-					openWindow('scoreRule.html', 'scoreRule')
+                    mui.fire(plus.webview.getWebviewById("courseDetail"), "courseId", {
+                        cid: 14810
+                    });
+                    openWindow("courseDetail.html", "courseDetail", {
+                        cid: 14810
+                    });
 				}
            }
         });
 
         var userInfo = _load(_get("userInfo"));
+        _tell(userInfo);
 
         _callAjax({
             cmd: "multiFetch",
@@ -301,11 +322,28 @@
             }
             // 党员先锋指数要包含学习分数时，需要加上学习积分，目前暂时不加上
             // vm.activityScore += vm.studyScore;
-            _getTodayScore(userInfo, function(score) {
+            _getTodayScoreMust(userInfo, function(score, d1, d2) {
+                _tell(d1);
+                _tell(d2);
+                vm.todayScore = (score/60.0).toFixed(1);
+                if (d1.data) {
+                    if (d1.data["login"]) {
+                        vm.loginScore = d1.data["login"].length;
+                    }
+                    if (d1.data["share"]) {
+                        vm.shareScore = parseInt(d1.data["share"][0].cnt)*2;
+                    }
+                    if (d1.data["news"]) {
+                        vm.newsScore = parseInt(d1.data["news"][0].cnt);
+                    }
+                }
+                if (d2.data) {
+                    vm.newsScore += parseInt(d2.data[0].score/60.0);
+                }
                 let prevScore = 0;
                     prevScoreStr = _get("prevScore");
                 if (prevScoreStr && parseInt(prevScoreStr)) prevScore += parseInt(prevScoreStr);
-                vm.studyScore = (Math.ceil(parseInt(studyScore)/60.0)+Math.ceil(parseInt(score)/60.0)+prevScore)+"（"+Math.round(parseInt(score)/60.0)+"）分钟"; 
+                vm.studyScore = (Math.ceil(parseInt(studyScore)/60.0)+Math.ceil(parseInt(score)/60.0)+prevScore)+"分钟"; // +"（"+Math.round(parseInt(score)/60.0)+"）分钟"; 
                 if (vm.activeTab) {
                     vm.totalScore = vm.studyScore;
                 }

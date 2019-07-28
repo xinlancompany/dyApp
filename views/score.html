@@ -44,8 +44,64 @@
                 	<div class="time-score_explain" @click="openRule">学时规则 ></div>
                 </div>
 			</div>
-			
-			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed score-list" v-show="activeTab == 0">
+			 
+		    <div class="time-score_header" v-show="activeTab == 1">
+	    		<h3>学时明细</h3>
+	    		<div class="time-score_detail_total">
+	    			今日已累积
+	    			<span v-cloak>{{todayScore}}学时</span>
+	    		</div>
+		    </div>
+		    
+		    <div class="time-score_lists" v-show="activeTab == 1">
+		    	<div class="time-score_list">
+		    		<div class="time-score_list_left">
+		    			<h3>登录</h3>
+		    			<p>1分/每日首次登录</p>
+		    			<div class="time-score_list_progress" v-cloak>
+		    				<span>
+		    					<b :style="{width: (loginScore/loginLimit)*100 + '%'}"></b>
+		    				</span>
+		    				已获{{loginScore}}分/上限{{loginLimit}}分
+		    			</div>
+		    		</div>
+		    		<div class="time-score_list_btn end" v-show="loginScore/loginLimit >= 1.0">已完成</div>
+		    	</div>
+		    	<div class="time-score_list">
+		    		<div class="time-score_list_left" v-cloak>
+		    			<h3>分享文章</h3>
+		    			<p>2分/每有效分享一篇</p>
+		    			<div class="time-score_list_progress">
+		    				<span>
+		    					<b :style="{width: (shareScore/shareLimit)*100.0 + '%'}"></b>
+		    				</span>
+		    				已获{{shareScore}}分/上限{{shareLimit}}分
+		    			</div>
+		    		</div>
+		    		<div class="time-score_list_btn end" v-show="shareScore/shareLimit >= 1.0">已完成</div>
+		    		<!--<div class="time-score_list_btn" v-show="shareScore/shareLimit < 1.0" @click="toIndex">去看看</div>-->
+		    	</div>
+		    	<div class="time-score_list">
+		    		<div class="time-score_list_left" v-cloak>
+		    			<h3>阅读学习</h3>
+		    			<p>不超过2分/有效阅读图文一篇</p>
+		    			<p>不超过20分/有效观影一部</p>
+		    			<div class="time-score_list_progress">
+		    				<span>
+		    					<b :style="{width: (newsScore/newsLimit)*100.0 + '%'}"></b>
+		    				</span>
+		    				已获{{newsScore}}分/上限{{newsLimit}}分
+		    			</div>
+		    		</div>
+		    		<div class="time-score_list_btn end" v-show="newsScore/newsLimit >= 1.0">已完成</div>
+		    		<div class="time-score_list_btn" v-show="newsScore/newsLimit < 1.0" @click="toStudyPlatform">去看看</div>
+		    	</div>
+            </div>
+
+		    <div class="time-score_header" v-show="activeTab == 1">
+	    		<h3>学习记录</h3>
+		    </div>
+			<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed score-list time-score_lists" >
 		        <li class="mui-table-view-cell" v-for="i in (activeTab==0?scoreList:courseList)" @click="openDetail(i)">
 		            <div class="mui-table">
 		                <div class="mui-table-cell mui-col-xs-10">
@@ -58,43 +114,6 @@
 		            </div>
 		        </li>
 		    </ul>
-		    
-		    <div class="time-score_header" v-show="activeTab == 1">
-	    		<h3>学时明细</h3>
-	    		<div class="time-score_detail_total">
-	    			今日已累积
-	    			<span>1学时</span>
-	    		</div>
-		    </div>
-		    
-		    <div class="time-score_lists" v-show="activeTab == 1">
-		    	<div class="time-score_list">
-		    		<div class="time-score_list_left">
-		    			<h3>登录</h3>
-		    			<p>1分/每日首次登录</p>
-		    			<div class="time-score_list_progress">
-		    				<span>
-		    					<b style="width:100%"></b>
-		    				</span>
-		    				已获1分/上限1分
-		    			</div>
-		    		</div>
-		    		<div class="time-score_list_btn end">已完成</div>
-		    	</div>
-		    	<div class="time-score_list">
-		    		<div class="time-score_list_left">
-		    			<h3>阅读文章</h3>
-		    			<p>1分/每有效阅读一篇</p>
-		    			<div class="time-score_list_progress">
-		    				<span>
-		    					<b style="width:15%"></b>
-		    				</span>
-		    				已获1分/上限6分
-		    			</div>
-		    		</div>
-		    		<div class="time-score_list_btn">去看看</div>
-		    	</div>
-		    </div>
 		    
 			<footer class="block-button" @click="getMoreList" v-show="activeTab == 0? bHaveMore_activity: bHaveMore_course" v-show="activeTab == 0">查看更多</footer>
 		</div>

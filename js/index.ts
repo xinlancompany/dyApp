@@ -337,6 +337,16 @@ class Index {
 			// 必须返回首页
 			this.footer.switchTo('舟山共产党员E家', 'index');
 		});
+
+        // 用于学分中心跳转到首页
+        document.addEventListener("toIndex", () => {
+			this.footer.switchTo('舟山共产党员E家', 'index');
+        });
+
+        // 用于学分中心跳转到学习平台
+        document.addEventListener("toStudyPlatform", () => {
+			this.footer.switchTo('学习平台', 'study');
+        });
 	}
 
 	startIndexNews() {
@@ -488,7 +498,7 @@ class Index {
 					// 获取广告
 					_callAjax({
 						cmd: "fetch",
-						sql: "select id, name, img, articleId, url from ads where (type = 'index' and status = 1) or id = 2 order by logtime desc limit 5"
+						sql: "select id, name, img, articleId, url from ads where (type = 'index' and status = 1) order by logtime desc limit 5"
 					}, (d) => {
 						if(d.success && d.data) {
 							this.ads = d.data;
