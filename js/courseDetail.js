@@ -52,7 +52,7 @@
                             cmd: "exec",
                             sql: "replace into courseEnroll(credit, courseId, userId) values(?, ?, ?)",
                             vals: _dump([self.newsData.ecredit, self.newsData.id, self.userInfo.id])
-                        }, function(_d) {
+                        }, function(d) {
                             if (d.success) {
                                 _set("score", _dump({
                                     score: score,
@@ -70,7 +70,7 @@
 					var self = this;
 					_callAjax({
 						cmd: "fetch",
-						sql: "select c.id, title, c.url, c.img, content, readcnt, reporter, newsdate, c.credit, e.credit as ecredit, l.name as lname from linkers l, courses c left join courseEnroll e on e.courseId = c.id and e.userId = ? where c.id = ? and c.linkerId = l.id",
+						sql: "select c.id, title, c.url, c.img, content, readcnt, reporter, newsdate, c.credit, ifnull(e.credit, 0) as ecredit, l.name as lname from linkers l, courses c left join courseEnroll e on e.courseId = c.id and e.userId = ? where c.id = ? and c.linkerId = l.id",
 						vals: _dump([self.userInfo.id, i])
 					}, function(d) {
 						if (d.success && d.data) {

@@ -1451,7 +1451,7 @@ body {
 }
 .score .time-score_header .time-score_detail_total {
   color: #525252;
-  font-size: 12px;
+  font-size: 15px;
 }
 .score .time-score_header .time-score_detail_total span {
   color: #EA413C;
@@ -1487,11 +1487,11 @@ body {
 .time-score_lists .time-score_list .time-score_list_left p {
   margin: 10px 0 5px;
   color: #666;
-  font-size: 12px;
+  font-size: 15px;
 }
 .time-score_lists .time-score_list .time-score_list_left .time-score_list_progress {
   color: #666;
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   align-items: center;
 }
@@ -1521,7 +1521,7 @@ body {
   padding: 5px;
   background-color: #f7f7f7;
   color: #525252;
-  font-size: 14px;
+  font-size: 15px;
 }
 .time-score_lists .time-score_list .time-score_list_btn.end {
   background-color: #fbf7ec;

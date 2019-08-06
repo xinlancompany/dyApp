@@ -39,7 +39,8 @@
 					<i class="iconfont" :class="{'icon-star': activityScore>=100, 'icon-starhalfempty': activityScore<100 && activityScore>=90, 'icon-staro': activityScore<90}"></i>
                 </div>
                 <div class="time-score" v-show="activeTab == 1">
-                	<p>总学时</p>
+                	<!--<p>总学时</p>-->
+                	<p><span>总学时</span></p>
                 	<span v-text="totalScore"></span>
                 	<div class="time-score_explain" @click="openRule">学时规则 ></div>
                 </div>
