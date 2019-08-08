@@ -27,7 +27,6 @@
 						cmd: "sms",
 						phone: self.phone
 					}, function(d) {
-						alert(_dump(d));
 						mui.toast(d.errMsg);
 						if (d.success) {
 							self.sendPhone = self.phone;

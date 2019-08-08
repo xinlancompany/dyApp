@@ -46,7 +46,7 @@ class Index {
 				_androidClose(this);
 			};
 		}
-	
+
 		// 打开舟山党建网
 		$('.goZSDJ').on('click', function() {
 			plus.runtime.openURL('http://www.zsdj.gov.cn/');
