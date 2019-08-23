@@ -609,6 +609,9 @@ class Index {
 						name: "关注舟山"
 					});
 				},
+				openVideos: function() {
+				    return openOutlink("http://develop.wifizs.cn/dist/channel/gov/dyvideo/views/index.html", "微视频展播");
+				},
 				openCourse: function(i) {
 					// 打开外链
 					if (i.url.indexOf("http") === 0) return openOutlink(i.url, i.title);

@@ -35,7 +35,7 @@
 			<a class="go-ucenter" :class="{active: 'ucenter' === tag}" data-page="ucenter" v-show="isPersonal" @click="switchTo('个人中心', 'ucenter')">
 				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
 			</a>
-			<a class="go-ucenter" :class="{active: 'service' === tag}" data-page="service" v-show="false" @click="openOutlink('http://develop.wifizs.cn/dist/channel/gov/dyservice/views/index.html', '便民服务')">
+			<a class="go-ucenter" :class="{active: 'service' === tag}" data-page="service" v-show="true" @click="openOutlink('http://develop.wifizs.cn/dist/channel/gov/dyservice/views/index.html', '便民服务')">
 				<i class="iconfont icon-partyflag"></i> 便民服务
 			</a>
 		</footer>
@@ -161,9 +161,13 @@
 					<img src="./img/studyIcon6.png" />
 					党建书屋
 				</div>
-				<div @click="openZhoushanNews">
+				<!--<div @click="openZhoushanNews">
 					<img src="./img/studyIcon5.png" />
 					关注舟山
+				</div>-->
+				<div @click="openVideos">
+					<img src="./img/studyIcon5.png" />
+					榜样初心
 				</div>
 			</div>
 			
