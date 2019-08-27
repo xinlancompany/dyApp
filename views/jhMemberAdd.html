@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">兼合支部党员新增</h1>
+            <!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right group-manage">党小组管理</button>-->
+		</header>
+		
+		<div id="jhMemberAdd" class="have-header have-footer">
+			<!--组织信息中查看组织成员时显示-->
+			<form action="" class="search-bar">
+				<input type="search" maxlength="18" v-model="searchWord" placeholder="输入姓名、手机或身份证搜索" style="margin-right:7px;"/>
+				<button type="button" class="mui-btn mui-btn-danger" @click="search">搜索</button>
+			</form>
+			<ul class="mui-table-view" v-cloak>
+				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
+					<a class="mui-navigate-right">
+					    {{i.name}}
+					    <span @click.stop="addMember(i)">添加</span>
+					</a>
+                </li>
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/jhMemberAdd.js"></script>
+

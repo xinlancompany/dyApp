@@ -68,14 +68,21 @@ function plusReady() {
 			goActivityDetail: function(i) {
 				openWindow('activeDetail.html', 'activeDetail', {
                     activityId: i.id,
-                    isAdmin: "no" in _load(_get("userInfo"))
+//                  isAdmin: "no" in _load(_get("userInfo"))
+                    isAdmin: "no" in this.userInfo,
+                    userInfo: this.userInfo
                 });
 			},
 		},
 		mounted: function() {
 			var self = this;
-			
-			self.userInfo = _load(_get('userInfo'));
+			let wb = plus.webview.currentWebview();
+			if ("userInfo" in wb) {
+			    // 兼合支部打开
+                self.userInfo = wb.userInfo;
+			} else {
+                self.userInfo = _load(_get('userInfo'));
+			}
 			
 			self.activityList = [];
 			self.getActivityList();

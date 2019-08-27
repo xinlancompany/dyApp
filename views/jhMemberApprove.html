@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">兼合支部党员审批</h1>
+		</header>
+		
+		<div id="jhMemberApprove" class="have-header have-footer">
+			<ul class="mui-table-view" v-cloak>
+				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
+					<a class="mui-navigate-right">
+	                    {{i.name}}
+                        <span @click.stop="approveUser(i)" style="background-color: #007aff; margin-left: 15px">通过</span>
+                        <span @click.stop="refuseUser(i)">拒绝</span>
+                  	</a>
+                </li>
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/jhMemberApprove.js"></script>
+

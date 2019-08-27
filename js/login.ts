@@ -26,8 +26,12 @@ class Login{
 	
 	constructor() {
 		// 清空localstorage中的用户信息
+		mui.init({
+		   swiperBack: false
+		});
 		_set("userInfo", "");
 		_set("orgInfo", "");
+		_set("jhInfo", "");
 
 		// 重载安卓系统的返回, 双击间隔小于1秒则退出
 		if ('Android' == plus.os.name) {
@@ -41,7 +45,7 @@ class Login{
 			// 关闭boot页面
 			plus.webview.close(plus.webview.getLaunchWebview());
 			// 关闭index页面
-			plus.webview.close(plus.webview.getWebviewById("index"));
+//			plus.webview.close(plus.webview.getWebviewById("index"));
 		});
 
 		// 获取当前webview页面对象，其中包含登陆类型信息
@@ -49,12 +53,8 @@ class Login{
 
 		//预加载页面
 		let idxPage = plus.webview.getWebviewById("index");
-		if (!!idxPage) {
-			_delayClose(idxPage, 500, () => {
-				this.preloadIndex()
-			});
-		} else {
-			this.preloadIndex()
+		if (!idxPage) {
+			this.preloadIndex();
 		}
 	}
 
@@ -78,6 +78,7 @@ class Login{
 				loginAtOnce: true, // 防止重复点击按钮
 				userName: "", // 存储的用户名
 				orgName: "", // 存储的组织代码
+				jhName: "", // 兼合支部代码
 			},
 			watch: {
 				loginType: function(i) {
@@ -85,9 +86,12 @@ class Login{
 					if ("personal" === i) {
 						this.nameTag = "手机或身份证登录";
 						this.name = this.userName;
-					} else {
+					} else if("organization" == i) {
 						this.nameTag = "组织代码";
 						this.name = this.orgName;
+					} else {
+						this.nameTag = "兼合支部代码";
+						this.name = this.jhName?this.jhName:"";
 					}
 				},
 			},
@@ -117,6 +121,35 @@ class Login{
 						_callAjax = _genCallAjax(this.years[e.index-1].server+"/db4web");
 					});
 				},
+				loginJh: function(n, p) {
+				    // 兼合支部登录
+				    console.log(n+","+p);
+				    _jhAjax({
+				        cmd: "zsgaLogin",
+				        user: n,
+				        pwd: p
+				    }, d => {
+				        if (d.success && d.data) {
+							// 保存登录名
+							_set("jhInfo", _dump(d.data));
+							_set("jhName", n);
+							_set("year", this.year);
+							setTimeout(() => {
+								this.openIndex();
+							}, 500);
+
+                            // 设置分数
+                            _set("score", _dump({
+                                score: 0,
+                                date: "0000-00-00"
+                            }));
+						} else {
+							// 恢复按钮可点击
+							this.loginAtOnce = true;
+							mui.toast("登录失败");
+				        }
+				    }, "/db4web");
+				},
 				login: function() {
 					// 防止重复点击
 					if (!this.loginAtOnce) return;
@@ -128,6 +161,9 @@ class Login{
 
 					// 防止重点击
 					this.loginAtOnce = false;
+
+					// 兼合登录
+                    if (this.loginType == "jh") return this.loginJh(name, pswd);
 
 					// 个人登陆
 					let sql = "select u.id,u.name,u.img,u.idNo,u.phone,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1",
@@ -185,12 +221,17 @@ class Login{
 				// 用户名
 				this.userName = _get("userName");
 				this.orgName = _get("orgName");
+				this.jhName= _get("jhName");
 
 				// 设置用户名
 				if (this.loginType === "personal") {
 					this.name = this.userName;
-				} else {
+				} else if (this.loginType == "organization") {
 					this.name = this.orgName;
+				} else {
+				    // 兼合支部
+				    console.log("rth");
+				    this.name = this.jhName;
 				}
 			}
 		});

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">兼合支部年度考评</h1>
+            <!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right info-save">暂存</button>-->
+		</header>
+		
+		<div id="jhActivityUpload" class="article-upload have-header have-footer">
+			<form class="mui-input-group">
+			    <div class="mui-input-row" @click="chooseGrade">
+			        <label>考评登记</label>
+			        <input type="text" class="mui-input-clear" placeholder="等级" :value="gradeName" disabled>
+			    </div>
+			    <div class="mui-input-row mui-input-textarea">
+			        <label>评语</label>
+			        <textarea rows="10" placeholder="内容" v-model="evaluation"></textarea>
+			    </div>
+			    <div class="mui-input-row mui-input-image" v-show="false">
+			        <label>图片</label>
+			        <div class="thumb-upload" :style="imgStyle">
+			            <input type="file" accept="image/*" @change="uploadImg($event)">
+			        </div>
+			    </div>
+			</form>		
+
+		 	<footer @click="newEvaluation" class="block-button" v-text="isEdit?'更新':'提交'" v-show="canEdit"></footer>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/jhMemberEvaluate.js"></script>

@@ -5,8 +5,8 @@ function plusReady() {
 	var activityId = 0;
 
     // 获取用户信息
-    var userInfoStr = _get("userInfo"),
-        userInfo = _load(userInfoStr);
+    var userInfoStr = _get("userInfo");
+    if (userInfoStr) userInfo = _load(userInfoStr);
 
     // 页面信息
     var wb = plus.webview.currentWebview();
@@ -297,7 +297,10 @@ function plusReady() {
 			init: function(){
 				var self = this;
 				
-				self.userInfo = _load(_get('userInfo'));
+//				self.userInfo = _load(_get('userInfo'));
+//				if (!self.userInfo) {
+//				    self.userInfo = _load(_get('jhInfo'));
+//				}
 				if ("no" in self.userInfo) {
 					self.orgName = self.userInfo.name;
 				} else {
@@ -335,8 +338,13 @@ function plusReady() {
 			}
 		},
 		mounted: function() {
-			var self = this;
-			self.init();
+		    let wb = plus.webview.currentWebview();
+		    if ("userInfo" in wb) {
+		        this.userInfo = wb.userInfo;
+		    } else {
+                this.userInfo = _load(_get('userInfo'));
+		    }
+			this.init();
 		}
 	})
 	

@@ -17,6 +17,7 @@ declare var Vue: any;
 class Boot {
 	userInfo: any;
 	orgInfo: any;
+	jhInfo: any;
 	homeImg: string;
 
 	constructor() {
@@ -25,13 +26,15 @@ class Boot {
 
 		let userStr: string = _get("userInfo");
 		let orgStr: string = _get("orgInfo");
+		let jhStr: string = _get("jhInfo");
 		if (userStr) this.userInfo = _load(userStr);
 		if (orgStr) this.orgInfo = _load(orgStr);
+		if (jhStr) this.jhInfo = _load(jhStr);
 		this.homeImg = _get("homeImg");
 		// 设置默认的启动图
 		if (!this.homeImg) this.homeImg = 'img/start.jpg';
 
-		if (!this.userInfo && !this.orgInfo) {
+		if (!this.userInfo && !this.orgInfo && !this.jhInfo) {
 			// 如未登陆则预加载login
 			mui.preload({
 				url: "views/login.html",
@@ -86,7 +89,7 @@ class Boot {
 				},
 				openIndex: function() {
 					// 跳转后均需要注销boot.html页面
-					if (self.userInfo || self.orgInfo) {
+					if (self.userInfo || self.orgInfo || self.jhInfo) {
 						// 如登陆则调转至index.html页面
 						openWindow("index.html", "index");
 					} else {

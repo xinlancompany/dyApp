@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>		
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">活动详情</h1>
+		</header>
+		
+		<div id="jhActiveDetail" class="activity-detail have-header have-footer">
+			<ul class="mui-table-view" v-cloak v-if="detail">
+				<li class="mui-table-view-cell">
+					主题: {{detail.title}}
+				</li>
+				<li class="mui-table-view-cell">
+					支部: {{detail.jhOrgName}}
+				</li>
+				<li class="mui-table-view-cell">
+					主持人: {{detail.organizer}}
+				</li>
+				<li class="mui-table-view-cell">
+					记录人: {{detail.recorder}}
+				</li>
+				<li class="mui-table-view-cell">
+					报名人数: {{this.enrolls? this.enrolls.length: 0}}人
+				</li>
+				<article>
+					<header><i class="iconfont icon-jianjie"></i>参会人员：</header>
+					<p v-text="enrollNames"></p>
+				</article>
+				<li class="mui-table-view-cell">
+					开始时间: {{detail.starttime}}
+				</li>
+				<li class="mui-table-view-cell">
+					结束时间: {{detail.endtime}}
+				</li>
+				<li class="mui-table-view-cell">
+					活动地点: {{detail.address}}
+				</li>
+			</ul>
+			
+			<article v-if="detail">
+				<header><i class="iconfont icon-jianjie"></i>活动内容：</header>
+				<p v-text="detail.content?detail.content:'无'"></p>
+			</article>
+
+			<article v-if="imgs.length">
+				<header><i class="iconfont icon-jianjie"></i>活动照片：</header>
+				<div class="gallery" @click="openGallery">
+					<template v-for="img in imgs">
+						<div class="thumb" :style="{'backgroundImage': 'url('+img.img+')'}" v-show="img.img != ''">
+							<p v-text="img.txt"></p>
+						</div>
+					</template>
+				</div>
+			</article>
+
+            <div v-show="canOperate">
+                <footer class="block-button" @click="editActivity" v-if="detail" style="background-color: #007aff">编辑</footer>
+                <footer class="block-button" @click="delActivity" v-if="detail">删除</footer>
+            </div>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/jhActivityDetail.js"></script>
+
