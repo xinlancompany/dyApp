@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">兼合支部党员管理</h1>
+            <!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right group-manage">党小组管理</button>-->
+		</header>
+		
+		<div id="jhMemberManage" class="have-header have-footer">
+			<!--组织信息中查看组织成员时显示-->
+			<form action="" class="search-bar">
+				<input type="search" maxlength="8" v-model="searchWord" placeholder="请输入党员姓名搜索"/>
+				<i class="iconfont icon-pailie" @click="upsideDown"></i>
+				<!--<i class="iconfont icon-zengjia" @click="newUser"></i>-->
+				<button type="button" class="mui-btn mui-btn-danger" @click="newUser" v-show="canEdit">新增</button>
+			</form>
+			<ul class="mui-table-view" v-cloak>
+				<li class="mui-table-view-cell mui-left" v-for="i in filterMembers" @click="openMember(i)">
+					<a class="mui-navigate-right">
+	                    {{i.name}}
+                        <span @click.stop="infoUser(i)" style="background-color: #20a0ff;">查看</span>
+                        <span @click.stop="delUser(i)" v-show="canEdit">删除</span>
+                        <span @click.stop="evaluateUser(i)" style="background-color: #4cd964">考评</span>
+                        <!--<span>
+								<i class="iconfont" :class="{'icon-star': i.score>=20, 'icon-starhalfempty': i.score<20 && i.score>=10, 'icon-staro': i.score<10}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=40, 'icon-starhalfempty': i.score<40 && i.score>=30, 'icon-staro': i.score<30}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=60, 'icon-starhalfempty': i.score<60 && i.score>=50, 'icon-staro': i.score<50}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=80, 'icon-starhalfempty': i.score<80 && i.score>=70, 'icon-staro': i.score<70}"></i>
+								<i class="iconfont" :class="{'icon-star': i.score>=100, 'icon-starhalfempty': i.score<100 && i.score>=90, 'icon-staro': i.score<90}"></i>
+                        </span>-->
+                  	</a>
+                </li>
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/jhMemberManage.js"></script>
+

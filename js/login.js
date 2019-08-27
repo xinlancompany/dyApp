@@ -3,8 +3,12 @@ var Login = (function () {
     function Login() {
         var _this = this;
         // 清空localstorage中的用户信息
+        mui.init({
+            swiperBack: false
+        });
         _set("userInfo", "");
         _set("orgInfo", "");
+        _set("jhInfo", "");
         // 重载安卓系统的返回, 双击间隔小于1秒则退出
         if ('Android' == plus.os.name) {
             mui.back = function () {
@@ -16,18 +20,13 @@ var Login = (function () {
             // 关闭boot页面
             plus.webview.close(plus.webview.getLaunchWebview());
             // 关闭index页面
-            plus.webview.close(plus.webview.getWebviewById("index"));
+            //			plus.webview.close(plus.webview.getWebviewById("index"));
         });
         // 获取当前webview页面对象，其中包含登陆类型信息
         this.wb = plus.webview.currentWebview();
         //预加载页面
         var idxPage = plus.webview.getWebviewById("index");
-        if (!!idxPage) {
-            _delayClose(idxPage, 500, function () {
-                _this.preloadIndex();
-            });
-        }
-        else {
+        if (!idxPage) {
             this.preloadIndex();
         }
     }
@@ -50,6 +49,7 @@ var Login = (function () {
                 loginAtOnce: true,
                 userName: "",
                 orgName: "",
+                jhName: "",
             },
             watch: {
                 loginType: function (i) {
@@ -58,9 +58,13 @@ var Login = (function () {
                         this.nameTag = "手机或身份证登录";
                         this.name = this.userName;
                     }
-                    else {
+                    else if ("organization" == i) {
                         this.nameTag = "组织代码";
                         this.name = this.orgName;
+                    }
+                    else {
+                        this.nameTag = "兼合支部代码";
+                        this.name = this.jhName ? this.jhName : "";
                     }
                 },
             },
@@ -92,6 +96,36 @@ var Login = (function () {
                         _callAjax = _genCallAjax(_this.years[e.index - 1].server + "/db4web");
                     });
                 },
+                loginJh: function (n, p) {
+                    var _this = this;
+                    // 兼合支部登录
+                    console.log(n + "," + p);
+                    _jhAjax({
+                        cmd: "zsgaLogin",
+                        user: n,
+                        pwd: p
+                    }, function (d) {
+                        if (d.success && d.data) {
+                            // 保存登录名
+                            _set("jhInfo", _dump(d.data));
+                            _set("jhName", n);
+                            _set("year", _this.year);
+                            setTimeout(function () {
+                                _this.openIndex();
+                            }, 500);
+                            // 设置分数
+                            _set("score", _dump({
+                                score: 0,
+                                date: "0000-00-00"
+                            }));
+                        }
+                        else {
+                            // 恢复按钮可点击
+                            _this.loginAtOnce = true;
+                            mui.toast("登录失败");
+                        }
+                    }, "/db4web");
+                },
                 login: function () {
                     var _this = this;
                     // 防止重复点击
@@ -103,6 +137,9 @@ var Login = (function () {
                         return mui.toast("请完整填写登录信息");
                     // 防止重点击
                     this.loginAtOnce = false;
+                    // 兼合登录
+                    if (this.loginType == "jh")
+                        return this.loginJh(name, pswd);
                     // 个人登陆
                     var sql = "select u.id,u.name,u.img,u.idNo,u.phone,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1", vals = _dump([name, name, pswd]);
                     // 组织登陆
@@ -156,12 +193,18 @@ var Login = (function () {
                 // 用户名
                 this.userName = _get("userName");
                 this.orgName = _get("orgName");
+                this.jhName = _get("jhName");
                 // 设置用户名
                 if (this.loginType === "personal") {
                     this.name = this.userName;
                 }
-                else {
+                else if (this.loginType == "organization") {
                     this.name = this.orgName;
+                }
+                else {
+                    // 兼合支部
+                    console.log("rth");
+                    this.name = this.jhName;
                 }
             }
         });

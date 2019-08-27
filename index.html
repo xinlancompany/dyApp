@@ -14,7 +14,7 @@
 		<link rel="stylesheet" href="css/style.css" />
 	</head>
 
-	<body>
+	<body style="height: 100%">
 		<!-- 导航栏 -->
 		<header class="mui-bar mui-bar-nav pageTitle">
             <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-left goZSDJ">舟山党建网</button>
@@ -22,12 +22,15 @@
             <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right logout">退出</button>
 		</header>
 
-		<footer class="footer-tab" id="index-footer" v-show="isOrganization || isPersonal">
+		<footer class="footer-tab" id="index-footer" v-show="isOrganization || isPersonal || isJh">
 			<a class="go-index" :class="{active: 'index' === tag}" data-page="index" @click="switchTo('舟山共产党员E家', 'index')">
 				<i class="iconfont icon-danghui-copy"></i> 首页
 			</a>
 			<a class="go-activity" :class="{active: 'activity' === tag}" data-page="activity" v-show="isOrganization" @click="switchTo('组织生活', 'activity')">
 				<i class="iconfont icon-0045"></i> 组织生活
+			</a>
+			<a class="go-activity" :class="{active: 'jh' === tag}" data-page="jh" v-show="isJh" @click="switchTo('兼合支部', 'jh')">
+				<i class="iconfont icon-0045"></i> 兼合支部
 			</a>
 			<a class="go-study" :class="{active: 'study' === tag}" data-page="study" v-show="isPersonal" @click="switchTo('学习平台', 'study')">
 				<i class="iconfont icon-xuexi"></i> 学习平台
@@ -35,7 +38,7 @@
 			<a class="go-ucenter" :class="{active: 'ucenter' === tag}" data-page="ucenter" v-show="isPersonal" @click="switchTo('个人中心', 'ucenter')">
 				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
 			</a>
-			<a class="go-ucenter" :class="{active: 'service' === tag}" data-page="service" v-show="true" @click="openOutlink('http://develop.wifizs.cn/dist/channel/gov/dyservice/views/index.html', '便民服务')">
+			<a class="go-ucenter" :class="{active: 'service' === tag}" data-page="service" v-show="isPersonal" @click="openOutlink('http://develop.wifizs.cn/dist/channel/gov/dyservice/views/index.html', '便民服务')">
 				<i class="iconfont icon-partyflag"></i> 便民服务
 			</a>
 		</footer>
@@ -96,10 +99,30 @@
 				<footer class="block-button" v-show="hasMoreActivities" @click="openActivities">查看更多</footer>
 			</div>
 		</div> 
+
+		<div id="jh" class="have-footer main activity-panel">
+			
+			<header class="org-info">
+				<h1 v-cloak>{{curOrgName}}</h1>
+			</header>
+			
+			<ul class="activity-block">
+				<li @click="openDetail"><i class="iconfont icon-xiaoxi"></i>组织详情</li>
+				<li @click="openActivityList" v-if="isBranch"><i class="iconfont icon-huodong"></i>组织活动</li>
+				<li @click="openMembers" v-if="isBranch"><i class="iconfont icon-Id"></i>党员管理</li>
+				<li @click="openApprove" v-if="isBranch"><i class="iconfont icon-user-approval"></i>成员审批</li>
+				<li @click="openTree" v-if="!isBranch"><i class="iconfont icon-jifen"></i>组织层级</li>
+				<li @click="changePswd"><i class="iconfont icon-key"></i>修改密码</li>
+				<li v-if="isBranch"></li>
+			</ul>
+			
+            <p class="tips" v-cloak>累计组织{{activityCount}}次活动，{{activityMemberCount}}人次参与</p>
+			
+		</div>
 		
 		<div id="activity" class="have-footer main activity-panel">
 			
-			<header class="org-info"j>
+			<header class="org-info">
 				<h1 v-cloak>{{curOrgName}}</h1>
 				<div class="check" v-if="ifPartyBranch">
 					<i class="iconfont" @click="openSummary(idx)" v-for="i, idx in seasonSummaries" :class="{'icon-circle': i[0] && [1], 'icon-chart12': i[0] ^ i[1], 'icon-jindu3': !i[0] && !i[1]}" v-bind:data-progress="idx+1"></i>
@@ -205,6 +228,16 @@
 				</div>	
 			</div>
 			<ul class="mui-table-view">
+				<!--<li class="mui-table-view-cell" @click="openJh">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-tuijian"></i>兼合支部
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @click="openEvaluate">
+					<a class="mui-navigate-right">
+						<i class="iconfont icon-jifen"></i>年度考评
+					</a>
+				</li>-->
 				<li class="mui-table-view-cell" @click="openPost">
 					<a class="mui-navigate-right">
 						<i class="iconfont icon-xiaoxi"></i>消息

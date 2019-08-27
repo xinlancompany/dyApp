@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加活动</h1>
+            <!--<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right info-save">暂存</button>-->
+		</header>
+		
+		<div id="jhActivityUpload" class="article-upload have-header have-footer">
+			<form class="mui-input-group">
+			    <div class="mui-input-row">
+			        <label>主题</label>
+			    	<input type="text" class="mui-input-clear" placeholder="主题" v-model="title">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>主持人</label>
+			        <input type="text" class="mui-input-clear" placeholder="主持人" v-model="organizer">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>记录人</label>
+			        <input type="text" class="mui-input-clear" placeholder="记录人" v-model="recorder">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>地点</label>
+			        <input type="text" class="mui-input-clear" placeholder="地点" v-model="address">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>开始时间</label>
+			        <p @click="chooseStarttime($event)" v-text="starttime"></p>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>结束时间</label>
+			        <p @click="chooseEndtime($event)" v-text="endtime"></p>
+			    </div>
+			    <div class="mui-input-row mui-input-image">
+			        <label>封面图</label>
+			        <div class="thumb-upload" :style="imgStyle">
+			        	<input type="file" accept="image/*" @change="uploadImg($event)">
+			        </div>
+			    </div>
+			    <div class="mui-input-row mui-input-textarea">
+			        <label>内容</label>
+			        <textarea rows="10" placeholder="内容" v-model="content"></textarea>
+			    </div>
+			    <div class="mui-input-row mui-input-textarea" @click="chooseParticipants">
+			        <label>参加人员</label>
+                    <textarea v-text="participantNames" disabled></textarea>
+			    </div>
+
+			    <div class="mui-input-row">
+			        <label>记录上传</label>
+			    </div>
+			    <div class="mui-input-row mui-input-image record-upload-imgs">
+			        <div v-for="i in records.slice(0,3)" class="thumb-upload img" :style="i.style" :class="{active: i.style.backgroundImage != ''}">
+			            <input type="file" accept="image/*" @change="uploadRecord(i, $event)">
+			            <p v-text="i.txt" @click.stop="changeTxt(i)"></p>
+			        </div>
+                </div>
+			    <div class="mui-input-row mui-input-image record-upload-imgs">
+			        <div v-for="i in records.slice(3)" class="thumb-upload img" :style="i.style" :class="{active: i.style.backgroundImage != ''}">
+			            <input type="file" accept="image/*" @change="uploadRecord(i, $event)">
+			            <p v-text="i.txt" @click.stop="changeTxt(i)"></p>
+			        </div>
+                </div>
+			</form>		
+
+		 	<footer @click="newActivity" class="block-button" v-text="isEdit?'更新':'添加'"></footer>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/jhActivityUpload.js"></script>

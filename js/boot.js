@@ -5,15 +5,18 @@ var Boot = (function () {
         plus.runtime.setBadgeNumber(0);
         var userStr = _get("userInfo");
         var orgStr = _get("orgInfo");
+        var jhStr = _get("jhInfo");
         if (userStr)
             this.userInfo = _load(userStr);
         if (orgStr)
             this.orgInfo = _load(orgStr);
+        if (jhStr)
+            this.jhInfo = _load(jhStr);
         this.homeImg = _get("homeImg");
         // 设置默认的启动图
         if (!this.homeImg)
             this.homeImg = 'img/start.jpg';
-        if (!this.userInfo && !this.orgInfo) {
+        if (!this.userInfo && !this.orgInfo && !this.jhInfo) {
             // 如未登陆则预加载login
             mui.preload({
                 url: "views/login.html",
@@ -70,7 +73,7 @@ var Boot = (function () {
                 },
                 openIndex: function () {
                     // 跳转后均需要注销boot.html页面
-                    if (self.userInfo || self.orgInfo) {
+                    if (self.userInfo || self.orgInfo || self.jhInfo) {
                         // 如登陆则调转至index.html页面
                         openWindow("index.html", "index");
                     }

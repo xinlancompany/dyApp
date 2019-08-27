@@ -626,7 +626,7 @@ body {
 .activity-block li {
   width: 33.33%;
   box-sizing: border-box;
-  padding: 30px 20px;
+  padding: 30px 5px;
   display: flex;
   display: -webkit-flex;
   flex-direction: column;
@@ -2216,10 +2216,16 @@ body {
 #grade .star-grade i.icon-star {
   color: #e14937;
 }
+#jhMemberApprove li a,
+#jhMemberAdd li a,
+#jhMemberManage li a,
 #memberManage li a,
 #memberRanks li a {
   padding-right: 35px;
 }
+#jhMemberApprove li span,
+#jhMemberAdd li span,
+#jhMemberManage li span,
 #memberManage li span,
 #memberRanks li span {
   float: right;

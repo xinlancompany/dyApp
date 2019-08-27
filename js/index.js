@@ -110,9 +110,12 @@ var Index = (function () {
         var _this = this;
         var userStr = _get("userInfo", true);
         var orgStr = _get("orgInfo");
+        var jhStr = _get("jhInfo");
         if (userStr) {
+            console.log(userStr);
             this.userInfo = _load(userStr);
             this.orgInfo = null;
+            this.jhInfo = null;
             // 设置党员登陆今日登陆
             _getTodayScore(this.userInfo, function (score) {
                 var oldScore = score;
@@ -194,12 +197,21 @@ var Index = (function () {
         if (orgStr) {
             this.orgInfo = _load(orgStr);
             this.userInfo = null;
+            this.jhInfo = null;
+        }
+        if (jhStr) {
+            this.jhInfo = _load(jhStr);
+            this.userInfo = null;
+            this.orgInfo = null;
         }
         // 设置右上角登陆或退出
-        $(".logout").text(!this.userInfo && !this.orgInfo ? "登录" : " 退出");
-        var loginObj = plus.webview.getWebviewById("login");
-        if (loginObj)
-            _delayClose(loginObj);
+        $(".logout").text(!this.userInfo && !this.orgInfo && !this.jhInfo ? "登录" : " 退出");
+        // 登录后才能注销login页面
+        if (userStr || orgStr || jhStr) {
+            var loginObj = plus.webview.getWebviewById("login");
+            if (loginObj)
+                _delayClose(loginObj);
+        }
     };
     Index.prototype.start = function () {
         var _this = this;
@@ -211,6 +223,7 @@ var Index = (function () {
             data: {
                 isOrganization: false,
                 isPersonal: false,
+                isJh: false,
                 tag: "index",
             },
             watch: {
@@ -236,10 +249,17 @@ var Index = (function () {
                     if (idxObj.userInfo) {
                         this.isPersonal = true;
                         this.isOrganization = false;
+                        this.isJh = false;
                     }
                     if (idxObj.orgInfo) {
                         this.isPersonal = false;
+                        this.isJh = false;
                         this.isOrganization = true;
+                    }
+                    if (idxObj.jhInfo) {
+                        this.isPersonal = false;
+                        this.isOrganization = false;
+                        this.isJh = true;
                     }
                 }
             },
@@ -255,12 +275,16 @@ var Index = (function () {
         // 初始化组织生活
         if (this.orgInfo)
             this.startOrgInterface();
+        // 初始化兼合支部
+        if (this.jhInfo)
+            this.startJhInterface();
         // 退出按钮
         $(".logout").click(function () {
             // 备用
             //			var loginPage = plus.webview.getWebviewById("login");
             //			if (loginPage) mui.fire(loginPage, "clearCache");
             openWindow("views/login.html", "login");
+            _delayClose(plus.webview.currentWebview());
         });
         // 用于登陆后刷新页面底部标签
         document.addEventListener('openOutLink', function (event) {
@@ -276,6 +300,9 @@ var Index = (function () {
             }
             if (_this.orgInfo) {
                 _this.startOrgInterface();
+            }
+            if (_this.jhInfo) {
+                _this.startJhInterface();
             }
             var loginObj = plus.webview.getWebviewById("login");
             if (loginObj)
@@ -631,6 +658,72 @@ var Index = (function () {
                 openApplication: function () {
                     openWindow("views/application.html", "application");
                 },
+                openJh: function () {
+                    var _this = this;
+                    // 打开兼合支部
+                    _jhAjax({
+                        cmd: "fetch",
+                        sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ?",
+                        vals: _dump([this.userInfo.idNo,])
+                    }, function (d) {
+                        if (!d.data || !d.data.length) {
+                            mui.confirm("是否现在加入？", "未加入兼合支部", ["确定", "取消"], function (e) {
+                                if (e.index == 0) {
+                                    openWindow("views/jhApply.html", "jhApply");
+                                }
+                            });
+                        }
+                        else {
+                            var status_1 = parseInt((d.data[0].status));
+                            if (status_1 == 3) {
+                                mui.confirm("是否现在加入？", "未加入兼合支部", ["确定", "取消"], function (e) {
+                                    if (e.index == 0) {
+                                        openWindow("views/jhApply.html", "jhApply");
+                                    }
+                                });
+                            }
+                            else if (status_1 == 2) {
+                                mui.toast("加入兼合支部申请审核中");
+                            }
+                            else if (status_1 == 1) {
+                                openWindow("views/jhMemberActivityRecord.html", "jhMemberActivityRecord", {
+                                    name: _this.userInfo.name,
+                                    idNo: _this.userInfo.idNo
+                                });
+                            }
+                        }
+                    }, "/db4web");
+                },
+                openEvaluate: function () {
+                    var _this = this;
+                    var btns = [
+                        {
+                            title: "支部考评",
+                        },
+                        {
+                            title: "兼合支部考评"
+                        }
+                    ];
+                    plus.nativeUI.actionSheet({
+                        title: "考评分类",
+                        cancel: "取消",
+                        buttons: btns
+                    }, function (e) {
+                        if (0 === e.index)
+                            return;
+                        var t = btns[e.index - 1].title;
+                        if (t == "支部考评") {
+                            openWindow("views/memberEvaluate.html", "memberEvaluate", {
+                                idNo: _this.userInfo.idNo
+                            });
+                        }
+                        else {
+                            openWindow("views/jhMemberEvaluate.html", "jhMemberEvaluate", {
+                                idNo: _this.userInfo.idNo
+                            });
+                        }
+                    });
+                },
                 logout: function () {
                     openWindow("views/login.html", "logout");
                 },
@@ -659,6 +752,108 @@ var Index = (function () {
                         _this.score = prevScore + Math.ceil(parseInt(todayScore) / 60) + Math.ceil(parseInt(prevCourseScore) / 60);
                     }, 1000);
                 });
+            }
+        });
+    };
+    Index.prototype.startJhInterface = function () {
+        // 指向对象本身
+        var idxObj = this;
+        var vm = new Vue({
+            el: "#jh",
+            data: {
+                jhInfo: null,
+                activityCount: 0,
+                activityMemberCount: 0
+            },
+            computed: {
+                curOrgName: function () {
+                    return this.jhInfo ? this.jhInfo.username : "";
+                },
+                isBranch: function () {
+                    return _filter(function (i) {
+                        return i.name == '兼合式支部';
+                    }, this.jhInfo.roles).length;
+                }
+            },
+            methods: {
+                openDetail: function () {
+                    openWindow("views/jhOrgDetail.html", "jhOrgDetail", {
+                        orgId: this.jhInfo.id
+                    });
+                },
+                openActivityList: function () {
+                    openWindow("views/jhActivityList.html", "jhActivityList", {
+                        jhOrgNo: this.jhInfo.no
+                    });
+                },
+                openMembers: function () {
+                    openWindow("views/jhMemberManage.html", "jhMemberManage", {
+                        jhOrgNo: this.jhInfo.no
+                    });
+                },
+                openApprove: function () {
+                    openWindow("views/jhMemberApprove.html", "jhMemberApprove", {
+                        jhOrgNo: this.jhInfo.no
+                    });
+                },
+                openTree: function () {
+                    var canEdit = _filter(function (i) {
+                        return i.name == "社区";
+                    }, this.jhInfo.roles).length;
+                    openWindow("views/jhTree.html", "jhTree", {
+                        jhOrgNo: this.jhInfo.no,
+                        jhOrgName: this.jhInfo.username,
+                        canEdit: canEdit
+                    });
+                },
+                changePswd: function () {
+                    var pswd1, pswd2;
+                    var self = this;
+                    mui.confirm('<input type="password" id="changepswd" />', "输入新密码", ['确定', '取消'], function (e) {
+                        var _this = this;
+                        var pswd = _trim($("#changepswd").val());
+                        if (0 === e.index) {
+                            if ('' === pswd) {
+                                mui.toast("请输入密码");
+                                return false;
+                            }
+                            else {
+                                pswd1 = pswd;
+                                mui.confirm('<input type="password" id="changepswd" />', "再次输入密码", ['确定', '取消'], function (e) {
+                                    var pswd = _trim($("#changepswd").val());
+                                    if (0 === e.index) {
+                                        if ('' === pswd) {
+                                            mui.toast("请输入密码");
+                                            return false;
+                                        }
+                                        else {
+                                            pswd2 = pswd;
+                                            if (pswd1 != pswd2) {
+                                                mui.toast("密码不一致，请重填");
+                                                return false;
+                                            }
+                                            else {
+                                                _jhAjax({
+                                                    cmd: "exec",
+                                                    sql: "update jhOrg set pswd = ? where orgNo = ?",
+                                                    vals: _dump([pswd1, _this.jhInfo.no])
+                                                }, function (d) {
+                                                    mui.toast("修改" + (d.success ? "成功" : "失败"));
+                                                }, "/db4web");
+                                            }
+                                        }
+                                    }
+                                }, 'div');
+                            }
+                        }
+                    }, 'div');
+                }
+            },
+            mounted: function () {
+                var jhStr = _get("jhInfo");
+                console.log(jhStr);
+                if (!!jhStr)
+                    this.jhInfo = _load(jhStr);
             }
         });
     };
