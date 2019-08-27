@@ -3,7 +3,7 @@
     "id": "com.xinlan.zsdy",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "舟山共产党员E家",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "1.2.7",/*应用版本名称*/
+        "name": "1.2.9",/*应用版本名称*/
         "code": ""
     },
     "description": "",/*应用描述信息*/
@@ -17,9 +17,6 @@
         "url": ""/*开发者个人主页地址*/
     },
     "permissions": {
-        
-        
-        
         "Cache": {
             "description": "管理应用缓存"
         },
@@ -115,6 +112,8 @@
 				"idfa": false
             },
             "google": {
+            	"minSdkVersion": 22,
+            	"targetSdkVersion": 26,
                 "packagename": "",/*Android应用包名，如io.dcloud.HelloH5*/
                 "keystore": "",/*Android应用打包使用的密钥库文件*/
                 "password": "",/*Android应用打包使用密钥库中证书的密码*/
