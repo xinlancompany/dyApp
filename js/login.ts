@@ -123,7 +123,6 @@ class Login{
 				},
 				loginJh: function(n, p) {
 				    // 兼合支部登录
-				    console.log(n+","+p);
 				    _jhAjax({
 				        cmd: "zsgaLogin",
 				        user: n,

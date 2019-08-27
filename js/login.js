@@ -99,7 +99,6 @@ var Login = (function () {
                 loginJh: function (n, p) {
                     var _this = this;
                     // 兼合支部登录
-                    console.log(n + "," + p);
                     _jhAjax({
                         cmd: "zsgaLogin",
                         user: n,
