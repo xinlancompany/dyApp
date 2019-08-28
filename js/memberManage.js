@@ -155,8 +155,8 @@
             "and v.ifValid >= 4 where v.orgId = ? and v.starttime > '2019-01-01 00:00:00' " +
             "group by t1.id order by (easyScore+activityScore) desc "
         ].join(""));
-//      _callAjax({
-        _jhAjax({
+        _callAjax({
+//      _jhAjax({
             cmd: "fetch",
             // sql: "select id, name from user where orgNo = ?",
             /* 百分制与五星制在一起
@@ -192,25 +192,25 @@
 			// sql: "select u.id, u.name, u.ifValid, pinyin, py, ifnull(sum(t.score), 0) as score, ifnull(t.scoreType, '百分制') as scoreType from user u left join activityEnrollList t on u.id = t.userId and t.scoreType = '百分制' where u.orgNo = ? and u.ifValid >= 0 group by u.id, t.scoreType order by score desc",
             sql: [
             // 新版本 
-            "select t1.id, t1.name, t1.idNo, t1.pinyin, t1.py, t1.ifValid, t1.easyScore, t1.csGrade, ifnull(sum(a.score), 0) " +
-            "as activityScore from (select u.id, u.idNo, u.name, u.ifValid, pinyin, py, ifnull(sum(e.score), 0) " +
-            "as easyScore, ifnull(cs.grade, 0) as csGrade from user u " +
-            "left join classification cs on cs.userIdNo = u.idNo and cs.type = 1 " +
-            "left join easyScore e on e.logtime > '2019-01-01 00:00:00' and u.id = e.userId " +
-            "and e.ifValid = 2 where u.orgNo = ? and u.ifValid > 0 group by u.id) t1, activitys v " +
-            "left join activityEnroll a on t1.id = a.userId and a.scoreType = '百分制' and a.activityId = v.id " +
-            "and v.ifValid >= 4 where v.orgId = ? and v.starttime > '2019-01-01 00:00:00' " +
-            "group by t1.id order by (easyScore+activityScore) desc "
-
-            // 旧版本
-//          "select t1.id, t1.name, t1.idNo, t1.pinyin, t1.py, t1.ifValid, t1.easyScore, ifnull(sum(a.score), 0) " +
+//          "select t1.id, t1.name, t1.idNo, t1.pinyin, t1.py, t1.ifValid, t1.easyScore, t1.csGrade, ifnull(sum(a.score), 0) " +
 //          "as activityScore from (select u.id, u.idNo, u.name, u.ifValid, pinyin, py, ifnull(sum(e.score), 0) " +
-//          "as easyScore from user u " +
+//          "as easyScore, ifnull(cs.grade, 0) as csGrade from user u " +
+//          "left join classification cs on cs.userIdNo = u.idNo and cs.type = 1 " +
 //          "left join easyScore e on e.logtime > '2019-01-01 00:00:00' and u.id = e.userId " +
 //          "and e.ifValid = 2 where u.orgNo = ? and u.ifValid > 0 group by u.id) t1, activitys v " +
 //          "left join activityEnroll a on t1.id = a.userId and a.scoreType = '百分制' and a.activityId = v.id " +
 //          "and v.ifValid >= 4 where v.orgId = ? and v.starttime > '2019-01-01 00:00:00' " +
 //          "group by t1.id order by (easyScore+activityScore) desc "
+
+            // 旧版本
+            "select t1.id, t1.name, t1.idNo, t1.pinyin, t1.py, t1.ifValid, t1.easyScore, ifnull(sum(a.score), 0) " +
+            "as activityScore from (select u.id, u.idNo, u.name, u.ifValid, pinyin, py, ifnull(sum(e.score), 0) " +
+            "as easyScore from user u " +
+            "left join easyScore e on e.logtime > '2019-01-01 00:00:00' and u.id = e.userId " +
+            "and e.ifValid = 2 where u.orgNo = ? and u.ifValid > 0 group by u.id) t1, activitys v " +
+            "left join activityEnroll a on t1.id = a.userId and a.scoreType = '百分制' and a.activityId = v.id " +
+            "and v.ifValid >= 4 where v.orgId = ? and v.starttime > '2019-01-01 00:00:00' " +
+            "group by t1.id order by (easyScore+activityScore) desc "
             ].join(""),
             vals: _dump([wb.orgNo, wb.orgId])
         }, function(d) {
