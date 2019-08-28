@@ -98,7 +98,7 @@
             		var self = this;
 				_callAjax({
 					cmd: "fetch",
-					sql: "select id, name from groups where orgNo = ?",
+					sql: "select id, name from groups where orgNo = ? and ifValid = 1",
 					vals: _dump([userInfo.no,])
 				}, function(d) {
 					if (d.success && d.data) {

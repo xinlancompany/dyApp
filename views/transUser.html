@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/vue.min.js"></script>
+		<script src="../lib/mui.min.js"></script>
+		<link href="../lib/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/iconfont.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">组织转接</h1>
+		</header>
+		
+		<div id="transUser" class="article-upload have-header have-footer">
+			<form class="mui-input-group">
+			    <div class="mui-input-row mui-input-textarea" @click="selectOrg">
+			        <label>转入支部</label>
+                    <textarea v-text="outOrgName" disabled :rows="3"></textarea>
+			    </div>
+			    <div class="mui-input-row mui-input-textarea" @click="selectUsers">
+			        <label>转出人员</label>
+                    <textarea v-text="userNames" disabled :rows="10"></textarea>
+			    </div>
+			</form>		
+		 	<footer @click="confirmTrans" class="block-button">转出</footer>
+		</div>
+	</body>
+</html>
+<script src="../lib/utils.js"></script>
+<script src="../lib/a_ref.js"></script>
+<script src="../js/transUser.js"></script>

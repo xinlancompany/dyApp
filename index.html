@@ -32,13 +32,12 @@
 			<a class="go-activity" :class="{active: 'jh' === tag}" data-page="jh" v-show="isJh" @click="switchTo('兼合支部', 'jh')">
 				<i class="iconfont icon-0045"></i> 兼合支部
 			</a>
-			<a class="go-study" :class="{active: 'study' === tag}" data-page="study" v-show="isPersonal" @click="switchTo('学习平台', 'study')">
-				<i class="iconfont icon-xuexi"></i> 学习平台
+			<a class="go-study" :class="{active: 'study' === tag}" data-page="study" v-show="isPersonal" @click="switchTo('学习平台', 'study')"> <i class="iconfont icon-xuexi"></i> 学习平台
 			</a>
 			<a class="go-ucenter" :class="{active: 'ucenter' === tag}" data-page="ucenter" v-show="isPersonal" @click="switchTo('个人中心', 'ucenter')">
 				<i class="iconfont icon-gerenzhongxinxia"></i> 个人中心
 			</a>
-			<a class="go-ucenter" :class="{active: 'service' === tag}" data-page="service" v-show="isPersonal" @click="openOutlink('http://develop.wifizs.cn/dist/channel/gov/dyservice/views/index.html', '便民服务')">
+			<a class="go-ucenter" :class="{active: 'service' === tag}" data-page="service" v-show="isPersonal && ifShowBianmin" @click="openOutlink('http://develop.wifizs.cn/dist/channel/gov/dyservice/views/index.html', '便民服务')">
 				<i class="iconfont icon-partyflag"></i> 便民服务
 			</a>
 		</footer>

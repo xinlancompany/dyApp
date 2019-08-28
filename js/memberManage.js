@@ -56,6 +56,9 @@
 							{
 								title: "删除党员"
 							},
+							{
+							    title: "转出党员"
+							}
 						];
 					plus.nativeUI.actionSheet({
 						title: "党员增减操作",
@@ -66,10 +69,43 @@
 						var btnTitle = buttons[e.index-1].title;
 						if (btnTitle == "新增党员") {
 							self.newUser();
-						} else {
+						} else if (btnTitle == "删除党员") {
 							openWindow("delUsers.html", "delUsers");
+						} else {
+							openWindow("transUser.html", "transUser", {
+							    orgNo: userInfo.no,
+							    orgName: userInfo.name,
+							});
 						}
 					});
+               },
+               openJh: function(i) {
+				    let btns = [
+				        {
+				            title: "兼合支部活动",
+				        },
+				        {
+				            title: "兼合支部考评"
+				        }
+				    ];
+					plus.nativeUI.actionSheet({
+						title: "兼合支部",
+						cancel: "取消",
+						buttons: btns
+					}, (e) => {
+						if (0 === e.index) return;
+						let t = btns[e.index-1].title;
+						if (t == "兼合支部考评") {
+						    openWindow("jhMemberEvaluate.html", "jhMemberEvaluate", {
+						        idNo: i.idNo
+						    });
+						} else {
+                            openWindow("jhMemberActivityRecord.html", "jhMemberActivityRecord", {
+                                name: i.name,
+                                idNo: i.idNo
+                            });
+						}
+                    });
                },
                 openMember: function(i) {
                     if (isAdmin) {

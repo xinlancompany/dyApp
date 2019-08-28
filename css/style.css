@@ -2235,8 +2235,15 @@ body {
   -moz-border-radius: 5px;
   border-radius: 5px;
   margin-left: 5px;
-  font-size: 12px;
+  font-size: 14px;
   padding: 2px 5px;
+}
+#jhMemberApprove li span i.iconfont,
+#jhMemberAdd li span i.iconfont,
+#jhMemberManage li span i.iconfont,
+#memberManage li span i.iconfont,
+#memberRanks li span i.iconfont {
+  font-size: 10px;
 }
 .record-upload-imgs {
   padding: 0 10px;

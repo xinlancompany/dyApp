@@ -277,6 +277,7 @@ class Index {
 				isPersonal: false,
 				isJh: false,
 				tag: "index",
+				ifShowBianmin: false,
 			},
 			watch: {
 				tag: function(i) {
@@ -298,6 +299,7 @@ class Index {
 				},
 				updateState: function() {
 					if (idxObj.userInfo) {
+					    if (idxObj.userInfo.phone != "13857207697") this.ifShowBianmin = true;
 						this.isPersonal = true;
 						this.isOrganization = false;
 						this.isJh = false;

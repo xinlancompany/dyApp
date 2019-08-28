@@ -26,7 +26,7 @@
 				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="18" :placeholder="nameTag" v-model="name"/>
 			</div>
 			<div class="input-frame">
-				<i class="iconfont icon-mima"></i><input type="password" maxlength="12" placeholder="请输入您的密码" v-model="pswd"/>
+				<i class="iconfont icon-mima"></i><input type="password" maxlength="18" placeholder="请输入您的密码" v-model="pswd"/>
 			</div>
 			<div class="input-frame" @click="chooseYear" >
 				<i class="iconfont icon-more"></i><input type="text" v-model="year" disabled/>
@@ -36,14 +36,14 @@
 					<label style="font-size:14px;padding-left:45px">个人</label>
 					<input name="userType" type="radio" checked @change="loginType = 'personal'" style="left:5px;">
 				</div>
-				<div class="mui-input-row mui-radio mui-left" style="margin-left:30px;">
+				<div class="mui-input-row mui-radio mui-left" style="margin-left:10px;">
 					<label style="font-size:14px;padding-left:45px">组织</label>
 					<input name="userType" type="radio" @change="loginType = 'organization'" style="left:5px;">
 				</div>
-				<div class="mui-input-row mui-radio mui-left" v-show="0">
+				<!--<div class="mui-input-row mui-radio mui-left" >
 					<label style="font-size:14px;padding-left:45px">兼合</label>
 					<input name="userType" type="radio" @change="loginType = 'jh'" style="left:5px;">
-				</div>
+				</div>-->
 			</div>
 			<div class="login-btns" @click="login">
 				<span>登录</span>

@@ -24,7 +24,53 @@
 						this.addUser(i, idx);
 					} else if(i.ifValid == 2) {
 						this.delUser(i, idx);
+					} else {
+					    // 没有ifValid，是转入党员
+					    this.transUser(i, idx);
 					}
+				},
+				transUser: function(i, idx){
+					var self = this,
+						buttons = [
+							{
+								title: "通过",
+								callback: () => {
+								    _callAjax({
+								        cmd: "userTransApprove",
+								        id: i.id,
+								        userId: i.userId
+								    }, d => {
+								        mui.toast("批准"+(d.success ? "成功" : "失败"));
+								        if (d.success) {
+								            this.usersToBeOperated.splice(idx, 1);
+								        }
+								    });
+								}
+							},
+							{
+								title: "退回",
+								callback: () => {
+								    _callAjax({
+								        cmd: "userTransReject",
+								        id: i.id,
+								        userId: i.userId
+								    }, d => {
+								        mui.toast("退回"+(d.success ? "成功" : "失败"));
+								        if (d.success) {
+								            this.usersToBeOperated.splice(idx, 1);
+								        }
+								    });
+								}
+							},
+						];
+					plus.nativeUI.actionSheet({
+						title: "转入党员审批操作",
+						cancel: "取消",
+						buttons: buttons
+					}, function(e) {
+						if (e.index == 0) return;
+						buttons[e.index-1].callback();
+                    });
 				},
 				delUser: function(i, idx) {
 					var self = this,
@@ -314,6 +360,21 @@
 							});
 						}
 					});
+
+                    // 转入请求 
+                    _callAjax({
+                        cmd: "fetch",
+                        sql: "select id, name, srcOrgName, userId from userTrans where destOrgNo = ? and status = 0",
+                        vals: _dump([self.userInfo.no])
+                    }, d => {
+                        if (d.success && d.data) {
+							d.data.forEach(function(i) {
+								i.vText = "转入"+i.name+"的请求";
+								i.orgName = i.srcOrgName;
+								self.usersToBeOperated.push(i);
+							});
+                        }
+                    });
                 },
                 getAppraises: function() {
 					var self = this;
