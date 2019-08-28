@@ -2,6 +2,10 @@
 var Index = (function () {
     function Index() {
         var _this = this;
+        // 防止返回
+        mui.init({
+            swiperBack: false
+        });
         this.updateInfo();
         // 打开参数页面
         this.openArgs();
@@ -207,11 +211,10 @@ var Index = (function () {
         // 设置右上角登陆或退出
         $(".logout").text(!this.userInfo && !this.orgInfo && !this.jhInfo ? "登录" : " 退出");
         // 登录后才能注销login页面
-        if (userStr || orgStr || jhStr) {
-            var loginObj = plus.webview.getWebviewById("login");
-            if (loginObj)
-                _delayClose(loginObj);
-        }
+        //      if (userStr || orgStr || jhStr) {
+        //          var loginObj = plus.webview.getWebviewById("login");
+        //          if (loginObj) _delayClose(loginObj);
+        //      }
     };
     Index.prototype.start = function () {
         var _this = this;

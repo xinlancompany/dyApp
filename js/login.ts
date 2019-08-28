@@ -99,6 +99,7 @@ class Login{
 				openIndex: function() {
 					// 打开index.html
 					openWindow("../index.html", "index");
+                    _delayClose(plus.webview.currentWebview());
 					mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
 				},
 				chooseYear: function() {
