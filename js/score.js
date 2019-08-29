@@ -366,6 +366,7 @@
 
         var wb = plus.webview.currentWebview();
         vm.activeTab = wb.tab;
+        $(".mui-title").text(vm.activeTab?"平台学时":"党员先锋指数");
     };
 
     if(window.plus) {

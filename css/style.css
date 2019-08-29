@@ -1372,7 +1372,6 @@ body {
 }
 .score .content {
   padding: 60px 0;
-  top: 40px;
   background-color: #ff9e0d;
   background-image: url(../img/trophy.png);
   background-repeat: no-repeat;
@@ -1443,7 +1442,6 @@ body {
   align-items: baseline;
   background-color: #fff;
   padding: 15px;
-  margin-top: 40px;
   border-bottom: 1px solid #e7e7e7;
 }
 .score .time-score_header h3 {
