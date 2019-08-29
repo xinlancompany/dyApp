@@ -71,7 +71,8 @@ class Index {
 		// 获取系统最新版本
 		_callAjax({
 			cmd: "fetch",
-			sql: "select version, downloadUrl from system order by id desc limit 1"
+			sql: "select version, downloadUrl from system where os = ? order by id desc limit 1",
+			vals: _dump([plus.os.name.toLowerCase(),])
 		}, (d) => {
 			if (d.success && d.data) {
 				this.systemVersion = d.data[0].version;
