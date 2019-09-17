@@ -240,7 +240,10 @@
 				"priority": 0
 			},
 			"boot.html": {
-				"resources": [],
+				"resources": [
+					"js/boot.js",
+					"css/style.css"
+				],
 				"refer": [
 					"index.html",
 					"views/login.html"
@@ -455,7 +458,6 @@
 				"lib/swiper.min.js",
 				"js/activityList.js",
 				"js/login.js",
-				"css/style.css",
 				"js/internetCourseList.js",
 				"js/internetCourseware.js",
 				"fonts/iconfont.eot",

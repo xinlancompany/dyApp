@@ -36,19 +36,19 @@
                                 <span v-text="i.tag" @click.stop="openMember(i)"></span>
                                 <span @click.stop="updateGrade(i)">
                                     <!--旧版本-->
-                                    <i class="iconfont" :class="{'icon-star': i.score>=20, 'icon-starhalfempty': i.score<20 && i.score>=10, 'icon-staro': i.score<10}"></i>
+                                    <!--<i class="iconfont" :class="{'icon-star': i.score>=20, 'icon-starhalfempty': i.score<20 && i.score>=10, 'icon-staro': i.score<10}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.score>=40, 'icon-starhalfempty': i.score<40 && i.score>=30, 'icon-staro': i.score<30}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.score>=60, 'icon-starhalfempty': i.score<60 && i.score>=50, 'icon-staro': i.score<50}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.score>=80, 'icon-starhalfempty': i.score<80 && i.score>=70, 'icon-staro': i.score<70}"></i>
-                                    <i class="iconfont" :class="{'icon-star': i.score>=100, 'icon-starhalfempty': i.score<100 && i.score>=90, 'icon-staro': i.score<90}"></i>
+                                    <i class="iconfont" :class="{'icon-star': i.score>=100, 'icon-starhalfempty': i.score<100 && i.score>=90, 'icon-staro': i.score<90}"></i>-->
                                     <!--新版本-->
-                                    <!--<i class="iconfont" :class="{'icon-star': i.csGrade>=1, 'icon-staro': i.csGrade<1}"></i>
+                                    <i class="iconfont" :class="{'icon-star': i.csGrade>=1, 'icon-staro': i.csGrade<1}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.csGrade>=2, 'icon-staro': i.csGrade<2}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.csGrade>=3, 'icon-staro': i.csGrade<3}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.csGrade>=4, 'icon-staro': i.csGrade<4}"></i>
-                                    <i class="iconfont" :class="{'icon-star': i.csGrade>=5, 'icon-staro': i.csGrade<5}"></i>-->
+                                    <i class="iconfont" :class="{'icon-star': i.csGrade>=5, 'icon-staro': i.csGrade<5}"></i>
                                 </span>
-                                <!--<span style="background: #4cd964" @click="openJh(i)">兼合</span>-->
+                                <span style="background: #4cd964" @click="openJh(i)">兼合</span>
 	                        </div>
 	                    </div>
                   	</a>

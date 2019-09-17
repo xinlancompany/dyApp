@@ -4,7 +4,10 @@
 			"index.html",
 			"views/login.html"
 		],
-		"resources": []
+		"resources": [
+			"js/boot.js",
+			"css/style.css"
+		]
 	},
 	"index.html": {
 		"refer": [
