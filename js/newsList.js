@@ -55,7 +55,11 @@ function plusReady() {
                     vals =  _dump([lid, ndate, ndate, f]);
 
                 if (!!orgNo) {
-                    sql = "select id, title, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and reporter = ? order by newsdate desc, id desc limit 10";
+                    if (lid == 141) {
+                        sql = "select id, title, url, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and reporter in (?, '033000000018') order by newsdate desc, id desc limit 10";
+                    } else {
+                        sql = "select id, title, url, img, content, linkerId, reporter, readcnt, newsdate, subtitle from articles where ifValid = 1 and linkerId = ? and (newsdate < ? or (newsdate = ? and id < ?)) and reporter = ? order by newsdate desc, id desc limit 10";
+                    }
                     vals =  _dump([lid, ndate, ndate, f, orgNo]);
                 }
 	
@@ -72,6 +76,9 @@ function plusReady() {
 							}
 							self.newsList.push(r);
 						});
+						_tell("---------------------");
+						_tell(self.newsList);
+						_tell("---------------------");
 					} else {
 						self.bHaveMore = false;
 						if(f != 10e5) {

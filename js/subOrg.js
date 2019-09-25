@@ -175,15 +175,20 @@
                     multi: _dump([
                         {
                             key: "activity",
-                            sql: "select count(*) as cnt from activitys where linkerId in (select id from linkers where orgId ="+parseInt(wb.orgNo)+")"
+                            // sql: "select count(*) as cnt from activitys where linkerId in "
+                            // + "(select id from linkers where orgId ="+parseInt(wb.orgNo)+")"
+                            sql: "select count(*) as cnt from activitys where orgId in " +
+                                "(select id from organization where no = '"+wb.orgNo+"') and ifValid > 0"
                         },
                         {
                             key: "member",
-                            sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where linkerId in (select id from linkers where orgNo = "+wb.orgNo+"))"
+                            // sql: "select count(*) cnt from activityEnroll where activityId in (select id from activitys where linkerId in (select id from linkers where orgNo = "+wb.orgNo+"))"
+                            sql: "select count(*) cnt from activityEnroll where activityId in " +
+                                "(select id from activitys where orgId in (select id from organization where no = '" +
+                                wb.orgNo+"') and ifValid > 0)"
                         }
                     ])
                 }, function(d) {
-                    // alert(_dump(d));
                     self.summary.activity = d.data.activity[0].cnt;
                     self.summary.member = d.data.member[0].cnt;
                 });
