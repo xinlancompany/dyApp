@@ -93,9 +93,9 @@ function plusReady() {
 					fi = i.id;
 					fn = i.newsdate;
 				}
-				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10";
+				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc";
 				if (this.curId > 0) {
-                    sql = "select id, title, url, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10"
+                    sql = "select id, title, url, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc"
 				}
 //				_tell(sql);
 //				_tell(fi+","+fn);
@@ -104,7 +104,7 @@ function plusReady() {
 					sql: sql,
 //					vals: _dump([linkerId.HandCourse, fn, fn, fi])
 				}, function(d) {
-//				    _tell(d);
+				    _tell(d);
 					if (d.success && d.data) {
 						self.courses[t].bHaveMore = d.data.length == 10;
 						d.data.forEach(function(i) {
@@ -151,7 +151,7 @@ function plusReady() {
 			}, function(d) {
 				if (d.success && d.data) {
 //					self.categories = d.data;
-					d.data.forEach(function(i) {
+       				d.data.forEach(function(i) {
 						self.categories.push(i);
 //						self.courses["c_"+i.id] = {
 //							news: [],
