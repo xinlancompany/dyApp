@@ -42,9 +42,9 @@ function plusReady() {
 				}
 				if (evt.keyCode != 13) return;
 				if (!sw) mui.toast("请输入搜索标题");
-				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and title like '%"+sw+"%' and ifValid = 1"
+				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and title like '%"+sw+"%' and ifValid = 1 limit 100"
 				if (this.curId > 0) {
-					sql: "select id, title, url, newsdate, img from courses where linkerId = "+self.curId+" and title like '%"+sw+"%' and ifValid = 1"
+					sql: "select id, title, url, newsdate, img from courses where linkerId = "+self.curId+" and title like '%"+sw+"%' and ifValid = 1 limit 100"
 				}
 				_callAjax({
 					cmd: "fetch",

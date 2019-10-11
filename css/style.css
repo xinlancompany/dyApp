@@ -2829,10 +2829,6 @@ body {
   font-size: 16px;
   margin-bottom: 10px;
 }
-.serial-video .serials ul {
-  white-space: nowrap;
-  overflow-x: scroll;
-}
 .serial-video .serials ul li {
   display: inline-block;
   width: 50px;
@@ -2843,6 +2839,7 @@ body {
   font-size: 14px;
   color: #333;
   margin-right: 5px;
+  margin-bottom: 5px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
