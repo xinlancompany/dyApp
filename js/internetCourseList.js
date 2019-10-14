@@ -83,6 +83,7 @@ function plusReady() {
 			},
 			//获取课件列表
 			getInternetList: function(){
+			    console.log("rth");
 				var self = this,
 					fi = 10e6,
 					fn = "3000-12-31 23:59:59",

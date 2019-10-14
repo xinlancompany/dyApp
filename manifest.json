@@ -235,7 +235,9 @@
 					"views/courseDetail.html",
 					"views/courseList.html",
 					"views/newRule.html",
-					"views/barcode.html"
+					"views/barcode.html",
+					"views/jhActivityList.html",
+					"views/jhOrgDetail.html"
 				],
 				"priority": 0
 			},
@@ -419,6 +421,28 @@
 				"refer": [
 					"views/activeDetail.html",
 					"views/scoreRule.html"
+				],
+				"priority": 0
+			},
+			"views/jhActivityList.html": {
+				"resources": [],
+				"refer": [
+					"views/jhActivityUpload.html",
+					"views/jhActivityDetail.html"
+				],
+				"priority": 0
+			},
+			"views/jhActivityUpload.html": {
+				"resources": [],
+				"refer": [
+					"views/jhSelectUsers.html"
+				],
+				"priority": 0
+			},
+			"views/jhActivityDetail.html": {
+				"resources": [],
+				"refer": [
+					"views/jhActivityUpload.html"
 				],
 				"priority": 0
 			}

@@ -108,7 +108,7 @@ function plusReady() {
                         // 不做什么
                     });
                 }, function() {}, {
-                		"minDate": _nDaysBefore(20)
+//              		"minDate": _nDaysBefore(20)
                 });
             },
             chooseEndtime: function(e) {
@@ -124,7 +124,7 @@ function plusReady() {
                 }, function() {}, {
 //              		"minDate": _oneMonthAgoDateObj()
 					// 提交只能是当前时间的前20天内的活动
-                		"minDate": _nDaysBefore(20)
+//              		"minDate": _nDaysBefore(20)
                 });
             },
             chooseParticipants: function() {
@@ -135,7 +135,6 @@ function plusReady() {
             },
             newActivity: function() {
                 if (this.ifSubmit) return;
-                this.ifSubmit = true;
 
                 // 编辑
                 if (this.isEdit) return this.editActivity();
@@ -159,6 +158,7 @@ function plusReady() {
 
                 if (!this.records[0].img) return mui.toast("请上传会场全景图");
                 
+                this.ifSubmit = true;
                 // 新建
                 _jhAjax({
                     cmd: "insertJHActInfo",
@@ -256,6 +256,7 @@ function plusReady() {
                 if (!content) return mui.toast("请填写内容");
 
                 if (!this.records[0].img) return mui.toast("请上传会场全景图");
+                this.ifSubmit = true;
 
                 _jhAjax({
                     cmd: "updateJHActInfo",

@@ -11,7 +11,8 @@
                 topOrgs: "舟山市",
                 orgs: [],
                 searchWord: "",
-                examines: []
+                examines: [],
+                canNext: true,
             },
             computed: {
                 filterOrgs: function() {
@@ -33,6 +34,8 @@
                     });
                 },
                 openNext: function(i) {
+                    if (!this.canNext) return;
+                    this.canNext = false;
                     var self = this;
                     getOrgs(i.no, function(d) {
                         if (!d.success || !d.data || !d.data.length) {
@@ -40,14 +43,20 @@
                                 mui.confirm("是否加入该支部？", "兼合支部", ["确定", "取消"], function(e) {
                                     if (e.index == 0) {
                                         _jhAjax({
-                                            cmd: "exec",
-                                            sql: "insert into jhMember(idNo,jhOrgNo,status,reason) values(?,?,?,?)",
-                                            vals: _dump([userInfo.idNo, i.no, 2, "兼合支部添加"])
+//                                          cmd: "exec",
+//                                          sql: "insert into jhMember(idNo,jhOrgNo,status,reason) values(?,?,?,?)",
+//                                          vals: _dump([userInfo.idNo, i.no, 2, "兼合支部添加"])
+                                            cmd: "applyJHPartyMember",
+                                            idNo: userInfo.idNo,
+                                            jhOrgNo: i.no
                                         }, d => {
-                                           if (d.success) {
-                                               mui.toast("申请提交成功");
-                                               mui.back();
-                                           }
+                                            mui.toast(d.errmsg);
+                                            if (d.success) {
+                                                setTimeout(() => {
+                                                    mui.back();
+                                                }, 1500);
+                                            }
+                                            self.canNext = true;
                                         }, "/db4web")
                                     }
                                 });
@@ -55,6 +64,7 @@
 //                          return mui.toast("该组织无下属分支");
                         } else {
                             self.orgs = d.data;
+                            self.canNext = true;
                         }
                     });
                 },

@@ -38,7 +38,9 @@
 			"views/courseDetail.html",
 			"views/courseList.html",
 			"views/newRule.html",
-			"views/barcode.html"
+			"views/barcode.html",
+			"views/jhActivityList.html",
+			"views/jhOrgDetail.html"
 		],
 		"resources": [
 			"img/organization.jpg",
@@ -184,6 +186,22 @@
 		"refer": [
 			"views/activeDetail.html",
 			"views/scoreRule.html"
+		]
+	},
+	"views/jhActivityList.html": {
+		"refer": [
+			"views/jhActivityUpload.html",
+			"views/jhActivityDetail.html"
+		]
+	},
+	"views/jhActivityUpload.html": {
+		"refer": [
+			"views/jhSelectUsers.html"
+		]
+	},
+	"views/jhActivityDetail.html": {
+		"refer": [
+			"views/jhActivityUpload.html"
 		]
 	}
 }
