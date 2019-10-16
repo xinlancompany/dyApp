@@ -141,7 +141,7 @@ var Login = (function () {
                     if (this.loginType == "jh")
                         return this.loginJh(name, pswd);
                     // 个人登陆
-                    var sql = "select u.id,u.name,u.img,u.idNo,u.phone,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (idno = ? or phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1", vals = _dump([name, name, pswd]);
+                    var sql = "select u.id,u.name,u.img,u.idNo,u.phone,u.orgName,u.orgNo,u.pswd,o.id as orgId from User u, organization o where (u.idno = ? or u.phone = ?) and u.pswd= ? and u.orgNo = o.no and u.ifValid >= 1", vals = _dump([name, name, pswd]);
                     // 组织登陆
                     if ("organization" === this.loginType) {
                         sql = "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ? and ifValid >= 1";
