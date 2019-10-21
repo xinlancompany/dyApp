@@ -26,9 +26,9 @@
 				<button type="button" class="mui-btn mui-btn-danger" @click="search">搜索</button>
 			</form>
 			<ul class="mui-table-view" v-cloak>
-				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
+				<li class="mui-table-view-cell mui-left" v-for="i,idx in members" @click="openMember(i)">
 					<a class="mui-navigate-right">
-					    {{i.name}}
+					    {{i.name+(i.ifRead?"(已读)":"")}}
 					    <span @click.stop="addMember(i)">添加</span>
 					</a>
                 </li>

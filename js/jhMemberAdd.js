@@ -32,13 +32,18 @@
                         _tell(d);
                         mui.toast(d.errmsg);
                         if (d.success && d.data && d.data.list.length) {
-                            this.members = d.data.list;
+                            this.members = [];
+                            d.data.list.forEach(i => {
+                                i.ifRead = false;
+                                this.members.push(i);
+                            });
                         }
                     });
                 },
                 openMember: function(i) {
+                    i.ifRead = true;
                     openWindow("jhMemberDetail.html", "jhMemberDetail", {
-                        info: i
+                        info: i,
                     });
                 },
                 addMember: function(i) {
@@ -52,11 +57,17 @@
                            }, d => {
                                mui.toast(d.errmsg);
                                if (d.success) {
-                                   mui.toast("添加成功");
+                                   mui.confirm("添加成功,是否继续添加？", "提示", ["确定", "取消"], function(e) {
+                                       if (1 == e.index) {
+                                           setTimeout(() => {
+                                               mui.back()
+                                           }, 500);
+                                       } else {
+                                            this.members = [];
+                                            this.searchWord = "";
+                                       }
+                                   });
                                    mui.fire(plus.webview.getWebviewById('jhMemberManage'), 'updateUsers');
-                                   setTimeout(() => {
-                                       mui.back()
-                                   }, 500);
                                }
                            });
                        }

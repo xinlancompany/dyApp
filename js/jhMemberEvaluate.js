@@ -16,6 +16,7 @@ function plusReady() {
             imgStyle: {
                 backgroundImage: ""
             },
+            isNewEvaluate: false,
         },
         computed: {
             gradeName: function() {
@@ -60,7 +61,7 @@ function plusReady() {
                 if (!this.grade) return mui.toast("请选择等级");
                 
                 _jhAjax({
-                    cmd: "updateClassificationByIDNo",
+                    cmd: (this.isNewEvaluate?"insert":"update")+"ClassificationByIDNo",
                     type: 2,
                     year: _now().split("-")[0],
                     grade: this.grade,
@@ -96,6 +97,9 @@ function plusReady() {
                     this.grade = d.data[0].grade;
                     this.evaluation = d.data[0].evaluation;
                     this.isEdit = 1;
+                    this.isNewEvaluate = false;
+                } else {
+                    this.isNewEvaluate = true;
                 }
             }, "/db4web");
         }

@@ -2,7 +2,7 @@ function plusReady() {
 	var vm = new Vue({
 		el: '#jhMemberDetail',
 		data: {
-		    info: null
+		    info: null,
 		},
 		mounted: function() {
             var wb = plus.webview.currentWebview();
