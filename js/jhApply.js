@@ -57,7 +57,7 @@
                                                 }, 1500);
                                             }
                                             self.canNext = true;
-                                        }, "/db4web")
+                                        })
                                     }
                                 });
                             }
