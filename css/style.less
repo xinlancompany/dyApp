@@ -2624,3 +2624,49 @@ body {
         } 
     }
 }
+
+#msgBoard {
+    .msg {
+        display: flex;
+        padding: 15px;
+        background-color: #fff;
+        .avatar {
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+        }
+        .msg-info {
+            flex: 1;
+            margin-left: 10px;
+            border-bottom: 1px solid #f7f7f7;
+            h3 {
+                font-size: 16px;
+                margin: 0;
+            }
+            article {
+                font-size: 14px;
+                line-height: 1.5;
+                margin-top: 10px;
+            }
+            p {
+                font-size: 12px;
+                color: #999;
+                font-weight: 200;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+#msgBoardPublish {
+    margin: 20rpx;
+    background-color: #fff;
+    textarea {
+        width: 100%;
+        height: auto;
+        border: none;
+    }
+}

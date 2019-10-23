@@ -665,6 +665,9 @@ var Index = (function () {
                 openApplication: function () {
                     openWindow("views/application.html", "application");
                 },
+                openMsgBoard: function () {
+                    openWindow("views/msgBoard.html", "msgBoard");
+                },
                 openJh: function () {
                     var _this = this;
                     // 打开兼合支部

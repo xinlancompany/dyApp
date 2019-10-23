@@ -3,8 +3,8 @@
     "id": "com.xinlan.zsdy",/*应用的标识，创建应用时自动生成，勿手动修改*/
     "name": "舟山共产党员E家",/*应用名称，程序桌面图标名称*/
     "version": {
-        "name": "1.3.0",/*应用版本名称*/
-        "code": "230"
+        "name": "1.4.2",/*应用版本名称*/
+        "code": "242"
     },
     "description": "",/*应用描述信息*/
     "icons": {
@@ -237,7 +237,10 @@
 					"views/newRule.html",
 					"views/barcode.html",
 					"views/jhActivityList.html",
-					"views/jhOrgDetail.html"
+					"views/jhOrgDetail.html",
+					"views/memberEvaluate.html",
+					"views/jhApply.html",
+					"views/msgBoard.html"
 				],
 				"priority": 0
 			},
@@ -443,6 +446,20 @@
 				"resources": [],
 				"refer": [
 					"views/jhActivityUpload.html"
+				],
+				"priority": 0
+			},
+			"views/jhApply.html": {
+				"resources": [],
+				"refer": [
+					"views/jhApply.html"
+				],
+				"priority": 0
+			},
+			"views/msgBoard.html": {
+				"resources": [],
+				"refer": [
+					"views/msgBoardPublish.html"
 				],
 				"priority": 0
 			}
