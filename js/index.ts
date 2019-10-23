@@ -868,6 +868,9 @@ class Index {
 			    }
 			},
 			methods: {
+				openMsgBoard: function() {
+					openWindow("views/msgBoard.html", "msgBoard");
+				},
 			    openDetail: function() {
                     openWindow("views/jhOrgDetail.html", "jhOrgDetail", {
                         orgId: this.jhInfo.id

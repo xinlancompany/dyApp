@@ -111,6 +111,7 @@
 				<li @click="openMembers" v-if="isBranch"><i class="iconfont icon-Id"></i>党员管理</li>
 				<li @click="openApprove" v-if="isBranch"><i class="iconfont icon-user-approval"></i>成员审批</li>
 				<li @click="openTree" v-if="!isBranch"><i class="iconfont icon-jifen"></i>组织层级</li>
+				<li @click="openMsgBoard" v-if="isBranch"><i class="iconfont icon-pengyouquan"></i>留言板</li>
 				<li @click="changePswd"><i class="iconfont icon-key"></i>修改密码</li>
 				<li v-if="isBranch"></li>
 			</ul>

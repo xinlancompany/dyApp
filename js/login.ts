@@ -205,6 +205,10 @@ class Login{
 				},
 				forgetPswd: function() {
 					openWindow("forget.html", "forget");
+				},
+				openGuide: function() {
+				    //
+				    openOutlink("http://develop.zsgd.com/static/jhszb/舟山共产党员E家App使用说明.docx", "使用指南");
 				}
 			},
 			mounted: function() {

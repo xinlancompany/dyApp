@@ -9,7 +9,8 @@ function plusReady() {
 		el: '#msgBoardPublish',
 		data: {
 		    msg: "",
-		    userInfo: _load(_get("userInfo", true)),
+		    // userInfo: _load(_get("userInfo", true)),
+		    userInfo: null,
 			meta: [
                 "singleLine13115531", // name
                 "singleLine56606488", // idno 
@@ -53,7 +54,18 @@ function plusReady() {
             }
 		},
 		created: function() {
-		    // alert(_get("userInfo"), true);
+		    let userInfoStr = _get("userInfo");
+		    if (!!userInfoStr) {
+		        this.userInfo = _load(userInfoStr)
+		    } else {
+		        this.userInfo = _load(_get("jhInfo"));
+		        this.userInfo.name= this.userInfo.username;
+		        this.userInfo.idNo = this.userInfo.no;
+		        this.userInfo.orgName = this.userInfo.username;
+		        this.userInfo.orgNo = this.userInfo.no;
+		        this.userInfo.img = "";
+		    }
+            _tell(this.userInfo);
 		}
 	});
 	
