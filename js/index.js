@@ -638,6 +638,23 @@ var Index = (function () {
                 isAndroid: "Android" === plus.os.name,
                 isNew: idxObj.isNewestVersion,
                 score: 0,
+                jhStatus: -1,
+            },
+            computed: {
+                jhStatusText: function () {
+                    if (this.jhStatus == -1) {
+                        return "申请加入兼合支部";
+                    }
+                    else if (this.jhStatus == 4) {
+                        return "退出兼合支部申审核中";
+                    }
+                    else if (this.jhStatus == 2) {
+                        return "加入兼合支部申审核中";
+                    }
+                    else if (this.jhStatus == 1) {
+                        return "进入兼合支部";
+                    }
+                }
             },
             methods: {
                 checkPoints: function () {
@@ -665,15 +682,12 @@ var Index = (function () {
                 openApplication: function () {
                     openWindow("views/application.html", "application");
                 },
-                openMsgBoard: function () {
-                    openWindow("views/msgBoard.html", "msgBoard");
-                },
                 openJh: function () {
                     var _this = this;
                     // 打开兼合支部
                     _jhAjax({
                         cmd: "fetch",
-                        sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ?",
+                        sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ? and status != 3",
                         vals: _dump([this.userInfo.idNo,])
                     }, function (d) {
                         if (!d.data || !d.data.length) {
@@ -691,6 +705,9 @@ var Index = (function () {
                                         openWindow("views/jhApply.html", "jhApply");
                                     }
                                 });
+                            }
+                            else if (status_1 == 4) {
+                                mui.toast("退出兼合支部申请审核中");
                             }
                             else if (status_1 == 2) {
                                 mui.toast("加入兼合支部申请审核中");
@@ -745,6 +762,9 @@ var Index = (function () {
                 checkNewVersion: function () {
                     idxObj.updateAndroid();
                 },
+                openMsgBoard: function () {
+                    openWindow("views/msgBoard.html", "msgBoard");
+                }
             },
             mounted: function () {
                 var _this = this;
@@ -762,6 +782,20 @@ var Index = (function () {
                         _this.score = prevScore + Math.ceil(parseInt(todayScore) / 60) + Math.ceil(parseInt(prevCourseScore) / 60);
                     }, 1000);
                 });
+                // jh member status
+                document.addEventListener("updateJhMemberStatus", function (event) {
+                    _this.jhStatus = event.detail.status;
+                });
+                // chech JH status
+                _jhAjax({
+                    cmd: "fetch",
+                    sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ? and status in (1,2,4)",
+                    vals: _dump([this.userInfo.idNo,])
+                }, function (d) {
+                    if (d.data && d.data.length) {
+                        _this.jhStatus = parseInt(d.data[0].status);
+                    }
+                }, "/db4web");
             }
         });
     };
@@ -803,7 +837,8 @@ var Index = (function () {
                 },
                 openApprove: function () {
                     openWindow("views/jhMemberApprove.html", "jhMemberApprove", {
-                        jhOrgNo: this.jhInfo.no
+                        jhOrgNo: this.jhInfo.no,
+                        jhOrgName: this.curOrgName,
                     });
                 },
                 openTree: function () {

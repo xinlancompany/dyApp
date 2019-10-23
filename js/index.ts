@@ -694,6 +694,20 @@ class Index {
 				isAndroid: "Android" === plus.os.name, // 是否处于安卓系统
 				isNew: idxObj.isNewestVersion,
 				score: 0, // 学时
+				jhStatus: -1, // JH
+			},
+			computed: {
+			    jhStatusText: function() {
+			        if (this.jhStatus == -1) {
+			            return "申请加入兼合支部";
+			        } else if (this.jhStatus == 4) {
+			            return "退出兼合支部申审核中";
+			        } else if (this.jhStatus == 2) {
+			            return "加入兼合支部申审核中";
+			        } else if (this.jhStatus == 1) {
+			            return "进入兼合支部";
+			        }
+			    }
 			},
 			methods: {
 				checkPoints: function() {
@@ -725,7 +739,7 @@ class Index {
 				    // 打开兼合支部
 				    _jhAjax({
 				        cmd: "fetch",
-				        sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ?",
+				        sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ? and status != 3",
 				        vals: _dump([this.userInfo.idNo,])
 				    }, d => {
 				        if (!d.data || !d.data.length) {
@@ -742,6 +756,8 @@ class Index {
 				                        openWindow("views/jhApply.html", "jhApply");
 				                    }
                                 });
+				            } else if (status == 4) {
+				                mui.toast("退出兼合支部申请审核中");
 				            } else if (status == 2) {
 				                mui.toast("加入兼合支部申请审核中");
 				            } else if (status == 1) {
@@ -791,6 +807,9 @@ class Index {
 				checkNewVersion: function() {
 					idxObj.updateAndroid();
 				},
+				openMsgBoard: function() {
+					openWindow("views/msgBoard.html", "msgBoard");
+				}
 			},
 			mounted: function() {
                 document.addEventListener("updateScore", (event) => {
@@ -809,6 +828,20 @@ class Index {
                         this.score = prevScore+Math.ceil(parseInt(todayScore)/60)+Math.ceil(parseInt(prevCourseScore)/60);
                     }, 1000);
                 });
+                // jh member status
+                document.addEventListener("updateJhMemberStatus", (event) => {
+                    this.jhStatus = event.detail.status;
+                });
+                // chech JH status
+                _jhAjax({
+                    cmd: "fetch",
+                    sql: "select jhOrgNo as orgNo, status from jhMember where idNo = ? and status in (1,2,4)",
+                    vals: _dump([this.userInfo.idNo,])
+                }, d => {
+                    if (d.data && d.data.length) {
+                        this.jhStatus = parseInt(d.data[0].status);
+                    }
+                }, "/db4web");
 			}
 		});
 	}
@@ -852,7 +885,8 @@ class Index {
 			    },
 			    openApprove: function() {
 					openWindow("views/jhMemberApprove.html","jhMemberApprove", {
-						jhOrgNo: this.jhInfo.no
+						jhOrgNo: this.jhInfo.no,
+						jhOrgName: this.curOrgName,
 					});
 			    },
 			    openTree: function() {

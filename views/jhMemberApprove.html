@@ -19,15 +19,40 @@
 		</header>
 		
 		<div id="jhMemberApprove" class="have-header have-footer">
-			<ul class="mui-table-view" v-cloak>
-				<li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
-					<a class="mui-navigate-right">
-	                    {{i.name}}
-                        <span @click.stop="approveUser(i)" style="background-color: #007aff; margin-left: 15px">通过</span>
-                        <span @click.stop="refuseUser(i)">拒绝</span>
-                  	</a>
-                </li>
-			</ul>
+			<div style="padding: 10px 10px;">
+				<div id="segmentedControl" class="mui-segmented-control">
+					<a class="mui-control-item mui-active" href="#item1">
+						加入申请审批
+					</a>
+					<a class="mui-control-item" href="#item2">
+						退出申请审批
+					</a>
+                </div>
+            </div>
+			<div>
+				<div id="item1" class="mui-control-content mui-active">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" v-cloak>
+                        <li class="mui-table-view-cell mui-left" v-for="i in members" @click="openMember(i)">
+                            <a class="mui-navigate-right">
+                                {{i.name}}
+                                <span @click.stop="approveUser(i)" style="background-color: #007aff; margin-left: 15px">通过</span>
+                                <span @click.stop="refuseUser(i)">拒绝</span>
+                              </a>
+                        </li>
+                    </ul>
+                </div>
+				<div id="item2" class="mui-control-content">
+					<ul class="mui-table-view mui-table-view-striped mui-table-view-condensed" v-cloak>
+                        <li class="mui-table-view-cell mui-left" v-for="i in quits" @click="openMember(i)">
+                            <a class="mui-navigate-right">
+                                {{i.name}}
+                                <span @click.stop="approveDelUser(i)" style="background-color: #007aff; margin-left: 15px">通过</span>
+                                <span @click.stop="refuseDelUser(i)">拒绝</span>
+                              </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 		</div>
 	</body>
 </html>

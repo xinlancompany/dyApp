@@ -20,13 +20,13 @@
 		</header>
 		
 		<div id="msgBoard" class="have-header have-footer">
-			<div class="msg">
-				<img src="https://tvax3.sinaimg.cn/crop.0.0.1002.1002.180/00774ILXly8g84w1f9aosj30ru0rugnv.jpg?KID=imgbed,tva&Expires=1571822385&ssig=ApT%2Bc906cc" alt="" class="avatar" />
+			<div class="msg" v-for="i in msgs">
+				<img :src="i.img" alt="" class="avatar" />
 				<div class="msg-info">
-					<h3>高玛莎</h3>
-					<p>中共舟山广播电视总台第三支部</p>
-					<article>其实百度还可以再接着降速...差不多5KB/s 这种速度我猜这样开通百度超级会员的人数会以炒鸡爆炸指数阿姆斯特朗回旋加速炮的形式进行极速增长。 ​​​​</article>
-					<p>2019-10-21 12:12:12</p>
+					<h3 v-text="i.name"></h3>
+					<p v-text="i.orgName"></p>
+					<article v-text="i.msg"></article>
+					<p v-text="i.logtime"></p>
 				</div>
 			</div>
 		</div>

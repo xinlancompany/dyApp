@@ -71,6 +71,7 @@
                         if (this.members[i].idNo == idNo) {
                             break
                         }
+                        id += 1;
                     }
                     if (id < this.members.length) {
                         this.members.splice(id, 1);

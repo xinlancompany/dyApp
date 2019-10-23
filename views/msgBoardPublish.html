@@ -16,11 +16,11 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">发布留言</h1>
-            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">发表</button>
+            <button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right publish-msg">发表</button>
 		</header>
 		
 		<div id="msgBoardPublish" class="have-header have-footer">
-			<textarea rows="10" placeholder="请填写你的留言内容"></textarea>
+			<textarea rows="10" placeholder="请填写你的留言内容" v-model="msg"></textarea>
 		</div>
 	</body>
 </html>
