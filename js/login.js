@@ -180,7 +180,7 @@ var Login = (function () {
                 },
                 openGuide: function () {
                     //
-                    openOutlink("http://develop.zsgd.com/static/jhszb/舟山共产党员E家App使用说明.docx", "使用指南");
+                    openOutlink("http://zsdy02.wifizs.cn/pdfviewer/web/viewer.html?file=http://zsdy02.wifizs.cn/jhszb/舟山共产党员E家兼合式支部APP端使用说明.pdf", "使用指南");
                 }
             },
             mounted: function () {
