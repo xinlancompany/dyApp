@@ -27,7 +27,7 @@
 			    </div>
 			    <div class="mui-input-row mui-input-textarea">
 			        <label>评语</label>
-			        <textarea rows="10" placeholder="内容" v-model="evaluation"></textarea>
+			        <textarea rows="10" placeholder="内容" v-model="evaluation" :disabled="!canEdit"></textarea>
 			    </div>
 			    <div class="mui-input-row">
 			        <label>考评状态</label>

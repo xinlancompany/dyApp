@@ -42,6 +42,7 @@ function plusReady() {
         },
         methods: {
             chooseGrade: function() {
+                if (!this.canEdit) return;
                 plus.nativeUI.actionSheet({
                     title: "考评等级",
                     cancel: "取消",
