@@ -41,7 +41,7 @@
 			    </div>
 			</form>		
 
-		 	<footer @click="newEvaluation" class="block-button" v-text="isEdit?'更新':'提交'" v-show="evaluationStatus == 0 && canEdit"></footer>
+		 	<footer @click="newEvaluation" class="block-button" v-text="isEdit?'更新':'提交'" v-show="evaluationStatus <= 0 && canEdit"></footer>
 		 	<footer @click="pushEvaluation" class="block-button" v-show="evaluationStatus == 0 && canEdit">推送支部确认</footer>
 		</div>
 	</body>
