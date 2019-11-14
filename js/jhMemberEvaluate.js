@@ -8,6 +8,7 @@ function plusReady() {
             idNo:  "", // 身份证
             isEdit: 0, // 是否处于编辑状态
             canEdit: 0,
+            orgType: "", // 组织类型，只有在党支部状态下才能接收
             // ------
             jhOrgNo: "",
             evaluationId: -1,
@@ -67,7 +68,6 @@ function plusReady() {
 				});
             },
             pushEvaluation: function() {
-                alert("update classification set status = 1 where id = "+this.evaluationId);
                 _jhAjax({
                     cmd: "exec",
                     sql: "update classification set status = 1 where id = "+this.evaluationId,
@@ -77,6 +77,19 @@ function plusReady() {
                         mui.back();
                     } else {
                         mui.toast("推送失败");
+                    }
+                }, "/db4web");
+            },
+            receiveEvaluation: function() {
+                _jhAjax({
+                    cmd: "exec",
+                    sql: "update classification set status = 2 where id = "+this.evaluationId,
+                }, d => {
+                    if (d.success) {
+                        mui.toast("接收成功");
+                        mui.back();
+                    } else {
+                        mui.toast("接收失败");
                     }
                 }, "/db4web");
             },
@@ -115,6 +128,13 @@ function plusReady() {
             this.idNo = wb.idNo;
             if ("canEdit" in wb) {
                 this.canEdit = wb.canEdit;
+            }
+            let userInfoStr = _get("userInfo");
+            if (userInfoStr) {
+                let userInfo = _load(userInfoStr);
+                if (userInfo["type"] && userInfo["type"] == "党支部") {
+                    this.orgType = "党支部";
+                }
             }
             _jhAjax({
                 cmd: "fetch",
