@@ -68,17 +68,19 @@ function plusReady() {
 				});
             },
             pushEvaluation: function() {
-                _jhAjax({
-                    cmd: "exec",
-                    sql: "update classification set status = 1 where id = "+this.evaluationId,
-                }, d => {
-                    if (d.success) {
-                        mui.toast("推送成功");
-                        mui.back();
-                    } else {
-                        mui.toast("推送失败");
-                    }
-                }, "/db4web");
+                this.newEvaluation(() => {
+                    _jhAjax({
+                        cmd: "exec",
+                        sql: "update classification set status = 1 where id = "+this.evaluationId,
+                    }, d => {
+                        if (d.success) {
+                            mui.toast("推送成功");
+                            mui.back();
+                        } else {
+                            mui.toast("推送失败");
+                        }
+                    }, "/db4web");
+                });
             },
             receiveEvaluation: function() {
                 _jhAjax({
@@ -93,7 +95,7 @@ function plusReady() {
                     }
                 }, "/db4web");
             },
-            newEvaluation: function() {
+            newEvaluation: function(cb) {
                 if (this.ifSubmit) return;
                 this.ifSubmit = true;
 
@@ -111,8 +113,12 @@ function plusReady() {
                     idNo: this.idNo,
                 }, d => {
                     if (d.success) {
-                        mui.toast("评定完成");
-                        mui.back();
+                        if (cb) {
+                            cb();
+                        } else {
+                            mui.toast("评定完成");
+                            mui.back();
+                        }
                     } else {
                         mui.toast(d.errmsg);
                     }
