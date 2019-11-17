@@ -29,6 +29,10 @@
 			        <label>评语</label>
 			        <textarea rows="10" placeholder="内容" v-model="evaluation" :disabled="!canEdit"></textarea>
 			    </div>
+			    <div class="mui-input-row">
+			        <label>考评状态</label>
+			        <input type="text" class="mui-input-clear" placeholder="" :value="evaluationStatusText" disabled>
+			    </div>
 			    <div class="mui-input-row mui-input-image" v-show="false">
 			        <label>图片</label>
 			        <div class="thumb-upload" :style="imgStyle">
@@ -37,7 +41,9 @@
 			    </div>
 			</form>		
 
-		 	<footer @click="newEvaluation" class="block-button" v-text="isEdit?'更新':'提交'" v-show="canEdit"></footer>
+		 	<footer @click="newEvaluation(null)" class="block-button" v-text="isEdit?'更新':'提交'" v-show="evaluationStatus <= 0  && canEdit"></footer>
+		 	<footer @click="pushEvaluation" class="block-button" v-show="evaluationStatus == 0 && canEdit">推送兼合支部确认</footer>
+		 	<footer @click="receiveEvaluation" class="block-button" v-show="evaluationStatus == 1 && !canEdit && orgType == '兼合式党支部'">确认接收</footer>
 		</div>
 	</body>
 </html>

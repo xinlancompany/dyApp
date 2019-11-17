@@ -8,8 +8,11 @@ function plusReady() {
             idNo:  "", // 身份证
             isEdit: 0, // 是否处于编辑状态
             canEdit: 0, 
+            orgType: "", // 组织类型，只有在兼合支部状态下才能接收
             // ------
             jhOrgNo: "",
+            evaluationId: -1,
+            evaluationStatus: -1,
             evaluation: "",
             grade: 0,
             img: "",
@@ -24,6 +27,17 @@ function plusReady() {
                     return "请选择等级"
                 } else {
                     return bhGrades[this.grade-1];
+                }
+            },
+            evaluationStatusText: function() {
+                if (this.evaluationStatus == -1) {
+                    return "未考评";
+                } else if (this.evaluationStatus == 0) {
+                    return "考评未确认";
+                } else if (this.evaluationStatus == 1) {
+                    return "考评待接收";
+                } else if (this.evaluationStatus == 2) {
+                    return "考评已接收";
                 }
             }
         },
@@ -53,7 +67,7 @@ function plusReady() {
                     self.imgStyle.backgroundImage = "url("+self.img+")";
 				});
             },
-            newEvaluation: function() {
+            newEvaluation: function(cb) {
                 if (this.ifSubmit) return;
                 this.ifSubmit = true;
 
@@ -71,15 +85,47 @@ function plusReady() {
                     idNo: this.idNo,
                 }, d => {
                     if (d.success) {
-                        mui.toast("评定完成");
-                        mui.fire(plus.webview.getWebviewById("memberManage"), "updateUsers");
-                        setTimeout(() => {
-                            mui.back();
-                        }, 500);
+                        if (cb) {
+                            cb();
+                        } else {
+                            mui.toast("评定完成");
+                            mui.fire(plus.webview.getWebviewById("memberManage"), "updateUsers");
+                            setTimeout(() => {
+                                mui.back();
+                            }, 500);
+                        }
                     } else {
                         mui.toast(d.errmsg);
                     }
                 });
+            },
+            pushEvaluation: function() {
+                this.newEvaluation(() => {
+                    _jhAjax({
+                        cmd: "exec",
+                        sql: "update classification set status = 1 where id = "+this.evaluationId,
+                    }, d => {
+                        if (d.success) {
+                            mui.toast("推送成功");
+                            mui.back();
+                        } else {
+                            mui.toast("推送失败");
+                        }
+                    }, "/db4web");
+                });
+            },
+            receiveEvaluation: function() {
+                _jhAjax({
+                    cmd: "exec",
+                    sql: "update classification set status = 2 where id = "+this.evaluationId,
+                }, d => {
+                    if (d.success) {
+                        mui.toast("接收成功");
+                        mui.back();
+                    } else {
+                        mui.toast("接收失败");
+                    }
+                }, "/db4web");
             },
             changeTxt: function(i) {
             },
@@ -90,14 +136,23 @@ function plusReady() {
             let wb = plus.webview.currentWebview();
             this.idNo = wb.idNo;
             if ("canEdit" in wb) this.canEdit = wb.canEdit;
+            let userInfoStr = _get("jhInfo");
+            if (userInfoStr) {
+                let userInfo = _load(userInfoStr);
+                if (userInfo["roles"] && userInfo["roles"].length) {
+                    this.orgType = "兼合式党支部";
+                }
+            }
             _jhAjax({
                 cmd: "fetch",
-                sql: "select evaluation, grade from classification where userIdNo = ? and type = 1",
+                sql: "select id, evaluation, grade, status, grade from classification where userIdNo = ? and type = 1",
                 vals: _dump([this.idNo,])
             }, d => {
                 if (d.success && d.data && d.data.length) {
+                    this.evaluationId = d.data[0].id;
                     this.grade = d.data[0].grade;
                     this.evaluation = d.data[0].evaluation;
+                    this.evaluationStatus = parseInt(d.data[0].status);
                     this.isEdit = 1;
                     this.isNewEvaluate = false;
                 } else {
