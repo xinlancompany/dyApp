@@ -13,6 +13,26 @@
             data: {
                 participants: [],
                 jhOrgNo: '',
+                searchWord: "",
+            },
+            watch: {
+                searchWord: function(w) {
+                    w = _trim(w);
+                    this.participants.forEach(i => {
+                        if (!w) {
+                            i.ifShow = true;
+                        } else {
+                            i.ifShow = i.name.indexOf(w) >= 0;
+                        }
+                    });
+                }
+            },
+            computed: {
+                showParticipants: function() {
+                    return _filter(i => {
+                        return i.ifShow;
+                    }, this.participants);
+                }
             },
             methods: {
                 showSelects: function(i) {
@@ -32,6 +52,7 @@
                 }, d => {
                     if (d.success && d.data && d.data.list.length) {
                         d.data.list.forEach(i => {
+                            i.ifShow = true;
                             i.ifSelect = 0;
                             wb.participants.forEach(j => {
                                 if (j.idNo == i.idNo) {

@@ -21,8 +21,11 @@
 		
 		<div id="jhSelectUsers" class="have-header have-footer">
 			<!--活动发布编辑时筛选组织成员时显示-->
+			<form action="" class="search-bar">
+				<input type="search" maxlength="8" placeholder="请输入名称搜索" v-model="searchWord" />
+			</form>
 			<ul class="mui-table-view select-list">
-				<li class="mui-table-view-cell" v-for="i in participants" @click="showSelects(i)">
+				<li class="mui-table-view-cell" v-for="i in showParticipants" @click="showSelects(i)">
                     <i class="iconfont" :class="{'icon-weixuanzhong':!i.ifSelect, 'icon-xuanzhong':i.ifSelect}"></i>{{i.name}}
 				</li>
 			</ul>

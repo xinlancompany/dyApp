@@ -41,6 +41,10 @@
                         if (!d.success || !d.data || !d.data.length) {
                             if (i.type == "兼合式支部") {
                                 mui.confirm("是否加入该支部？", "兼合支部", ["确定", "取消"], function(e) {
+                                    if (!userInfo || !userInfo["idNo"]) {
+                                        mui.alert("无法获取身份证信息");
+                                        return;
+                                    }
                                     if (e.index == 0) {
                                         _jhAjax({
 //                                          cmd: "exec",
