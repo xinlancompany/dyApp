@@ -214,7 +214,6 @@
             ].join(""),
             vals: _dump([wb.orgNo, wb.orgId])
         }, function(d) {
-            _tell(d);
             if (d.success && d.data && d.data.length) {
             		vm.members = [];
                 d.data.forEach(function(i) {
@@ -226,6 +225,25 @@
                     if (!parseInt(i.ifValid)) i.name += "(已删除)";
                     vm.members.push(i);
                 });
+                _jhAjax({
+                    cmd: "fetch",
+                    sql: "select u.id, ifnull(c.status, -1) as csStatus from user u left join classification c on " +
+                        "u.idNo = c.userIdNo and c.type = 2 where u.id in ("+((_map(i => {
+                            return i.id;
+                        }, vm.members)).join(','))+")"
+                }, d => {
+                    if (d.success && d.data) {
+                        d.data.forEach(i => {
+                            for(let j=0; j< vm.members.length; j+=1) {
+                                let m = vm.members[j];
+                                if (m.id == i.id) {
+                                    m.csStatus = parseInt(i.csStatus);
+                                    return;
+                                }
+                            }
+                        });
+                    }
+                }, "/db4web");
             }
         }, "/db4web");
         };

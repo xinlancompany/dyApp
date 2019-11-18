@@ -67,6 +67,19 @@ function plusReady() {
                     self.imgStyle.backgroundImage = "url("+self.img+")";
 				});
             },
+            pushEvaluationNoUpdate: function() {
+                _jhAjax({
+                    cmd: "exec",
+                    sql: "update classification set status = 1 where id = "+this.evaluationId,
+                }, d => {
+                    if (d.success) {
+                        mui.toast("推送成功");
+                        mui.back();
+                    } else {
+                        mui.toast("推送失败");
+                    }
+                }, "/db4web");
+            },
             pushEvaluation: function() {
                 this.newEvaluation(() => {
                     _jhAjax({
@@ -112,12 +125,20 @@ function plusReady() {
                     coverImg: "",
                     idNo: this.idNo,
                 }, d => {
+                    var self = this;
                     if (d.success) {
                         if (cb) {
                             cb();
                         } else {
-                            mui.toast("评定完成");
-                            mui.back();
+                            // mui.toast("评定完成");
+                            // mui.back();
+                            mui.confirm("评定完成，是否推送？", "兼合评定", ["确定", "取消"], function(e) {
+                                if (e.index == 0) {
+                                    self.pushEvaluationNoUpdate();
+                                } else {
+                                    mui.back();
+                                }
+                            });
                         }
                     } else {
                         mui.toast(d.errmsg);

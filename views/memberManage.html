@@ -48,7 +48,7 @@
                                     <i class="iconfont" :class="{'icon-star': i.csGrade>=4, 'icon-staro': i.csGrade<4}"></i>
                                     <i class="iconfont" :class="{'icon-star': i.csGrade>=5, 'icon-staro': i.csGrade<5}"></i>
                                 </span>
-                                <span style="background: #4cd964" @click="openJh(i)">兼合</span>
+                                <span :style="{background: i.csStatus == 2 ? 'red' : '#4cd964'}" @click="openJh(i)">兼合</span>
 	                        </div>
 	                    </div>
                   	</a>
