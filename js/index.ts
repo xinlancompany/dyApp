@@ -930,7 +930,7 @@ class Index {
 												_jhAjax({
 													cmd: "exec",
 													sql: "update jhOrg set pswd = ? where orgNo = ?",
-													vals: _dump([pswd1, this.jhInfo.no])
+													vals: _dump([pswd1, self.jhInfo.no])
 												}, (d) => {
 													mui.toast("修改"+(d.success?"成功":"失败"));
 												}, "/db4web");

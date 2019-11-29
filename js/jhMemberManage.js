@@ -10,6 +10,11 @@
                 sortBy: "down",
                 jhOrgNo: "",
                 canEdit: 1,
+                jhClassificationTxts: [
+                    "待确认",
+                    "待接收",
+                    "双向确认"
+                ]
             },
             computed: {
                 filterMembers: function() {
@@ -20,7 +25,7 @@
                         return i.name.indexOf(sw) >= 0;
                     }, this.members);
                     if (ret.length) return ret;
-                }
+                },
             },
             methods: {
                 openMember: function(i) {
@@ -150,11 +155,14 @@
 		    vm.jhOrgNo = wb.jhOrgNo;
 		    if ("canEdit" in wb) vm.canEdit = wb.canEdit;
 		    _jhAjax({
-		        cmd: "getJHPMList",
-		        name: "",
+//		        cmd: "getJHPMList",
+		        cmd: "getClassificationByOrgNo",
+//		        name: "",
 		        jhOrgNo: wb.jhOrgNo,
+		        orgType: 2,
 		        pageNo: 1,
-		        pageSize: 200
+		        pageSize: 200,
+		        year: _now().split("-")[0]
 		    }, d => {
 		        d.success && d.data && d.data.list.length && (vm.members = d.data.list);
 		    });

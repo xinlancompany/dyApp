@@ -33,7 +33,7 @@
 	                    {{i.name}}
                         <span @click.stop="infoUser(i)" style="background-color: #20a0ff;">查看</span>
                         <span @click.stop="delUser(i)" v-show="canEdit">删除</span>
-                        <span @click.stop="evaluateUser(i)" style="background-color: #4cd964">考评</span>
+                        <span @click.stop="evaluateUser(i)" :style="{'background-color': parseInt(i.jhClassificationStatus) > 0 ? '#4cd964' : '#856404'}">{{'考评'+jhClassificationTxts[parseInt(i.jhClassificationStatus)]}}</span>
                         <!--<span>
 								<i class="iconfont" :class="{'icon-star': i.score>=20, 'icon-starhalfempty': i.score<20 && i.score>=10, 'icon-staro': i.score<10}"></i>
 								<i class="iconfont" :class="{'icon-star': i.score>=40, 'icon-starhalfempty': i.score<40 && i.score>=30, 'icon-staro': i.score<30}"></i>

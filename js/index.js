@@ -858,7 +858,6 @@ var Index = (function () {
                     var pswd1, pswd2;
                     var self = this;
                     mui.confirm('<input type="password" id="changepswd" />', "输入新密码", ['确定', '取消'], function (e) {
-                        var _this = this;
                         var pswd = _trim($("#changepswd").val());
                         if (0 === e.index) {
                             if ('' === pswd) {
@@ -884,7 +883,7 @@ var Index = (function () {
                                                 _jhAjax({
                                                     cmd: "exec",
                                                     sql: "update jhOrg set pswd = ? where orgNo = ?",
-                                                    vals: _dump([pswd1, _this.jhInfo.no])
+                                                    vals: _dump([pswd1, self.jhInfo.no])
                                                 }, function (d) {
                                                     mui.toast("修改" + (d.success ? "成功" : "失败"));
                                                 }, "/db4web");
