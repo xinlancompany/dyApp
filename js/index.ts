@@ -206,43 +206,59 @@ class Index {
                 });
             });
 
-            // 获取以前的登陆与分享
-            _scoreAjax({
-                cmd: "multiFetch",
-                multi: _dump([
-                    {
-                        key: "login",
-                        sql: "select count(*) as cnt from scoreDailyLogin where (userId = "+
-                            this.userInfo.id+
-                            " or idno = '"+this.userInfo.idNo+"' )" +
-                            " and logtime < '"+(_today()+" 00:00:00")+"'"
-                    },
-                    {
-                        key: "share",
-                        sql: "select count(*)*2 as cnt from scoreShareCourse " +
-                            "where (userId = "+this.userInfo.id+" or idno = '"+this.userInfo.idNo+"') and logtime < '"+(_today()+" 00:00:00")+"'"
-
-                    },
-                    {
-                        key: "news",
-                        sql: "select count(*) as cnt from newsEnroll " +
-                            "where (userId = "+this.userInfo.id+" or idno = '"+this.userInfo.idNo+"') and logtime < '"+(_today()+" 00:00:00")+"'"
-                    },
-                ])
+            _callAjax({
+                cmd: "fetch",
+                sql: "select id from user where idno = ?",
+                vals: _dump([this.userInfo.idNo,])
             }, (d) => {
-                let prevScore = 0;
-                if (d.success && d.data) {
-                    if (d.data.login && d.data.login.length) prevScore += parseInt(d.data.login[0].cnt);
-                    if (d.data.share && d.data.share.length) prevScore += parseInt(d.data.share[0].cnt);
-                    if (d.data.news && d.data.news.length) prevScore += parseInt(d.data.news[0].cnt);
-                }
-                _set("prevScore", ""+prevScore);
+                if (!d || !d.data || !d.data.length) return;
+                let ids = _map(i => {
+                    return i.id;
+                }, d.data).join(",");
+
+                // 获取以前的登陆与分享
+                _scoreAjax({
+                    cmd: "multiFetch",
+                    multi: _dump([
+                        {
+                            key: "login",
+                            sql: "select count(*) as cnt from scoreDailyLogin where userId in (" + ids +
+                                ") and logtime >= '"+(_today().split("-")[0]+"-01-01 00:00:00") +
+                                "' and logtime < '"+(_today()+" 00:00:00")+"'"
+                        },
+                        {
+                            key: "share",
+                            sql: "select count(*)*2 as cnt from scoreShareCourse " +
+                                "where userId in ("+ids+") " +
+                                " and logtime < '"+(_today()+" 00:00:00")+"' " +
+                                " and logtime >= '"+(_today().split("-")[0]+"-01-01 00:00:00")+"'"
+                        },
+                        {
+                            key: "news",
+                            sql: "select count(*) as cnt from newsEnroll " +
+                                "where userId in ("+ids+") " +
+                                "and logtime < '"+(_today()+" 00:00:00")+"' "+
+                                "and logtime >= '"+(_today().split("-")[0]+"-01-01 00:00:00")+"'"
+                        },
+                    ])
+                }, (d) => {
+                    let prevScore = 0;
+                    if (d.success && d.data) {
+                        if (d.data.login && d.data.login.length) prevScore += parseInt(d.data.login[0].cnt);
+                        if (d.data.share && d.data.share.length) prevScore += parseInt(d.data.share[0].cnt);
+                        if (d.data.news && d.data.news.length) prevScore += parseInt(d.data.news[0].cnt);
+                    }
+                    _set("prevScore", ""+prevScore);
+                });
             });
 
             // 获取之前课程学时
             _callAjax({
                 cmd: "fetch",
-                sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, courses c where e.userId in (select id from user where idno = ?) and e.courseId = c.id and c.ifValid > 0 and e.logtime <= '"+(_today()+" 00:00:00")+"'",
+                sql: "select ifnull(sum(e.credit), 0) as total from courseEnroll e, " +
+                    "courses c where e.userId in (select id from user where idno = ?) and " +
+                    "e.courseId = c.id and c.ifValid > 0 and e.logtime <= '"+(_today()+" 00:00:00")+"' " +
+                    "and e.logtime >= '"+(_today().split("-")[0]+"-01-01 00:00:00")+"'",
                 vals: _dump([this.userInfo.idNo,])
             }, (d) => {
                 if (d.success && d.data && d.data.length) {
@@ -701,9 +717,9 @@ class Index {
 			        if (this.jhStatus == -1) {
 			            return "申请加入兼合支部";
 			        } else if (this.jhStatus == 4) {
-			            return "退出兼合支部申审核中";
+			            return "退出兼合支部申请审核中";
 			        } else if (this.jhStatus == 2) {
-			            return "加入兼合支部申审核中";
+			            return "加入兼合支部申情审核中";
 			        } else if (this.jhStatus == 1) {
 			            return "进入兼合支部";
 			        }

@@ -1,4 +1,10 @@
 function plusReady() {
+    mui.init({
+        beforeback: function() {
+            mui.fire(plus.webview.getWebviewById("jhMemberManage"), "updateUsers");
+        },
+    });
+
     var wb = plus.webview.currentWebview();
 
     var upload = new Vue({
