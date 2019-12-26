@@ -94,9 +94,9 @@ function plusReady() {
 					fi = i.id;
 					fn = i.newsdate;
 				}
-				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc";
+				var sql = "select id, title, url, newsdate, img from courses where linkerId in (select id from linkers where ifValid = 1 and refId = "+linkerId.HandCourse+") and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10";
 				if (this.curId > 0) {
-                    sql = "select id, title, url, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc"
+                    sql = "select id, title, url, newsdate, img from courses where linkerId = "+this.curId+" and (newsdate < '"+fn+"' or (newsdate = '"+fn+"' and id < '"+fi+"')) and ifValid > 0 order by newsdate desc, id desc limit 10"
 				}
 //				_tell(sql);
 //				_tell(fi+","+fn);
@@ -127,6 +127,9 @@ function plusReady() {
 						    }
 							self.courses[t].news.push(i);
 						});
+						if (_at(self.courses[t].news, -1).isTv) {
+						    self.getInternetList();
+						}
 					} else {
 						self.courses[t].bHaveMore = false;
 					}

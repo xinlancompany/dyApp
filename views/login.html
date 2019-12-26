@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title></title>
 		<script src="../lib/jquery.min.js"></script>
+		<script src="../lib/jsencrypt.min.js"></script>
 		<script src="../lib/vue.min.js"></script>
 		<script src="../lib/mui.min.js"></script>
 		<link href="../lib/mui.min.css" rel="stylesheet" />
@@ -25,12 +26,16 @@
 			<div class="input-frame">
 				<i class="iconfont icon-icon-test"></i><input type="text" maxlength="18" :placeholder="nameTag" v-model="name"/>
 			</div>
-			<div class="input-frame">
+			<!--<div class="input-frame">
 				<i class="iconfont icon-mima"></i><input type="password" maxlength="18" placeholder="请输入您的密码" v-model="pswd"/>
+			</div>-->
+			<div class="input-frame">
+				<i class="iconfont icon-yanzhengma"></i><input type="number" maxlength="4" placeholder="请输入验证码" v-model="pswd"/>
+				<span v-text="codeTag" @click="sendCode"></span>
 			</div>
-			<div class="input-frame" @click="chooseYear" >
+			<!--<div class="input-frame" @click="chooseYear" >
 				<i class="iconfont icon-more"></i><input type="text" v-model="year" disabled/>
-			</div>
+			</div>-->
 			<div class="input-frame">
                 <div class="mui-input-row mui-radio mui-left">
 					<label style="font-size:14px;padding-left:45px">个人</label>
@@ -45,11 +50,11 @@
 					<input name="userType" type="radio" @change="loginType = 'jh'" style="left:5px;">
 				</div>
 			</div>
-			<div class="login-btns" @click="login">
+			<div class="login-btns" @click="verify">
 				<span>登录</span>
 			</div>
 			<div class="footer">
-				<a @click="forgetPswd" v-show="loginType === 'personal'">忘记密码</a>
+				<!--<a @click="forgetPswd" v-show="loginType === 'personal'">忘记密码</a>-->
 				<a @click="openIndex">没有账号?游客浏览</a>
             </div>
 			<div class="footer">
@@ -60,4 +65,3 @@
 </html>
 <script src="../lib/utils.js"></script>
 <script src="../lib/a_ref.js"></script>
-<script src="../js/login.js"></script>

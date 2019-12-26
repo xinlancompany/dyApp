@@ -41,7 +41,7 @@ var Login = (function () {
             el: "#login",
             data: {
                 loginType: 'personal',
-                nameTag: "手机或身份证登录",
+                nameTag: "手机号码登录",
                 name: '',
                 pswd: '',
                 year: _now().split('-')[0],
@@ -50,25 +50,55 @@ var Login = (function () {
                 userName: "",
                 orgName: "",
                 jhName: "",
+                timeleft: 0,
+                serverCode: "",
+                codeTag: "获取验证码",
             },
             watch: {
+                timeleft: function (i) {
+                    this.codeTag = this.timeleft > 0 ? this.timeleft : "获取验证码";
+                },
                 loginType: function (i) {
                     // 切换登陆类型时，提示文字也相应改变
                     if ("personal" === i) {
-                        this.nameTag = "手机或身份证登录";
+                        this.nameTag = "手机号码登录";
                         this.name = this.userName;
                     }
                     else if ("organization" == i) {
-                        this.nameTag = "组织代码";
+                        this.nameTag = "支部账号";
                         this.name = this.orgName;
                     }
                     else {
-                        this.nameTag = "兼合支部代码";
+                        this.nameTag = "兼合支部账号";
                         this.name = this.jhName ? this.jhName : "";
                     }
                 },
             },
             methods: {
+                sendCode: function () {
+                    var self = this, phone = _trim(self.name);
+                    if (this.timeleft > 0)
+                        return;
+                    if (self.loginType == "personal" && (!phone || phone.length != 11))
+                        return mui.toast('请输入正确手机号码');
+                    if (self.loginType != "personal" && !phone)
+                        return mui.toast('请输入正确支部编号');
+                    _pyAjax({
+                        cmd: "sendPswd",
+                        loginType: self.loginType,
+                        no: phone
+                    }, function (d) {
+                        mui.toast(d.success ? d.data.errMsg : d.errMsg);
+                        if (d.success && d.data.success) {
+                            self.timeleft = 60;
+                            var tm = setInterval(function () {
+                                self.timeleft -= 1;
+                                if (self.timeleft <= 0)
+                                    clearInterval(tm);
+                            }, 1000);
+                        }
+                    }, "/sms");
+                },
                 openIndex: function () {
                     // 打开index.html
                     openWindow("../index.html", "index");
@@ -126,7 +156,7 @@ var Login = (function () {
                         }
                     }, "/db4web");
                 },
-                login: function () {
+                verify: function () {
                     var _this = this;
                     // 防止重复点击
                     if (!this.loginAtOnce)
@@ -135,6 +165,23 @@ var Login = (function () {
                     var name = _trim(this.name), pswd = _trim(this.pswd);
                     if (!name || !pswd)
                         return mui.toast("请完整填写登录信息");
+                    _pyAjax({
+                        cmd: "verifyCode",
+                        name: name,
+                        code: pswd,
+                        loginType: this.loginType
+                    }, function (d) {
+                        if (d.success && d.data) {
+                            var pswd_1 = decryptData(d.data.data.split("\n").join(""));
+                            _this.login(name, pswd_1);
+                        }
+                        else {
+                            mui.toast(d.errMsg);
+                        }
+                    }, "/sms");
+                },
+                login: function (name, pswd) {
+                    var _this = this;
                     // 防止重点击
                     this.loginAtOnce = false;
                     // 兼合登录
@@ -147,7 +194,6 @@ var Login = (function () {
                         sql = "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ? and ifValid >= 1";
                         vals = _dump([name, pswd]);
                     }
-                    // 登陆
                     _callAjax({
                         cmd: "fetch",
                         sql: sql,

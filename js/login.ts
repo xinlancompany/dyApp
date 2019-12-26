@@ -10,6 +10,8 @@ declare function _dump(d: [any]): string;
 declare function _now(): string;
 declare function openWindow(f: string, n: string): void;
 declare function _callAjax(params: any, f: (d: any) => void): void;
+declare function _smsAjax(params: any, f: (d: any) => void): void;
+declare function _pyAjax(params: any, f: (d: any) => void, fix: string): void;
 declare function _genCallAjax(addr: string): any;
 declare function _androidClose(s: any): void;
 
@@ -70,7 +72,7 @@ class Login{
 			el: "#login",
 			data:{
 				loginType: 'personal',
-				nameTag: "手机或身份证登录",
+				nameTag: "手机号码登录",
 				name: '',
 				pswd: '',
 				year: _now().split('-')[0],
@@ -79,23 +81,50 @@ class Login{
 				userName: "", // 存储的用户名
 				orgName: "", // 存储的组织代码
 				jhName: "", // 兼合支部代码
+				timeleft: 0,
+				serverCode: "",
+				codeTag: "获取验证码",
 			},
 			watch: {
+				timeleft: function(i) {
+					this.codeTag = this.timeleft > 0 ? this.timeleft : "获取验证码";
+				},
 				loginType: function(i) {
 					// 切换登陆类型时，提示文字也相应改变
 					if ("personal" === i) {
-						this.nameTag = "手机或身份证登录";
+						this.nameTag = "手机号码登录";
 						this.name = this.userName;
 					} else if("organization" == i) {
-						this.nameTag = "组织代码";
+						this.nameTag = "支部账号";
 						this.name = this.orgName;
 					} else {
-						this.nameTag = "兼合支部代码";
+						this.nameTag = "兼合支部账号";
 						this.name = this.jhName?this.jhName:"";
 					}
 				},
 			},
 			methods: {
+				sendCode: function() {
+					var self = this,
+						phone = _trim(self.name);
+					if (this.timeleft > 0) return;
+					if (self.loginType == "personal" && (!phone || phone.length != 11)) return mui.toast('请输入正确手机号码');
+					if (self.loginType != "personal" && !phone) return mui.toast('请输入正确支部编号');
+                    _pyAjax({
+                        cmd: "sendPswd",
+                        loginType: self.loginType,
+                        no: phone
+                    }, d => {
+                        mui.toast(d.success ? d.data.errMsg : d.errMsg);
+                        if (d.success && d.data.success) {
+                            self.timeleft = 60;
+                            var tm = setInterval(function() {
+                                self.timeleft -= 1;
+                                if (self.timeleft <= 0) clearInterval(tm);
+                            }, 1000)
+                        }
+                    }, "/sms")
+				},
 				openIndex: function() {
 					// 打开index.html
 					openWindow("../index.html", "index");
@@ -150,14 +179,28 @@ class Login{
 				        }
 				    }, "/db4web");
 				},
-				login: function() {
+				verify: function() {
 					// 防止重复点击
 					if (!this.loginAtOnce) return;
-
 					// 去掉登录名与密码的空格
 					let name = _trim(this.name),
-						pswd = _trim(this.pswd);
+					    pswd = _trim(this.pswd);
 					if (!name || !pswd) return mui.toast("请完整填写登录信息");
+				    _pyAjax({
+				        cmd: "verifyCode",
+				        name: name,
+				        code: pswd,
+				        loginType: this.loginType
+				    }, d => {
+				        if (d.success && d.data) {
+				            let pswd = decryptData(d.data.data.split("\n").join(""));
+				            this.login(name, pswd);
+				        } else {
+				            mui.toast(d.errMsg);
+				        }
+				    }, "/sms");
+				},
+				login: function(name, pswd) {
 
 					// 防止重点击
 					this.loginAtOnce = false;
@@ -173,7 +216,7 @@ class Login{
 						sql = "select id, name, pswd, img, no, secretary, type from organization where no = ? and pswd = ? and ifValid >= 1";
 						vals = _dump([name, pswd]);
 					}
-					// 登陆
+
 					_callAjax({
 						cmd: "fetch",
 						sql: sql,
