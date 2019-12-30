@@ -68,6 +68,7 @@
 						if (e.index == 0) return;
 						var btnTitle = buttons[e.index-1].title;
 						if (btnTitle == "新增党员") {
+						    return mui.alert("新增服务调整中");
 							self.newUser();
 						} else if (btnTitle == "删除党员") {
 							openWindow("delUsers.html", "delUsers");
