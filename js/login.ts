@@ -31,6 +31,11 @@ class Login{
 		mui.init({
 		   swiperBack: false
 		});
+		if ("iOS" == plus.os.name) {
+		    plus.webview.currentWebview().setStyle({
+		        popGesture: "none"
+		    });
+		}
 		_set("userInfo", "");
 		_set("orgInfo", "");
 		_set("jhInfo", "");
@@ -128,7 +133,7 @@ class Login{
 				openIndex: function() {
 					// 打开index.html
 					openWindow("../index.html", "index");
-                    _delayClose(plus.webview.currentWebview());
+                    _delayClose(plus.webview.currentWebview(), 2000);
 					mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
 				},
 				chooseYear: function() {

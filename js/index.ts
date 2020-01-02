@@ -40,6 +40,11 @@ class Index {
 		mui.init({
 		   swiperBack: false
 		});
+		if ("iOS" == plus.os.name) {
+		    plus.webview.currentWebview().setStyle({
+		        popGesture: "none"
+		    });
+		}
 
 		this.updateInfo();
 
@@ -358,7 +363,7 @@ class Index {
 //			var loginPage = plus.webview.getWebviewById("login");
 //			if (loginPage) mui.fire(loginPage, "clearCache");
 			openWindow("views/login.html", "login");
-			_delayClose(plus.webview.currentWebview());
+//			_delayClose(plus.webview.currentWebview(), 1000);
 		});
 
 		// 用于登陆后刷新页面底部标签

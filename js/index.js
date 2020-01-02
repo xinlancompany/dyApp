@@ -6,6 +6,11 @@ var Index = (function () {
         mui.init({
             swiperBack: false
         });
+        if ("iOS" == plus.os.name) {
+            plus.webview.currentWebview().setStyle({
+                popGesture: "none"
+            });
+        }
         this.updateInfo();
         // 打开参数页面
         this.openArgs();
@@ -308,7 +313,7 @@ var Index = (function () {
             //			var loginPage = plus.webview.getWebviewById("login");
             //			if (loginPage) mui.fire(loginPage, "clearCache");
             openWindow("views/login.html", "login");
-            _delayClose(plus.webview.currentWebview());
+            //			_delayClose(plus.webview.currentWebview(), 1000);
         });
         // 用于登陆后刷新页面底部标签
         document.addEventListener('openOutLink', function (event) {
