@@ -107,7 +107,7 @@ var Login = (function () {
                 openIndex: function () {
                     // 打开index.html
                     openWindow("../index.html", "index");
-                    _delayClose(plus.webview.currentWebview(), 2000);
+                    //                  _delayClose(plus.webview.currentWebview(), 2000);
                     mui.fire(plus.webview.getWebviewById("index"), "updateFooterInfo");
                 },
                 chooseYear: function () {
