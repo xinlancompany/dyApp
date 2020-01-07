@@ -488,6 +488,11 @@ class Index {
 							});
 						}
 						if ("news" in d.data && d.data.news.length) {
+						    d.data.news.forEach(i => {
+						        if (i.img.indexOf("//") == 0) {
+						            i.img = "https:"+i.img;
+						        }
+						    });
 							this.news = d.data.news;
 						}
 						if ("activities" in d.data && d.data.activities && d.data.activities.length) {
@@ -525,6 +530,9 @@ class Index {
                        if (d.success && d.data) {
                            this.newsHavMore = true;
                            d.data.forEach((i) => {
+                               if (i.img.indexOf("//") == 0) {
+                                   i.img = "https:"+i.img;
+                               }
                                this.news.push(i);
                            });
                        } else {

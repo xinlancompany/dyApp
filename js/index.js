@@ -432,6 +432,11 @@ var Index = (function () {
                             });
                         }
                         if ("news" in d.data && d.data.news.length) {
+                            d.data.news.forEach(function (i) {
+                                if (i.img.indexOf("//") == 0) {
+                                    i.img = "https:" + i.img;
+                                }
+                            });
                             _this.news = d.data.news;
                         }
                         if ("activities" in d.data && d.data.activities && d.data.activities.length) {
@@ -470,6 +475,9 @@ var Index = (function () {
                         if (d.success && d.data) {
                             _this.newsHavMore = true;
                             d.data.forEach(function (i) {
+                                if (i.img.indexOf("//") == 0) {
+                                    i.img = "https:" + i.img;
+                                }
                                 _this.news.push(i);
                             });
                         }
